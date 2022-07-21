@@ -124,7 +124,7 @@ public class GameManager_Engine : MonoBehaviour
 
         thrust = (1/turboRate_turboSizeRatio) * turboRate_nozzleLengthRatio * (nozzleExit_nozzleEndRatio / 2) * (turbopumpRateFloat/2) * (1/ turbopumpRef.transform.localScale.x);
         rate = (turboRate_turboSizeRatio)/turbopumpRef.transform.localScale.x;
-        mass = 100 * turbopumpRef.transform.localScale.x;
+        mass = 500 * turbopumpRef.transform.localScale.x;
 
     }
 
