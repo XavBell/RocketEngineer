@@ -16,7 +16,7 @@ public class PlanetGravity : MonoBehaviour
     public float Mass = 90000000000.0f; //Planet mass in kg
     private float G = 0.0000000000667f; //Gravitational constant
     public float atmoAlt = 70.0f;
-    public float aeroCoefficient = 0.05f;
+    public float aeroCoefficient = 5f;
     float maxAlt;
 
 
@@ -227,7 +227,7 @@ public class PlanetGravity : MonoBehaviour
         {
             Mass = 900000000.0f;
             atmoAlt = 10.0f;
-            aeroCoefficient = 0.01f;
+            aeroCoefficient = 5f;
             planet = bestPlanet;
         }
 
