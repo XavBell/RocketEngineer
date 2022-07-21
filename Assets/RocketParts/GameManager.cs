@@ -1,0 +1,781 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using TMPro;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System;
+using System.Runtime.Serialization;
+using System.Xml.Linq;
+using System.Text;
+using Newtonsoft.Json;
+
+public class GameManager : MonoBehaviour
+{
+    public GameObject engineManager;
+
+    private GameObject partToConstruct;
+    private GameObject capsule;
+    private Part[] parts;
+    private GameObject attachPoint;
+    private AttachPointScript[] attachPoints;
+    public int currentStage;
+    public CustomCursor customCursor;
+    public bool decouplerPresent = false;
+    public bool capsuleBuilt = false;
+    public bool tankBuilt = false;
+    public bool engineBuilt = false;
+    public InputField mainInputField;
+    public InputField saveName;
+    public Button CapsuleButton;
+    public Button TankButton;
+    public Button EngineButton;
+    public Button DecouplerButton;
+    public GameObject scroll;
+    public GameObject scrollEngine;
+    public GameObject scrollTank;
+    public GameObject scrollBox;
+    public string path = "rocket";
+    public string savePath = "rocket";
+    public string filePath;
+
+    public GameObject enginePrefab;
+    public GameObject tankPrefab;
+
+    public GameObject Capsule;
+    public GameObject Tank;
+    public GameObject Engine;
+    public GameObject Decoupler;
+    public GameObject EngineManager;
+
+    public GameObject buttonPrefab;
+    public GameObject engineButtonPrefab;
+    public GameObject tankButtonPrefab;
+
+    public saveEngine loadedEngine;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        if(SceneManager.GetActiveScene().name.ToString() == "Building")
+        {
+            TankButton.interactable = false;
+            EngineButton.interactable = false;
+            DecouplerButton.interactable = false;
+            scrollBox.SetActive(false);
+
+            EngineManager = GameObject.FindGameObjectWithTag("EngineManager");
+
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        updateSaveName();
+        if(Input.GetMouseButtonDown(0) && partToConstruct != null)
+        {
+            
+
+
+
+            if (partToConstruct.GetComponent<Part>().type.ToString() == "capsule" && capsuleBuilt == false && Cursor.visible == false)
+            {
+                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                capsule = Instantiate(partToConstruct, position, Quaternion.identity);
+                capsule.GetComponent<PlanetGravity>().capsule = capsule;
+                capsuleBuilt = true;
+                Debug.Log(capsuleBuilt);
+            }
+
+
+
+
+
+            if (partToConstruct.GetComponent<Part>().type.ToString() == "tank" && capsuleBuilt == true && Cursor.visible == false)
+            {
+                parts = GameObject.FindObjectsOfType<Part>();
+                attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
+                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                GameObject currentPrefab = Instantiate(partToConstruct, position, Quaternion.identity);
+                tankPrefab = currentPrefab;
+                if (filePath != null)
+                {
+                    load(filePath);
+                }
+                float bestDist = Mathf.Infinity;
+                AttachPointScript bestAttachPoint = null;
+                
+                    foreach (AttachPointScript go1 in attachPoints)
+                    {
+                        float currentDistance = (go1.transform.position - currentPrefab.transform.position).magnitude;
+                        if (currentDistance < bestDist && go1.GetComponent<AttachPointScript>().attachedBody == null)
+                        {
+                            bestDist = currentDistance;
+                            bestAttachPoint = go1;
+                        }
+                    }
+
+                if (bestAttachPoint != null)
+                {
+                    bestAttachPoint.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
+                    currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = bestAttachPoint.GetComponent<AttachPointScript>().referenceBody;
+                    Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
+                    currentPrefab.transform.position = bestAttachPoint.transform.position + difference;
+                    currentPrefab.transform.SetParent(capsule.transform);
+                    GameObject reference = bestAttachPoint.GetComponent<AttachPointScript>().referenceBody;
+                    string referenceType = reference.GetComponent<Part>().type.ToString();
+                    currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
+                    capsule.GetComponent<BoxCollider2D>().size += new Vector2(0, 1f);
+                    capsule.GetComponent<BoxCollider2D>().offset += new Vector2(0, -0.5f);
+                    capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
+
+                    GameObject newPrefabDetach = currentPrefab;
+                    if (decouplerPresent == true)
+                    {
+                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
+                        {
+                            currentPrefab.GetComponent<Part>().referenceDecoupler = currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                        }
+
+                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
+                        {
+                            while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
+                            {
+                                newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                                Debug.Log(newPrefabDetach);
+                                if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
+                                {
+                                    currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
+                                }
+                            }
+                        }
+                    }
+
+                    tankBuilt = true;
+                }
+
+                
+
+            }
+
+
+            if (partToConstruct.GetComponent<Part>().type.ToString() == "decoupler" && tankBuilt == true && engineBuilt == true && Cursor.visible == false)
+            {
+                parts = GameObject.FindObjectsOfType<Part>();
+                attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
+                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                GameObject currentPrefab = Instantiate(partToConstruct, position, Quaternion.identity);
+                float bestDist = Mathf.Infinity;
+                AttachPointScript bestAttachPoint = null;
+
+                foreach (AttachPointScript go1 in attachPoints)
+                {
+                    float currentDistance = (go1.transform.position - currentPrefab.transform.position).magnitude;
+                    if (currentDistance < bestDist && go1.GetComponent<AttachPointScript>().attachedBody == null)
+                    {
+                        bestDist = currentDistance;
+                        bestAttachPoint = go1;
+                    }
+                }
+
+                if (bestAttachPoint != null)
+                {
+                    bestAttachPoint.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
+                    currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = bestAttachPoint.GetComponent<AttachPointScript>().referenceBody;
+                    Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
+                    currentPrefab.transform.position = bestAttachPoint.transform.position + difference;
+                    currentPrefab.transform.SetParent(capsule.transform);
+                    GameObject reference = bestAttachPoint.GetComponent<AttachPointScript>().referenceBody;
+                    string referenceType = reference.GetComponent<Part>().type.ToString();
+                    currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
+                    decouplerPresent = true;
+                }
+
+            }
+
+
+
+            if (partToConstruct.GetComponent<Part>().type.ToString() == "engine" && capsuleBuilt == true && Cursor.visible == false)
+            {
+                parts = GameObject.FindObjectsOfType<Part>();
+                attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
+                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                GameObject currentPrefab = Instantiate(partToConstruct, position, Quaternion.identity);
+                enginePrefab = currentPrefab;
+                if (filePath != null)
+                {
+                    load(filePath);
+                }
+                float bestDist = Mathf.Infinity;
+                AttachPointScript bestAttachPoint = null;
+
+                foreach (AttachPointScript go1 in attachPoints)
+                {
+                    float currentDistance = (go1.transform.position - currentPrefab.transform.position).magnitude;
+                    if (currentDistance < bestDist && go1.GetComponent<AttachPointScript>().attachedBody == null)
+                    {
+                        bestDist = currentDistance;
+                        bestAttachPoint = go1;
+                    }
+                }
+
+                if (bestAttachPoint != null)
+                {
+                    engineBuilt = true;
+                    bestAttachPoint.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
+                    currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = bestAttachPoint.GetComponent<AttachPointScript>().referenceBody;
+                    Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
+                    currentPrefab.transform.position = bestAttachPoint.transform.position + difference;
+                    currentPrefab.transform.SetParent(capsule.transform);
+                    currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
+                    capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
+                    capsule.GetComponent<BoxCollider2D>().size += new Vector2(0, 0.5f);
+                    capsule.GetComponent<BoxCollider2D>().offset += new Vector2(0, -0.3f);
+                    capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
+
+                    if (bestAttachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().type.ToString() == "tank")
+                    {
+                        currentPrefab.GetComponent<Part>().StageNumber = bestAttachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().StageNumber;
+
+                    }
+
+                    AttachPointScript currentAttach = currentPrefab.GetComponent<Part>().attachTop;
+                    while (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "tank")
+                    {
+                        currentPrefab.GetComponent<Part>().fuel += currentAttach.attachedBody.GetComponent<Part>().fuel;
+                        currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
+                    }
+
+
+
+                    GameObject newPrefabDetach = currentPrefab;
+                    if (decouplerPresent == true)
+                    {
+                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
+                        {
+                            currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                        }
+
+                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
+                        {
+                            while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
+                            {
+                                newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                                Debug.Log(newPrefabDetach);
+                                if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
+                                {
+                                    currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
+                                }
+                            }
+
+                        }
+
+                    }
+
+
+                }
+
+                
+            }
+
+
+            partToConstruct = null;
+            customCursor.GetComponent<SpriteRenderer>().sprite = null;
+            Cursor.visible = true;
+
+            if (capsuleBuilt == false)
+            {
+                TankButton.interactable = false;
+                EngineButton.interactable = false;
+                DecouplerButton.interactable = false;
+            }
+
+            if (capsuleBuilt == true)
+            {
+                CapsuleButton.interactable = false;
+                TankButton.interactable = true;
+                EngineButton.interactable = true;
+                DecouplerButton.interactable = false;
+            }
+
+            if (engineBuilt == true)
+            {
+                DecouplerButton.interactable = true;
+            }
+        }
+
+
+        if (Input.GetKey(KeyCode.Escape))
+        {
+            Debug.Log("Hello");
+            Application.Quit();
+ 
+        }
+
+
+
+    }
+
+    public void Launch()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
+
+    public void Clear()
+    {
+        if(capsule != null)
+        {
+            Destroy(capsule);
+        }
+        SceneManager.LoadScene("Building");
+    }
+
+    public void ConstructPart(GameObject part)
+    {
+        if(Cursor.visible == true)
+        {
+            customCursor.gameObject.SetActive(true);
+            customCursor.GetComponent<SpriteRenderer>().sprite = part.GetComponent<SpriteRenderer>().sprite;
+            customCursor.GetComponent<SpriteRenderer>().color = part.GetComponent<SpriteRenderer>().color;
+            Cursor.visible = false;
+            partToConstruct = part;
+        }
+    }
+
+    public void updateSaveName()
+    {
+        savePath = saveName.text;
+    }
+
+    public void save()
+    {
+        saveRocket saveObject = new saveRocket();
+        GameObject attachedBody;
+        if(capsule != null)
+        {
+            Debug.Log("ok");
+           if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+           {
+                Debug.Log("passed");
+                attachedBody = capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
+
+                while (attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                {
+                    saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
+                    if(attachedBody.GetComponent<Part>().type == "engine")
+                    {
+                        saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
+                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
+                    }
+
+                    if (attachedBody.GetComponent<Part>().type == "tank")
+                    {
+                        saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
+                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
+                    }
+
+                    attachedBody = attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
+                }
+
+                if(attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
+                {
+                    saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
+                    if (attachedBody.GetComponent<Part>().type == "engine")
+                    {
+                        saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
+                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
+                    }
+                    if (attachedBody.GetComponent<Part>().type == "tank")
+                    {
+                        saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
+                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
+                    }
+                }
+
+            }
+
+        }
+
+        var jsonString = JsonConvert.SerializeObject(saveObject);
+        if (!Directory.Exists(Application.persistentDataPath + "/rockets"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/rockets");
+        }
+        System.IO.File.WriteAllText(Application.persistentDataPath + "/rockets/" + savePath + ".json", jsonString);
+    }
+
+    public void retrieveRocketSaved()
+    {
+
+        scrollBox.SetActive(true);
+        
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("spawnedButton");
+        foreach(GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+
+        var info = new DirectoryInfo(Application.persistentDataPath + "/rockets");
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject rocket = Instantiate(buttonPrefab) as GameObject;
+            GameObject child = rocket.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scroll.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+
+        }
+        filePath = "/rockets/";
+        
+    }
+
+    public void retrieveEngineSaved()
+    {
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("engineButton");
+        foreach (GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+        if (!Directory.Exists(Application.persistentDataPath + "/engines"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/engines");
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + "/engines");
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject engine = Instantiate(engineButtonPrefab) as GameObject;
+            GameObject child = engine.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollEngine.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+
+        }
+
+        filePath = "/engines/";
+    }
+
+    public void retrieveTankSaved()
+    {
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("tankButton");
+        foreach (GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+        if (!Directory.Exists(Application.persistentDataPath + "/tanks"))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + "/tanks");
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + "/tanks");
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject tank = Instantiate(tankButtonPrefab) as GameObject;
+            GameObject child = tank.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollTank.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+
+        }
+
+        filePath = "/tanks/";
+    }
+
+    public void load(string fileTypePath)
+    {
+        saveRocket saveObject = new saveRocket();
+        saveEngine saveEngine = new saveEngine();
+        saveTank saveTank = new saveTank();
+
+        if (fileTypePath == "/rockets/")
+        {
+            var jsonString = JsonConvert.SerializeObject(saveObject);
+            jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
+            saveRocket loadedRocket = JsonConvert.DeserializeObject<saveRocket>(jsonString);
+            int engineCount = 0;
+            int tankCount = 0;
+            if (capsule != null)
+            {
+            Destroy(capsule);
+            tankBuilt = false;
+            engineBuilt = false;
+            decouplerPresent = false;
+            }
+
+            Vector2 position = new Vector2(420, 264);
+            capsule = Instantiate(Capsule, position, Quaternion.identity);
+
+            AttachPointScript attachPoint = capsule.GetComponent<Part>().attachBottom;
+            GameObject currentPrefab = null;
+            GameObject lastPrefab = capsule;
+            capsuleBuilt = true;
+        foreach (string type in loadedRocket.attachedBodies)
+        {
+            if (type == "tank")
+            {
+                Vector2 attachPosition = attachPoint.transform.position;
+                currentPrefab = Instantiate(Tank, position, Quaternion.identity);
+
+                 tankPrefab = currentPrefab;
+                 string TypePath = loadedRocket.tankPaths[tankCount];
+                 Debug.Log(path);
+                 path = loadedRocket.tankNames[tankCount] + ".json";
+                 load(TypePath);
+                 tankCount++;
+
+                Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
+                attachPoint.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
+                currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = attachPoint.GetComponent<AttachPointScript>().referenceBody;
+                currentPrefab.transform.position = attachPoint.transform.position + difference;
+                currentPrefab.transform.SetParent(capsule.transform);
+                currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
+                capsule.GetComponent<BoxCollider2D>().size += new Vector2(0, 1f);
+                capsule.GetComponent<BoxCollider2D>().offset += new Vector2(0, -0.5f);
+                capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
+
+                GameObject newPrefabDetach = currentPrefab;
+                if (decouplerPresent == true)
+                {
+                    if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
+                    {
+                        currentPrefab.GetComponent<Part>().referenceDecoupler = currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                    }
+
+                    if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
+                    {
+                        while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
+                        {
+                            newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                            Debug.Log(newPrefabDetach);
+                            if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
+                            {
+                                currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
+                            }
+                        }
+                    }
+                }
+
+                tankBuilt = true;
+
+                lastPrefab = currentPrefab;
+            }
+
+            if (type == "engine")
+            {
+                
+                Vector2 attachPosition = attachPoint.transform.position;
+                currentPrefab = Instantiate(Engine, position, Quaternion.identity);
+
+                enginePrefab = currentPrefab;
+                string TypePath = loadedRocket.enginePaths[engineCount];
+                Debug.Log(path);
+                path = loadedRocket.engineNames[engineCount] + ".json";
+                load(TypePath);
+                engineCount++;
+
+                attachPoint.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
+                currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = attachPoint.GetComponent<AttachPointScript>().referenceBody;
+                Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
+                currentPrefab.transform.position = attachPoint.transform.position + difference;
+                currentPrefab.transform.SetParent(capsule.transform);
+                currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
+                
+
+                capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
+                capsule.GetComponent<BoxCollider2D>().size += new Vector2(0, 0.5f);
+                capsule.GetComponent<BoxCollider2D>().offset += new Vector2(0, -0.3f);
+                capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
+
+                if (attachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().type.ToString() == "tank")
+                {
+                    currentPrefab.GetComponent<Part>().StageNumber = attachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().StageNumber;
+
+                }
+
+
+                AttachPointScript currentAttach = currentPrefab.GetComponent<Part>().attachTop;
+                while (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "tank")
+                {
+                    currentPrefab.GetComponent<Part>().fuel += currentAttach.attachedBody.GetComponent<Part>().fuel;
+                    currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
+                }
+
+
+
+                GameObject newPrefabDetach = currentPrefab;
+                if (decouplerPresent == true)
+                {
+                    if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
+                    {
+                        currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                    }
+
+                    if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
+                    {
+                        while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
+                        {
+                            newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                            Debug.Log(newPrefabDetach);
+                            if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
+                            {
+                                currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
+                            }
+                        }
+                    }
+
+                }
+                engineBuilt = true;
+                lastPrefab = currentPrefab;
+            }
+
+            if (type == "decoupler")
+            {
+                Vector2 attachPosition = attachPoint.transform.position;
+                currentPrefab = Instantiate(Decoupler, position, Quaternion.identity);
+                attachPoint.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
+                currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = attachPoint.GetComponent<AttachPointScript>().referenceBody;
+                Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
+                currentPrefab.transform.position = attachPoint.transform.position + difference;
+                currentPrefab.transform.SetParent(capsule.transform);
+                currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
+                decouplerPresent = true;
+                lastPrefab = currentPrefab;
+                
+            }
+
+            attachPoint = lastPrefab.GetComponent<Part>().attachBottom;
+        }
+
+        if (capsuleBuilt == false)
+        {
+            TankButton.interactable = false;
+            EngineButton.interactable = false;
+            DecouplerButton.interactable = false;
+        }
+
+        if (capsuleBuilt == true)
+        {
+            CapsuleButton.interactable = false;
+            TankButton.interactable = true;
+            EngineButton.interactable = true;
+            DecouplerButton.interactable = false;
+        }
+
+        if (engineBuilt == true)
+        {
+            DecouplerButton.interactable = true;
+        }
+
+        scrollBox.SetActive(false);
+
+        }
+
+        if(fileTypePath == "/engines/")
+        {
+            var jsonString = JsonConvert.SerializeObject(saveEngine);
+            jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
+            saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+
+            enginePrefab.GetComponent<Part>().path = loadedEngine.path;
+            enginePrefab.GetComponent<Part>().name = loadedEngine.name;
+            enginePrefab.GetComponent<Part>().maxThrust = loadedEngine.thrust_s;
+            enginePrefab.GetComponent<Part>().rate = loadedEngine.rate_s;
+            enginePrefab.GetComponent<Part>().mass = loadedEngine.mass_s;
+
+            enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale = new Vector2(loadedEngine.nozzleExitSize_s, enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale.y);
+            enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale = new Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale.y);
+            enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.transform.localScale.y);
+        }
+
+        if (fileTypePath == "/tanks/")
+        {
+            var jsonString = JsonConvert.SerializeObject(saveTank);
+            jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
+            saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
+
+            tankPrefab.GetComponent<Part>().path = loadedTank.path;
+            tankPrefab.GetComponent<Part>().name = loadedTank.name;
+
+            tankPrefab.GetComponent<Part>().fuel = loadedTank.fuel;
+            tankPrefab.GetComponent<Part>().mass = loadedTank.mass;
+            tankPrefab.GetComponent<Part>().tank.transform.localScale = new Vector2(loadedTank.tankSize_s, tankPrefab.GetComponent<Part>().tank.transform.localScale.y);
+
+        }
+
+        filePath = null;
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("tankButton");
+        foreach (GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+        GameObject[] buttons2 = GameObject.FindGameObjectsWithTag("engineButton");
+        foreach (GameObject but in buttons2)
+        {
+            Destroy(but);
+        }
+    }
+
+    public void CreateNewEngine()
+    {
+        if(capsule != null)
+        {
+            Destroy(capsule);
+        }
+        SceneManager.LoadScene("EngineDesign");
+    }
+
+    public void CreateNewTank()
+    {
+        if (capsule != null)
+        {
+            Destroy(capsule);
+        }
+        SceneManager.LoadScene("TankDesign");
+    }
+
+    public class saveRocket
+    {
+        public List<string> attachedBodies = new List<string>();
+        public List<string> engineNames = new List<string>();
+        public List<string> enginePaths = new List<string>();
+        public List<string> tankNames = new List<string>();
+        public List<string> tankPaths = new List<string>();
+    }
+
+    public class saveEngine
+    {
+        public string path;
+        public string name;
+        public float nozzleExitSize_s;
+        public float nozzleEndSize_s;
+        public float turbopumpSize_s;
+
+        public float mass_s;
+        public float thrust_s;
+        public float rate_s;
+    }
+
+    public class saveTank
+    {
+        public string path;
+        public string name;
+        public float tankSize_s;
+
+        public float fuel;
+        public float mass;
+
+    }
+
+}
