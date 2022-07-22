@@ -519,7 +519,7 @@ public class GameManager : MonoBehaviour
 
             tankPrefab.GetComponent<Part>().fuel = loadedTank.fuel;
             tankPrefab.GetComponent<Part>().mass = loadedTank.mass;
-            tankPrefab.GetComponent<Part>().tank.transform.localScale = new Vector2(loadedTank.tankSize_s, tankPrefab.GetComponent<Part>().tank.transform.localScale.y);
+            tankPrefab.GetComponent<Part>().tank.transform.localScale = new Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
 
         }
 

@@ -18,7 +18,8 @@ public class saveTank
 
     public string path;
     public string name;
-    public float tankSize_s;
+    public float tankSizeX;
+    public float tankSizeY;
 
     public float fuel;
     public float mass;
