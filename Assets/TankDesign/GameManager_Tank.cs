@@ -105,7 +105,9 @@ public class GameManager_Tank : MonoBehaviour
         saveObject.name = saveName;
         saveObject.tankSizeX = tankSP.transform.localScale.x;
         saveObject.tankSizeY = tankSP.transform.localScale.y;
-
+        saveObject.attachTopPos = attachTopObj.transform.position.y - tankSP.bounds.center.y;
+        saveObject.attachBottomPos = tankSP.bounds.center.y - attachTopObj.transform.position.y;
+        Debug.Log(saveObject.attachTopPos);
         saveObject.fuel = fuel;
         saveObject.mass = mass;
 
