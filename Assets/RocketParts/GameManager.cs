@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
             scrollBox.SetActive(false);
 
             EngineManager = GameObject.FindGameObjectWithTag("EngineManager");
+            
 
         }
     }
@@ -387,37 +388,7 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void retreive(string tag, string folder, GameObject prefab)
-    {
-        scrollBox.SetActive(true);
-        
-        GameObject[] buttons = GameObject.FindGameObjectsWithTag(tag);
-        foreach(GameObject but in buttons)
-        {
-            Destroy(but);
-        }
 
-        if (!Directory.Exists(Application.persistentDataPath + folder))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + folder);
-        }
-
-        var info = new DirectoryInfo(Application.persistentDataPath + folder);
-        var fileInfo = info.GetFiles();
-        foreach (var file in fileInfo)
-        {
-            GameObject rocket = Instantiate(prefab) as GameObject;
-            GameObject child = rocket.transform.GetChild(0).gameObject;
-            child = child.transform.GetChild(0).gameObject;
-            child.transform.SetParent(scroll.transform, false);
-            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
-            b1text.text = Path.GetFileName(file.ToString());
-
-        }
-        filePath = savePathRef.rocketFolder;
-    }
-
-    
     public void retrieveRocketSaved()
     {
 
@@ -451,6 +422,8 @@ public class GameManager : MonoBehaviour
         filePath = savePathRef.rocketFolder;
         
     }
+
+
 
     public void retrieveEngineSaved()
     {
