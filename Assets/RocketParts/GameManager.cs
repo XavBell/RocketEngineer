@@ -71,6 +71,7 @@ public class GameManager : MonoBehaviour
             scrollBox.SetActive(false);
 
             EngineManager = GameObject.FindGameObjectWithTag("EngineManager");
+            
 
         }
     }
@@ -327,156 +328,6 @@ public class GameManager : MonoBehaviour
         savePath = "/" + saveName.text;
     }
 
-    public void save()
-    {
-        saveRocket saveObject = new saveRocket();
-        GameObject attachedBody;
-        if(capsule != null)
-        {
-            Debug.Log("ok");
-           if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
-           {
-                Debug.Log("passed");
-                attachedBody = capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
-
-                while (attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
-                {
-                    saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
-                    if(attachedBody.GetComponent<Part>().type == "engine")
-                    {
-                        saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
-                    }
-
-                    if (attachedBody.GetComponent<Part>().type == "tank")
-                    {
-                        saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
-                    }
-
-                    attachedBody = attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
-                }
-
-                if(attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
-                {
-                    saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
-                    if (attachedBody.GetComponent<Part>().type == "engine")
-                    {
-                        saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
-                    }
-                    if (attachedBody.GetComponent<Part>().type == "tank")
-                    {
-                        saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
-                    }
-                }
-
-            }
-
-            var jsonString = JsonConvert.SerializeObject(saveObject);
-            if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
-            {
-                Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
-            }
-            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json", jsonString);
-
-        }
-
-        
-    }
-
-    public void retrieveRocketSaved()
-    {
-
-        scrollBox.SetActive(true);
-        
-        GameObject[] buttons = GameObject.FindGameObjectsWithTag("spawnedButton");
-        foreach(GameObject but in buttons)
-        {
-            Destroy(but);
-        }
-
-        Debug.Log(savePathRef.rocketFolder);
-
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
-        }
-
-        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.rocketFolder);
-        var fileInfo = info.GetFiles();
-        foreach (var file in fileInfo)
-        {
-            GameObject rocket = Instantiate(buttonPrefab) as GameObject;
-            GameObject child = rocket.transform.GetChild(0).gameObject;
-            child = child.transform.GetChild(0).gameObject;
-            child.transform.SetParent(scroll.transform, false);
-            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
-            b1text.text = Path.GetFileName(file.ToString());
-
-        }
-        filePath = savePathRef.rocketFolder;
-        
-    }
-
-    public void retrieveEngineSaved()
-    {
-        GameObject[] buttons = GameObject.FindGameObjectsWithTag("engineButton");
-        foreach (GameObject but in buttons)
-        {
-            Destroy(but);
-        }
-
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.engineFolder))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.engineFolder);
-        }
-
-        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.engineFolder);
-        var fileInfo = info.GetFiles();
-        foreach (var file in fileInfo)
-        {
-            GameObject engine = Instantiate(engineButtonPrefab) as GameObject;
-            GameObject child = engine.transform.GetChild(0).gameObject;
-            child = child.transform.GetChild(0).gameObject;
-            child.transform.SetParent(scrollEngine.transform, false);
-            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
-            b1text.text = Path.GetFileName(file.ToString());
-
-        }
-
-        filePath = savePathRef.engineFolder;
-    }
-
-    public void retrieveTankSaved()
-    {
-        GameObject[] buttons = GameObject.FindGameObjectsWithTag("tankButton");
-        foreach (GameObject but in buttons)
-        {
-            Destroy(but);
-        }
-
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.tankFolder))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.tankFolder);
-        }
-
-        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.tankFolder);
-        var fileInfo = info.GetFiles();
-        foreach (var file in fileInfo)
-        {
-            GameObject tank = Instantiate(tankButtonPrefab) as GameObject;
-            GameObject child = tank.transform.GetChild(0).gameObject;
-            child = child.transform.GetChild(0).gameObject;
-            child.transform.SetParent(scrollTank.transform, false);
-            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
-            b1text.text = Path.GetFileName(file.ToString());
-        }
-
-        filePath = savePathRef.tankFolder;
-    }
-
     public void load(string fileTypePath)
     {
         saveRocket saveObject = new saveRocket();
@@ -683,6 +534,156 @@ public class GameManager : MonoBehaviour
         {
             Destroy(but);
         }
+    }
+
+    public void save()
+    {
+        saveRocket saveObject = new saveRocket();
+        GameObject attachedBody;
+        if(capsule != null)
+        {
+            Debug.Log("ok");
+           if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+           {
+                Debug.Log("passed");
+                attachedBody = capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
+
+                while (attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                {
+                    saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
+                    if(attachedBody.GetComponent<Part>().type == "engine")
+                    {
+                        saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
+                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
+                    }
+
+                    if (attachedBody.GetComponent<Part>().type == "tank")
+                    {
+                        saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
+                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
+                    }
+
+                    attachedBody = attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
+                }
+
+                if(attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
+                {
+                    saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
+                    if (attachedBody.GetComponent<Part>().type == "engine")
+                    {
+                        saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
+                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
+                    }
+                    if (attachedBody.GetComponent<Part>().type == "tank")
+                    {
+                        saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
+                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
+                    }
+                }
+
+            }
+
+            var jsonString = JsonConvert.SerializeObject(saveObject);
+            if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
+            {
+                Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
+            }
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json", jsonString);
+
+        }
+
+        
+    }
+
+    public void retrieveRocketSaved()
+    {
+
+        scrollBox.SetActive(true);
+        
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("spawnedButton");
+        foreach(GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+        Debug.Log(savePathRef.rocketFolder);
+
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.rocketFolder);
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject rocket = Instantiate(buttonPrefab) as GameObject;
+            GameObject child = rocket.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scroll.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+
+        }
+        filePath = savePathRef.rocketFolder;
+        
+    }
+
+    public void retrieveEngineSaved()
+    {
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("engineButton");
+        foreach (GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.engineFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.engineFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.engineFolder);
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject engine = Instantiate(engineButtonPrefab) as GameObject;
+            GameObject child = engine.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollEngine.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+
+        }
+
+        filePath = savePathRef.engineFolder;
+    }
+
+    public void retrieveTankSaved()
+    {
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("tankButton");
+        foreach (GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.tankFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.tankFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.tankFolder);
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject tank = Instantiate(tankButtonPrefab) as GameObject;
+            GameObject child = tank.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollTank.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+        }
+
+        filePath = savePathRef.tankFolder;
     }
 
     public void CreateNewEngine()
