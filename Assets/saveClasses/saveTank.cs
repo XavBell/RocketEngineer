@@ -20,6 +20,8 @@ public class saveTank
     public string name;
     public float tankSizeX;
     public float tankSizeY;
+    public float attachTopPos;
+    public float attachBottomPos;
 
     public float fuel;
     public float mass;
