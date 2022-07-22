@@ -704,10 +704,7 @@ public class GameManager : MonoBehaviour
         currentPrefab.transform.position = attachPoint.transform.position + difference;
         currentPrefab.transform.SetParent(capsule.transform);
         currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
-        if(currentPrefab.GetComponent<Part>().type == "engine")
-        {
-            capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
-        }
+        capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
         capsule.GetComponent<BoxCollider2D>().size += boxScale;
         capsule.GetComponent<BoxCollider2D>().offset += offsets;
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
