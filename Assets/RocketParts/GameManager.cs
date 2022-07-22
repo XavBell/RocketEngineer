@@ -96,9 +96,6 @@ public class GameManager : MonoBehaviour
             }
 
 
-
-
-
             if (partToConstruct.GetComponent<Part>().type.ToString() == "tank" && capsuleBuilt == true && Cursor.visible == false)
             {
                 parts = GameObject.FindObjectsOfType<Part>();
@@ -707,7 +704,10 @@ public class GameManager : MonoBehaviour
         currentPrefab.transform.position = attachPoint.transform.position + difference;
         currentPrefab.transform.SetParent(capsule.transform);
         currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
-        capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
+        if(currentPrefab.GetComponent<Part>().type == "engine")
+        {
+            capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
+        }
         capsule.GetComponent<BoxCollider2D>().size += boxScale;
         capsule.GetComponent<BoxCollider2D>().offset += offsets;
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
