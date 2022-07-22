@@ -56,12 +56,14 @@ public class GameManager_Tank : MonoBehaviour
 
     void updateSize()
     {
-        if(tankDiameter.text != "")
+        float number;
+        if(float.TryParse(tankDiameter.text, out number))
         {
             tankRef.transform.localScale = new Vector3 (float.Parse(tankDiameter.text), tankRef.transform.localScale.y, tankRef.transform.localScale.z);
+            tankDiameterFloat = tankRef.transform.localScale.x;
         }
 
-        if (tankHeight.text != "")
+        if (float.TryParse(tankHeight.text, out number))
         {
             tankHeightFloat = float.Parse(tankHeight.text);
         }
@@ -70,11 +72,8 @@ public class GameManager_Tank : MonoBehaviour
 
     void calculate()
     {
-        tankHeightFloat = float.Parse(tankHeight.text);
-        tankDiameterFloat = float.Parse(tankDiameter.text);
-
         fuel = tankDiameterFloat * tankHeightFloat * 100;
-        mass = tankHeightFloat * tankDiameterFloat * 400;
+        mass = tankHeightFloat * tankDiameterFloat * 100;
 
     }
 

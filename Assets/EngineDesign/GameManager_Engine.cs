@@ -64,28 +64,29 @@ public class GameManager_Engine : MonoBehaviour
 
     void updateSize()
     {
-        if(nozzleExitSize.text != "")
+        float number;
+        if(float.TryParse(nozzleExitSize.text, out number))
         {
             nozzleExitRef.transform.localScale = new Vector3 (float.Parse(nozzleExitSize.text), nozzleExitRef.transform.localScale.y, nozzleExitRef.transform.localScale.z);
         }
 
-        if (nozzleEndSize.text != "")
+        if (float.TryParse(nozzleEndSize.text, out number))
         {
             nozzleEndRef.transform.localScale = new Vector3(float.Parse(nozzleEndSize.text), nozzleEndRef.transform.localScale.y, nozzleEndRef.transform.localScale.z);
         }
 
-        if (turbopumpSize.text != "")
+        if (float.TryParse(turbopumpSize.text, out number))
         {
             turbopumpRef.transform.localScale = new Vector3(float.Parse(turbopumpSize.text), turbopumpRef.transform.localScale.y, turbopumpRef.transform.localScale.z);
         }
 
 
-        if (nozzleLenght.text != "")
+        if (float.TryParse(nozzleLenght.text, out number))
         {
             nozzleLenghtFloat = float.Parse(nozzleLenght.text);
         }
 
-        if (turbopumpRate.text != "")
+        if (float.TryParse(turbopumpRate.text, out number))
         {
             turbopumpRateFloat = float.Parse(turbopumpRate.text);
         }
@@ -122,7 +123,7 @@ public class GameManager_Engine : MonoBehaviour
 
         thrust = (1/turboRate_turboSizeRatio) * turboRate_nozzleLengthRatio * (nozzleExit_nozzleEndRatio / 2) * (turbopumpRateFloat/2) * (1/ turbopumpRef.transform.localScale.x);
         rate = (turboRate_turboSizeRatio)/turbopumpRef.transform.localScale.x;
-        mass = 500 * turbopumpRef.transform.localScale.x;
+        mass = 300 * turbopumpRef.transform.localScale.x;
 
     }
 
