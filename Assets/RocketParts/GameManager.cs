@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
     public Vector2 engineOffset = new Vector2(0, -0.3f);
     public Vector2 tankOffset = new Vector2(0, -0.5f);
 
-    public savePath savePath;
+    public savePath savePathRef = new savePath();
 
     // Start is called before the first frame update
     void Start()
@@ -374,14 +374,16 @@ public class GameManager : MonoBehaviour
 
             }
 
+            var jsonString = JsonConvert.SerializeObject(saveObject);
+            if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
+            {
+                Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
+            }
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json", jsonString);
+
         }
 
-        var jsonString = JsonConvert.SerializeObject(saveObject);
-        if (!Directory.Exists(Application.persistentDataPath + "/rockets"))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + "/rockets");
-        }
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/rockets/" + savePath + ".json", jsonString);
+        
     }
 
     public void retrieveRocketSaved()
@@ -395,8 +397,14 @@ public class GameManager : MonoBehaviour
             Destroy(but);
         }
 
+        Debug.Log(savePathRef.rocketFolder);
 
-        var info = new DirectoryInfo(Application.persistentDataPath + "/rockets");
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.rocketFolder);
         var fileInfo = info.GetFiles();
         foreach (var file in fileInfo)
         {
@@ -408,7 +416,7 @@ public class GameManager : MonoBehaviour
             b1text.text = Path.GetFileName(file.ToString());
 
         }
-        filePath = savePath.rocketFolder;
+        filePath = savePathRef.rocketFolder;
         
     }
 
@@ -420,12 +428,12 @@ public class GameManager : MonoBehaviour
             Destroy(but);
         }
 
-        if (!Directory.Exists(Application.persistentDataPath + "/engines"))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.engineFolder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/engines");
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.engineFolder);
         }
 
-        var info = new DirectoryInfo(Application.persistentDataPath + "/engines");
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.engineFolder);
         var fileInfo = info.GetFiles();
         foreach (var file in fileInfo)
         {
@@ -438,7 +446,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        filePath = savePath.engineFolder;
+        filePath = savePathRef.engineFolder;
     }
 
     public void retrieveTankSaved()
@@ -449,12 +457,12 @@ public class GameManager : MonoBehaviour
             Destroy(but);
         }
 
-        if (!Directory.Exists(Application.persistentDataPath + "/tanks"))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.tankFolder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/tanks");
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.tankFolder);
         }
 
-        var info = new DirectoryInfo(Application.persistentDataPath + "/tanks");
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.tankFolder);
         var fileInfo = info.GetFiles();
         foreach (var file in fileInfo)
         {
@@ -466,7 +474,7 @@ public class GameManager : MonoBehaviour
             b1text.text = Path.GetFileName(file.ToString());
         }
 
-        filePath = savePath.tankFolder;
+        filePath = savePathRef.tankFolder;
     }
 
     public void load(string fileTypePath)
@@ -475,7 +483,7 @@ public class GameManager : MonoBehaviour
         saveEngine saveEngine = new saveEngine();
         saveTank saveTank = new saveTank();
 
-        if (fileTypePath == savePath.rocketFolder)
+        if (fileTypePath == savePathRef.rocketFolder)
         {
             var jsonString = JsonConvert.SerializeObject(saveObject);
             jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
@@ -632,7 +640,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if(fileTypePath == savePath.engineFolder)
+        if(fileTypePath == savePathRef.engineFolder)
         {
             var jsonString = JsonConvert.SerializeObject(saveEngine);
             jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
@@ -649,7 +657,7 @@ public class GameManager : MonoBehaviour
             enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.transform.localScale.y);
         }
 
-        if (fileTypePath == savePath.engineFolder)
+        if (fileTypePath == savePathRef.tankFolder)
         {
             var jsonString = JsonConvert.SerializeObject(saveTank);
             jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);

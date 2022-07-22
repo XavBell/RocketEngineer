@@ -29,7 +29,7 @@ public class GameManager_Tank : MonoBehaviour
     public float fuel;
     public float mass;
 
-
+    public savePath savePathRef = new savePath();
 
 
     // Start is called before the first frame update
@@ -81,20 +81,22 @@ public class GameManager_Tank : MonoBehaviour
     public void save()
     {
         saveTank saveObject = new saveTank();
-        saveName = savePath.text;
-        saveObject.path = "/tanks/";
-        saveObject.name = "/" + saveName;
+        saveName = "/" + savePath.text;
+
+        
+        saveObject.path = savePathRef.tankFolder;
+        saveObject.name = saveName;
         saveObject.tankSize_s = tankRef.transform.localScale.x;
 
         saveObject.fuel = fuel;
         saveObject.mass = mass;
 
         var jsonString = JsonConvert.SerializeObject(saveObject);
-        if (!Directory.Exists(Application.persistentDataPath + "/tanks"))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.tankFolder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/tanks");
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.tankFolder);
         }
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/tanks/" + saveName + ".json", jsonString);
+        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json", jsonString);
     }
 
     public void backToBuild()

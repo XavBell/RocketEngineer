@@ -35,7 +35,7 @@ public class GameManager_Engine : MonoBehaviour
     public float thrust;
     public float rate;
 
-
+    public savePath savePathRef = new savePath();
 
 
     // Start is called before the first frame update
@@ -131,9 +131,10 @@ public class GameManager_Engine : MonoBehaviour
     public void save()
     {
         saveEngine saveObject = new saveEngine();
-        saveName = savePath.text;
-        saveObject.path = "/engines/";
-        saveObject.name = "/" + saveName;
+        saveName = "/"+ savePath.text;
+
+        saveObject.path = savePathRef.engineFolder;
+        saveObject.name = saveName;
         saveObject.nozzleExitSize_s = nozzleExitRef.transform.localScale.x;
         saveObject.nozzleEndSize_s = nozzleEndRef.transform.localScale.x;
         saveObject.turbopumpSize_s = turbopumpRef.transform.localScale.x;
@@ -143,11 +144,11 @@ public class GameManager_Engine : MonoBehaviour
         saveObject.rate_s = rate;
 
         var jsonString = JsonConvert.SerializeObject(saveObject);
-        if (!Directory.Exists(Application.persistentDataPath + "/engines"))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.engineFolder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/engines");
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.engineFolder);
         }
-        System.IO.File.WriteAllText(Application.persistentDataPath + "/engines/" + saveName + ".json", jsonString);
+        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json", jsonString);
     }
 
     public void backToBuild()

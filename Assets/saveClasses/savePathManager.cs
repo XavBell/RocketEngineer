@@ -1,4 +1,4 @@
-public static class savePath
+public class savePath
 {
     public string engineFolder = "/engines";
     public string tankFolder = "/tanks";

@@ -8,6 +8,7 @@ public class OnClick : MonoBehaviour
     public Button b1;
     public GameObject tankPrefab;
     public GameObject enginePrefab;
+    public savePath savePathRef = new savePath();
 
     // Start is called before the first frame update
     void Start()
@@ -32,19 +33,19 @@ public class OnClick : MonoBehaviour
 
         if (GameManager != null)
         {
-            GameManager.GetComponent<GameManager>().path = b1.GetComponentInChildren<TextMeshProUGUI>().text;
+            GameManager.GetComponent<GameManager>().path = "/"+ b1.GetComponentInChildren<TextMeshProUGUI>().text;
             string filePath = GameManager.GetComponent<GameManager>().filePath;
-            if (filePath == "/engines/")
+            if (filePath == savePathRef.engineFolder)
             {
                 GameManager.GetComponent<GameManager>().ConstructPart(enginePrefab);
             }
 
-            if (filePath == "/rockets/")
+            if (filePath == savePathRef.rocketFolder)
             {
-                GameManager.GetComponent<GameManager>().load("/rockets/");
+                GameManager.GetComponent<GameManager>().load(savePathRef.rocketFolder);
             }
 
-            if (filePath == "/tanks/")
+            if (filePath == savePathRef.tankFolder)
             {
                 GameManager.GetComponent<GameManager>().ConstructPart(tankPrefab);
             }
