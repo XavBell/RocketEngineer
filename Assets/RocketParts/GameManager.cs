@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     public Vector2 engineOffset = new Vector2(0, -0.3f);
     public Vector2 tankOffset = new Vector2(0, -0.5f);
 
+    public savePath savePath;
 
     // Start is called before the first frame update
     void Start()
@@ -323,7 +324,7 @@ public class GameManager : MonoBehaviour
 
     public void updateSaveName()
     {
-        savePath = saveName.text;
+        savePath = "/" + saveName.text;
     }
 
     public void save()
@@ -407,7 +408,7 @@ public class GameManager : MonoBehaviour
             b1text.text = Path.GetFileName(file.ToString());
 
         }
-        filePath = "/rockets/";
+        filePath = savePath.rocketFolder;
         
     }
 
@@ -437,7 +438,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        filePath = "/engines/";
+        filePath = savePath.engineFolder;
     }
 
     public void retrieveTankSaved()
@@ -465,7 +466,7 @@ public class GameManager : MonoBehaviour
             b1text.text = Path.GetFileName(file.ToString());
         }
 
-        filePath = "/tanks/";
+        filePath = savePath.tankFolder;
     }
 
     public void load(string fileTypePath)
@@ -474,7 +475,7 @@ public class GameManager : MonoBehaviour
         saveEngine saveEngine = new saveEngine();
         saveTank saveTank = new saveTank();
 
-        if (fileTypePath == "/rockets/")
+        if (fileTypePath == savePath.rocketFolder)
         {
             var jsonString = JsonConvert.SerializeObject(saveObject);
             jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
@@ -631,7 +632,7 @@ public class GameManager : MonoBehaviour
 
         }
 
-        if(fileTypePath == "/engines/")
+        if(fileTypePath == savePath.engineFolder)
         {
             var jsonString = JsonConvert.SerializeObject(saveEngine);
             jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
@@ -648,7 +649,7 @@ public class GameManager : MonoBehaviour
             enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.transform.localScale.y);
         }
 
-        if (fileTypePath == "/tanks/")
+        if (fileTypePath == savePath.engineFolder)
         {
             var jsonString = JsonConvert.SerializeObject(saveTank);
             jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
