@@ -81,7 +81,7 @@ public class PlanetGravity : MonoBehaviour
             Vector3 Thrust = transform.up * thrust;
             if (Dist < atmoAlt)
             {
-                AeroForces = rb.velocity.normalized * rb.velocity.magnitude * -aeroCoefficient;
+                AeroForces = rb.velocity.normalized * rb.velocity.magnitude * aeroCoefficient * -1;
             }
             else
             {

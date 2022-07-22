@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject engineManager;
 
     private GameObject partToConstruct;
     private GameObject capsule;
@@ -27,8 +26,7 @@ public class GameManager : MonoBehaviour
     public bool capsuleBuilt = false;
     public bool tankBuilt = false;
     public bool engineBuilt = false;
-    public InputField mainInputField;
-    public InputField saveName;
+    public TMP_InputField saveName;
     public Button CapsuleButton;
     public Button TankButton;
     public Button EngineButton;

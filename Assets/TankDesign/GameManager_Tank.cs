@@ -14,10 +14,10 @@ using Newtonsoft.Json;
 
 public class GameManager_Tank : MonoBehaviour
 {
-    public InputField tankHeight;
-    public InputField tankDiameter;
+    public TMP_InputField tankHeight;
+    public TMP_InputField tankDiameter;
 
-    public InputField savePath;
+    public TMP_InputField savePath;
     public string saveName;
 
     public GameObject Tank;

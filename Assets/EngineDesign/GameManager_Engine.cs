@@ -14,13 +14,13 @@ using Newtonsoft.Json;
 
 public class GameManager_Engine : MonoBehaviour
 {
-    public InputField nozzleExitSize;
-    public InputField nozzleEndSize;
-    public InputField turbopumpSize;
-    public InputField nozzleLenght;
-    public InputField turbopumpRate;
+    public TMP_InputField nozzleExitSize;
+    public TMP_InputField nozzleEndSize;
+    public TMP_InputField turbopumpSize;
+    public TMP_InputField nozzleLenght;
+    public TMP_InputField turbopumpRate;
 
-    public InputField savePath;
+    public TMP_InputField savePath;
     public string saveName;
 
     public GameObject Engine;
