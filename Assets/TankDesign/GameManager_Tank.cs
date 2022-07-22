@@ -49,6 +49,9 @@ public class GameManager_Tank : MonoBehaviour
 
             attachTopRef = Tank.GetComponent<Part>().attachTop;
             attachTopObj = GameObject.Find(attachTopRef.name);
+
+            attachBottomRef = Tank.GetComponent<Part>().attachBottom;
+            attachBottomObj = GameObject.Find(attachBottomRef.name);
         }
         
     }
@@ -77,6 +80,7 @@ public class GameManager_Tank : MonoBehaviour
 
         if (float.TryParse(tankHeight.text, out number))
         {
+            Debug.Log(tankSP.bounds.max);
             tankSP.transform.localScale = new Vector3 (tankSP.transform.localScale.x, float.Parse(tankHeight.text), tankSP.transform.localScale.z);
             tankHeightFloat = float.Parse(tankHeight.text);
         }
@@ -100,7 +104,7 @@ public class GameManager_Tank : MonoBehaviour
         saveObject.path = savePathRef.tankFolder;
         saveObject.name = saveName;
         saveObject.tankSizeX = tankSP.transform.localScale.x;
-        saveObject.tankSizeX = tankSP.transform.localScale.y;
+        saveObject.tankSizeY = tankSP.transform.localScale.y;
 
         saveObject.fuel = fuel;
         saveObject.mass = mass;
@@ -115,8 +119,8 @@ public class GameManager_Tank : MonoBehaviour
 
     public void updateAttachPosition()
     {
-        attachBottomRef = Tank.GetComponent<Part>().attachBottom;
-        attachBottomObj = GameObject.Find(attachBottomRef.name);
+        attachTopObj.transform.position = (new Vector2(attachTopObj.transform.position.x, tankSP.bounds.max.y));
+        attachBottomObj.transform.position = (new Vector2(attachBottomObj.transform.position.x, tankSP.bounds.min.y));
     }
 
     public void backToBuild()

@@ -173,6 +173,11 @@ MonoBehaviour:
   saveName: 
   Tank: {fileID: 2035272971}
   tankRef: {fileID: 0}
+  tankSP: {fileID: 0}
+  attachTopRef: {fileID: 0}
+  attachTopObj: {fileID: 0}
+  attachBottomRef: {fileID: 0}
+  attachBottomObj: {fileID: 0}
   tankHeightFloat: 0
   tankDiameterFloat: 0
   fuel: 0
@@ -3062,6 +3067,10 @@ PrefabInstance:
     - target: {fileID: 1188122065306665740, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5966862072597642467, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9057782884087415771, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
       propertyPath: m_Name
