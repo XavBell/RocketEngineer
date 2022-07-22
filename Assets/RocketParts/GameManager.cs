@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
             }
 
 
-            if (partToConstruct.GetComponent<Part>().type.ToString() == "decoupler" && tankBuilt == true && engineBuilt == true && Cursor.visible == false)
+            if (partToConstruct.GetComponent<Part>().type.ToString() == "decoupler" && tankBuilt == true && Cursor.visible == false)
             {
                 parts = GameObject.FindObjectsOfType<Part>();
                 attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
@@ -277,6 +277,11 @@ public class GameManager : MonoBehaviour
                 TankButton.interactable = true;
                 EngineButton.interactable = true;
                 DecouplerButton.interactable = false;
+            }
+
+            if (tankBuilt == true)
+            {
+                DecouplerButton.interactable = true;
             }
 
             if (engineBuilt == true)
