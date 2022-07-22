@@ -103,14 +103,4 @@ public class GameManager_Tank : MonoBehaviour
         SceneManager.LoadScene("Building");
     }
 
-    public class saveTank
-    {
-        public string path;
-        public string name;
-        public float tankSize_s;
-
-        public float fuel;
-        public float mass;
-
-    }
 }
