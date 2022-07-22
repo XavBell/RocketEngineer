@@ -132,7 +132,7 @@ public class GameManager_Engine : MonoBehaviour
         saveEngine saveObject = new saveEngine();
         saveName = savePath.text;
         saveObject.path = "/engines/";
-        saveObject.name = saveName;
+        saveObject.name = "/" + saveName;
         saveObject.nozzleExitSize_s = nozzleExitRef.transform.localScale.x;
         saveObject.nozzleEndSize_s = nozzleEndRef.transform.localScale.x;
         saveObject.turbopumpSize_s = turbopumpRef.transform.localScale.x;

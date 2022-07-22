@@ -84,7 +84,7 @@ public class GameManager_Tank : MonoBehaviour
         saveTank saveObject = new saveTank();
         saveName = savePath.text;
         saveObject.path = "/tanks/";
-        saveObject.name = saveName;
+        saveObject.name = "/" + saveName;
         saveObject.tankSize_s = tankRef.transform.localScale.x;
 
         saveObject.fuel = fuel;
