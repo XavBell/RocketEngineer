@@ -96,9 +96,6 @@ public class GameManager : MonoBehaviour
             }
 
 
-
-
-
             if (partToConstruct.GetComponent<Part>().type.ToString() == "tank" && capsuleBuilt == true && Cursor.visible == false)
             {
                 parts = GameObject.FindObjectsOfType<Part>();
