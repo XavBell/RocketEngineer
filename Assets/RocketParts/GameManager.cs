@@ -527,6 +527,9 @@ public class GameManager : MonoBehaviour
             tankPrefab.GetComponent<Part>().tank.transform.localScale = new Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
             tankPrefab.GetComponent<Part>().attachTop.transform.localPosition = (new Vector3(0, loadedTank.attachTopPos, 0));
             tankPrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new Vector3(0, loadedTank.attachBottomPos, 0));
+
+            tankBox = new Vector2(loadedTank.tankSizeX/2, loadedTank.tankSizeY);
+            tankOffset = new Vector2(0, (-1 * loadedTank.tankSizeY)/2);
         }
 
         filePath = null;
