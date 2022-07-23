@@ -620,10 +620,17 @@ public class GameManager : MonoBehaviour
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
         {
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
+            scrollBox.SetActive(false);
+            return;
         }
 
         var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.rocketFolder);
         var fileInfo = info.GetFiles();
+        if(fileInfo.Length == 0)
+        {
+            scrollBox.SetActive(false);
+            return;
+        }
         foreach (var file in fileInfo)
         {
             GameObject rocket = Instantiate(buttonPrefab) as GameObject;
