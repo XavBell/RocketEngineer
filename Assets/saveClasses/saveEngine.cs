@@ -12,6 +12,8 @@ public class saveEngine
     public float turbopumpSize_s;
     public float horizontalBestSize_s;
     public float verticalSize_s;
+    public float attachBottomPos;
+    public float verticalPos;
 
     public float mass_s;
     public float thrust_s;
