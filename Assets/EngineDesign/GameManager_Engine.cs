@@ -150,6 +150,12 @@ public class GameManager_Engine : MonoBehaviour
         float turboRate_turboSizeRatio = turbopumpRateFloat / turbopumpRef.transform.localScale.x;
 
         //Debug.Log(turboRate_turboSizeRatio);
+        if(nozzleEndSizeFloat == 0 || nozzleExitSizeFloat == 0 || turbopumpSizeFloat == 0 || nozzleLenghtFloat == 0 || turbopumpRateFloat == 0)
+        {
+            thrust = 0;
+            rate = 0;
+            return;
+        }
 
         if(nozzleExit_nozzleEndRatio < 1)
         {
@@ -182,14 +188,29 @@ public class GameManager_Engine : MonoBehaviour
     public void save()
     {
         saveEngine saveObject = new saveEngine();
+        List<float> sizes = new List<float>();
         saveName = "/"+ savePath.text;
 
         saveObject.path = savePathRef.engineFolder;
         saveObject.name = saveName;
-        saveObject.nozzleExitSize_s = nozzleExitRef.transform.localScale.x;
-        saveObject.nozzleEndSize_s = nozzleEndRef.transform.localScale.x;
-        saveObject.turbopumpSize_s = turbopumpRef.transform.localScale.x;
+        saveObject.nozzleExitSize_s = nozzleExitRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+        sizes.Add(saveObject.nozzleExitSize_s);
+        saveObject.nozzleEndSize_s = nozzleEndRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+        sizes.Add(saveObject.nozzleEndSize_s);
+        saveObject.turbopumpSize_s = turbopumpRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+        sizes.Add(saveObject.turbopumpSize_s);
 
+        float bestSize = 0;
+        foreach(float size in sizes)
+        {
+            if(size > bestSize)
+            {
+                bestSize = size;
+            }
+        }
+
+        saveObject.verticalSize_s = Engine.GetComponent<SpriteRenderer>().transform.localScale.y;
+        saveObject.horizontalBestSize_s = bestSize;
         saveObject.thrust_s = mass;
         saveObject.thrust_s = thrust;
         saveObject.rate_s = rate;

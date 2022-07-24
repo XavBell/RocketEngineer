@@ -10,6 +10,8 @@ public class saveEngine
     public float nozzleExitSize_s;
     public float nozzleEndSize_s;
     public float turbopumpSize_s;
+    public float horizontalBestSize_s;
+    public float verticalSize_s;
 
     public float mass_s;
     public float thrust_s;

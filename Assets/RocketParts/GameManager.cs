@@ -53,11 +53,11 @@ public class GameManager : MonoBehaviour
     public GameObject tankButtonPrefab;
 
 
-    public Vector2 engineBox = new Vector2(0, 0.5f);
-    public Vector2 tankBox = new Vector2(0, 1f);
-    public Vector2 engineOffset = new Vector2(0, -0.3f);
-    public Vector2 tankOffset = new Vector2(0, -0.5f);
-
+    public Vector2 engineBox = new Vector2(0, 0);
+    public Vector2 tankBox = new Vector2(0, 0);
+    public Vector2 engineOffset = new Vector2(0, 0);
+    public Vector2 tankOffset = new Vector2(0, 0);
+    public float capsuleInitialSizeX;
     public savePath savePathRef = new savePath();
 
     // Start is called before the first frame update
@@ -91,6 +91,7 @@ public class GameManager : MonoBehaviour
                 Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 capsule = Instantiate(partToConstruct, position, Quaternion.identity);
                 capsule.GetComponent<PlanetGravity>().capsule = capsule;
+                capsuleInitialSizeX = capsule.GetComponent<BoxCollider2D>().size.x;
                 capsuleBuilt = true;
                 Debug.Log(capsuleBuilt);
             }
@@ -508,9 +509,12 @@ public class GameManager : MonoBehaviour
             enginePrefab.GetComponent<Part>().rate = loadedEngine.rate_s;
             enginePrefab.GetComponent<Part>().mass = loadedEngine.mass_s;
 
-            enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale = new Vector2(loadedEngine.nozzleExitSize_s, enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale.y);
-            enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale = new Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale.y);
-            enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.transform.localScale.y);
+            enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale = new Vector2(loadedEngine.nozzleExitSize_s, enginePrefab.GetComponent<Part>().nozzleExit.GetComponent<SpriteRenderer>().transform.localScale.y);
+            enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale = new Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Part>().nozzleEnd.GetComponent<SpriteRenderer>().transform.localScale.y);
+            enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
+
+            engineBox = new Vector2(loadedEngine.horizontalBestSize_s/2, loadedEngine.verticalSize_s/2);
+            engineOffset = new Vector2(0, (-1 * loadedEngine.verticalSize_s)/4);
         }
 
         if (fileTypePath == savePathRef.tankFolder)
@@ -528,7 +532,7 @@ public class GameManager : MonoBehaviour
             tankPrefab.GetComponent<Part>().attachTop.transform.localPosition = (new Vector3(0, loadedTank.attachTopPos, 0));
             tankPrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new Vector3(0, loadedTank.attachBottomPos, 0));
 
-            tankBox = new Vector2(loadedTank.tankSizeX/2, loadedTank.tankSizeY);
+            tankBox = new Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
             tankOffset = new Vector2(0, (-1 * loadedTank.tankSizeY)/2);
         }
 
@@ -732,7 +736,8 @@ public class GameManager : MonoBehaviour
         {
             capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
         }
-        capsule.GetComponent<BoxCollider2D>().size += boxScale;
+        capsule.GetComponent<BoxCollider2D>().size += new Vector2(boxScale.x - capsuleInitialSizeX, boxScale.y );
+
         capsule.GetComponent<BoxCollider2D>().offset += offsets;
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
     }
