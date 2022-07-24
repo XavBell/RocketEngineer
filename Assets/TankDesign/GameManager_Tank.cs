@@ -22,6 +22,13 @@ public class GameManager_Tank : MonoBehaviour
 
     public GameObject Tank;
     public GameObject tankRef;
+    public SpriteRenderer tankSP;
+
+    public AttachPointScript attachTopRef;
+    public GameObject attachTopObj;
+
+    public AttachPointScript attachBottomRef;
+    public GameObject attachBottomObj;
 
     public float tankHeightFloat;
     public float tankDiameterFloat;
@@ -30,14 +37,30 @@ public class GameManager_Tank : MonoBehaviour
     public float mass;
 
     public savePath savePathRef = new savePath();
+    public float currentD;
+    public float currentH;
+
+    public float elapsedFrames = 0;
 
 
+    public Vector3 startingScaleD;
+    public Vector3 startingScaleH;
     // Start is called before the first frame update
     void Start()
     {
         if (SceneManager.GetActiveScene().name.ToString() == "TankDesign")
         {
             tankRef = Tank.GetComponent<Part>().tank;
+            tankSP = tankRef.GetComponent<SpriteRenderer>();
+
+            attachTopRef = Tank.GetComponent<Part>().attachTop;
+            attachTopObj = GameObject.Find(attachTopRef.name);
+
+            attachBottomRef = Tank.GetComponent<Part>().attachBottom;
+            attachBottomObj = GameObject.Find(attachBottomRef.name);
+
+            startingScaleD = tankSP.transform.localScale;
+            startingScaleH = tankSP.transform.localScale;
         }
         
     }
@@ -49,6 +72,7 @@ public class GameManager_Tank : MonoBehaviour
         if (SceneManager.GetActiveScene().name.ToString() == "TankDesign")
         {
             updateSize();
+            updateAttachPosition();
             calculate();
         }
 
@@ -59,13 +83,37 @@ public class GameManager_Tank : MonoBehaviour
         float number;
         if(float.TryParse(tankDiameter.text, out number))
         {
-            tankRef.transform.localScale = new Vector3 (float.Parse(tankDiameter.text), tankRef.transform.localScale.y, tankRef.transform.localScale.z);
-            tankDiameterFloat = tankRef.transform.localScale.x;
+            tankDiameterFloat = float.Parse(tankDiameter.text);
+
+            if(tankDiameterFloat == tankSP.transform.localScale.x)
+            {
+                startingScaleD = tankSP.transform.localScale;
+                currentD = 0;
+            }
+
+            if(tankSP.transform.localScale.x != tankDiameterFloat)
+            {
+                tankSP.transform.localScale = Vector3.Lerp(startingScaleD, new Vector3(tankDiameterFloat, tankSP.transform.localScale.y, 0), currentD * 5);
+                currentD += Time.deltaTime;
+            }
+            
         }
 
         if (float.TryParse(tankHeight.text, out number))
         {
             tankHeightFloat = float.Parse(tankHeight.text);
+            if(tankSP.transform.localScale.y == tankHeightFloat)
+            {
+                startingScaleH = tankSP.transform.localScale;
+                currentH = 0;
+            }
+
+            if(tankSP.transform.localScale.y != tankHeightFloat)
+            {
+                tankSP.transform.localScale = Vector3.Lerp(startingScaleH, new Vector3(tankSP.transform.localScale.x, tankHeightFloat, 0), currentH*5);
+                currentH += Time.deltaTime;
+            }
+            
         }
 
     }
@@ -86,8 +134,11 @@ public class GameManager_Tank : MonoBehaviour
         
         saveObject.path = savePathRef.tankFolder;
         saveObject.name = saveName;
-        saveObject.tankSize_s = tankRef.transform.localScale.x;
-
+        saveObject.tankSizeX = tankSP.transform.localScale.x;
+        saveObject.tankSizeY = tankSP.transform.localScale.y;
+        saveObject.attachTopPos = attachTopObj.transform.position.y - tankSP.bounds.center.y;
+        saveObject.attachBottomPos = tankSP.bounds.center.y - attachTopObj.transform.position.y;
+        Debug.Log(saveObject.attachTopPos);
         saveObject.fuel = fuel;
         saveObject.mass = mass;
 
@@ -97,6 +148,12 @@ public class GameManager_Tank : MonoBehaviour
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.tankFolder);
         }
         System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json", jsonString);
+    }
+
+    public void updateAttachPosition()
+    {
+        attachTopObj.transform.position = (new Vector2(attachTopObj.transform.position.x, tankSP.bounds.max.y));
+        attachBottomObj.transform.position = (new Vector2(attachBottomObj.transform.position.x, tankSP.bounds.min.y));
     }
 
     public void backToBuild()

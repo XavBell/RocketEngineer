@@ -53,11 +53,14 @@ public class GameManager : MonoBehaviour
     public GameObject tankButtonPrefab;
 
 
-    public Vector2 engineBox = new Vector2(0, 0.5f);
-    public Vector2 tankBox = new Vector2(0, 1f);
-    public Vector2 engineOffset = new Vector2(0, -0.3f);
-    public Vector2 tankOffset = new Vector2(0, -0.5f);
+    public Vector2 engineBox = new Vector2(0, 0);
+    public Vector2 tankBox = new Vector2(0, 0);
+    public Vector2 engineOffset = new Vector2(0, 0);
+    public Vector2 tankOffset = new Vector2(0, 0);
+    public Vector2 decouplerBox = new Vector2(0, 0);
+    public Vector2 decouplerOffset = new Vector2(0, 0);
 
+    public float capsuleInitialSizeX;
     public savePath savePathRef = new savePath();
 
     // Start is called before the first frame update
@@ -91,6 +94,8 @@ public class GameManager : MonoBehaviour
                 Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 capsule = Instantiate(partToConstruct, position, Quaternion.identity);
                 capsule.GetComponent<PlanetGravity>().capsule = capsule;
+                capsuleInitialSizeX = capsule.GetComponent<BoxCollider2D>().size.x;
+                capsule.GetComponent<PlanetGravity>().capsuleInitialSizeX = capsuleInitialSizeX;
                 capsuleBuilt = true;
                 Debug.Log(capsuleBuilt);
             }
@@ -156,7 +161,7 @@ public class GameManager : MonoBehaviour
             }
 
 
-            if (partToConstruct.GetComponent<Part>().type.ToString() == "decoupler" && tankBuilt == true && engineBuilt == true && Cursor.visible == false)
+            if (partToConstruct.GetComponent<Part>().type.ToString() == "decoupler" && tankBuilt == true && Cursor.visible == false)
             {
                 parts = GameObject.FindObjectsOfType<Part>();
                 attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
@@ -177,7 +182,7 @@ public class GameManager : MonoBehaviour
 
                 if (bestAttachPoint != null)
                 {
-                    setRocketValues(bestAttachPoint, currentPrefab, new Vector2(0,0), new Vector2(0,0));
+                    setRocketValues(bestAttachPoint, currentPrefab, decouplerBox, decouplerOffset);
                     decouplerPresent = true;
                 }
 
@@ -277,6 +282,11 @@ public class GameManager : MonoBehaviour
                 TankButton.interactable = true;
                 EngineButton.interactable = true;
                 DecouplerButton.interactable = false;
+            }
+
+            if (tankBuilt == true)
+            {
+                DecouplerButton.interactable = true;
             }
 
             if (engineBuilt == true)
@@ -458,10 +468,9 @@ public class GameManager : MonoBehaviour
 
                 if (type == "decoupler")
                 {
-                    setRocketValues(attachPoint, currentPrefab, new Vector2(0, 0), new Vector2(0, 0));
+                    setRocketValues(attachPoint, currentPrefab, decouplerBox, decouplerOffset);
                     decouplerPresent = true;
                     lastPrefab = currentPrefab;
-                
                 }
 
                 attachPoint = lastPrefab.GetComponent<Part>().attachBottom;
@@ -503,9 +512,11 @@ public class GameManager : MonoBehaviour
             enginePrefab.GetComponent<Part>().rate = loadedEngine.rate_s;
             enginePrefab.GetComponent<Part>().mass = loadedEngine.mass_s;
 
-            enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale = new Vector2(loadedEngine.nozzleExitSize_s, enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale.y);
-            enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale = new Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale.y);
-            enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.transform.localScale.y);
+            enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale = new Vector2(loadedEngine.nozzleExitSize_s, loadedEngine.verticalSize_s);
+            enginePrefab.GetComponent<Part>().nozzleExit.transform.localPosition = new Vector2(enginePrefab.GetComponent<Part>().nozzleExit.transform.localPosition.x, loadedEngine.verticalPos);
+            enginePrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new Vector3(0, loadedEngine.attachBottomPos, 0));
+            enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale = new Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Part>().nozzleEnd.GetComponent<SpriteRenderer>().transform.localScale.y);
+            enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
         }
 
         if (fileTypePath == savePathRef.tankFolder)
@@ -519,8 +530,9 @@ public class GameManager : MonoBehaviour
 
             tankPrefab.GetComponent<Part>().fuel = loadedTank.fuel;
             tankPrefab.GetComponent<Part>().mass = loadedTank.mass;
-            tankPrefab.GetComponent<Part>().tank.transform.localScale = new Vector2(loadedTank.tankSize_s, tankPrefab.GetComponent<Part>().tank.transform.localScale.y);
-
+            tankPrefab.GetComponent<Part>().tank.transform.localScale = new Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
+            tankPrefab.GetComponent<Part>().attachTop.transform.localPosition = (new Vector3(0, loadedTank.attachTopPos, 0));
+            tankPrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new Vector3(0, loadedTank.attachBottomPos, 0));
         }
 
         filePath = null;
@@ -611,10 +623,17 @@ public class GameManager : MonoBehaviour
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
         {
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
+            scrollBox.SetActive(false);
+            return;
         }
 
         var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.rocketFolder);
         var fileInfo = info.GetFiles();
+        if(fileInfo.Length == 0)
+        {
+            scrollBox.SetActive(false);
+            return;
+        }
         foreach (var file in fileInfo)
         {
             GameObject rocket = Instantiate(buttonPrefab) as GameObject;
@@ -711,12 +730,14 @@ public class GameManager : MonoBehaviour
         Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
         currentPrefab.transform.position = attachPoint.transform.position + difference;
         currentPrefab.transform.SetParent(capsule.transform);
-        currentPrefab.GetComponent<RelativeJoint2D>().connectedBody = capsule.GetComponent<Rigidbody2D>();
         if(currentPrefab.GetComponent<Part>().type == "engine")
         {
             capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
         }
-        capsule.GetComponent<BoxCollider2D>().size += boxScale;
+
+
+
+        capsule.GetComponent<BoxCollider2D>().size += new Vector2(boxScale.x - capsuleInitialSizeX, boxScale.y );
         capsule.GetComponent<BoxCollider2D>().offset += offsets;
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
     }

@@ -23,6 +23,9 @@ public class Part : MonoBehaviour
     public string path;
     public string name;
 
+    public Vector2 boxSize;
+    public Vector2 offsets;
+
 
 
     // Start is called before the first frame update

@@ -40,7 +40,7 @@ public class PlanetGravity : MonoBehaviour
     public GameObject[] engines;
 
     bool stageUpdated = false;
-
+    public float capsuleInitialSizeX;
 
     public GameObject sun;
 
@@ -279,16 +279,16 @@ public class PlanetGravity : MonoBehaviour
                         if(referenceGo.GetComponent<Part>().type.ToString() == "tank")
                         {
                             rocketMass -= (referenceGo.GetComponent<Part>().mass - maxFuel);
-                            capsule.GetComponent<BoxCollider2D>().size += new Vector2(0, -1f);
-                            capsule.GetComponent<BoxCollider2D>().offset += new Vector2(0, 0.5f);
+                            capsule.GetComponent<BoxCollider2D>().size += new Vector2(capsuleInitialSizeX - referenceGo.GetComponent<Part>().boxSize.x, referenceGo.GetComponent<Part>().boxSize.y) * -1;
+                            capsule.GetComponent<BoxCollider2D>().offset += new Vector2(0, (referenceGo.GetComponent<Part>().offsets.y));
 
                         }
 
                         if (referenceGo.GetComponent<Part>().type.ToString() == "engine")
                         {
                             rocketMass -= referenceGo.GetComponent<Part>().mass;
-                            capsule.GetComponent<BoxCollider2D>().size += new Vector2(0, -0.5f);
-                            capsule.GetComponent<BoxCollider2D>().offset += new Vector2(0, 0.3f);
+                            capsule.GetComponent<BoxCollider2D>().size -= new Vector2(capsuleInitialSizeX - referenceGo.GetComponent<Part>().boxSize.x, referenceGo.GetComponent<Part>().boxSize.y);
+                            capsule.GetComponent<BoxCollider2D>().offset -= new Vector2(0, (referenceGo.GetComponent<Part>().offsets.y));
 
                         }
                         UnityEngine.Object.Destroy(referenceGo);

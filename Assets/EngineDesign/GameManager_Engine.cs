@@ -28,12 +28,30 @@ public class GameManager_Engine : MonoBehaviour
     public GameObject nozzleEndRef;
     public GameObject turbopumpRef;
 
+    public AttachPointScript attachBottomRef;
+    public GameObject attachBottomObj;
+
+    public float nozzleExitSizeFloat;
+    public float nozzleEndSizeFloat;
+    public float turbopumpSizeFloat;
     public float nozzleLenghtFloat;
     public float turbopumpRateFloat;
 
     public float mass;
     public float thrust;
     public float rate;
+
+    public float currentE = 0;
+    public float currentEn = 0;
+    public float currentT = 0;
+    public float currentEy = 0;
+
+    public Vector3 startingScaleE;
+    public Vector3 startingScaleEn;
+    public Vector3 startingScaleT;
+    public Vector3 startingScaleEy;
+
+    public float initialScaleY;
 
     public savePath savePathRef = new savePath();
 
@@ -46,6 +64,15 @@ public class GameManager_Engine : MonoBehaviour
             nozzleExitRef = Engine.GetComponent<Part>().nozzleExit;
             nozzleEndRef = Engine.GetComponent<Part>().nozzleEnd;
             turbopumpRef = Engine.GetComponent<Part>().turbopump;
+
+            startingScaleE = nozzleExitRef.transform.localScale;
+            startingScaleEy = nozzleExitRef.transform.localScale;
+            initialScaleY = nozzleExitRef.transform.localScale.y;
+            startingScaleEn = nozzleEndRef.transform.localScale;
+            startingScaleT = turbopumpRef.transform.localScale;
+
+            attachBottomRef = Engine.GetComponent<Part>().attachBottom;
+            attachBottomObj = GameObject.Find(attachBottomRef.name);
         }
         
     }
@@ -58,6 +85,7 @@ public class GameManager_Engine : MonoBehaviour
         {
             updateSize();
             calculate();
+            updateAttachPosition();
         }
 
     }
@@ -67,23 +95,80 @@ public class GameManager_Engine : MonoBehaviour
         float number;
         if(float.TryParse(nozzleExitSize.text, out number))
         {
-            nozzleExitRef.transform.localScale = new Vector3 (float.Parse(nozzleExitSize.text), nozzleExitRef.transform.localScale.y, nozzleExitRef.transform.localScale.z);
+            nozzleExitSizeFloat = float.Parse(nozzleExitSize.text);
+
+            if(nozzleExitRef.transform.localScale.x == nozzleExitSizeFloat)
+            {
+                startingScaleE = nozzleExitRef.transform.localScale;
+                currentE = 0;
+            }
+
+            if(nozzleExitRef.transform.localScale.x != nozzleExitSizeFloat)
+            { 
+                nozzleExitRef.transform.localScale = Vector3.Lerp(startingScaleE, new Vector3(nozzleExitSizeFloat, nozzleExitRef.transform.localScale.y, 0), currentE*5);
+                currentE += Time.deltaTime;
+            }
         }
 
         if (float.TryParse(nozzleEndSize.text, out number))
         {
-            nozzleEndRef.transform.localScale = new Vector3(float.Parse(nozzleEndSize.text), nozzleEndRef.transform.localScale.y, nozzleEndRef.transform.localScale.z);
+            nozzleEndSizeFloat = float.Parse(nozzleEndSize.text);
+
+            if(nozzleEndRef.transform.localScale.x == nozzleEndSizeFloat)
+            {
+                startingScaleEn = nozzleEndRef.transform.localScale;
+                currentEn = 0;
+            }
+
+            if(nozzleEndRef.transform.localScale.x != nozzleEndSizeFloat)
+            {
+                nozzleEndRef.transform.localScale = Vector3.Lerp(startingScaleEn, new Vector3(nozzleEndSizeFloat, nozzleEndRef.transform.localScale.y, 0), currentEn*5);
+                currentEn += Time.deltaTime;
+            }
         }
 
         if (float.TryParse(turbopumpSize.text, out number))
         {
-            turbopumpRef.transform.localScale = new Vector3(float.Parse(turbopumpSize.text), turbopumpRef.transform.localScale.y, turbopumpRef.transform.localScale.z);
+            turbopumpSizeFloat = float.Parse(turbopumpSize.text);
+
+            if(turbopumpRef.transform.localScale.x == turbopumpSizeFloat)
+            {
+                startingScaleT = turbopumpRef.transform.localScale;
+                currentT = 0;
+            }
+
+            if(turbopumpRef.transform.localScale.x != turbopumpSizeFloat)
+            {
+                turbopumpRef.transform.localScale = Vector3.Lerp(startingScaleT, new Vector3(turbopumpSizeFloat, turbopumpRef.transform.localScale.y, 0), currentT*5);
+                currentT += Time.deltaTime;
+            }
         }
 
 
         if (float.TryParse(nozzleLenght.text, out number))
         {
             nozzleLenghtFloat = float.Parse(nozzleLenght.text);
+
+            if(nozzleExitRef.transform.localScale.y == nozzleLenghtFloat)
+            {
+                startingScaleEy = nozzleExitRef.transform.localScale;
+                currentEy = 0;
+            }
+
+            if(nozzleExitRef.transform.localScale.y != nozzleLenghtFloat)
+            { 
+                nozzleExitRef.transform.localScale = Vector3.Lerp(startingScaleEy, new Vector3(nozzleExitRef.transform.localScale.x, nozzleLenghtFloat, 0), currentEy*5);
+                currentEy += Time.deltaTime;
+                float changeY = initialScaleY - nozzleExitRef.transform.localScale.y;
+
+                    nozzleExitRef.transform.position += new Vector3(0, changeY/2, 0);
+
+                    initialScaleY = nozzleExitRef.transform.localScale.y;
+                    Debug.Log(changeY);
+                
+            }
+
+
         }
 
         if (float.TryParse(turbopumpRate.text, out number))
@@ -99,6 +184,12 @@ public class GameManager_Engine : MonoBehaviour
         float turboRate_turboSizeRatio = turbopumpRateFloat / turbopumpRef.transform.localScale.x;
 
         //Debug.Log(turboRate_turboSizeRatio);
+        if(nozzleEndSizeFloat == 0 || nozzleExitSizeFloat == 0 || turbopumpSizeFloat == 0 || nozzleLenghtFloat == 0 || turbopumpRateFloat == 0)
+        {
+            thrust = 0;
+            rate = 0;
+            return;
+        }
 
         if(nozzleExit_nozzleEndRatio < 1)
         {
@@ -127,18 +218,40 @@ public class GameManager_Engine : MonoBehaviour
 
     }
 
+    public void updateAttachPosition()
+    {
+        attachBottomObj.transform.position = (new Vector2(attachBottomObj.transform.position.x, nozzleExitRef.GetComponent<BoxCollider2D>().bounds.min.y));
+    }
+
 
     public void save()
     {
         saveEngine saveObject = new saveEngine();
+        List<float> sizes = new List<float>();
         saveName = "/"+ savePath.text;
 
         saveObject.path = savePathRef.engineFolder;
         saveObject.name = saveName;
-        saveObject.nozzleExitSize_s = nozzleExitRef.transform.localScale.x;
-        saveObject.nozzleEndSize_s = nozzleEndRef.transform.localScale.x;
-        saveObject.turbopumpSize_s = turbopumpRef.transform.localScale.x;
+        saveObject.nozzleExitSize_s = nozzleExitRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+        sizes.Add(saveObject.nozzleExitSize_s);
+        saveObject.nozzleEndSize_s = nozzleEndRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+        sizes.Add(saveObject.nozzleEndSize_s);
+        saveObject.turbopumpSize_s = turbopumpRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+        sizes.Add(saveObject.turbopumpSize_s);
 
+        float bestSize = 0;
+        foreach(float size in sizes)
+        {
+            if(size > bestSize)
+            {
+                bestSize = size;
+            }
+        }
+
+        saveObject.verticalSize_s = nozzleExitRef.GetComponent<BoxCollider2D>().transform.localScale.y;
+        saveObject.attachBottomPos = attachBottomObj.transform.localPosition.y;
+        saveObject.verticalPos = nozzleExitRef.transform.localPosition.y;
+        saveObject.horizontalBestSize_s = bestSize;
         saveObject.thrust_s = mass;
         saveObject.thrust_s = thrust;
         saveObject.rate_s = rate;
