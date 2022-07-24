@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4791410897933186200}
   - component: {fileID: -5736303044276829605}
-  - component: {fileID: 7681351930382624898}
-  - component: {fileID: 8194634549313352543}
   - component: {fileID: 1887408964009291834}
   - component: {fileID: 8535435301318258072}
   m_Layer: 0
@@ -67,46 +65,6 @@ MonoBehaviour:
   name: 
   boxSize: {x: 0, y: 0}
   offsets: {x: 0, y: 0}
---- !u!50 &7681351930382624898
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1120019584567089529}
-  m_BodyType: 2
-  m_Simulated: 0
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
---- !u!254 &8194634549313352543
-RelativeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1120019584567089529}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_MaxForce: 10000
-  m_MaxTorque: 10000
-  m_CorrectionScale: 0.3
-  m_AutoConfigureOffset: 1
-  m_LinearOffset: {x: 0, y: 0}
-  m_AngularOffset: 0
 --- !u!212 &1887408964009291834
 SpriteRenderer:
   m_ObjectHideFlags: 0
