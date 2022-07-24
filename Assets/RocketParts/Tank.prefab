@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5966862072597642467}
   - component: {fileID: 33025095750340081}
+  - component: {fileID: 510672250042032141}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
@@ -84,6 +85,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &510672250042032141
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2846947961852703489}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!1 &9057782884087415771
 GameObject:
   m_ObjectHideFlags: 0
@@ -95,8 +122,6 @@ GameObject:
   - component: {fileID: 1188122065306665740}
   - component: {fileID: 7072131924378807790}
   - component: {fileID: 1365187040092943644}
-  - component: {fileID: -6278666099516503590}
-  - component: {fileID: -7894379894463759947}
   m_Layer: 0
   m_Name: Tank
   m_TagString: Untagged
@@ -201,46 +226,8 @@ MonoBehaviour:
   tank: {fileID: 2846947961852703489}
   path: 
   name: 
---- !u!50 &-6278666099516503590
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9057782884087415771}
-  m_BodyType: 0
-  m_Simulated: 0
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0
-  m_GravityScale: 0
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 1
-  m_Constraints: 0
---- !u!254 &-7894379894463759947
-RelativeJoint2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9057782884087415771}
-  m_Enabled: 1
-  serializedVersion: 4
-  m_EnableCollision: 0
-  m_ConnectedRigidBody: {fileID: 0}
-  m_BreakForce: Infinity
-  m_BreakTorque: Infinity
-  m_MaxForce: 10000
-  m_MaxTorque: 10000
-  m_CorrectionScale: 0.3
-  m_AutoConfigureOffset: 1
-  m_LinearOffset: {x: -450, y: -401.94116}
-  m_AngularOffset: 0
+  boxSize: {x: 0, y: 0}
+  offsets: {x: 0, y: 0}
 --- !u!1001 &3205861159745704494
 PrefabInstance:
   m_ObjectHideFlags: 0
