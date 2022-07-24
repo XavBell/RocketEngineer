@@ -28,12 +28,23 @@ public class GameManager_Engine : MonoBehaviour
     public GameObject nozzleEndRef;
     public GameObject turbopumpRef;
 
+    public float nozzleExitSizeFloat;
+    public float nozzleEndSizeFloat;
+    public float turbopumpSizeFloat;
     public float nozzleLenghtFloat;
     public float turbopumpRateFloat;
 
     public float mass;
     public float thrust;
     public float rate;
+
+    public float currentE = 0;
+    public float currentEn = 0;
+    public float currentT = 0;
+
+    public Vector3 startingScaleE;
+    public Vector3 startingScaleEn;
+    public Vector3 startingScaleT;
 
     public savePath savePathRef = new savePath();
 
@@ -46,6 +57,10 @@ public class GameManager_Engine : MonoBehaviour
             nozzleExitRef = Engine.GetComponent<Part>().nozzleExit;
             nozzleEndRef = Engine.GetComponent<Part>().nozzleEnd;
             turbopumpRef = Engine.GetComponent<Part>().turbopump;
+
+            startingScaleE = nozzleExitRef.transform.localScale;
+            startingScaleEn = nozzleEndRef.transform.localScale;
+            startingScaleT = turbopumpRef.transform.localScale;
         }
         
     }
@@ -67,17 +82,53 @@ public class GameManager_Engine : MonoBehaviour
         float number;
         if(float.TryParse(nozzleExitSize.text, out number))
         {
-            nozzleExitRef.transform.localScale = new Vector3 (float.Parse(nozzleExitSize.text), nozzleExitRef.transform.localScale.y, nozzleExitRef.transform.localScale.z);
+            nozzleExitSizeFloat = float.Parse(nozzleExitSize.text);
+
+            if(nozzleExitRef.transform.localScale.x == nozzleExitSizeFloat)
+            {
+                startingScaleE = nozzleExitRef.transform.localScale;
+                currentE = 0;
+            }
+
+            if(nozzleExitRef.transform.localScale.x != nozzleExitSizeFloat)
+            { 
+                nozzleExitRef.transform.localScale = Vector3.Lerp(startingScaleE, new Vector3(nozzleExitSizeFloat, nozzleExitRef.transform.localScale.y, 0), currentE*5);
+                currentE += Time.deltaTime;
+            }
         }
 
         if (float.TryParse(nozzleEndSize.text, out number))
         {
-            nozzleEndRef.transform.localScale = new Vector3(float.Parse(nozzleEndSize.text), nozzleEndRef.transform.localScale.y, nozzleEndRef.transform.localScale.z);
+            nozzleEndSizeFloat = float.Parse(nozzleEndSize.text);
+
+            if(nozzleEndRef.transform.localScale.x == nozzleEndSizeFloat)
+            {
+                startingScaleEn = nozzleEndRef.transform.localScale;
+                currentEn = 0;
+            }
+
+            if(nozzleEndRef.transform.localScale.x != nozzleEndSizeFloat)
+            {
+                nozzleEndRef.transform.localScale = Vector3.Lerp(startingScaleEn, new Vector3(nozzleEndSizeFloat, nozzleEndRef.transform.localScale.y, 0), currentEn*5);
+                currentEn += Time.deltaTime;
+            }
         }
 
         if (float.TryParse(turbopumpSize.text, out number))
         {
-            turbopumpRef.transform.localScale = new Vector3(float.Parse(turbopumpSize.text), turbopumpRef.transform.localScale.y, turbopumpRef.transform.localScale.z);
+            turbopumpSizeFloat = float.Parse(turbopumpSize.text);
+
+            if(turbopumpRef.transform.localScale.x == turbopumpSizeFloat)
+            {
+                startingScaleT = turbopumpRef.transform.localScale;
+                currentT = 0;
+            }
+
+            if(turbopumpRef.transform.localScale.x != turbopumpSizeFloat)
+            {
+                turbopumpRef.transform.localScale = Vector3.Lerp(startingScaleT, new Vector3(turbopumpSizeFloat, turbopumpRef.transform.localScale.y, 0), currentT*5);
+                currentT += Time.deltaTime;
+            }
         }
 
 

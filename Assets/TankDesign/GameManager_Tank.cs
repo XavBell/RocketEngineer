@@ -37,8 +37,14 @@ public class GameManager_Tank : MonoBehaviour
     public float mass;
 
     public savePath savePathRef = new savePath();
+    public float currentD;
+    public float currentH;
+
+    public float elapsedFrames = 0;
 
 
+    public Vector3 startingScaleD;
+    public Vector3 startingScaleH;
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +58,9 @@ public class GameManager_Tank : MonoBehaviour
 
             attachBottomRef = Tank.GetComponent<Part>().attachBottom;
             attachBottomObj = GameObject.Find(attachBottomRef.name);
+
+            startingScaleD = tankSP.transform.localScale;
+            startingScaleH = tankSP.transform.localScale;
         }
         
     }
@@ -74,15 +83,37 @@ public class GameManager_Tank : MonoBehaviour
         float number;
         if(float.TryParse(tankDiameter.text, out number))
         {
-            tankSP.transform.localScale = new Vector3 (float.Parse(tankDiameter.text), tankSP.transform.localScale.y, tankSP.transform.localScale.z);
             tankDiameterFloat = float.Parse(tankDiameter.text);
+
+            if(tankDiameterFloat == tankSP.transform.localScale.x)
+            {
+                startingScaleD = tankSP.transform.localScale;
+                currentD = 0;
+            }
+
+            if(tankSP.transform.localScale.x != tankDiameterFloat)
+            {
+                tankSP.transform.localScale = Vector3.Lerp(startingScaleD, new Vector3(tankDiameterFloat, tankSP.transform.localScale.y, 0), currentD * 5);
+                currentD += Time.deltaTime;
+            }
+            
         }
 
         if (float.TryParse(tankHeight.text, out number))
         {
-            Debug.Log(tankSP.bounds.max);
-            tankSP.transform.localScale = new Vector3 (tankSP.transform.localScale.x, float.Parse(tankHeight.text), tankSP.transform.localScale.z);
             tankHeightFloat = float.Parse(tankHeight.text);
+            if(tankSP.transform.localScale.y == tankHeightFloat)
+            {
+                startingScaleH = tankSP.transform.localScale;
+                currentH = 0;
+            }
+
+            if(tankSP.transform.localScale.y != tankHeightFloat)
+            {
+                tankSP.transform.localScale = Vector3.Lerp(startingScaleH, new Vector3(tankSP.transform.localScale.x, tankHeightFloat, 0), currentH*5);
+                currentH += Time.deltaTime;
+            }
+            
         }
 
     }
