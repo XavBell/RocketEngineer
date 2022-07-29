@@ -557,6 +557,14 @@ public class GameManager : MonoBehaviour
             Debug.Log("ok");
            if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
            {
+            var jsonString = JsonConvert.SerializeObject(saveObject);
+            if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
+            {
+                Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
+            }
+
+            if(!File.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
+            {
                 Debug.Log("passed");
                 attachedBody = capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
 
@@ -570,11 +578,12 @@ public class GameManager : MonoBehaviour
 
                         //Add 1 to usedNum
                         saveEngine saveEngine = new saveEngine();
-                        var jsonString = JsonConvert.SerializeObject(saveEngine);
-                        jsonString = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
-                        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+                        var jsonString1 = JsonConvert.SerializeObject(saveEngine);
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
                         loadedEngine.usedNum += 1;
-                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString);
+                        jsonString1 = JsonConvert.SerializeObject(loadedEngine);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
 
 
 
@@ -588,16 +597,18 @@ public class GameManager : MonoBehaviour
 
                         //Add 1 to usedNum
                         saveTank saveTank = new saveTank();
-                        var jsonString = JsonConvert.SerializeObject(saveTank);
-                        jsonString = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
-                        saveEngine loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
+                        var jsonString1 = JsonConvert.SerializeObject(saveTank);
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
                         loadedTank.usedNum += 1;
-                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString);
+                        jsonString1 = JsonConvert.SerializeObject(loadedTank);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
 
                     }
 
                     attachedBody = attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
                 }
+            
 
                 if(attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
                 {
@@ -606,34 +617,44 @@ public class GameManager : MonoBehaviour
                     {
                         saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
                         saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
+                        //Add 1 to usedNum
+                        saveEngine saveEngine = new saveEngine();
+                        var jsonString1 = JsonConvert.SerializeObject(saveEngine);
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
+                        loadedEngine.usedNum = 1.0f + loadedEngine.usedNum;
+                        jsonString1 = JsonConvert.SerializeObject(loadedEngine);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
+
                     }
                     if (attachedBody.GetComponent<Part>().type == "tank")
                     {
                         saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
                         saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
+                        //Add 1 to usedNum
+                        saveTank saveTank = new saveTank();
+                        var jsonString1 = JsonConvert.SerializeObject(saveTank);
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
+                        loadedTank.usedNum += 1;
+                        jsonString1 = JsonConvert.SerializeObject(loadedTank);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
                     }
                 }
 
-            }
-
-            var jsonString = JsonConvert.SerializeObject(saveObject);
-            if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
-            {
-                Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
-            }
-
-
-            //Make sure file with current savename doesn't exists
-            if(!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
-            {
                 System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json", jsonString);
-            }
-            else if(Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
+            } else if(File.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
             {
                 //Tell player to either change the save name or delete the rocket of the same name, add delete button
+                Debug.Log("AlreadyExists");
                 saveObject = null;
                 return;
             }
+
+
+
+        } 
+
         }
 
         
