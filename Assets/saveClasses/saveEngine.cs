@@ -14,6 +14,7 @@ public class saveEngine
     public float verticalSize_s;
     public float attachBottomPos;
     public float verticalPos;
+    public float usedNum;
 
     public float mass_s;
     public float thrust_s;

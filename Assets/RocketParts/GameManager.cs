@@ -567,12 +567,33 @@ public class GameManager : MonoBehaviour
                     {
                         saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
                         saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
+
+                        //Add 1 to usedNum
+                        saveEngine saveEngine = new saveEngine();
+                        var jsonString = JsonConvert.SerializeObject(saveEngine);
+                        jsonString = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+                        loadedEngine.usedNum += 1;
+                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString);
+
+
+
                     }
 
                     if (attachedBody.GetComponent<Part>().type == "tank")
                     {
                         saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
                         saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
+
+
+                        //Add 1 to usedNum
+                        saveTank saveTank = new saveTank();
+                        var jsonString = JsonConvert.SerializeObject(saveTank);
+                        jsonString = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        saveEngine loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
+                        loadedTank.usedNum += 1;
+                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString);
+
                     }
 
                     attachedBody = attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
@@ -600,12 +621,31 @@ public class GameManager : MonoBehaviour
             {
                 Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
             }
-            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json", jsonString);
 
+
+            //Make sure file with current savename doesn't exists
+            if(!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
+            {
+                System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json", jsonString);
+            }
+            else if(Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
+            {
+                //Tell player to either change the save name or delete the rocket of the same name, add delete button
+                saveObject = null;
+                return;
+            }
         }
 
         
     }
+
+    public void deleteRocket()
+    {
+        //Retrieve file and for each tank/engine saved remove 1 to usedNum
+        
+    }
+
+
 
     public void retrieveRocketSaved()
     {
