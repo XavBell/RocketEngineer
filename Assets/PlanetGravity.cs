@@ -90,10 +90,7 @@ public class PlanetGravity : MonoBehaviour
             }
 
             Vector3 ResultVector = ForceVector + Thrust + AeroForces;
-
             rb.AddForce(ResultVector);
-
-
 
             //Prediction
             Vector3 currentPos = rb.position;
@@ -102,7 +99,6 @@ public class PlanetGravity : MonoBehaviour
             Vector3 planetCords = planet.transform.position;
             int stepCount = 15000;
             line.positionCount = stepCount;
-
             for (int i = 0; i < stepCount; i++)
             {
                 Vector3 distance = planetCords - currentPos;
@@ -111,16 +107,9 @@ public class PlanetGravity : MonoBehaviour
                 currentVelocity += ForceVector * Time.DeltaTime;
                 currentPos += currentVelocity * Time.DeltaTime;
                 prevPos = currentPos;
-
                 line.SetPosition(i, prevPos);
-
             }
         }
-
-
-
-
-
     }
 
 
@@ -163,7 +152,6 @@ public class PlanetGravity : MonoBehaviour
         {
             rocketMass = 0.01f;
         }
-
     }
 
     void _orientation()
@@ -176,7 +164,6 @@ public class PlanetGravity : MonoBehaviour
         {
             transform.Rotate(0, 0, Time.deltaTime * -50);
         }
-
     }
 
     void updateParticle(float thrust, float maxThrust)
@@ -185,7 +172,6 @@ public class PlanetGravity : MonoBehaviour
         {
             var emission = particle.emission;
             emission.enabled = false;
-
         }
         else if(thrust > 0)
         {
@@ -193,7 +179,6 @@ public class PlanetGravity : MonoBehaviour
             var emission = particle.emission;
             emission.enabled = true;
             emission.rateOverTime = rate*10;
-
         }
     }
 
@@ -210,7 +195,6 @@ public class PlanetGravity : MonoBehaviour
             {
                 bestDistance = distMag;
                 bestPlanet = go;
-
             }
         }
 
@@ -234,7 +218,6 @@ public class PlanetGravity : MonoBehaviour
             atmoAlt = 70.0f;
             aeroCoefficient = 0.05f;
             planet = bestPlanet;
-
         }
 
     }
@@ -256,9 +239,6 @@ public class PlanetGravity : MonoBehaviour
                     bestDecoupler = go1;
                 }
             }
-
-
-
 
             if (bestDecoupler != null)
             {
@@ -339,9 +319,7 @@ public class PlanetGravity : MonoBehaviour
 
             if (currentAttach == null)
             {
-
                 break;
-
             }
       }
         
@@ -364,10 +342,5 @@ public class PlanetGravity : MonoBehaviour
                 Application.Quit();
             }
         }  
-
     }
-
-
-
-
 }
