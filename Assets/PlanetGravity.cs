@@ -57,6 +57,7 @@ public class PlanetGravity : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == "SampleScene" && posUpdated == false)
         {
+            //Set initial position and scale of rocket when it enters the world
             transform.position = new Vector3(1 , 51, 1);
             transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             rb = GetComponent<Rigidbody2D>();
@@ -107,12 +108,8 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 distance = planetCords - currentPos;
                 forceDir = (planet.transform.position - currentPos).normalized;
                 ForceVector = forceDir * G * Mass * rocketMass / (distance.magnitude * distance.magnitude);
-                currentVelocity += ForceVector * Time.fixedDeltaTime;
-
-                currentPos += currentVelocity * Time.fixedDeltaTime;
-
-                //Replace by a TrailRenderer or LineRenderer you reset each frame
-                Debug.DrawLine(prevPos, currentPos, Color.red, Time.deltaTime);
+                currentVelocity += ForceVector * Time.DeltaTime;
+                currentPos += currentVelocity * Time.DeltaTime;
                 prevPos = currentPos;
 
                 line.SetPosition(i, prevPos);
@@ -267,14 +264,11 @@ public class PlanetGravity : MonoBehaviour
             {
 
                 GameObject decouplerToUse = bestDecoupler.attachBottom.GetComponent<AttachPointScript>().referenceBody;
-                Debug.Log("Hello3");
                 foreach (Part go2 in decouplers)
                 {
                     GameObject referenceGo = go2.attachBottom.GetComponent<AttachPointScript>().referenceBody;
-                    Debug.Log("Hello2");
                     if (decouplerToUse == referenceGo.GetComponent<Part>().referenceDecoupler)
                     {
-                        Debug.Log("Hello");
                         
                         if(referenceGo.GetComponent<Part>().type.ToString() == "tank")
                         {
