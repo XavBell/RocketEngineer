@@ -32,6 +32,11 @@ public class PopUpManager : MonoBehaviour
             GameManager.GetComponent<GameManager_Engine>().panel.active = true;
         }
 
+        if(SceneManager.GetActiveScene().name == "TankDesign")
+        {
+            GameManager.GetComponent<GameManager_Tank>().panel.active = true;
+        }
+
         Destroy(refObj);   
     }
 }

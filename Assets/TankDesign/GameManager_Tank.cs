@@ -40,6 +40,9 @@ public class GameManager_Tank : MonoBehaviour
     public float currentD;
     public float currentH;
 
+    public GameObject panel;
+    public GameObject popUpPart;
+
     public float elapsedFrames = 0;
 
 
@@ -128,10 +131,16 @@ public class GameManager_Tank : MonoBehaviour
 
     public void save()
     {
-        saveTank saveObject = new saveTank();
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.tankFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.tankFolder);
+        }
+
         saveName = "/" + savePath.text;
 
-        
+        if(!File.Exists(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json"))
+        {
+        saveTank saveObject = new saveTank();
         saveObject.path = savePathRef.tankFolder;
         saveObject.name = saveName;
         saveObject.tankSizeX = tankSP.transform.localScale.x;
@@ -143,11 +152,27 @@ public class GameManager_Tank : MonoBehaviour
         saveObject.mass = mass;
 
         var jsonString = JsonConvert.SerializeObject(saveObject);
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.tankFolder))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.tankFolder);
-        }
         System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json", jsonString);
+        }else if(File.Exists(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json"))
+        {
+            saveTank saveTank = new saveTank();
+            var jsonString2 = JsonConvert.SerializeObject(saveTank);
+            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json");
+            saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString2);
+
+            if(loadedTank.usedNum == 0)
+            {
+                File.Delete(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json");
+                save();
+                return;
+            }
+
+            int x = Screen.width / 2;
+            int y = Screen.height / 2;
+            Vector2 position = new Vector2(x, y);
+            Instantiate(popUpPart, position, Quaternion.identity);
+            panel.active = false;
+        }
     }
 
     public void updateAttachPosition()
