@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
     public string partPath;
 
     public GameObject popUp;
+    public GameObject popUpPart;
+
     public GameObject panel;
 
     // Start is called before the first frame update
@@ -75,7 +77,6 @@ public class GameManager : MonoBehaviour
             TankButton.interactable = false;
             EngineButton.interactable = false;
             DecouplerButton.interactable = false;
-            scrollBox.SetActive(false);
 
             EngineManager = GameObject.FindGameObjectWithTag("EngineManager");
             
@@ -86,12 +87,10 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         updateSaveName();
         if(Input.GetMouseButtonDown(0) && partToConstruct != null)
         {
-            
-
-
 
             if (partToConstruct.GetComponent<Part>().type.ToString() == "capsule" && capsuleBuilt == false && Cursor.visible == false)
             {
@@ -672,6 +671,11 @@ public class GameManager : MonoBehaviour
     public void deleteRocket()
     {
         //Retrieve file and for each tank/engine saved remove 1 to usedNum
+        if(File.Exists(Application.persistentDataPath + savePathRef.rocketFolder + path))
+        {
+            File.Delete(Application.persistentDataPath + savePathRef.rocketFolder + path);
+            retrieveRocketSaved();
+        }
         
     }
 
@@ -795,9 +799,16 @@ public class GameManager : MonoBehaviour
             if(loadedEngine.usedNum == 0)
             {
                File.Delete(Application.persistentDataPath + savePathRef.engineFolder + path);
+               retrieveEngineSaved();
+            }else if(loadedEngine.usedNum > 0)
+            {
+                int x = Screen.width / 2;
+                int y = Screen.height / 2;
+                Vector2 position = new Vector2(x, y);
+                Instantiate(popUpPart, position, Quaternion.identity);
+                panel.active = false;
             }
         }
-        retrieveEngineSaved();
     }
 
     public void CreateNewTank()
@@ -820,9 +831,17 @@ public class GameManager : MonoBehaviour
             if(loadedTank.usedNum == 0)
             {
                File.Delete(Application.persistentDataPath + savePathRef.tankFolder + path);
+               retrieveTankSaved();
+            }else if(loadedTank.usedNum > 0)
+            {
+                int x = Screen.width / 2;
+                int y = Screen.height / 2;
+                Vector2 position = new Vector2(x, y);
+                Instantiate(popUpPart, position, Quaternion.identity);
+                panel.active = false;
             }
         }
-        retrieveTankSaved();
+        
     }
 
     public void setRocketValues(AttachPointScript attachPoint, GameObject currentPrefab, Vector2 boxScale, Vector2 offsets)

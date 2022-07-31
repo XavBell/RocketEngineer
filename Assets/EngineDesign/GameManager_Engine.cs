@@ -54,6 +54,8 @@ public class GameManager_Engine : MonoBehaviour
     public float initialScaleY;
 
     public savePath savePathRef = new savePath();
+    public GameObject panel;
+    public GameObject popUpPart;
 
 
     // Start is called before the first frame update
@@ -226,42 +228,68 @@ public class GameManager_Engine : MonoBehaviour
 
     public void save()
     {
-        saveEngine saveObject = new saveEngine();
-        List<float> sizes = new List<float>();
-        saveName = "/"+ savePath.text;
-
-        saveObject.path = savePathRef.engineFolder;
-        saveObject.name = saveName;
-        saveObject.nozzleExitSize_s = nozzleExitRef.GetComponent<SpriteRenderer>().transform.localScale.x;
-        sizes.Add(saveObject.nozzleExitSize_s);
-        saveObject.nozzleEndSize_s = nozzleEndRef.GetComponent<SpriteRenderer>().transform.localScale.x;
-        sizes.Add(saveObject.nozzleEndSize_s);
-        saveObject.turbopumpSize_s = turbopumpRef.GetComponent<SpriteRenderer>().transform.localScale.x;
-        sizes.Add(saveObject.turbopumpSize_s);
-
-        float bestSize = 0;
-        foreach(float size in sizes)
-        {
-            if(size > bestSize)
-            {
-                bestSize = size;
-            }
-        }
-
-        saveObject.verticalSize_s = nozzleExitRef.GetComponent<BoxCollider2D>().transform.localScale.y;
-        saveObject.attachBottomPos = attachBottomObj.transform.localPosition.y;
-        saveObject.verticalPos = nozzleExitRef.transform.localPosition.y;
-        saveObject.horizontalBestSize_s = bestSize;
-        saveObject.thrust_s = mass;
-        saveObject.thrust_s = thrust;
-        saveObject.rate_s = rate;
-
-        var jsonString = JsonConvert.SerializeObject(saveObject);
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.engineFolder))
         {
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.engineFolder);
         }
-        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json", jsonString);
+        
+        saveName = "/"+ savePath.text;
+
+        if(!File.Exists(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json"))
+        {
+            saveEngine saveObject = new saveEngine();
+            List<float> sizes = new List<float>();
+
+            saveObject.path = savePathRef.engineFolder;
+            saveObject.name = saveName;
+            saveObject.nozzleExitSize_s = nozzleExitRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+            sizes.Add(saveObject.nozzleExitSize_s);
+            saveObject.nozzleEndSize_s = nozzleEndRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+            sizes.Add(saveObject.nozzleEndSize_s);
+            saveObject.turbopumpSize_s = turbopumpRef.GetComponent<SpriteRenderer>().transform.localScale.x;
+            sizes.Add(saveObject.turbopumpSize_s);
+
+            float bestSize = 0;
+            foreach(float size in sizes)
+            {
+                if(size > bestSize)
+                {
+                    bestSize = size;
+                }
+            }
+
+            saveObject.verticalSize_s = nozzleExitRef.GetComponent<BoxCollider2D>().transform.localScale.y;
+            saveObject.attachBottomPos = attachBottomObj.transform.localPosition.y;
+            saveObject.verticalPos = nozzleExitRef.transform.localPosition.y;
+            saveObject.horizontalBestSize_s = bestSize;
+            saveObject.thrust_s = mass;
+            saveObject.thrust_s = thrust;
+            saveObject.rate_s = rate;
+
+            var jsonString = JsonConvert.SerializeObject(saveObject);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json", jsonString);
+            Debug.Log("saved");
+
+        }else if(File.Exists(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json"))
+        {
+            saveEngine saveEngine = new saveEngine();
+            var jsonString2 = JsonConvert.SerializeObject(saveEngine);
+            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json");
+            saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString2);
+
+            if(loadedEngine.usedNum == 0)
+            {
+                File.Delete(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json");
+                save();
+                return;
+            }
+
+            int x = Screen.width / 2;
+            int y = Screen.height / 2;
+            Vector2 position = new Vector2(x, y);
+            Instantiate(popUpPart, position, Quaternion.identity);
+            panel.active = false;
+        }
     }
 
     public void backToBuild()

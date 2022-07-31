@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 
 public class PopUpManager : MonoBehaviour
@@ -22,7 +22,16 @@ public class PopUpManager : MonoBehaviour
     
     public void dismiss()
     {
-        GameManager.GetComponent<GameManager>().panel.active = true;
+        if(SceneManager.GetActiveScene().name == "Building")
+        {
+            GameManager.GetComponent<GameManager>().panel.active = true;
+        }
+
+        if(SceneManager.GetActiveScene().name == "EngineDesign")
+        {
+            GameManager.GetComponent<GameManager_Engine>().panel.active = true;
+        }
+
         Destroy(refObj);   
     }
 }

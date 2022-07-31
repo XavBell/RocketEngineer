@@ -43,7 +43,8 @@ public class OnClick : MonoBehaviour
 
             if (filePath == savePathRef.rocketFolder)
             {
-                GameManager.GetComponent<GameManager>().load(savePathRef.rocketFolder);
+                //GameManager.GetComponent<GameManager>().load(savePathRef.rocketFolder);
+                b1.interactable = false;
             }
 
             if (filePath == savePathRef.tankFolder)
