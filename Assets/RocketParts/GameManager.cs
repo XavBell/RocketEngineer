@@ -63,6 +63,9 @@ public class GameManager : MonoBehaviour
     public float capsuleInitialSizeX;
     public savePath savePathRef = new savePath();
 
+    public GameObject popUp;
+    public GameObject panel;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -641,10 +644,15 @@ public class GameManager : MonoBehaviour
                         System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
                     }
                 }
-
+                jsonString = JsonConvert.SerializeObject(saveObject);
                 System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json", jsonString);
             } else if(File.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
             {
+                int x = Screen.width / 2;
+                int y = Screen.height / 2;
+                Vector2 position = new Vector2(x, y);
+                Instantiate(popUp, position, Quaternion.identity);
+                panel.active = false;
                 //Tell player to either change the save name or delete the rocket of the same name, add delete button
                 Debug.Log("AlreadyExists");
                 saveObject = null;

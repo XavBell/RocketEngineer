@@ -104,8 +104,8 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 distance = planetCords - currentPos;
                 forceDir = (planet.transform.position - currentPos).normalized;
                 ForceVector = forceDir * G * Mass * rocketMass / (distance.magnitude * distance.magnitude);
-                currentVelocity += ForceVector * Time.DeltaTime;
-                currentPos += currentVelocity * Time.DeltaTime;
+                currentVelocity += ForceVector * Time.deltaTime;
+                currentPos += currentVelocity * Time.deltaTime;
                 prevPos = currentPos;
                 line.SetPosition(i, prevPos);
             }
