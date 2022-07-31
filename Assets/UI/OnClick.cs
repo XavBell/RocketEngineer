@@ -37,7 +37,8 @@ public class OnClick : MonoBehaviour
             string filePath = GameManager.GetComponent<GameManager>().filePath;
             if (filePath == savePathRef.engineFolder)
             {
-                GameManager.GetComponent<GameManager>().ConstructPart(enginePrefab);
+                GameManager.GetComponent<GameManager>().partPath = filePath;
+                b1.interactable = false;
             }
 
             if (filePath == savePathRef.rocketFolder)
@@ -47,7 +48,8 @@ public class OnClick : MonoBehaviour
 
             if (filePath == savePathRef.tankFolder)
             {
-                GameManager.GetComponent<GameManager>().ConstructPart(tankPrefab);
+                GameManager.GetComponent<GameManager>().partPath = filePath;
+                b1.interactable = false;
             }
 
         }

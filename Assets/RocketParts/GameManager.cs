@@ -62,6 +62,7 @@ public class GameManager : MonoBehaviour
 
     public float capsuleInitialSizeX;
     public savePath savePathRef = new savePath();
+    public string partPath;
 
     public GameObject popUp;
     public GameObject panel;
@@ -776,20 +777,28 @@ public class GameManager : MonoBehaviour
 
     public void CreateNewEngine()
     {
-        if(capsule != null)
+        if(filePath == savePathRef.engineFolder)
         {
-            Destroy(capsule);
+            ConstructPart(Engine);
         }
-        SceneManager.LoadScene("EngineDesign");
+    }
+
+    public void DeleteEngine()
+    {
+        //TODO
     }
 
     public void CreateNewTank()
     {
-        if (capsule != null)
+       if(filePath == savePathRef.tankFolder)
         {
-            Destroy(capsule);
+            ConstructPart(Tank);
         }
-        SceneManager.LoadScene("TankDesign");
+    }
+
+    public void DeleteTank()
+    {
+       //TODO
     }
 
     public void setRocketValues(AttachPointScript attachPoint, GameObject currentPrefab, Vector2 boxScale, Vector2 offsets)
