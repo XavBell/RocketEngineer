@@ -777,7 +777,7 @@ public class GameManager : MonoBehaviour
 
     public void CreateNewEngine()
     {
-        if(filePath == savePathRef.engineFolder)
+        if(File.Exists(Application.persistentDataPath + savePathRef.engineFolder + path))
         {
             ConstructPart(Engine);
         }
@@ -785,12 +785,24 @@ public class GameManager : MonoBehaviour
 
     public void DeleteEngine()
     {
-        //TODO
+        if(File.Exists(Application.persistentDataPath + savePathRef.engineFolder + path))
+        {
+            saveEngine saveEngine = new saveEngine();
+            var jsonString2 = JsonConvert.SerializeObject(saveEngine);
+            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.engineFolder + path);
+            saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString2);
+
+            if(loadedEngine.usedNum == 0)
+            {
+               File.Delete(Application.persistentDataPath + savePathRef.engineFolder + path);
+            }
+        }
+        retrieveEngineSaved();
     }
 
     public void CreateNewTank()
     {
-       if(filePath == savePathRef.tankFolder)
+       if(File.Exists(Application.persistentDataPath + savePathRef.tankFolder + path))
         {
             ConstructPart(Tank);
         }
@@ -798,7 +810,19 @@ public class GameManager : MonoBehaviour
 
     public void DeleteTank()
     {
-       //TODO
+       if(File.Exists(Application.persistentDataPath + savePathRef.tankFolder + path))
+        {
+            saveTank saveTank = new saveTank();
+            var jsonString2 = JsonConvert.SerializeObject(saveTank);
+            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.tankFolder + path);
+            saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString2);
+
+            if(loadedTank.usedNum == 0)
+            {
+               File.Delete(Application.persistentDataPath + savePathRef.tankFolder + path);
+            }
+        }
+        retrieveTankSaved();
     }
 
     public void setRocketValues(AttachPointScript attachPoint, GameObject currentPrefab, Vector2 boxScale, Vector2 offsets)
