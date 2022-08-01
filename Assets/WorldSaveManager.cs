@@ -18,7 +18,7 @@ public class WorldSaveManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        loaded = true;
+        //loaded = true;
         //loadWorld();
     }
 
@@ -72,11 +72,21 @@ public class WorldSaveManager : MonoBehaviour
                         saveWorld.tankScaleX.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale.x);
                         saveWorld.tankScaleY.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale.y);
                         saveWorld.tankScaleZ.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale.z);
+
+                        GameObject attachTopObj = currentPrefab.gameObject.transform.GetChild(2).gameObject;
+                        saveWorld.tankAttachTopLocX.Add(attachTopObj.transform.localPosition.x);
+                        saveWorld.tankAttachTopLocY.Add(attachTopObj.transform.localPosition.y);
+                        saveWorld.tankAttachTopLocZ.Add(attachTopObj.transform.localPosition.z);
+
+                        GameObject attachBottomObj = currentPrefab.gameObject.transform.GetChild(1).gameObject;
+                        saveWorld.tankAttachBottomLocX.Add(attachBottomObj.transform.localPosition.x);
+                        saveWorld.tankAttachBottomLocY.Add(attachBottomObj.transform.localPosition.y);
+                        saveWorld.tankAttachBottomLocZ.Add(attachBottomObj.transform.localPosition.z);
                     }
 
                     if(currentType == "engine")
                     {
-                        saveWorld.engineLocX.Add(currentPrefabtransform.localPosition.x);
+                        saveWorld.engineLocX.Add(currentPrefab.transform.localPosition.x);
                         saveWorld.engineLocY.Add(currentPrefab.transform.localPosition.y);
                         saveWorld.engineLocZ.Add(currentPrefab.transform.localPosition.z);
 
@@ -112,7 +122,6 @@ public class WorldSaveManager : MonoBehaviour
         {
             int childrenNumber = rocket;
             GameObject capsule = Instantiate(capsulePrefab, Vector3.zero, Quaternion.identity);
-            capsule.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             setPosition(loadedWorld.capsuleLocX[capsuleID], loadedWorld.capsuleLocY[capsuleID], loadedWorld.capsuleLocZ[capsuleID], capsule);
             GameObject currentPrefab = capsule;
             int i = 0;
@@ -126,9 +135,14 @@ public class WorldSaveManager : MonoBehaviour
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
                     setPosition(loadedWorld.tankLocX[tankCount], loadedWorld.tankLocY[tankCount], loadedWorld.tankLocZ[tankCount], currentPrefab);
+                    currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale = new Vector3(loadedWorld.tankScaleX[tankCount], loadedWorld.tankScaleY[tankCount], loadedWorld.tankScaleZ[tankCount]);
 
-                    tankSP = currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>();
-                    tankSP.transform.localScale = new Vector3(loadedWorld.tankScaleX[tankCount], loadedWorld.tankScaleY[tankCount], loadedWorld.tankScaleZ[tankCount]);
+                    GameObject attachTopObj = currentPrefab.gameObject.transform.GetChild(2).gameObject;
+                    setPosition(loadedWorld.tankAttachTopLocX[tankCount], loadedWorld.tankAttachTopLocY[tankCount], loadedWorld.tankAttachTopLocZ[tankCount], attachTopObj);
+
+                    GameObject attachBottomObj = currentPrefab.gameObject.transform.GetChild(1).gameObject;
+                    setPosition(loadedWorld.tankAttachBottomLocX[tankCount], loadedWorld.tankAttachBottomLocY[tankCount], loadedWorld.tankAttachBottomLocZ[tankCount], attachBottomObj);
+
 
                     tankCount++;
                 }
@@ -140,13 +154,13 @@ public class WorldSaveManager : MonoBehaviour
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
                     setPosition(loadedWorld.engineLocX[engineCount], loadedWorld.engineLocY[engineCount], loadedWorld.engineLocZ[engineCount], currentPrefab);
-
                     engineCount++;
                 }
-
-                currentPrefab.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                
+                
                 i++;
             }
+            capsule.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
             capsuleID++;
             alreadyUsed += childrenNumber;
         }
