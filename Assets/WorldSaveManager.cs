@@ -127,6 +127,9 @@ public class WorldSaveManager : MonoBehaviour
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
                     setPosition(loadedWorld.tankLocX[tankCount], loadedWorld.tankLocY[tankCount], loadedWorld.tankLocZ[tankCount], currentPrefab);
 
+                    tankSP = currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>();
+                    tankSP.transform.localScale = new Vector3(loadedWorld.tankScaleX[tankCount], loadedWorld.tankScaleY[tankCount], loadedWorld.tankScaleZ[tankCount]);
+
                     tankCount++;
                 }
 
