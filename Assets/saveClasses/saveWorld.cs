@@ -42,5 +42,14 @@ public class saveWorld
     public List<float> engineLocX = new List<float>();
     public List<float> engineLocY = new List<float>();
     public List<float> engineLocZ = new List<float>();
+
+    //Engine attach position
+    public List<float> engineAttachTopLocX = new List<float>();
+    public List<float> engineAttachTopLocY = new List<float>();
+    public List<float> engineAttachTopLocZ = new List<float>();
+
+    public List<float> engineAttachBottomLocX = new List<float>();
+    public List<float> engineAttachBottomLocY = new List<float>();
+    public List<float> engineAttachBottomLocZ = new List<float>();
     
 }

@@ -92,7 +92,17 @@ public class WorldSaveManager : MonoBehaviour
 
                         saveWorld.engineScaleX.Add(currentPrefab.transform.localScale.x);
                         saveWorld.engineScaleY.Add(currentPrefab.transform.localScale.y);
-                        saveWorld.engineScaleZ.Add(currentPrefab.transform.localScale.z);  
+                        saveWorld.engineScaleZ.Add(currentPrefab.transform.localScale.z);
+
+                        GameObject attachTopObj = currentPrefab.gameObject.transform.GetChild(0).gameObject;
+                        saveWorld.engineAttachTopLocX.Add(attachTopObj.transform.localPosition.x);
+                        saveWorld.engineAttachTopLocY.Add(attachTopObj.transform.localPosition.y);
+                        saveWorld.engineAttachTopLocZ.Add(attachTopObj.transform.localPosition.z);
+
+                        GameObject attachBottomObj = currentPrefab.gameObject.transform.GetChild(1).gameObject;
+                        saveWorld.engineAttachBottomLocX.Add(attachBottomObj.transform.localPosition.x);
+                        saveWorld.engineAttachBottomLocY.Add(attachBottomObj.transform.localPosition.y);
+                        saveWorld.engineAttachBottomLocZ.Add(attachBottomObj.transform.localPosition.z);  
                     }
 
                     referenceBody = referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
@@ -154,6 +164,13 @@ public class WorldSaveManager : MonoBehaviour
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
                     setPosition(loadedWorld.engineLocX[engineCount], loadedWorld.engineLocY[engineCount], loadedWorld.engineLocZ[engineCount], currentPrefab);
+
+                    GameObject attachTopObj = currentPrefab.gameObject.transform.GetChild(0).gameObject;
+                    setPosition(loadedWorld.engineAttachTopLocX[engineCount], loadedWorld.engineAttachTopLocY[engineCount], loadedWorld.engineAttachTopLocZ[engineCount], attachTopObj);
+
+                    GameObject attachBottomObj = currentPrefab.gameObject.transform.GetChild(1).gameObject;
+                    setPosition(loadedWorld.engineAttachBottomLocX[engineCount], loadedWorld.engineAttachBottomLocY[engineCount], loadedWorld.engineAttachBottomLocZ[engineCount], attachBottomObj);
+
                     engineCount++;
                 }
                 
