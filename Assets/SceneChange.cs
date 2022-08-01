@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneChange : MonoBehaviour
 {
-    public GameObject capsule;
+    public GameObject[] capsule;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,13 +15,15 @@ public class SceneChange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        capsule = GameObject.FindGameObjectWithTag("capsule");
+        capsule = GameObject.FindGameObjectsWithTag("capsule");
     }
 
     public void ChangeScene()
     {
-        Destroy(capsule);
+        foreach(GameObject go in capsule)
+        {
+            Destroy(go);
+        }
         SceneManager.LoadScene("Building");
-        
     }
 }

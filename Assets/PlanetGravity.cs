@@ -9,7 +9,7 @@ public class PlanetGravity : MonoBehaviour
 {
 
     public GameObject[] planets;
-    bool posUpdated;
+    public bool posUpdated;
     public GameObject capsule;
     //Gravity variables for Earth
     public GameObject planet;
@@ -28,7 +28,7 @@ public class PlanetGravity : MonoBehaviour
     public float thrust = 0.0f;
     public float maxThrust = 0.0f;
     public float rate = 0.0f;
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     Vector3 AeroForces;
     public ParticleSystem particle;
 
@@ -44,6 +44,8 @@ public class PlanetGravity : MonoBehaviour
 
     public GameObject sun;
     public GameObject WorldSaveManager;
+
+    public bool possessed = false;
 
     // Start is called before the first frame update
     void Start()
@@ -72,14 +74,9 @@ public class PlanetGravity : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "SampleScene" && WorldSaveManager.GetComponent<WorldSaveManager>().loaded == true)
         {
+            
+
             updateReferenceBody();
-            updateReferenceStage();
-            _orientation();
-            _thrust();
-            updateParticle(thrust, maxThrust);
-            updateScene();
-
-
             //Gravity
             float Dist = Vector3.Distance(transform.position, planet.transform.position);
             Vector3 forceDir = (planet.transform.position - transform.position).normalized;
@@ -98,23 +95,35 @@ public class PlanetGravity : MonoBehaviour
             Vector3 ResultVector = ForceVector + Thrust + AeroForces;
             rb.AddForce(ResultVector);
 
-            //Prediction
-            Vector3 currentPos = rb.position;
-            Vector3 prevPos = currentPos;
-            Vector3 currentVelocity = rb.velocity;
-            Vector3 planetCords = planet.transform.position;
-            int stepCount = 15000;
-            line.positionCount = stepCount;
-            for (int i = 0; i < stepCount; i++)
+            if(possessed == true)
             {
-                Vector3 distance = planetCords - currentPos;
-                forceDir = (planet.transform.position - currentPos).normalized;
-                ForceVector = forceDir * G * Mass * rocketMass / (distance.magnitude * distance.magnitude);
-                currentVelocity += ForceVector * Time.deltaTime;
-                currentPos += currentVelocity * Time.deltaTime;
-                prevPos = currentPos;
-                line.SetPosition(i, prevPos);
+                updateReferenceStage();
+                _orientation();
+                _thrust();
+                updateParticle(thrust, maxThrust);
+                updateScene();
+
+                //Prediction
+                Vector3 currentPos = rb.position;
+                Vector3 prevPos = currentPos;
+                Vector3 currentVelocity = rb.velocity;
+                Vector3 planetCords = planet.transform.position;
+                int stepCount = 15000;
+                line.positionCount = stepCount;
+                for (int i = 0; i < stepCount; i++)
+                {
+                    Vector3 distance = planetCords - currentPos;
+                    forceDir = (planet.transform.position - currentPos).normalized;
+                    ForceVector = forceDir * G * Mass * rocketMass / (distance.magnitude * distance.magnitude);
+                    currentVelocity += ForceVector * Time.deltaTime;
+                    currentPos += currentVelocity * Time.deltaTime;
+                    prevPos = currentPos;
+                    line.SetPosition(i, prevPos);
+                }
             }
+
+            
+            
         }
     }
 

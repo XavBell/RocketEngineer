@@ -41,10 +41,11 @@ public class WorldSaveManager : MonoBehaviour
     {
         saveWorld saveWorld = new saveWorld();
         GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
+        Debug.Log(rockets.Length);
+        int i = 0;
         foreach(GameObject rocket in rockets)
         {
-            int i = 0;
-            saveWorld.childrenNumber.Add(i);
+            saveWorld.childrenNumber.Add(0);
             
             //Save capsule propreties
             saveWorld.capsuleLocX.Add(rocket.transform.position.x);
@@ -102,12 +103,24 @@ public class WorldSaveManager : MonoBehaviour
                         GameObject attachBottomObj = currentPrefab.gameObject.transform.GetChild(1).gameObject;
                         saveWorld.engineAttachBottomLocX.Add(attachBottomObj.transform.localPosition.x);
                         saveWorld.engineAttachBottomLocY.Add(attachBottomObj.transform.localPosition.y);
-                        saveWorld.engineAttachBottomLocZ.Add(attachBottomObj.transform.localPosition.z);  
+                        saveWorld.engineAttachBottomLocZ.Add(attachBottomObj.transform.localPosition.z); 
+
+                        GameObject nozzleExitRef = currentPrefab.GetComponent<Part>().nozzleExit;
+                        saveWorld.nozzleExitSizeX.Add(nozzleExitRef.GetComponent<SpriteRenderer>().transform.localScale.x);
+                        saveWorld.nozzleExitSizeY.Add(nozzleExitRef.GetComponent<SpriteRenderer>().transform.localScale.y);
+                        saveWorld.nozzleExitLocY.Add(nozzleExitRef.transform.localPosition.y);
+
+                        GameObject nozzleEndRef = currentPrefab.GetComponent<Part>().nozzleEnd;
+                        saveWorld.nozzleEndSizeX.Add(nozzleEndRef.GetComponent<SpriteRenderer>().transform.localScale.x);
+
+                        GameObject turbopump = currentPrefab.GetComponent<Part>().turbopump;
+                        saveWorld.turbopumpSizeX.Add(turbopump.GetComponent<SpriteRenderer>().transform.localScale.x);
                     }
 
                     referenceBody = referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
                     saveWorld.childrenNumber[i]++; 
                 }
+                
             }
             i++;
         }
@@ -130,10 +143,14 @@ public class WorldSaveManager : MonoBehaviour
         int tankCount = 0;
         foreach(int rocket in loadedWorld.childrenNumber)
         {
+            Debug.Log("CapsuleID" + capsuleID);
             int childrenNumber = rocket;
             GameObject capsule = Instantiate(capsulePrefab, Vector3.zero, Quaternion.identity);
             setPosition(loadedWorld.capsuleLocX[capsuleID], loadedWorld.capsuleLocY[capsuleID], loadedWorld.capsuleLocZ[capsuleID], capsule);
             GameObject currentPrefab = capsule;
+            currentPrefab.GetComponent<PlanetGravity>().posUpdated = true;
+            currentPrefab.GetComponent<PlanetGravity>().rb = currentPrefab.GetComponent<Rigidbody2D>();
+
             int i = 0;
             while(i < childrenNumber)
             {
@@ -170,6 +187,16 @@ public class WorldSaveManager : MonoBehaviour
 
                     GameObject attachBottomObj = currentPrefab.gameObject.transform.GetChild(1).gameObject;
                     setPosition(loadedWorld.engineAttachBottomLocX[engineCount], loadedWorld.engineAttachBottomLocY[engineCount], loadedWorld.engineAttachBottomLocZ[engineCount], attachBottomObj);
+
+                    GameObject nozzleExitRef = currentPrefab.GetComponent<Part>().nozzleExit;
+                    nozzleExitRef.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(loadedWorld.nozzleExitSizeX[engineCount], loadedWorld.nozzleExitSizeY[engineCount]);
+                    nozzleExitRef.transform.localPosition = new Vector2(nozzleExitRef.transform.localPosition.x, loadedWorld.nozzleExitLocY[engineCount]);
+
+                    GameObject nozzleEndRef = currentPrefab.GetComponent<Part>().nozzleEnd;
+                    nozzleEndRef.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(loadedWorld.nozzleEndSizeX[engineCount], nozzleEndRef.GetComponent<SpriteRenderer>().transform.localScale.y);
+
+                    GameObject turbopump = currentPrefab.GetComponent<Part>().turbopump;
+                    turbopump.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(loadedWorld.turbopumpSizeX[engineCount], turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
 
                     engineCount++;
                 }
