@@ -43,6 +43,13 @@ public class saveWorld
     public List<float> engineLocY = new List<float>();
     public List<float> engineLocZ = new List<float>();
 
+    //Engine children values
+    public List<float> nozzleExitSizeX = new List<float>();
+    public List<float> nozzleExitSizeY = new List<float>();
+    public List<float> nozzleExitLocY = new List<float>();
+    public List<float> nozzleEndSizeX = new List<float>();
+    public List<float> turbopumpSizeX = new List<float>();
+
     //Engine attach position
     public List<float> engineAttachTopLocX = new List<float>();
     public List<float> engineAttachTopLocY = new List<float>();
