@@ -43,18 +43,19 @@ public class PlanetGravity : MonoBehaviour
     public float capsuleInitialSizeX;
 
     public GameObject sun;
+    public GameObject WorldSaveManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         rb = GetComponent<Rigidbody2D>();
-
     }
-
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //return;
         if (SceneManager.GetActiveScene().name == "SampleScene" && posUpdated == false)
         {
             //Set initial position and scale of rocket when it enters the world
@@ -64,7 +65,7 @@ public class PlanetGravity : MonoBehaviour
             posUpdated = true;
         }
 
-        if (SceneManager.GetActiveScene().name == "SampleScene")
+        if (SceneManager.GetActiveScene().name == "SampleScene" && WorldSaveManager.GetComponent<WorldSaveManager>().loaded == true)
         {
             updateReferenceBody();
             updateReferenceStage();
@@ -143,6 +144,7 @@ public class PlanetGravity : MonoBehaviour
 
         currentFuel -= thrust/maxThrust * rate;
         float ratio = currentFuel / maxFuel;
+        
         if (ratio < 1.0f && ratio > 0.0f && thrust != 0 && activeEngine != null && rocketMass > 0)
         {
             rocketMass -= (thrust / maxThrust * (rate))/2;
