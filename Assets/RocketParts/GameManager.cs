@@ -676,17 +676,17 @@ public class GameManager : MonoBehaviour
             saveRocket saveRocket = new saveRocket();
             var jsonString = JsonConvert.SerializeObject(saveRocket);
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.rocketFolder + path );
-            saveRocket loadedRocket = Json.DeserializeObject(Application.persistentDataPath + savePathRef.rocketFolder + path, jsonString);
+            saveRocket loadedRocket = JsonConvert.DeserializeObject<saveRocket>(jsonString);
             int engineCount = 0;
             int tankCount = 0;
-            foreach(string attachedBodies in loadedRocket.types)
+            foreach(string attachedBodies in loadedRocket.attachedBodies)
             {
                 if(attachedBodies == "engine")
                 {
                     saveEngine saveEngine = new saveEngine();
                     var jsonString1 = JsonConvert.SerializeObject(saveEngine);
-                    jsonString1 = File.ReadAllText(Application.persistentDataPath + loadedRocket.enginePaths[engineCount] + loadedRocket.engineNames[engineCount] );
-                    saveEngine loadedEngine = Json.DeserializeObject(Application.persistentDataPath + loadedRocket.enginePaths[engineCount] + loadedRocket.engineNames[engineCount] + ".json", jsonString1);
+                    jsonString1 = File.ReadAllText(Application.persistentDataPath + loadedRocket.enginePaths[engineCount] + loadedRocket.engineNames[engineCount] + ".json");
+                    saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
                     loadedEngine.usedNum--;
                     jsonString1 = JsonConvert.SerializeObject(loadedEngine);
                     System.IO.File.WriteAllText(Application.persistentDataPath + loadedRocket.enginePaths[engineCount] + loadedRocket.engineNames[engineCount] + ".json", jsonString1);
@@ -697,8 +697,8 @@ public class GameManager : MonoBehaviour
                 {
                     saveTank saveTank = new saveTank();
                     var jsonString1 = JsonConvert.SerializeObject(saveTank);
-                    jsonString1 = File.ReadAllText(Application.persistentDataPath + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] );
-                    saveTank loadedTank = Json.DeserializeObject(Application.persistentDataPath + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] + ".json", jsonString1);
+                    jsonString1 = File.ReadAllText(Application.persistentDataPath + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] + ".json");
+                    saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
                     loadedTank.usedNum--;
                     jsonString1 = JsonConvert.SerializeObject(loadedTank);
                     System.IO.File.WriteAllText(Application.persistentDataPath + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] + ".json", jsonString1);

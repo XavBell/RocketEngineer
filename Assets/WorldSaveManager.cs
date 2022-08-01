@@ -105,6 +105,9 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld loadedWorld = JsonConvert.DeserializeObject<saveWorld>(jsonString);
         int alreadyUsed = 0;
         int capsuleID = 0;
+
+        int engineCount = 0;
+        int tankCount = 0;
         foreach(int rocket in loadedWorld.childrenNumber)
         {
             int childrenNumber = rocket;
@@ -122,7 +125,9 @@ public class WorldSaveManager : MonoBehaviour
                     currentPrefab.transform.SetParent(capsule.transform);
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
-                    setPosition
+                    setPosition(loadedWorld.tankLocX[tankCount], loadedWorld.tankLocY[tankCount], loadedWorld.tankLocZ[tankCount], currentPrefab);
+
+                    tankCount++;
                 }
 
                 if(loadedWorld.types[i + alreadyUsed] == "engine")
@@ -131,6 +136,9 @@ public class WorldSaveManager : MonoBehaviour
                     currentPrefab.transform.SetParent(capsule.transform);
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
+                    setPosition(loadedWorld.engineLocX[engineCount], loadedWorld.engineLocY[engineCount], loadedWorld.engineLocZ[engineCount], currentPrefab);
+
+                    engineCount++;
                 }
 
                 currentPrefab.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
