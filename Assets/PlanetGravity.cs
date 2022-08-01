@@ -55,6 +55,11 @@ public class PlanetGravity : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(WorldSaveManager == null)
+        {
+            WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
+        }
+
         //return;
         if (SceneManager.GetActiveScene().name == "SampleScene" && posUpdated == false)
         {

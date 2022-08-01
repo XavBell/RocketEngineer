@@ -751,7 +751,7 @@ GameObject:
   - component: {fileID: 1533443821}
   m_Layer: 0
   m_Name: SaveManager
-  m_TagString: Untagged
+  m_TagString: WorldSaveManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -771,6 +771,7 @@ MonoBehaviour:
   capsulePrefab: {fileID: 3186944469201897407, guid: a2c5f5146b2483e48bffbb12ff3fbb88, type: 3}
   tankPrefab: {fileID: 9057782884087415771, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
   enginePrefab: {fileID: 1884268472767985740, guid: f2c6cc36f959a17458714979d591058c, type: 3}
+  loaded: 0
 --- !u!4 &1533443822
 Transform:
   m_ObjectHideFlags: 0

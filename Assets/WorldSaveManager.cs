@@ -18,7 +18,8 @@ public class WorldSaveManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        loadWorld();
+        loaded = true;
+        //loadWorld();
     }
 
     // Update is called once per frame
@@ -44,12 +45,46 @@ public class WorldSaveManager : MonoBehaviour
         {
             int i = 0;
             saveWorld.childrenNumber.Add(i);
+            
+            //Save capsule propreties
+            saveWorld.capsuleLocX.Add(rocket.transform.position.x);
+            saveWorld.capsuleLocY.Add(rocket.transform.position.y);
+            saveWorld.capsuleLocZ.Add(rocket.transform.position.z);
+
+            saveWorld.capsuleScaleX.Add(rocket.transform.localScale.x);
+            saveWorld.capsuleScaleY.Add(rocket.transform.localScale.y);
+            saveWorld.capsuleScaleZ.Add(rocket.transform.localScale.z);
+
             if(rocket.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
             {
                 GameObject referenceBody = rocket;
                 while(referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                 {
-                    saveWorld.types.Add(referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type);
+                    string currentType = referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type;
+                    saveWorld.types.Add(currentType);
+                    GameObject currentPrefab = referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
+                    if(currentType == "tank")
+                    {
+                        saveWorld.tankLocX.Add(currentPrefab.transform.localPosition.x);
+                        saveWorld.tankLocY.Add(currentPrefab.transform.localPosition.y);
+                        saveWorld.tankLocZ.Add(currentPrefab.transform.localPosition.z);
+
+                        saveWorld.tankScaleX.Add(currentPrefab.transform.localScale.x);
+                        saveWorld.tankScaleY.Add(currentPrefab.transform.localScale.y);
+                        saveWorld.tankScaleZ.Add(currentPrefab.transform.localScale.z);
+                    }
+
+                    if(currentType == "engine")
+                    {
+                        saveWorld.engineLocX.Add(currentPrefab.transform.localPosition.x);
+                        saveWorld.engineLocY.Add(currentPrefab.transform.localPosition.y);
+                        saveWorld.engineLocZ.Add(currentPrefab.transform.localPosition.z);
+
+                        saveWorld.engineScaleX.Add(currentPrefab.transform.localScale.x);
+                        saveWorld.engineScaleY.Add(currentPrefab.transform.localScale.y);
+                        saveWorld.engineScaleZ.Add(currentPrefab.transform.localScale.z);  
+                    }
+
                     referenceBody = referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
                     saveWorld.childrenNumber[i]++; 
                 }
@@ -69,11 +104,13 @@ public class WorldSaveManager : MonoBehaviour
         jsonString = File.ReadAllText(Application.persistentDataPath + "/world.json");
         saveWorld loadedWorld = JsonConvert.DeserializeObject<saveWorld>(jsonString);
         int alreadyUsed = 0;
+        int capsuleID = 0;
         foreach(int rocket in loadedWorld.childrenNumber)
         {
             int childrenNumber = rocket;
-            GameObject capsule = Instantiate(capsulePrefab, new Vector3(1 , 51, 1), Quaternion.identity);
+            GameObject capsule = Instantiate(capsulePrefab, Vector3.zero, Quaternion.identity);
             capsule.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            setPosition(loadedWorld.capsuleLocX[capsuleID], loadedWorld.capsuleLocY[capsuleID], loadedWorld.capsuleLocZ[capsuleID], capsule);
             GameObject currentPrefab = capsule;
             int i = 0;
             while(i < childrenNumber)
@@ -85,6 +122,7 @@ public class WorldSaveManager : MonoBehaviour
                     currentPrefab.transform.SetParent(capsule.transform);
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
+                    setPosition
                 }
 
                 if(loadedWorld.types[i + alreadyUsed] == "engine")
@@ -98,10 +136,15 @@ public class WorldSaveManager : MonoBehaviour
                 currentPrefab.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
                 i++;
             }
-            
+            capsuleID++;
             alreadyUsed += childrenNumber;
         }
         loaded = true;
+    }
+
+    public void setPosition(float x, float y, float z, GameObject current)
+    {
+        current.transform.localPosition = new Vector3(x, y, z);
     }
 
 

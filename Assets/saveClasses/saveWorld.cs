@@ -4,7 +4,34 @@ using UnityEngine;
 [System.Serializable]
 public class saveWorld
 {
-    public List<string> rockets = new List<string>();
     public List<int> childrenNumber = new List<int>();
     public List<string> types = new List<string>();
+
+    //Capsule
+    public List<float> capsuleScaleX = new List<float>();
+    public List<float> capsuleScaleY = new List<float>();
+    public List<float> capsuleScaleZ = new List<float>();
+
+    public List<float> capsuleLocX = new List<float>();
+    public List<float> capsuleLocY = new List<float>();
+    public List<float> capsuleLocZ = new List<float>();
+
+    //Tank
+    public List<float> tankScaleX = new List<float>();
+    public List<float> tankScaleY = new List<float>();
+    public List<float> tankScaleZ = new List<float>();
+
+    public List<float> tankLocX = new List<float>();
+    public List<float> tankLocY = new List<float>();
+    public List<float> tankLocZ = new List<float>();
+
+    //Engine
+    public List<float> engineScaleX = new List<float>();
+    public List<float> engineScaleY = new List<float>();
+    public List<float> engineScaleZ = new List<float>();
+
+    public List<float> engineLocX = new List<float>();
+    public List<float> engineLocY = new List<float>();
+    public List<float> engineLocZ = new List<float>();
+    
 }
