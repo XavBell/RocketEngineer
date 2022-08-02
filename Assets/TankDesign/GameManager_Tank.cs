@@ -88,15 +88,15 @@ public class GameManager_Tank : MonoBehaviour
         {
             tankDiameterFloat = float.Parse(tankDiameter.text);
 
-            if(tankDiameterFloat == tankSP.transform.localScale.x)
+            if(tankDiameterFloat == tankSP.size.x)
             {
-                startingScaleD = tankSP.transform.localScale;
+                startingScaleD = tankSP.size;
                 currentD = 0;
             }
 
-            if(tankSP.transform.localScale.x != tankDiameterFloat)
+            if(tankSP.size.x != tankDiameterFloat)
             {
-                tankSP.transform.localScale = Vector3.Lerp(startingScaleD, new Vector3(tankDiameterFloat, tankSP.transform.localScale.y, 0), currentD * 5);
+                tankSP.size = Vector2.Lerp(startingScaleD, new Vector2(tankDiameterFloat, tankSP.size.y), currentD * 5);
                 currentD += Time.deltaTime;
             }
             
@@ -105,15 +105,15 @@ public class GameManager_Tank : MonoBehaviour
         if (float.TryParse(tankHeight.text, out number))
         {
             tankHeightFloat = float.Parse(tankHeight.text);
-            if(tankSP.transform.localScale.y == tankHeightFloat)
+            if(tankSP.size.y == tankHeightFloat)
             {
-                startingScaleH = tankSP.transform.localScale;
+                startingScaleH = tankSP.size;
                 currentH = 0;
             }
 
-            if(tankSP.transform.localScale.y != tankHeightFloat)
+            if(tankSP.size.y != tankHeightFloat)
             {
-                tankSP.transform.localScale = Vector3.Lerp(startingScaleH, new Vector3(tankSP.transform.localScale.x, tankHeightFloat, 0), currentH*5);
+                tankSP.size = Vector2.Lerp(startingScaleH, new Vector2(tankSP.size.x, tankHeightFloat), currentH*5);
                 currentH += Time.deltaTime;
             }
             
@@ -143,8 +143,8 @@ public class GameManager_Tank : MonoBehaviour
         saveTank saveObject = new saveTank();
         saveObject.path = savePathRef.tankFolder;
         saveObject.name = saveName;
-        saveObject.tankSizeX = tankSP.transform.localScale.x;
-        saveObject.tankSizeY = tankSP.transform.localScale.y;
+        saveObject.tankSizeX = tankSP.size.x;
+        saveObject.tankSizeY = tankSP.size.y;
         saveObject.attachTopPos = attachTopObj.transform.position.y - tankSP.bounds.center.y;
         saveObject.attachBottomPos = tankSP.bounds.center.y - attachTopObj.transform.position.y;
         Debug.Log(saveObject.attachTopPos);
