@@ -70,7 +70,7 @@ public class WorldSaveManager : MonoBehaviour
                         saveWorld.tankLocY.Add(currentPrefab.transform.localPosition.y);
                         saveWorld.tankLocZ.Add(currentPrefab.transform.localPosition.z);
 
-                        saveWorld.tankScaleX.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale.x);
+                        saveWorld.tankScaleX.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transf;
                         saveWorld.tankScaleY.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale.y);
                         saveWorld.tankScaleZ.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale.z);
 
