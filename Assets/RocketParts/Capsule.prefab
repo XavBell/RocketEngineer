@@ -67,6 +67,8 @@ MonoBehaviour:
   tank: {fileID: 0}
   path: 
   name: 
+  boxSize: {x: 0, y: 0}
+  offsets: {x: 0, y: 0}
 --- !u!212 &-5808564746016280997
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -109,7 +111,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8490566, g: 0.8490566, b: 0.8490566, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -191,6 +193,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planets: []
+  posUpdated: 0
   capsule: {fileID: 3186944469201897407}
   planet: {fileID: 0}
   Mass: 9e+10
@@ -201,12 +204,16 @@ MonoBehaviour:
   thrust: 0
   maxThrust: 0
   rate: 0
+  rb: {fileID: 0}
   particle: {fileID: 7559554041202738659}
   currentFuel: 0
   maxFuel: 0
   maxThrusts: []
   engines: []
+  capsuleInitialSizeX: 0
   sun: {fileID: 0}
+  WorldSaveManager: {fileID: 0}
+  possessed: 0
 --- !u!1001 &4184129677348468706
 PrefabInstance:
   m_ObjectHideFlags: 0
