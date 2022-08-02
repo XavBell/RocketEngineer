@@ -8,7 +8,7 @@ public class CameraControl : MonoBehaviour
     public Camera cam;
     private float targetZoom;
     Vector3 dragOrigin;
-    private float zoomFactor = 300f;
+    private float zoomFactor = 10f;
     private float zoomLerp = 10f;
     Vector3 position;
     public GameObject sun;
