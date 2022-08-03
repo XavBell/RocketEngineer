@@ -117,8 +117,8 @@ public class PlanetGravity : MonoBehaviour
                     ForceVector = forceDir * G * Mass * rocketMass / (distance.magnitude * distance.magnitude);
                     currentVelocity += ForceVector * Time.deltaTime;
                     currentPos += currentVelocity * Time.deltaTime;
-                    line.SetPosition(i, prevPos);
                     prevPos = currentPos;
+                    line.SetPosition(i, prevPos);
                 }
             }
 
@@ -231,7 +231,7 @@ public class PlanetGravity : MonoBehaviour
         if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 500)
         {
             Mass = 500000000000.0f;
-            atmoAlt = 70.0f;
+            atmoAlt = 100.0f;
             aeroCoefficient = 0.05f;
             planet = bestPlanet;
         }
