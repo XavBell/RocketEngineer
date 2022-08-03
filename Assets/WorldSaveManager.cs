@@ -70,8 +70,8 @@ public class WorldSaveManager : MonoBehaviour
                         saveWorld.tankLocY.Add(currentPrefab.transform.localPosition.y);
                         saveWorld.tankLocZ.Add(currentPrefab.transform.localPosition.z);
 
-                        saveWorld.tankScaleX.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transf;
-                        saveWorld.tankScaleY.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale.y);
+                        saveWorld.tankScaleX.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().size.x);
+                        saveWorld.tankScaleY.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().size.y);
                         saveWorld.tankScaleZ.Add(currentPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().transform.localScale.z);
 
                         GameObject attachTopObj = currentPrefab.gameObject.transform.GetChild(2).gameObject;
