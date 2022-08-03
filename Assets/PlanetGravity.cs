@@ -117,8 +117,8 @@ public class PlanetGravity : MonoBehaviour
                     ForceVector = forceDir * G * Mass * rocketMass / (distance.magnitude * distance.magnitude);
                     currentVelocity += ForceVector * Time.deltaTime;
                     currentPos += currentVelocity * Time.deltaTime;
-                    prevPos = currentPos;
                     line.SetPosition(i, prevPos);
+                    prevPos = currentPos;
                 }
             }
 
