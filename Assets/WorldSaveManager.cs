@@ -62,6 +62,8 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.maxFuel.Add(rocket.GetComponent<PlanetGravity>().maxFuel);
             saveWorld.currentFuel.Add(rocket.GetComponent<PlanetGravity>().currentFuel);
 
+            saveWorld.stageUpdated.Add(rocket.GetComponent<PlanetGravity>().stageUpdated);
+
             if(rocket.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
             {
                 GameObject referenceBody = rocket;
@@ -100,6 +102,10 @@ public class WorldSaveManager : MonoBehaviour
                         saveWorld.engineScaleX.Add(currentPrefab.transform.localScale.x);
                         saveWorld.engineScaleY.Add(currentPrefab.transform.localScale.y);
                         saveWorld.engineScaleZ.Add(currentPrefab.transform.localScale.z);
+
+                        saveWorld.engineFuel.Add(currentPrefab.GetComponent<Part>().fuel);
+                        saveWorld.engineRate.Add(currentPrefab.GetComponent<Part>().rate);
+                        saveWorld.engineMaxThrust.Add(currentPrefab.GetComponent<Part>().maxThrust);
 
                         GameObject attachTopObj = currentPrefab.gameObject.transform.GetChild(0).gameObject;
                         saveWorld.engineAttachTopLocX.Add(attachTopObj.transform.localPosition.x);
@@ -149,6 +155,8 @@ public class WorldSaveManager : MonoBehaviour
         var jsonString = JsonConvert.SerializeObject(saveWorld);
         jsonString = File.ReadAllText(Application.persistentDataPath + "/world.json");
         saveWorld loadedWorld = JsonConvert.DeserializeObject<saveWorld>(jsonString);
+        FileVersionManger version = new FileVersionManger();
+        if(loadedWorld.version == version.currentVersion){
         int alreadyUsed = 0;
         int capsuleID = 0;
 
@@ -164,7 +172,7 @@ public class WorldSaveManager : MonoBehaviour
             setPosition(loadedWorld.capsuleLocX[capsuleID], loadedWorld.capsuleLocY[capsuleID], loadedWorld.capsuleLocZ[capsuleID], capsule);
             GameObject currentPrefab = capsule;
             currentPrefab.GetComponent<PlanetGravity>().posUpdated = true;
-            currentPrefab.GetComponent<PlanetGravity>().stageUpdated = true;
+            currentPrefab.GetComponent<PlanetGravity>().stageUpdated = loadedWorld.stageUpdated[capsuleID];
             currentPrefab.GetComponent<PlanetGravity>().rb = currentPrefab.GetComponent<Rigidbody2D>();
 
             currentPrefab.GetComponent<PlanetGravity>().rocketMass = loadedWorld.rocketMass[capsuleID];
@@ -224,6 +232,11 @@ public class WorldSaveManager : MonoBehaviour
                     currentPrefab.transform.SetParent(capsule.transform);
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
+
+                    currentPrefab.GetComponent<Part>().fuel = loadedWorld.engineFuel[engineCount];
+                    currentPrefab.GetComponent<Part>().maxThrust = loadedWorld.engineMaxThrust[engineCount];
+                    currentPrefab.GetComponent<Part>().rate = loadedWorld.engineRate[engineCount];
+
                     setPosition(loadedWorld.engineLocX[engineCount], loadedWorld.engineLocY[engineCount], loadedWorld.engineLocZ[engineCount], currentPrefab);
 
                     GameObject attachTopObj = currentPrefab.gameObject.transform.GetChild(0).gameObject;
@@ -292,6 +305,10 @@ public class WorldSaveManager : MonoBehaviour
             alreadyUsed += childrenNumber;
         }
         loaded = true;
+        } else if(loadedWorld.version != version.currentVersion)
+        {
+           Debug.Log("File version not compatible");
+        }
     }
 
     public void setPosition(float x, float y, float z, GameObject current)

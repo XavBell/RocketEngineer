@@ -4,6 +4,7 @@ using UnityEngine;
 [System.Serializable]
 public class saveWorld
 {
+    public string version = "0.0.4";
     public List<int> childrenNumber = new List<int>();
     public List<string> types = new List<string>();
 
@@ -15,6 +16,7 @@ public class saveWorld
     public List<float> capsuleLocX = new List<float>();
     public List<float> capsuleLocY = new List<float>();
     public List<float> capsuleLocZ = new List<float>();
+    
 
     //Tank
     public List<float> tankScaleX = new List<float>();
@@ -59,6 +61,11 @@ public class saveWorld
     public List<float> engineAttachBottomLocY = new List<float>();
     public List<float> engineAttachBottomLocZ = new List<float>();
 
+    //Engine values
+    public List<float> engineFuel = new List<float>();
+    public List<float> engineRate = new List<float>();
+    public List<float> engineMaxThrust = new List<float>();
+
     //Decoupler values
     public List<float> decouplerLocX = new List<float>();
     public List<float> decouplerLocY = new List<float>();
@@ -71,4 +78,6 @@ public class saveWorld
     public List<float> rocketMass = new List<float>();
     public List<float> currentFuel = new List<float>();
     public List<float> maxFuel = new List<float>();
+    public List<bool> stageUpdated = new List<bool>();
 }
+

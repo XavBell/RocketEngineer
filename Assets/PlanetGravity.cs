@@ -310,10 +310,10 @@ public class PlanetGravity : MonoBehaviour
                         GameObject CurrentEngine = currentAttach.attachedBody;
                         maxThrust = CurrentEngine.GetComponent<Part>().maxThrust;
                         rate = CurrentEngine.GetComponent<Part>().rate;
+                        particle.transform.position = CurrentEngine.transform.position;
 
                         if (currentFuel <= 0)
                         {
-                            Debug.Log("I'll break your game");
                             maxFuel = CurrentEngine.GetComponent<Part>().fuel;
                             if(stageUpdated == false)
                             {
