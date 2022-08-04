@@ -58,5 +58,17 @@ public class saveWorld
     public List<float> engineAttachBottomLocX = new List<float>();
     public List<float> engineAttachBottomLocY = new List<float>();
     public List<float> engineAttachBottomLocZ = new List<float>();
-    
+
+    //Decoupler values
+    public List<float> decouplerLocX = new List<float>();
+    public List<float> decouplerLocY = new List<float>();
+    public List<float> decouplerLocZ = new List<float>();
+
+
+
+
+    //Rocket values for state
+    public List<float> rocketMass = new List<float>();
+    public List<float> currentFuel = new List<float>();
+    public List<float> maxFuel = new List<float>();
 }

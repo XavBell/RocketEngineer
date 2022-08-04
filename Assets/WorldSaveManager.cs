@@ -14,11 +14,13 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject capsulePrefab;
     public GameObject tankPrefab;
     public GameObject enginePrefab;
+    public GameObject decouplerPrefab;
+
     public bool loaded = false;
     // Start is called before the first frame update
     void Start()
     {
-        loaded = true;
+        //loaded = true;
         //loadWorld();
     }
 
@@ -55,6 +57,10 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.capsuleScaleX.Add(rocket.transform.localScale.x);
             saveWorld.capsuleScaleY.Add(rocket.transform.localScale.y);
             saveWorld.capsuleScaleZ.Add(rocket.transform.localScale.z);
+
+            saveWorld.rocketMass.Add(rocket.GetComponent<PlanetGravity>().rocketMass);
+            saveWorld.maxFuel.Add(rocket.GetComponent<PlanetGravity>().maxFuel);
+            saveWorld.currentFuel.Add(rocket.GetComponent<PlanetGravity>().currentFuel);
 
             if(rocket.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
             {
@@ -117,6 +123,13 @@ public class WorldSaveManager : MonoBehaviour
                         saveWorld.turbopumpSizeX.Add(turbopump.GetComponent<SpriteRenderer>().transform.localScale.x);
                     }
 
+                    if(currentType == "decoupler")
+                    {
+                        saveWorld.decouplerLocX.Add(currentPrefab.transform.localPosition.x);
+                        saveWorld.decouplerLocY.Add(currentPrefab.transform.localPosition.y);
+                        saveWorld.decouplerLocZ.Add(currentPrefab.transform.localPosition.z);
+                    }
+
                     referenceBody = referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
                     saveWorld.childrenNumber[i]++; 
                 }
@@ -141,6 +154,8 @@ public class WorldSaveManager : MonoBehaviour
 
         int engineCount = 0;
         int tankCount = 0;
+        int decouplerCount = 0;
+
         foreach(int rocket in loadedWorld.childrenNumber)
         {
             Debug.Log("CapsuleID" + capsuleID);
@@ -149,8 +164,14 @@ public class WorldSaveManager : MonoBehaviour
             setPosition(loadedWorld.capsuleLocX[capsuleID], loadedWorld.capsuleLocY[capsuleID], loadedWorld.capsuleLocZ[capsuleID], capsule);
             GameObject currentPrefab = capsule;
             currentPrefab.GetComponent<PlanetGravity>().posUpdated = true;
+            currentPrefab.GetComponent<PlanetGravity>().stageUpdated = true;
             currentPrefab.GetComponent<PlanetGravity>().rb = currentPrefab.GetComponent<Rigidbody2D>();
 
+            currentPrefab.GetComponent<PlanetGravity>().rocketMass = loadedWorld.rocketMass[capsuleID];
+            currentPrefab.GetComponent<PlanetGravity>().currentFuel = loadedWorld.currentFuel[capsuleID];
+            currentPrefab.GetComponent<PlanetGravity>().maxFuel = loadedWorld.maxFuel[capsuleID];
+
+            bool decouplerPresent = false;
             int i = 0;
             while(i < childrenNumber)
             {
@@ -170,6 +191,29 @@ public class WorldSaveManager : MonoBehaviour
                     GameObject attachBottomObj = currentPrefab.gameObject.transform.GetChild(1).gameObject;
                     setPosition(loadedWorld.tankAttachBottomLocX[tankCount], loadedWorld.tankAttachBottomLocY[tankCount], loadedWorld.tankAttachBottomLocZ[tankCount], attachBottomObj);
 
+                    GameObject newPrefabDetach = currentPrefab;
+                    if (decouplerPresent == true)
+                    {
+                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
+                        {
+                            currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                        }
+
+                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
+                        {
+                            while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
+                            {
+                                newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                                Debug.Log(newPrefabDetach);
+                                if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
+                                {
+                                    currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
+                                }
+                            }
+
+                        }
+
+                    }
 
                     tankCount++;
                 }
@@ -198,7 +242,46 @@ public class WorldSaveManager : MonoBehaviour
                     GameObject turbopump = currentPrefab.GetComponent<Part>().turbopump;
                     turbopump.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(loadedWorld.turbopumpSizeX[engineCount], turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
 
+                    capsule.GetComponent<PlanetGravity>().activeEngine = currentPrefab;
+
+
+                    GameObject newPrefabDetach = currentPrefab;
+                    if (decouplerPresent == true)
+                    {
+                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
+                        {
+                            currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                        }
+
+                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
+                        {
+                            while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
+                            {
+                                newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
+                                Debug.Log(newPrefabDetach);
+                                if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
+                                {
+                                    currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
+                                }
+                            }
+
+                        }
+
+                    }
+
                     engineCount++;
+                }
+
+                if(loadedWorld.types[i + alreadyUsed] == "decoupler")
+                {
+                    currentPrefab = Instantiate(decouplerPrefab, previousPrefab.GetComponent<Part>().attachBottom.transform.position, Quaternion.identity);
+                    currentPrefab.transform.SetParent(capsule.transform);
+                    previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
+                    currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
+                    setPosition(loadedWorld.decouplerLocX[decouplerCount], loadedWorld.decouplerLocY[decouplerCount], loadedWorld.decouplerLocZ[decouplerCount], currentPrefab);
+
+                    decouplerPresent = true;
+                    decouplerCount++;
                 }
                 
                 

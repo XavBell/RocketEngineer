@@ -622,7 +622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3de28951bb157654eb30c64b2f73508b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  capsule: {fileID: 0}
+  capsule:
+  - {fileID: 0}
 --- !u!4 &1267048804
 Transform:
   m_ObjectHideFlags: 0
@@ -771,6 +772,7 @@ MonoBehaviour:
   capsulePrefab: {fileID: 3186944469201897407, guid: a2c5f5146b2483e48bffbb12ff3fbb88, type: 3}
   tankPrefab: {fileID: 9057782884087415771, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
   enginePrefab: {fileID: 1884268472767985740, guid: f2c6cc36f959a17458714979d591058c, type: 3}
+  decouplerPrefab: {fileID: 1120019584567089529, guid: 3ffda7662d024d84a8cd5a8cd4c4be2d, type: 3}
   loaded: 0
 --- !u!4 &1533443822
 Transform:

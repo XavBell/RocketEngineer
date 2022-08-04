@@ -35,11 +35,11 @@ public class PlanetGravity : MonoBehaviour
     public float currentFuel = 0.0f;
     public float maxFuel = 0.0f;
 
-    GameObject activeEngine;
+    public GameObject activeEngine;
     public float[] maxThrusts;
     public GameObject[] engines;
 
-    bool stageUpdated = false;
+    public bool stageUpdated = false;
     public float capsuleInitialSizeX;
 
     public GameObject sun;
@@ -305,6 +305,7 @@ public class PlanetGravity : MonoBehaviour
                 {
                     if (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "engine" && currentAttach.attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
                     {
+                        
 
                         GameObject CurrentEngine = currentAttach.attachedBody;
                         maxThrust = CurrentEngine.GetComponent<Part>().maxThrust;
@@ -312,6 +313,7 @@ public class PlanetGravity : MonoBehaviour
 
                         if (currentFuel <= 0)
                         {
+                            Debug.Log("I'll break your game");
                             maxFuel = CurrentEngine.GetComponent<Part>().fuel;
                             if(stageUpdated == false)
                             {
