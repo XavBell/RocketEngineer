@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
@@ -19,7 +20,14 @@ public class OnClick : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(SceneManager.GetActiveScene().name.ToString() == "Menu")
+        {
+           GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
+           if(b1.GetComponentInChildren<TextMeshProUGUI>().text.ToString() != MasterManager.GetComponent<MasterManager>().FolderName)
+           {
+                b1.interactable = true;
+           }
+        }
     }
 
     public void clicked()
@@ -53,6 +61,13 @@ public class OnClick : MonoBehaviour
                 b1.interactable = false;
             }
 
+        }
+
+        if(SceneManager.GetActiveScene().name.ToString() == "Menu")
+        {
+            GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
+            MasterManager.GetComponent<MasterManager>().FolderName = b1.GetComponentInChildren<TextMeshProUGUI>().text;
+            b1.interactable = false;
         }
         
     }

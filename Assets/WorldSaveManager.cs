@@ -15,13 +15,16 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject tankPrefab;
     public GameObject enginePrefab;
     public GameObject decouplerPrefab;
+    public savePath savePathRef = new savePath();
 
     public bool loaded = false;
+
+    public GameObject MasterManager;
     // Start is called before the first frame update
     void Start()
     {
-        //loaded = true;
-        //loadWorld();
+        MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
+        loadWorld();   
     }
 
     // Update is called once per frame
@@ -153,7 +156,7 @@ public class WorldSaveManager : MonoBehaviour
     {
         saveWorld saveWorld = new saveWorld();
         var jsonString = JsonConvert.SerializeObject(saveWorld);
-        jsonString = File.ReadAllText(Application.persistentDataPath + "/world.json");
+        jsonString = File.ReadAllText(MasterManager.GetComponent<MasterManager>().worldPath);
         saveWorld loadedWorld = JsonConvert.DeserializeObject<saveWorld>(jsonString);
         FileVersionManger version = new FileVersionManger();
         if(loadedWorld.version == version.currentVersion){

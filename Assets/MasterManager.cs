@@ -14,36 +14,77 @@ using Newtonsoft.Json;
 
 public class MasterManager : MonoBehaviour
 {
+    public savePath savePathRef = new savePath();
     public string FolderName;
 
     public TMP_InputField savePath;
 
     public GameObject AlertText;
 
+    public GameObject scrollBox;
+
+    public GameObject buttonPrefab;
+
+    public GameObject loadButton;
+
+    public string worldPath;
+   
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder);
+        var fileInfo = info.GetDirectories();
+        foreach (var file in fileInfo)
+        {
+            GameObject button = Instantiate(buttonPrefab) as GameObject;
+            GameObject child = button.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollBox.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+
+        }
+
+        DontDestroyOnLoad(this.gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void newGame()
     {
         string folder = savePath.text.ToString();
-        Debug.Log("Folder");
-        if(!Directory.Exists(Application.persistentDataPath + "/" + folder))
+        if(!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + "/" + folder);
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder);
             FolderName = folder;
+            saveWorld saveWorld = new saveWorld();
+            var jsonString = JsonConvert.SerializeObject(saveWorld);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder + "/" + FolderName + ".json", jsonString);
+            worldPath = Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder + "/" + FolderName + ".json";
+            SceneManager.LoadScene("SampleScene");
         }
-        else if(Directory.Exists(Application.persistentDataPath + "/" + folder))
+        else if(Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder))
         {
             StartCoroutine(Text());
+        }
+    }
+
+    public void load()
+    {
+        if(FolderName != null)
+        {
+            worldPath = Application.persistentDataPath + savePathRef.worldsFolder + "/" + FolderName + "/" + FolderName + ".json";
+            SceneManager.LoadScene("SampleScene");
         }
     }
 
