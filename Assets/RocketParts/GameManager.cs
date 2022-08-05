@@ -70,6 +70,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject panel;
 
+    public MasterManager MasterManager = new MasterManager();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,10 +80,8 @@ public class GameManager : MonoBehaviour
             TankButton.interactable = false;
             EngineButton.interactable = false;
             DecouplerButton.interactable = false;
-
-            EngineManager = GameObject.FindGameObjectWithTag("EngineManager");
-            
-
+            GameObject GMM = GameObject.FindGameObjectsWithTag("MasterManager");
+            MasterManager = GMM.GetComponent<MasterManager>();
         }
     }
 
