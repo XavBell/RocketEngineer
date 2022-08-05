@@ -50,14 +50,22 @@ public class MasterManager : MonoBehaviour
             b1text.text = Path.GetFileName(file.ToString());
 
         }
-
+        
         DontDestroyOnLoad(this.gameObject);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKey(KeyCode.G))
+        {
+            SceneManager.LoadScene("TankDesign");
+        }
 
+        if(Input.GetKey(KeyCode.F))
+        {
+            SceneManager.LoadScene("EngineDesign");
+        }
     }
 
     public void newGame()

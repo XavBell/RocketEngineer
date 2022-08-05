@@ -48,6 +48,8 @@ public class GameManager_Tank : MonoBehaviour
 
     public Vector3 startingScaleD;
     public Vector3 startingScaleH;
+
+    public MasterManager MasterManager = new MasterManager();
     // Start is called before the first frame update
     void Start()
     {
@@ -64,6 +66,9 @@ public class GameManager_Tank : MonoBehaviour
 
             startingScaleD = tankSP.transform.localScale;
             startingScaleH = tankSP.transform.localScale;
+
+            GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
+            MasterManager = GMM.GetComponent<MasterManager>();
         }
         
     }
@@ -131,14 +136,14 @@ public class GameManager_Tank : MonoBehaviour
 
     public void save()
     {
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.tankFolder))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.tankFolder);
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder);
         }
 
         saveName = "/" + savePath.text;
 
-        if(!File.Exists(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json"))
+        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json"))
         {
         saveTank saveObject = new saveTank();
         saveObject.path = savePathRef.tankFolder;
@@ -152,17 +157,17 @@ public class GameManager_Tank : MonoBehaviour
         saveObject.mass = mass;
 
         var jsonString = JsonConvert.SerializeObject(saveObject);
-        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json", jsonString);
-        }else if(File.Exists(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json"))
+        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json", jsonString);
+        }else if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName+ savePathRef.engineFolder + saveName + ".json"))
         {
             saveTank saveTank = new saveTank();
             var jsonString2 = JsonConvert.SerializeObject(saveTank);
-            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json");
+            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json");
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString2);
 
             if(loadedTank.usedNum == 0)
             {
-                File.Delete(Application.persistentDataPath + savePathRef.tankFolder + saveName + ".json");
+                File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json");
                 save();
                 return;
             }

@@ -57,7 +57,7 @@ public class GameManager_Engine : MonoBehaviour
     public GameObject panel;
     public GameObject popUpPart;
 
-
+    public MasterManager MasterManager = new MasterManager();
     // Start is called before the first frame update
     void Start()
     {
@@ -75,6 +75,9 @@ public class GameManager_Engine : MonoBehaviour
 
             attachBottomRef = Engine.GetComponent<Part>().attachBottom;
             attachBottomObj = GameObject.Find(attachBottomRef.name);
+
+            GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
+            MasterManager = GMM.GetComponent<MasterManager>();
         }
         
     }
@@ -228,14 +231,14 @@ public class GameManager_Engine : MonoBehaviour
 
     public void save()
     {
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.engineFolder))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.engineFolder);
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder);
         }
         
         saveName = "/"+ savePath.text;
 
-        if(!File.Exists(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json"))
+        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
         {
             saveEngine saveObject = new saveEngine();
             List<float> sizes = new List<float>();
@@ -267,19 +270,19 @@ public class GameManager_Engine : MonoBehaviour
             saveObject.rate_s = rate;
 
             var jsonString = JsonConvert.SerializeObject(saveObject);
-            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json", jsonString);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json", jsonString);
             Debug.Log("saved");
 
-        }else if(File.Exists(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json"))
+        }else if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
         {
             saveEngine saveEngine = new saveEngine();
             var jsonString2 = JsonConvert.SerializeObject(saveEngine);
-            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json");
+            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json");
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString2);
 
             if(loadedEngine.usedNum == 0)
             {
-                File.Delete(Application.persistentDataPath + savePathRef.engineFolder + saveName + ".json");
+                File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json");
                 save();
                 return;
             }

@@ -29,17 +29,21 @@ public class OnClick : MonoBehaviour
                 b1.interactable = true;
            }
         }
+
+        if(SceneManager.GetActiveScene().name.ToString() == "Building")
+        {
+           GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
+           if("/" + b1.GetComponentInChildren<TextMeshProUGUI>().text != GameManager.GetComponent<GameManager>().path || GameManager.GetComponent<GameManager>().partPath != filePath)
+           {
+                b1.interactable = true;
+           }
+        }
     }
 
     public void clicked()
     {
         GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
         GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
-        Debug.Log(GameManager);
-        if(GameManager == null)
-        {
-            Debug.Log("Hi");
-        }
 
         if (GameManager != null)
         {
@@ -47,6 +51,7 @@ public class OnClick : MonoBehaviour
             if (filePath == savePathRef.engineFolder)
             {
                 GameManager.GetComponent<GameManager>().partPath = filePath;
+                GameManager.GetComponent<GameManager>().PrefabToConstruct = GameManager.GetComponent<GameManager>().Engine;
                 b1.interactable = false;
             }
 
@@ -59,6 +64,7 @@ public class OnClick : MonoBehaviour
             if (filePath == savePathRef.tankFolder)
             {
                 GameManager.GetComponent<GameManager>().partPath = filePath;
+                GameManager.GetComponent<GameManager>().PrefabToConstruct = GameManager.GetComponent<GameManager>().Tank;
                 b1.interactable = false;
             }
 

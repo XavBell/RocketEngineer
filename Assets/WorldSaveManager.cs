@@ -24,7 +24,7 @@ public class WorldSaveManager : MonoBehaviour
     void Start()
     {
         MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
-        loadWorld();   
+        loadWorld(); 
     }
 
     // Update is called once per frame
@@ -148,7 +148,7 @@ public class WorldSaveManager : MonoBehaviour
         }
 
         var jsonString = JsonConvert.SerializeObject(saveWorld);
-        System.IO.File.WriteAllText(Application.persistentDataPath +  "/world.json", jsonString);
+        System.IO.File.WriteAllText(MasterManager.GetComponent<MasterManager>().worldPath, jsonString);
         Debug.Log("saved");
     }
 
