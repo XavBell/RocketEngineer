@@ -46,6 +46,7 @@ public class GameManager : MonoBehaviour
     public GameObject Tank;
     public GameObject Engine;
     public GameObject Decoupler;
+    public GameObject PrefabToConstruct;
     public GameObject EngineManager;
 
     public GameObject buttonPrefab;
@@ -769,7 +770,7 @@ public class GameManager : MonoBehaviour
             Destroy(but);
         }
 
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.engineFolder))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder))
         {
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.engineFolder);
         }
@@ -784,10 +785,8 @@ public class GameManager : MonoBehaviour
             child.transform.SetParent(scrollEngine.transform, false);
             TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
             b1text.text = Path.GetFileName(file.ToString());
-
+            
         }
-
-        filePath = savePathRef.engineFolder;
     }
 
     public void retrieveTankSaved()
@@ -822,7 +821,7 @@ public class GameManager : MonoBehaviour
     {
         if(File.Exists(Application.persistentDataPath + savePathRef.engineFolder + path))
         {
-            ConstructPart(Engine);
+            ConstructPart(PrefabToConstruct);
         }
     }
 

@@ -10,6 +10,7 @@ public class OnClick : MonoBehaviour
     public GameObject tankPrefab;
     public GameObject enginePrefab;
     public savePath savePathRef = new savePath();
+    public string filePath;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +43,6 @@ public class OnClick : MonoBehaviour
         if (GameManager != null)
         {
             GameManager.GetComponent<GameManager>().path = "/"+ b1.GetComponentInChildren<TextMeshProUGUI>().text;
-            string filePath = GameManager.GetComponent<GameManager>().filePath;
             if (filePath == savePathRef.engineFolder)
             {
                 GameManager.GetComponent<GameManager>().partPath = filePath;
