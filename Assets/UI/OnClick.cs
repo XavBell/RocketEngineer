@@ -33,6 +33,7 @@ public class OnClick : MonoBehaviour
     public void clicked()
     {
         GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
+        GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
         Debug.Log(GameManager);
         if(GameManager == null)
         {
@@ -65,7 +66,6 @@ public class OnClick : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name.ToString() == "Menu")
         {
-            GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
             MasterManager.GetComponent<MasterManager>().FolderName = b1.GetComponentInChildren<TextMeshProUGUI>().text;
             b1.interactable = false;
         }
