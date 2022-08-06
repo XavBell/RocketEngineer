@@ -248,6 +248,7 @@ public class PlanetGravity : MonoBehaviour
             decouplers = GameObject.FindObjectsOfType<Part>();
             float bestDist = 0;
             Part bestDecoupler = null;
+            Debug.Log("Hello");
             foreach(Part go1 in decouplers)
             {
                 if((go1.transform.position - transform.position).magnitude > bestDist && go1.GetComponent<Part>().type.ToString() == "decoupler")
@@ -255,7 +256,6 @@ public class PlanetGravity : MonoBehaviour
                     bestDecoupler = go1;
                 }
             }
-
             if (bestDecoupler != null)
             {
 
@@ -265,39 +265,36 @@ public class PlanetGravity : MonoBehaviour
                     GameObject referenceGo = go2.attachBottom.GetComponent<AttachPointScript>().referenceBody;
                     if (decouplerToUse == referenceGo.GetComponent<Part>().referenceDecoupler)
                     {
-                        
                         if(referenceGo.GetComponent<Part>().type.ToString() == "tank")
                         {
                             rocketMass -= (referenceGo.GetComponent<Part>().mass - maxFuel);
-                            capsule.GetComponent<BoxCollider2D>().size += new Vector2(capsuleInitialSizeX - referenceGo.GetComponent<Part>().boxSize.x, referenceGo.GetComponent<Part>().boxSize.y) * -1;
-                            capsule.GetComponent<BoxCollider2D>().offset += new Vector2(0, (referenceGo.GetComponent<Part>().offsets.y));
-
                         }
 
                         if (referenceGo.GetComponent<Part>().type.ToString() == "engine")
                         {
                             rocketMass -= referenceGo.GetComponent<Part>().mass;
-                            capsule.GetComponent<BoxCollider2D>().size -= new Vector2(capsuleInitialSizeX - referenceGo.GetComponent<Part>().boxSize.x, referenceGo.GetComponent<Part>().boxSize.y);
-                            capsule.GetComponent<BoxCollider2D>().offset -= new Vector2(0, (referenceGo.GetComponent<Part>().offsets.y));
-
                         }
-                        UnityEngine.Object.Destroy(referenceGo);
+
+                        if(referenceGo != null){
+                            Destroy(referenceGo);
+                        }
                         
                     }
                 }
-                bestDecoupler.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
-                UnityEngine.Object.Destroy(decouplerToUse);
-                stageUpdated = false;
+                decouplerToUse.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
+                Destroy(decouplerToUse);
             }
             
-
+            if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null){
+                stageUpdated = false;
+            }
         }
 
         
         
-      while (x == 0)
+      while (x == 0 && capsule.GetComponent<Part>().attachBottom.attachedBody != null)
       {
-            if (currentAttach.attachedBody != null)
+            if (currentAttach.GetComponent<AttachPointScript>().attachedBody != null)
             {
                 
                 currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachBottom;

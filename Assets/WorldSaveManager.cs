@@ -61,6 +61,10 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.capsuleScaleY.Add(rocket.transform.localScale.y);
             saveWorld.capsuleScaleZ.Add(rocket.transform.localScale.z);
 
+            saveWorld.capsuleRotX.Add(rocket.transform.eulerAngles.x);
+            saveWorld.capsuleRotY.Add(rocket.transform.eulerAngles.y);
+            saveWorld.capsuleRotZ.Add(rocket.transform.eulerAngles.z);
+
             saveWorld.rocketMass.Add(rocket.GetComponent<PlanetGravity>().rocketMass);
             saveWorld.maxFuel.Add(rocket.GetComponent<PlanetGravity>().maxFuel);
             saveWorld.currentFuel.Add(rocket.GetComponent<PlanetGravity>().currentFuel);
@@ -173,6 +177,7 @@ public class WorldSaveManager : MonoBehaviour
             int childrenNumber = rocket;
             GameObject capsule = Instantiate(capsulePrefab, Vector3.zero, Quaternion.identity);
             setPosition(loadedWorld.capsuleLocX[capsuleID], loadedWorld.capsuleLocY[capsuleID], loadedWorld.capsuleLocZ[capsuleID], capsule);
+            capsule.transform.rotation = Quaternion.Euler(loadedWorld.capsuleRotX[capsuleID], loadedWorld.capsuleRotY[capsuleID], loadedWorld.capsuleRotZ[capsuleID]);
             GameObject currentPrefab = capsule;
             currentPrefab.GetComponent<PlanetGravity>().posUpdated = true;
             currentPrefab.GetComponent<PlanetGravity>().stageUpdated = loadedWorld.stageUpdated[capsuleID];
@@ -191,6 +196,7 @@ public class WorldSaveManager : MonoBehaviour
                 {
                     currentPrefab = Instantiate(tankPrefab, previousPrefab.GetComponent<Part>().attachBottom.transform.position, Quaternion.identity);
                     currentPrefab.transform.SetParent(capsule.transform);
+                    currentPrefab.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
                     setPosition(loadedWorld.tankLocX[tankCount], loadedWorld.tankLocY[tankCount], loadedWorld.tankLocZ[tankCount], currentPrefab);
@@ -233,6 +239,7 @@ public class WorldSaveManager : MonoBehaviour
                 {
                     currentPrefab = Instantiate(enginePrefab, previousPrefab.GetComponent<Part>().attachBottom.transform.position, Quaternion.identity);
                     currentPrefab.transform.SetParent(capsule.transform);
+                    currentPrefab.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
 
@@ -292,6 +299,7 @@ public class WorldSaveManager : MonoBehaviour
                 {
                     currentPrefab = Instantiate(decouplerPrefab, previousPrefab.GetComponent<Part>().attachBottom.transform.position, Quaternion.identity);
                     currentPrefab.transform.SetParent(capsule.transform);
+                    currentPrefab.transform.localRotation = Quaternion.Euler(0, 0, 0);
                     previousPrefab.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
                     currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = previousPrefab;
                     setPosition(loadedWorld.decouplerLocX[decouplerCount], loadedWorld.decouplerLocY[decouplerCount], loadedWorld.decouplerLocZ[decouplerCount], currentPrefab);

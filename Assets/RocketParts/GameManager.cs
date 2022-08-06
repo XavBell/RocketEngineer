@@ -77,7 +77,6 @@ public class GameManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name.ToString() == "Building")
         {
-            DecouplerButton.interactable = false;
             GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
             MasterManager = GMM.GetComponent<MasterManager>();
 
@@ -167,7 +166,7 @@ public class GameManager : MonoBehaviour
             }
 
 
-            if (partToConstruct.GetComponent<Part>().type.ToString() == "decoupler" && tankBuilt == true && Cursor.visible == false)
+            if (partToConstruct.GetComponent<Part>().type.ToString() == "decoupler" && Cursor.visible == false)
             {
                 parts = GameObject.FindObjectsOfType<Part>();
                 attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
@@ -277,23 +276,23 @@ public class GameManager : MonoBehaviour
 
             if (capsuleBuilt == false)
             {
-                DecouplerButton.interactable = false;
+                //DecouplerButton.interactable = false;
             }
 
             if (capsuleBuilt == true)
             {
                 CapsuleButton.interactable = false;
-                DecouplerButton.interactable = false;
+                //DecouplerButton.interactable = false;
             }
 
             if (tankBuilt == true)
             {
-                DecouplerButton.interactable = true;
+                //DecouplerButton.interactable = true;
             }
 
             if (engineBuilt == true)
             {
-                DecouplerButton.interactable = true;
+                //DecouplerButton.interactable = true;
             }
         }
 
@@ -861,11 +860,6 @@ public class GameManager : MonoBehaviour
         {
             capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
         }
-
-
-
-        capsule.GetComponent<BoxCollider2D>().size += new Vector2(boxScale.x - capsuleInitialSizeX, boxScale.y );
-        capsule.GetComponent<BoxCollider2D>().offset += offsets;
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
     }
 

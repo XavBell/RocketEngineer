@@ -5,6 +5,25 @@ using UnityEngine;
 public class saveWorld
 {
     public string version = "0.0.4";
+
+
+    //SolarSystem
+    //Earth
+    public List<float> earthLocX = new List<float>();
+    public List<float> earthLocY = new List<float>();
+    public List<float> earthLocZ = new List<float>();
+
+    public List<float> earthRotX = new List<float>();
+    public List<float> earthRotY = new List<float>();
+    public List<float> earthRotZ = new List<float>();
+
+    //Moon
+    public List<float> moonLocX = new List<float>();
+    public List<float> moonLocY = new List<float>();
+    public List<float> moonLocZ = new List<float>();
+
+
+
     public List<int> childrenNumber = new List<int>();
     public List<string> types = new List<string>();
 
@@ -16,6 +35,10 @@ public class saveWorld
     public List<float> capsuleLocX = new List<float>();
     public List<float> capsuleLocY = new List<float>();
     public List<float> capsuleLocZ = new List<float>();
+
+    public List<float> capsuleRotX = new List<float>();
+    public List<float> capsuleRotY = new List<float>();
+    public List<float> capsuleRotZ = new List<float>();
     
 
     //Tank
@@ -70,9 +93,6 @@ public class saveWorld
     public List<float> decouplerLocX = new List<float>();
     public List<float> decouplerLocY = new List<float>();
     public List<float> decouplerLocZ = new List<float>();
-
-
-
 
     //Rocket values for state
     public List<float> rocketMass = new List<float>();
