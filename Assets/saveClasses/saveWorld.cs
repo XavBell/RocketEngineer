@@ -5,22 +5,22 @@ using UnityEngine;
 public class saveWorld
 {
     public string version = "0.0.4";
-
+    public bool previouslyLoaded = false;
 
     //SolarSystem
     //Earth
-    public List<float> earthLocX = new List<float>();
-    public List<float> earthLocY = new List<float>();
-    public List<float> earthLocZ = new List<float>();
+    public float earthLocX;
+    public float earthLocY;
+    public float earthLocZ;
 
-    public List<float> earthRotX = new List<float>();
-    public List<float> earthRotY = new List<float>();
-    public List<float> earthRotZ = new List<float>();
+    public float earthRotX;
+    public float earthRotY;
+    public float earthRotZ;
 
     //Moon
-    public List<float> moonLocX = new List<float>();
-    public List<float> moonLocY = new List<float>();
-    public List<float> moonLocZ = new List<float>();
+    public float moonLocX;
+    public float moonLocY;
+    public float moonLocZ;
 
 
 

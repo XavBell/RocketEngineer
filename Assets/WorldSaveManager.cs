@@ -17,6 +17,9 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject decouplerPrefab;
     public savePath savePathRef = new savePath();
 
+    public GameObject earth;
+    public GameObject moon;
+
     public bool loaded = false;
 
     public GameObject MasterManager;
@@ -45,6 +48,21 @@ public class WorldSaveManager : MonoBehaviour
     public void saveTheWorld()
     {
         saveWorld saveWorld = new saveWorld();
+
+        saveWorld.earthLocX = earth.transform.localPosition.x;
+        saveWorld.earthLocY = earth.transform.localPosition.y;
+        saveWorld.earthLocZ = earth.transform.localPosition.z;
+
+        saveWorld.earthRotX = earth.transform.eulerAngles.x;
+        saveWorld.earthRotY = earth.transform.eulerAngles.y;
+        saveWorld.earthRotZ = earth.transform.eulerAngles.z;
+
+        saveWorld.moonLocX = moon.transform.localPosition.x;
+        saveWorld.moonLocY = moon.transform.localPosition.y;
+        saveWorld.moonLocZ = moon.transform.localPosition.z;
+
+        saveWorld.previouslyLoaded = true;
+
         GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
         Debug.Log(rockets.Length);
         int i = 0;
@@ -171,6 +189,12 @@ public class WorldSaveManager : MonoBehaviour
         int tankCount = 0;
         int decouplerCount = 0;
 
+        if(loadedWorld.previouslyLoaded == true){
+            earth.transform.localPosition = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
+            earth.transform.rotation = Quaternion.Euler(loadedWorld.earthRotX, loadedWorld.earthRotY, loadedWorld.earthRotZ);
+            moon.transform.localPosition = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+        }
+
         foreach(int rocket in loadedWorld.childrenNumber)
         {
             Debug.Log("CapsuleID" + capsuleID);
@@ -287,11 +311,8 @@ public class WorldSaveManager : MonoBehaviour
                                     currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
                                 }
                             }
-
                         }
-
                     }
-
                     engineCount++;
                 }
 
@@ -307,8 +328,6 @@ public class WorldSaveManager : MonoBehaviour
                     decouplerPresent = true;
                     decouplerCount++;
                 }
-                
-                
                 i++;
             }
             capsule.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
