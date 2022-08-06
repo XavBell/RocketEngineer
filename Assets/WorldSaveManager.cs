@@ -79,6 +79,9 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.capsuleScaleY.Add(rocket.transform.localScale.y);
             saveWorld.capsuleScaleZ.Add(rocket.transform.localScale.z);
 
+            saveWorld.capsuleSpeedX.Add(rocket.GetComponent<PlanetGravity>().rb.velocity.x);
+            saveWorld.capsuleSpeedY.Add(rocket.GetComponent<PlanetGravity>().rb.velocity.y);
+
             saveWorld.capsuleRotX.Add(rocket.transform.eulerAngles.x);
             saveWorld.capsuleRotY.Add(rocket.transform.eulerAngles.y);
             saveWorld.capsuleRotZ.Add(rocket.transform.eulerAngles.z);
@@ -210,6 +213,8 @@ public class WorldSaveManager : MonoBehaviour
             currentPrefab.GetComponent<PlanetGravity>().rocketMass = loadedWorld.rocketMass[capsuleID];
             currentPrefab.GetComponent<PlanetGravity>().currentFuel = loadedWorld.currentFuel[capsuleID];
             currentPrefab.GetComponent<PlanetGravity>().maxFuel = loadedWorld.maxFuel[capsuleID];
+
+            currentPrefab.GetComponent<PlanetGravity>().rb.velocity = new Vector2(loadedWorld.capsuleSpeedX[capsuleID], loadedWorld.capsuleSpeedY[capsuleID]);
 
             bool decouplerPresent = false;
             int i = 0;

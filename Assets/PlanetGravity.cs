@@ -144,6 +144,11 @@ public class PlanetGravity : MonoBehaviour
             if(go.GetComponent<TypeScript>().type == "earth")
             go.transform.position = go.transform.position + difference;
         }
+
+        foreach(GameObject go in rockets)
+        {
+            go.transform.position = go.transform.position + difference;
+        }
         sun.transform.position = sun.transform.position + difference;
         }
         

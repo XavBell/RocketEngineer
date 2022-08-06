@@ -39,6 +39,9 @@ public class saveWorld
     public List<float> capsuleRotX = new List<float>();
     public List<float> capsuleRotY = new List<float>();
     public List<float> capsuleRotZ = new List<float>();
+
+    public List<float> capsuleSpeedX = new List<float>();
+    public List<float> capsuleSpeedY = new List<float>();
     
 
     //Tank
