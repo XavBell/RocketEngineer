@@ -77,14 +77,13 @@ public class GameManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name.ToString() == "Building")
         {
-            TankButton.interactable = false;
-            EngineButton.interactable = false;
             DecouplerButton.interactable = false;
             GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
             MasterManager = GMM.GetComponent<MasterManager>();
 
             retrieveEngineSaved();
             retrieveTankSaved();
+            retrieveRocketSaved();
         }
     }
 
@@ -278,16 +277,12 @@ public class GameManager : MonoBehaviour
 
             if (capsuleBuilt == false)
             {
-                TankButton.interactable = false;
-                EngineButton.interactable = false;
                 DecouplerButton.interactable = false;
             }
 
             if (capsuleBuilt == true)
             {
                 CapsuleButton.interactable = false;
-                TankButton.interactable = true;
-                EngineButton.interactable = true;
                 DecouplerButton.interactable = false;
             }
 
@@ -359,7 +354,7 @@ public class GameManager : MonoBehaviour
         if (fileTypePath == savePathRef.rocketFolder)
         {
             var jsonString = JsonConvert.SerializeObject(saveObject);
-            jsonString = File.ReadAllText(Application.persistentDataPath + fileTypePath + path);
+            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             saveRocket loadedRocket = JsonConvert.DeserializeObject<saveRocket>(jsonString);
             int engineCount = 0;
             int tankCount = 0;
@@ -490,16 +485,12 @@ public class GameManager : MonoBehaviour
 
             if (capsuleBuilt == false)
             {
-                TankButton.interactable = false;
-                EngineButton.interactable = false;
                 DecouplerButton.interactable = false;
             }
 
             if (capsuleBuilt == true)
             {
                 CapsuleButton.interactable = false;
-                TankButton.interactable = true;
-                EngineButton.interactable = true;
                 DecouplerButton.interactable = false;
             }
 
@@ -507,8 +498,6 @@ public class GameManager : MonoBehaviour
             {
                 DecouplerButton.interactable = true;
             }
-
-            scrollBox.SetActive(false);
 
         }
 
@@ -556,18 +545,16 @@ public class GameManager : MonoBehaviour
         GameObject attachedBody;
         if(capsule != null)
         {
-            Debug.Log("ok");
            if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
            {
             var jsonString = JsonConvert.SerializeObject(saveObject);
-            if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
+            if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
             {
-                Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
+                Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
             }
 
-            if(!File.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
+            if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json"))
             {
-                Debug.Log("passed");
                 attachedBody = capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
 
                 while (attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
@@ -581,14 +568,11 @@ public class GameManager : MonoBehaviour
                         //Add 1 to usedNum
                         saveEngine saveEngine = new saveEngine();
                         var jsonString1 = JsonConvert.SerializeObject(saveEngine);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
                         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
                         loadedEngine.usedNum += 1;
                         jsonString1 = JsonConvert.SerializeObject(loadedEngine);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
-
-
-
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
                     }
 
                     if (attachedBody.GetComponent<Part>().type == "tank")
@@ -600,11 +584,11 @@ public class GameManager : MonoBehaviour
                         //Add 1 to usedNum
                         saveTank saveTank = new saveTank();
                         var jsonString1 = JsonConvert.SerializeObject(saveTank);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
                         saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
                         loadedTank.usedNum += 1;
                         jsonString1 = JsonConvert.SerializeObject(loadedTank);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
 
                     }
 
@@ -622,11 +606,11 @@ public class GameManager : MonoBehaviour
                         //Add 1 to usedNum
                         saveEngine saveEngine = new saveEngine();
                         var jsonString1 = JsonConvert.SerializeObject(saveEngine);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
                         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
                         loadedEngine.usedNum = 1.0f + loadedEngine.usedNum;
                         jsonString1 = JsonConvert.SerializeObject(loadedEngine);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
 
                     }
                     if (attachedBody.GetComponent<Part>().type == "tank")
@@ -636,16 +620,16 @@ public class GameManager : MonoBehaviour
                         //Add 1 to usedNum
                         saveTank saveTank = new saveTank();
                         var jsonString1 = JsonConvert.SerializeObject(saveTank);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
                         saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
                         loadedTank.usedNum += 1;
                         jsonString1 = JsonConvert.SerializeObject(loadedTank);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
                     }
                 }
                 jsonString = JsonConvert.SerializeObject(saveObject);
-                System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json", jsonString);
-            } else if(File.Exists(Application.persistentDataPath + savePathRef.rocketFolder + savePath + ".json"))
+                System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json", jsonString);
+            } else if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json"))
             {
                 int x = Screen.width / 2;
                 int y = Screen.height / 2;
@@ -670,11 +654,11 @@ public class GameManager : MonoBehaviour
     public void deleteRocket()
     {
         //Retrieve file and for each tank/engine saved remove 1 to usedNum
-        if(File.Exists(Application.persistentDataPath + savePathRef.rocketFolder + path))
+        if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + path))
         {
             saveRocket saveRocket = new saveRocket();
             var jsonString = JsonConvert.SerializeObject(saveRocket);
-            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.rocketFolder + path );
+            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + path );
             saveRocket loadedRocket = JsonConvert.DeserializeObject<saveRocket>(jsonString);
             int engineCount = 0;
             int tankCount = 0;
@@ -684,11 +668,11 @@ public class GameManager : MonoBehaviour
                 {
                     saveEngine saveEngine = new saveEngine();
                     var jsonString1 = JsonConvert.SerializeObject(saveEngine);
-                    jsonString1 = File.ReadAllText(Application.persistentDataPath + loadedRocket.enginePaths[engineCount] + loadedRocket.engineNames[engineCount] + ".json");
+                    jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + loadedRocket.enginePaths[engineCount] + loadedRocket.engineNames[engineCount] + ".json");
                     saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
                     loadedEngine.usedNum--;
                     jsonString1 = JsonConvert.SerializeObject(loadedEngine);
-                    System.IO.File.WriteAllText(Application.persistentDataPath + loadedRocket.enginePaths[engineCount] + loadedRocket.engineNames[engineCount] + ".json", jsonString1);
+                    System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + loadedRocket.enginePaths[engineCount] + loadedRocket.engineNames[engineCount] + ".json", jsonString1);
                     engineCount++;
                 }
 
@@ -696,17 +680,17 @@ public class GameManager : MonoBehaviour
                 {
                     saveTank saveTank = new saveTank();
                     var jsonString1 = JsonConvert.SerializeObject(saveTank);
-                    jsonString1 = File.ReadAllText(Application.persistentDataPath + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] + ".json");
+                    jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] + ".json");
                     saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
                     loadedTank.usedNum--;
                     jsonString1 = JsonConvert.SerializeObject(loadedTank);
-                    System.IO.File.WriteAllText(Application.persistentDataPath + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] + ".json", jsonString1);
+                    System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] + ".json", jsonString1);
                     tankCount++;
                 }
                 
             }
 
-            File.Delete(Application.persistentDataPath + savePathRef.rocketFolder + path);
+            File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + path);
             retrieveRocketSaved();
         }
         
@@ -717,7 +701,6 @@ public class GameManager : MonoBehaviour
     public void retrieveRocketSaved()
     {
 
-        scrollBox.SetActive(true);
         
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("spawnedButton");
         foreach(GameObject but in buttons)
@@ -725,20 +708,16 @@ public class GameManager : MonoBehaviour
             Destroy(but);
         }
 
-        Debug.Log(savePathRef.rocketFolder);
-
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.rocketFolder))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.rocketFolder);
-            scrollBox.SetActive(false);
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
             return;
         }
 
-        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.rocketFolder);
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
         var fileInfo = info.GetFiles();
         if(fileInfo.Length == 0)
         {
-            scrollBox.SetActive(false);
             return;
         }
         foreach (var file in fileInfo)
@@ -749,9 +728,9 @@ public class GameManager : MonoBehaviour
             child.transform.SetParent(scroll.transform, false);
             TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
             b1text.text = Path.GetFileName(file.ToString());
+            child.GetComponentInChildren<OnClick>().filePath = savePathRef.rocketFolder;
 
         }
-        filePath = savePathRef.rocketFolder;
         
     }
 
@@ -821,49 +800,53 @@ public class GameManager : MonoBehaviour
 
     public void DeleteEngine()
     {
-        if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path))
+        if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path) && capsule == null)
         {
             saveEngine saveEngine = new saveEngine();
             saveTank saveTank = new saveTank();
             if(partPath == savePathRef.engineFolder)
             {
-            var jsonString2 = JsonConvert.SerializeObject(saveEngine);
-            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
-            saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString2);
+                var jsonString2 = JsonConvert.SerializeObject(saveEngine);
+                jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
+                saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString2);
 
-            if(loadedEngine.usedNum == 0)
-            {
-               File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
-               retrieveEngineSaved();
-            }else if(loadedEngine.usedNum > 0)
-            {
-                int x = Screen.width / 2;
-                int y = Screen.height / 2;
-                Vector2 position = new Vector2(x, y);
-                Instantiate(popUpPart, position, Quaternion.identity);
-                panel.active = false;
-            }
+                if(loadedEngine.usedNum == 0)
+                {
+                   File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
+                   retrieveEngineSaved();
+                }else if(loadedEngine.usedNum > 0)
+                {
+                    int x = Screen.width / 2;
+                    int y = Screen.height / 2;
+                    Vector2 position = new Vector2(x, y);
+                    Instantiate(popUpPart, position, Quaternion.identity);
+                    panel.active = false;
+                }
             }
 
             if(partPath == savePathRef.tankFolder)
             {
-            var jsonString2 = JsonConvert.SerializeObject(saveTank);
-            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
-            saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString2);
+                var jsonString2 = JsonConvert.SerializeObject(saveTank);
+                jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
+                saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString2);
 
-            if(loadedTank.usedNum == 0)
-            {
-               File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
-               retrieveTankSaved();
-            }else if(loadedTank.usedNum > 0)
-            {
-                int x = Screen.width / 2;
-                int y = Screen.height / 2;
-                Vector2 position = new Vector2(x, y);
-                Instantiate(popUpPart, position, Quaternion.identity);
-                panel.active = false;
+                if(loadedTank.usedNum == 0)
+                {
+                   File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
+                   retrieveTankSaved();
+                }else if(loadedTank.usedNum > 0)
+                {
+                    int x = Screen.width / 2;
+                    int y = Screen.height / 2;
+                    Vector2 position = new Vector2(x, y);
+                    Instantiate(popUpPart, position, Quaternion.identity);
+                    panel.active = false;
+                }
             }
-            }
+        }else if(capsule != null)
+        {
+            Debug.Log("Clear the rocket before removing engine designs");
+            //TODO 
         }
     }
 

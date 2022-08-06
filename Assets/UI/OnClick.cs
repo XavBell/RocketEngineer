@@ -57,7 +57,7 @@ public class OnClick : MonoBehaviour
 
             if (filePath == savePathRef.rocketFolder)
             {
-                //GameManager.GetComponent<GameManager>().load(savePathRef.rocketFolder);
+                GameManager.GetComponent<GameManager>().partPath = filePath;
                 b1.interactable = false;
             }
 
