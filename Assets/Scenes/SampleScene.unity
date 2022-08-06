@@ -223,6 +223,8 @@ MonoBehaviour:
   cam: {fileID: 519420031}
   sun: {fileID: 1877019593}
   rocket: {fileID: 0}
+  previousPos: {x: 0, y: 0, z: 0}
+  CamRef: {fileID: 519420028}
 --- !u!1 &680244244 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1505743135181101062, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
@@ -885,19 +887,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1768743619689722346, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 1768743619689722346, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 1768743619689722346, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.02
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1768743619689722346, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.9299996
+      value: 30.16
       objectReference: {fileID: 0}
     - target: {fileID: 1768743619689722346, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1054,12 +1056,20 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 503832032205420218, guid: e62bce303f1107b49af062e356eeac1e, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10922
+      objectReference: {fileID: 0}
+    - target: {fileID: 503832032205420218, guid: e62bce303f1107b49af062e356eeac1e, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 10922
+      objectReference: {fileID: 0}
+    - target: {fileID: 503832032205420218, guid: e62bce303f1107b49af062e356eeac1e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3405
+      value: -1180348
       objectReference: {fileID: 0}
     - target: {fileID: 503832032205420218, guid: e62bce303f1107b49af062e356eeac1e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 503832032205420218, guid: e62bce303f1107b49af062e356eeac1e, type: 3}
       propertyPath: m_LocalPosition.z

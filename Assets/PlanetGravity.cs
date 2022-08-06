@@ -8,13 +8,14 @@ using UnityEngine.SceneManagement;
 public class PlanetGravity : MonoBehaviour
 {
 
+
     public GameObject[] planets;
     public bool posUpdated;
     public GameObject capsule;
     //Gravity variables for Earth
     public GameObject planet;
     public float Mass = 90000000000.0f; //Planet mass in kg
-    private float G = 0.0000000000667f; //Gravitational constant
+    private float G = 0.0000000000000005f; //Gravitational constant
     public float atmoAlt = 70.0f;
     public float aeroCoefficient = 5f;
     float maxAlt;
@@ -94,9 +95,11 @@ public class PlanetGravity : MonoBehaviour
 
             Vector3 ResultVector = ForceVector + Thrust + AeroForces;
             rb.AddForce(ResultVector);
+            Debug.Log(ResultVector);
 
             if(possessed == true)
             {
+                updateFloatReference();
                 updateReferenceStage();
                 _orientation();
                 _thrust();
@@ -127,7 +130,24 @@ public class PlanetGravity : MonoBehaviour
         }
     }
 
+    void updateFloatReference()
+    {
+        if((capsule.transform.position - new Vector3(0, 0, 0)).magnitude > 100){
+        GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
+        GameObject sun = GameObject.FindGameObjectWithTag("Sun");
+        GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
 
+        Vector3 difference = new Vector3(0, 0, capsule.transform.position.z) - capsule.transform.position;
+        capsule.transform.position = new Vector3(0, 0, capsule.transform.position.z);
+        foreach(GameObject go in planetsToMove)
+        {
+            if(go.GetComponent<TypeScript>().type == "earth")
+            go.transform.position = go.transform.position + difference;
+        }
+        sun.transform.position = sun.transform.position + difference;
+        }
+        
+    }
 
     void _thrust()
     {
@@ -224,15 +244,15 @@ public class PlanetGravity : MonoBehaviour
         {
             Mass = 900000000.0f;
             atmoAlt = 10.0f;
-            aeroCoefficient = 5f;
+            aeroCoefficient = 0.0f;
             planet = bestPlanet;
         }
 
         if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 500)
         {
-            Mass = 500000000000.0f;
+            Mass = 44361907590000000000.0f;
             atmoAlt = 100.0f;
-            aeroCoefficient = 0.05f;
+            aeroCoefficient = 0.0f;
             planet = bestPlanet;
         }
 

@@ -13,6 +13,9 @@ public class CameraControl : MonoBehaviour
     Vector3 position;
     public GameObject sun;
     public GameObject rocket;
+    public Vector3 previousPos = new Vector3(0, 0, 0);
+
+    public GameObject CamRef;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +27,10 @@ public class CameraControl : MonoBehaviour
     {
         PanCamera();
         ZoomIn();
-        Rocket();
-
+        if(rocket != null){
+            Rocket();
+        }
+        rocket = GameObject.FindGameObjectWithTag("capsule");
 
     }
 
@@ -60,14 +65,12 @@ public class CameraControl : MonoBehaviour
     public void Rocket()
     {
 
+
         if (Input.GetKey(KeyCode.E))
         {
-            float X = rocket.transform.position.x;
-            float Y = rocket.transform.position.y;
-            position.Set(X, Y, 0f);
-
-            cam.transform.position = position;
+            CamRef.transform.position = new Vector3(rocket.transform.position.x, rocket.transform.position.y, -10);
         }
+
 
     }
 
