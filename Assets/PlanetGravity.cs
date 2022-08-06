@@ -48,6 +48,9 @@ public class PlanetGravity : MonoBehaviour
 
     public bool possessed = false;
 
+    public GameObject TimeRef;
+    public TimeManager TimeManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -58,6 +61,13 @@ public class PlanetGravity : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(TimeRef == null)
+        {
+            TimeRef = GameObject.FindGameObjectWithTag("TimeManager");
+            if(TimeRef != null){
+                TimeManager = TimeRef.GetComponent<TimeManager>();
+            }
+        }
         if(WorldSaveManager == null)
         {
             WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
@@ -93,9 +103,8 @@ public class PlanetGravity : MonoBehaviour
                 AeroForces = Vector3.zero;
             }
 
-            Vector3 ResultVector = ForceVector + Thrust + AeroForces;
+            Vector3 ResultVector = (ForceVector + Thrust + AeroForces)*TimeManager.scaler;
             rb.AddForce(ResultVector);
-            Debug.Log(ResultVector);
 
             if(possessed == true)
             {
@@ -135,6 +144,7 @@ public class PlanetGravity : MonoBehaviour
         if((capsule.transform.position - new Vector3(0, 0, 0)).magnitude > 100){
         GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
         GameObject sun = GameObject.FindGameObjectWithTag("Sun");
+        GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
         GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
 
         Vector3 difference = new Vector3(0, 0, capsule.transform.position.z) - capsule.transform.position;
@@ -147,8 +157,11 @@ public class PlanetGravity : MonoBehaviour
 
         foreach(GameObject go in rockets)
         {
+            if(go.GetComponent<PlanetGravity>().possessed == false){
             go.transform.position = go.transform.position + difference;
+            }
         }
+        cam.transform.position = cam.transform.position + difference;
         sun.transform.position = sun.transform.position + difference;
         }
         
@@ -242,12 +255,12 @@ public class PlanetGravity : MonoBehaviour
         if(bestDistance > 500)
         {
             planet = GameObject.FindGameObjectWithTag("Sun");
-            Mass = 4000000000000.0f;
+            Mass = 14639429504700000000000000000.0f;
         }
 
         if (bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 500)
         {
-            Mass = 900000000.0f;
+            Mass = 5456514633570000000.0f;
             atmoAlt = 10.0f;
             aeroCoefficient = 0.0f;
             planet = bestPlanet;

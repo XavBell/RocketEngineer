@@ -8,6 +8,8 @@ public class TimeManager : MonoBehaviour
     float initialTimeScale;
     float initialTimeFixedScale;
 
+    public float scaler = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,18 +27,15 @@ public class TimeManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.P))
         {
-            Time.timeScale = initialTimeScale * 100;
-            Time.fixedDeltaTime = initialTimeFixedScale * 100;
+            scaler = 100000;
         }
         if (Input.GetKey(KeyCode.O))
         {
-            Time.timeScale = initialTimeScale * 2;
-            Time.fixedDeltaTime = initialTimeFixedScale * 2;
+            scaler = 10;
         }
         if (Input.GetKey(KeyCode.I))
         {
-            Time.timeScale = initialTimeScale;
-            Time.fixedDeltaTime = initialTimeFixedScale;
+            scaler = 1;
         }
     }
 }
