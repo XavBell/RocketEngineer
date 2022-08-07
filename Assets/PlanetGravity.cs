@@ -10,7 +10,7 @@ public class PlanetGravity : MonoBehaviour
 
 
     public GameObject[] planets;
-    public bool posUpdated;
+    public bool posUpdated = false;
     public GameObject capsule;
     //Gravity variables for Earth
     public GameObject planet;
@@ -51,18 +51,12 @@ public class PlanetGravity : MonoBehaviour
     public GameObject TimeRef;
     public TimeManager TimeManager;
 
-    public GameObject[] planetsToMove;
-    public GameObject cam;
-
-    public float threshold = 0.1f;
+    public float threshold = 10f;
 
     // Start is called before the first frame update
     void Start()
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
-        planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
-        sun = GameObject.FindGameObjectWithTag("Sun");
-        cam = GameObject.FindGameObjectWithTag("MainCamera");
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -81,19 +75,25 @@ public class PlanetGravity : MonoBehaviour
             WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         }
 
-        //return;
-        if (SceneManager.GetActiveScene().name == "SampleScene" && posUpdated == false)
-        {
-            //Set initial position and scale of rocket when it enters the world
-            transform.position = new Vector3(1 , 51, 1);
-            transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-            rb = GetComponent<Rigidbody2D>();
-            posUpdated = true;
-        }
 
         if (SceneManager.GetActiveScene().name == "SampleScene" && WorldSaveManager.GetComponent<WorldSaveManager>().loaded == true)
         {
-            
+            if (posUpdated == false)
+            {
+                
+                //Set initial position and scale of rocket when it enters the world
+                GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
+                foreach(GameObject planet in planetsToMove) {
+                    if(planet.GetComponent<TypeScript>().type == "earth")
+                    {
+                        transform.position = new Vector3(planet.transform.position.x, planet.transform.position.y + 50f, 0);
+                    }
+                }
+                
+                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+                rb = GetComponent<Rigidbody2D>();
+                posUpdated = true;
+            }
 
             updateReferenceBody();
             //Gravity
@@ -116,7 +116,7 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                
+                updateFloatReference();
                 updateReferenceStage();
                 _orientation();
                 _thrust();
@@ -146,22 +146,14 @@ public class PlanetGravity : MonoBehaviour
             
         }
     }
-
-    void Update()
-    {
-        if (SceneManager.GetActiveScene().name == "SampleScene" && WorldSaveManager.GetComponent<WorldSaveManager>().loaded == true)
-        {
-            if(possessed == true){
-                Debug.Log("Hi");
-                updateFloatReference();
-            }
-            
-        }
-    }    
+   
 
     void updateFloatReference()
     {
         if(capsule.transform.position.magnitude > threshold){
+            GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
+            GameObject sun = GameObject.FindGameObjectWithTag("Sun");
+            GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
             GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
             Vector3 difference = new Vector3(0, 0, capsule.transform.position.z) - capsule.transform.position;
             foreach(GameObject go in planetsToMove)
@@ -172,7 +164,7 @@ public class PlanetGravity : MonoBehaviour
 
             foreach(GameObject go in rockets)
             {
-                go.transform.position = go.transform.position + difference;
+                go.transform.position = go.transform.position + difference; 
             }
             cam.transform.position = cam.transform.position + difference;
             sun.transform.position = sun.transform.position + difference;

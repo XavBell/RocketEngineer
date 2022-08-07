@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class SceneChange : MonoBehaviour
 {
     public GameObject[] capsule;
+    public GameObject WorldSaveManager;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +17,7 @@ public class SceneChange : MonoBehaviour
     void Update()
     {
         capsule = GameObject.FindGameObjectsWithTag("capsule");
+        WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
     }
 
     public void ChangeScene()
@@ -24,6 +26,7 @@ public class SceneChange : MonoBehaviour
         {
             Destroy(go);
         }
+        WorldSaveManager.GetComponent<WorldSaveManager>().saveTheWorld();
         SceneManager.LoadScene("Building");
     }
 }
