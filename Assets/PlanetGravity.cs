@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -51,10 +51,18 @@ public class PlanetGravity : MonoBehaviour
     public GameObject TimeRef;
     public TimeManager TimeManager;
 
+    public GameObject[] planetsToMove;
+    public GameObject cam;
+
+    public float threshold = 0.1f;
+
     // Start is called before the first frame update
     void Start()
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
+        planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
+        sun = GameObject.FindGameObjectWithTag("Sun");
+        cam = GameObject.FindGameObjectWithTag("MainCamera");
         rb = GetComponent<Rigidbody2D>();
     }
 
@@ -108,7 +116,7 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                updateFloatReference();
+                
                 updateReferenceStage();
                 _orientation();
                 _thrust();
@@ -139,33 +147,39 @@ public class PlanetGravity : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        if (SceneManager.GetActiveScene().name == "SampleScene" && WorldSaveManager.GetComponent<WorldSaveManager>().loaded == true)
+        {
+            if(possessed == true){
+                Debug.Log("Hi");
+                updateFloatReference();
+            }
+            
+        }
+    }    
+
     void updateFloatReference()
     {
-        if((capsule.transform.position - new Vector3(0, 0, 0)).magnitude > 100){
-        GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
-        GameObject sun = GameObject.FindGameObjectWithTag("Sun");
-        GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
-        GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
-
-        Vector3 difference = new Vector3(0, 0, capsule.transform.position.z) - capsule.transform.position;
-        capsule.transform.position = new Vector3(0, 0, capsule.transform.position.z);
-        foreach(GameObject go in planetsToMove)
-        {
-            if(go.GetComponent<TypeScript>().type == "earth")
-            go.transform.position = go.transform.position + difference;
-        }
-
-        foreach(GameObject go in rockets)
-        {
-            if(go.GetComponent<PlanetGravity>().possessed == false){
-            go.transform.position = go.transform.position + difference;
+        if(capsule.transform.position.magnitude > threshold){
+            GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
+            Vector3 difference = new Vector3(0, 0, capsule.transform.position.z) - capsule.transform.position;
+            foreach(GameObject go in planetsToMove)
+            {
+                if(go.GetComponent<TypeScript>().type == "earth")
+                go.transform.position = go.transform.position + difference;
             }
+
+            foreach(GameObject go in rockets)
+            {
+                go.transform.position = go.transform.position + difference;
+            }
+            cam.transform.position = cam.transform.position + difference;
+            sun.transform.position = sun.transform.position + difference;
         }
-        cam.transform.position = cam.transform.position + difference;
-        sun.transform.position = sun.transform.position + difference;
-        }
-        
     }
+
+
 
     void _thrust()
     {
