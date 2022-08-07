@@ -96,7 +96,7 @@ public class PlanetGravity : MonoBehaviour
             Vector3 Thrust = transform.up * thrust;
             if (Dist < atmoAlt)
             {
-                AeroForces = rb.velocity.normalized * rb.velocity.magnitude * aeroCoefficient * -1;
+                AeroForces = rb.velocity.normalized  *  1/Dist * aeroCoefficient * -1;
             }
             else
             {
@@ -270,7 +270,7 @@ public class PlanetGravity : MonoBehaviour
         {
             Mass = 44361907590000000000.0f;
             atmoAlt = 100.0f;
-            aeroCoefficient = 0.0f;
+            aeroCoefficient = 1f;
             planet = bestPlanet;
         }
 
