@@ -104,14 +104,16 @@ public class PlanetGravity : MonoBehaviour
             Vector3 Thrust = transform.up * thrust;
             if (Dist < atmoAlt)
             {
-                AeroForces = rb.velocity.normalized  *  1/Dist * aeroCoefficient * -1;
+                //AeroForces = rb.velocity.normalized  *  1/Dist * aeroCoefficient * -1;
+                AeroForces = Vector3.zero;
             }
             else
             {
                 AeroForces = Vector3.zero;
             }
 
-            Vector3 ResultVector = (ForceVector + Thrust + AeroForces)*TimeManager.scaler;
+            Vector3 ResultVector = (ForceVector + Thrust + AeroForces)*Time.fixedDeltaTime*TimeManager.scaler;
+            rb.mass = rocketMass;
             rb.AddForce(ResultVector);
 
             if(possessed == true)
@@ -276,7 +278,7 @@ public class PlanetGravity : MonoBehaviour
         {
             Mass = 44361907590000000000.0f;
             atmoAlt = 100.0f;
-            aeroCoefficient = 1f;
+            aeroCoefficient = 0f;
             planet = bestPlanet;
         }
 
