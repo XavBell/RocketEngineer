@@ -17,6 +17,6 @@ public class EarthScript : MonoBehaviour
     void FixedUpdate()
     {
         Vector3 rotateAxis = sun.transform.forward.normalized;
-        transform.RotateAround(sun.transform.position, rotateAxis, 0.0000000001f * Time.deltaTime * TimeManager.scaler);
+        transform.RotateAround(sun.transform.position, rotateAxis, 0.0000000001f * Time.deltaTime);
     }
 }

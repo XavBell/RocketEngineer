@@ -18,7 +18,7 @@ public class TimeManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         timeScale(initialTimeScale);
     }
@@ -27,15 +27,17 @@ public class TimeManager : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.P))
         {
-            scaler = 100000;
+            //scaler = 100;
         }
         if (Input.GetKey(KeyCode.O))
         {
-            scaler = 10;
+            Time.timeScale = 4;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
         }
         if (Input.GetKey(KeyCode.I))
         {
-            scaler = 1;
+            Time.timeScale = 1;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
         }
     }
 }

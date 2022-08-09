@@ -17,6 +17,6 @@ public class MoonScript : MonoBehaviour
     void Update()
     {
         Vector3 rotateAxis = Earth.transform.forward.normalized;
-        transform.RotateAround(Earth.transform.position, rotateAxis, 0.000000784f * Time.deltaTime * TimeManager.scaler);
+        transform.RotateAround(Earth.transform.position, rotateAxis, 0.000000784f * Time.deltaTime);
     }
 }

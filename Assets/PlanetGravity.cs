@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class PlanetGravity : MonoBehaviour
 {
@@ -53,11 +54,14 @@ public class PlanetGravity : MonoBehaviour
 
     public float threshold = 10f;
 
+    public float previousApogee;
+
     // Start is called before the first frame update
     void Start()
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         rb = GetComponent<Rigidbody2D>();
+        rb.mass = rocketMass;
     }
 
     // Update is called once per frame
@@ -95,6 +99,7 @@ public class PlanetGravity : MonoBehaviour
                 posUpdated = true;
             }
 
+
             updateReferenceBody();
             //Gravity
             float Dist = Vector3.Distance(transform.position, planet.transform.position);
@@ -112,9 +117,11 @@ public class PlanetGravity : MonoBehaviour
                 AeroForces = Vector3.zero;
             }
 
-            Vector3 ResultVector = (ForceVector + Thrust + AeroForces)*Time.fixedDeltaTime*TimeManager.scaler;
+            Vector3 ResultVector = (ForceVector + Thrust + AeroForces) * Time.fixedDeltaTime;
             rb.mass = rocketMass;
             rb.AddForce(ResultVector);
+            Debug.Log(rb.velocity);
+            
 
             if(possessed == true)
             {
@@ -130,22 +137,26 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 prevPos = currentPos;
                 Vector3 currentVelocity = rb.velocity;
                 Vector3 planetCords = planet.transform.position;
-                int stepCount = 15000;
+                int stepCount = 5000;
                 line.positionCount = stepCount;
+                List<float> distances = new List<float>();
                 for (int i = 0; i < stepCount; i++)
                 {
                     Vector3 distance = planetCords - currentPos;
                     forceDir = (planet.transform.position - currentPos).normalized;
                     ForceVector = forceDir * G * Mass * rocketMass / (distance.magnitude * distance.magnitude);
-                    currentVelocity += ForceVector * Time.deltaTime;
-                    currentPos += currentVelocity * Time.deltaTime;
+                    currentVelocity += ForceVector * Time.fixedDeltaTime;
+                    currentPos += currentVelocity * Time.fixedDeltaTime;
+                    distances.Add((planet.transform.position - currentPos).magnitude);
                     prevPos = currentPos;
                     line.SetPosition(i, prevPos);
                 }
+
+                Debug.Log("Apogee:" + distances.Max().ToString());
+                Debug.Log("Perigee:" + distances.Min().ToString());
+
             }
 
-            
-            
         }
     }
    
