@@ -85,7 +85,12 @@ public class CameraControl : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.E))
         {
-            cam.transform.RotateAround(earth.transform.position, earth.transform.forward, 10*Time.deltaTime);
+            cam.transform.RotateAround(earth.transform.position, earth.transform.forward*-1, 20*Time.deltaTime);
+        }
+
+        if (Input.GetKey(KeyCode.Q))
+        {
+            cam.transform.RotateAround(earth.transform.position, earth.transform.forward, 20*Time.deltaTime);
         }
     }
 
