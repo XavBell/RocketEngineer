@@ -31,13 +31,11 @@ public class TimeManager : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.O))
         {
-            Time.timeScale = 4;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            Time.fixedDeltaTime = 0.02f*50;
         }
         if (Input.GetKey(KeyCode.I))
         {
-            Time.timeScale = 1;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            Time.fixedDeltaTime = 0.02f;
         }
     }
 }
