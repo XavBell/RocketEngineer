@@ -120,7 +120,6 @@ public class PlanetGravity : MonoBehaviour
             Vector3 ResultVector = (ForceVector + Thrust + AeroForces) * Time.fixedDeltaTime;
             rb.mass = rocketMass;
             rb.AddForce(ResultVector);
-            Debug.Log(rb.velocity);
             
 
             if(possessed == true)

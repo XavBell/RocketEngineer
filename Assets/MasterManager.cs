@@ -28,6 +28,10 @@ public class MasterManager : MonoBehaviour
     public GameObject loadButton;
 
     public string worldPath;
+
+    public string gameState = "Building";
+
+    public GameObject currentBuildingBody;
    
 
     // Start is called before the first frame update
@@ -48,7 +52,6 @@ public class MasterManager : MonoBehaviour
             child.transform.SetParent(scrollBox.transform, false);
             TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
             b1text.text = Path.GetFileName(file.ToString());
-
         }
         
         DontDestroyOnLoad(this.gameObject);
@@ -65,6 +68,18 @@ public class MasterManager : MonoBehaviour
         if(Input.GetKey(KeyCode.F))
         {
             SceneManager.LoadScene("EngineDesign");
+        }
+
+        if(currentBuildingBody == null)
+        {
+            GameObject[] planets = GameObject.FindGameObjectsWithTag("Planet");
+            foreach(GameObject go in planets)
+            {
+                if(go.GetComponent<TypeScript>().type == "earth")
+                {
+                    currentBuildingBody = go;
+                }
+            }
         }
     }
 
