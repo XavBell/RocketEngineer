@@ -31,6 +31,15 @@ public class BuildingManager : MonoBehaviour
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
                 }
 
+                if(partToConstruct.GetComponent<buildingType>().type == "GSEtank")
+                {
+                    Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
+                    float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+                    position = (v.normalized*-(50f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
+                    GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
+                }
+
                 if(partToConstruct.GetComponent<buildingType>().type == "pipe")
                 {
                     GameObject closest = null;
@@ -46,10 +55,10 @@ public class BuildingManager : MonoBehaviour
                     }
 
                     Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
-                    lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                    position = (v.normalized*-(50f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
-                    GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
+                    Vector3 rotator = new Vector3(0f, 0f, customCursor.GetComponent<CustomCursor>().zRot);
+                    Debug.Log(customCursor.GetComponent<CustomCursor>().zRot);
+                    GameObject current = Instantiate(partToConstruct, position, Quaternion.identity);
+                    current.transform.eulerAngles = rotator;
 
                     float bestDistance = Mathf.Infinity;
                     foreach(GameObject dynamicPart in DynamicParts)
@@ -83,23 +92,15 @@ public class BuildingManager : MonoBehaviour
                         {
                             
                             Vector2 difference = closest.GetComponent<outputInputManager>().input.transform.position - current.GetComponent<outputInputManager>().output.transform.position;
-                            current.transform.position += new Vector3(difference.x, difference.y, 0);
-                            current.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
-                            float altDiff = 50f - Vector2.Distance(current.transform.position, earth.transform.position);
-                            v = current.transform.position - earth.transform.position;
-                            Vector2 toAdd = v.normalized*altDiff;
-                            current.transform.position+= new Vector3(toAdd.x, toAdd.y + current.GetComponent<BoxCollider2D>().size.y/2, 0);
+                            current.transform.position+= new Vector3(difference.x, difference.y, 0);
+                            current.transform.eulerAngles = rotator;
                         }
 
                         if(inputOutputDistance > outputInputDistance)
                         {
                             Vector2 difference = closest.GetComponent<outputInputManager>().output.transform.position - current.GetComponent<outputInputManager>().input.transform.position;
-                            current.transform.position += new Vector3(difference.x, difference.y, 0);
-                            current.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
-                            float altDiff = 50f - Vector2.Distance(current.transform.position, earth.transform.position);
-                            v = current.transform.position - earth.transform.position;
-                            Vector2 toAdd = v.normalized*altDiff;
-                            current.transform.position+= new Vector3(toAdd.x, toAdd.y + current.GetComponent<BoxCollider2D>().size.y/2, 0);
+                            current.transform.position+= new Vector3(difference.x, difference.y, 0);
+                            current.transform.eulerAngles = rotator;
                         }
                     }
                 }
@@ -120,6 +121,7 @@ public class BuildingManager : MonoBehaviour
             customCursor.GetComponent<SpriteRenderer>().size = part.GetComponent<SpriteRenderer>().size;
             customCursor.GetComponent<SpriteRenderer>().color = Color.green;
             Cursor.visible = false;
+            customCursor.GetComponent<CustomCursor>().type = part.GetComponent<buildingType>().type;
             partToConstruct = part;
         }
     }
