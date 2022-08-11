@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 6368636899517664962}
   - component: {fileID: 8983551850809126466}
   - component: {fileID: 8762847560676954741}
-  - component: {fileID: -3751249016971175429}
   m_Layer: 0
-  m_Name: Designer
+  m_Name: RocketStorage
   m_TagString: building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0, g: 0.21829796, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.61132926, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -127,16 +126,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sp: {fileID: 6368636899517664962}
   bx: {fileID: 8983551850809126466}
---- !u!114 &-3751249016971175429
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4919702563059865179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6dd300add53a7642afd993a8d7783ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: designer
