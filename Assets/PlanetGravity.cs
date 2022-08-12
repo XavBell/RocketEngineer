@@ -80,7 +80,7 @@ public class PlanetGravity : MonoBehaviour
         }
 
 
-        if (SceneManager.GetActiveScene().name == "SampleScene" && WorldSaveManager.GetComponent<WorldSaveManager>().loaded == true)
+        if (SceneManager.GetActiveScene().name == "SampleScene" )
         {
             if (posUpdated == false)
             {
