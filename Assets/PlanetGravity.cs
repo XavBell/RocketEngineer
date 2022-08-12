@@ -80,11 +80,10 @@ public class PlanetGravity : MonoBehaviour
         }
 
 
-        if (SceneManager.GetActiveScene().name == "SampleScene" )
+        if (SceneManager.GetActiveScene().name == "SampleScene" && WorldSaveManager.GetComponent<WorldSaveManager>().loaded == true)
         {
             if (posUpdated == false)
             {
-                
                 //Set initial position and scale of rocket when it enters the world
                 GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
                 foreach(GameObject planet in planetsToMove) {
