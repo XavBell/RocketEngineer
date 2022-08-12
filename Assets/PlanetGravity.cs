@@ -16,7 +16,7 @@ public class PlanetGravity : MonoBehaviour
     //Gravity variables for Earth
     public GameObject planet;
     public float Mass = 90000000000.0f; //Planet mass in kg
-    private float G = 0.0000000000000005f; //Gravitational constant
+    private float G = 0.0000000000667f; //Gravitational constant
     public float atmoAlt = 70.0f;
     public float aeroCoefficient = 5f;
     float maxAlt;
@@ -80,7 +80,7 @@ public class PlanetGravity : MonoBehaviour
         }
 
 
-        if (SceneManager.GetActiveScene().name == "SampleScene" && WorldSaveManager.GetComponent<WorldSaveManager>().loaded == true)
+        if (SceneManager.GetActiveScene().name == "SampleScene" )
         {
             if (posUpdated == false)
             {
@@ -89,7 +89,7 @@ public class PlanetGravity : MonoBehaviour
                 foreach(GameObject planet in planetsToMove) {
                     if(planet.GetComponent<TypeScript>().type == "earth")
                     {
-                        transform.position = new Vector3(planet.transform.position.x, planet.transform.position.y + 50f, 0);
+                        transform.position = new Vector3(planet.transform.position.x, planet.transform.position.y + 127421f, 0);
                     }
                 }
                 
@@ -123,7 +123,7 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                updateFloatReference();
+                //updateFloatReference();
                 updateReferenceStage();
                 _orientation();
                 _thrust();
@@ -269,13 +269,13 @@ public class PlanetGravity : MonoBehaviour
             }
         }
 
-        if(bestDistance > 500)
+        if(bestDistance < 1274200)
         {
             planet = GameObject.FindGameObjectWithTag("Sun");
             Mass = 14639429504700000000000000000.0f;
         }
 
-        if (bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 500)
+        if (bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 1274200)
         {
             Mass = 5456514633570000000.0f;
             atmoAlt = 10.0f;
@@ -283,10 +283,10 @@ public class PlanetGravity : MonoBehaviour
             planet = bestPlanet;
         }
 
-        if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 500)
+        if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 1274200)
         {
-            Mass = 44361907590000000000.0f;
-            atmoAlt = 100.0f;
+            Mass = 119444000000000000000000.0f;
+            atmoAlt = 157420.0f;
             aeroCoefficient = 0f;
             planet = bestPlanet;
         }

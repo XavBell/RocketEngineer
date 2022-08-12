@@ -21,7 +21,11 @@ public class CameraControl : MonoBehaviour
 
     public GameObject CamRef;
 
+    public GameObject customCursor;
+
     public GameObject MasterManager;
+
+    public float threshold = 1000;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +42,8 @@ public class CameraControl : MonoBehaviour
             
             QE();
             ZoomIn();
-            //WASD();
+            updateFloatReference();
+            WASD();
             if(rocket != null)
             {
                 //Rocket();
@@ -85,12 +90,35 @@ public class CameraControl : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.E))
         {
-            cam.transform.RotateAround(earth.transform.position, earth.transform.forward*-1, 20*Time.deltaTime);
+            cam.transform.RotateAround(earth.transform.position, earth.transform.forward*-1, 0.02f*Time.deltaTime);
         }
 
         if (Input.GetKey(KeyCode.Q))
         {
-            cam.transform.RotateAround(earth.transform.position, earth.transform.forward, 20*Time.deltaTime);
+            cam.transform.RotateAround(earth.transform.position, earth.transform.forward, 0.02f*Time.deltaTime);
+        }
+    }
+
+    void updateFloatReference()
+    {
+        if(transform.position.magnitude > threshold){
+            GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
+            GameObject sun = GameObject.FindGameObjectWithTag("Sun");
+            GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
+            Vector3 difference = new Vector3(0, 0, transform.position.z) - transform.position;
+            foreach(GameObject go in planetsToMove)
+            {
+                if(go.GetComponent<TypeScript>().type == "earth")
+                go.transform.position = go.transform.position + difference;
+            }
+
+            foreach(GameObject go in rockets)
+            {
+                go.transform.position = go.transform.position + difference; 
+            }
+            sun.transform.position = sun.transform.position + difference;
+            customCursor.transform.position += difference;
+            transform.position += difference;
         }
     }
 

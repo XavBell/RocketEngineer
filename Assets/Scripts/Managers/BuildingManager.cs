@@ -27,8 +27,10 @@ public class BuildingManager : MonoBehaviour
                     Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
                     float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                    position = (v.normalized*-(50f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
+                    position = (v.normalized*-(127420f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
+                    position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
+                    current.transform.SetParent(earth.transform);
                 }
 
                 if(partToConstruct.GetComponent<buildingType>().type == "GSEtank")
@@ -36,8 +38,10 @@ public class BuildingManager : MonoBehaviour
                     Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
                     float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                    position = (v.normalized*-(50f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
+                    position = (v.normalized*-(127420f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
+                    position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
+                    current.transform.SetParent(earth.transform);
                 }
 
                 if(partToConstruct.GetComponent<buildingType>().type == "pipe")
@@ -103,7 +107,10 @@ public class BuildingManager : MonoBehaviour
                             current.transform.eulerAngles = rotator;
                         }
                     }
+
+                    current.transform.SetParent(earth.transform);
                 }
+
             }
             partToConstruct = null;
             Cursor.visible = true;
