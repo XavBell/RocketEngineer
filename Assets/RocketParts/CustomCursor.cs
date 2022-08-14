@@ -13,11 +13,13 @@ public class CustomCursor : MonoBehaviour
     public float zRot;
     public string type;
 
+    public Color defaultColor;
+
     void Start()
     {
         sp = this.GetComponent<SpriteRenderer>();
         box = this.GetComponent<BoxCollider2D>();
-        sp.color = Color.green;
+        defaultColor = sp.color;
     }
 
     // Update is called once per frame
@@ -88,7 +90,7 @@ public class CustomCursor : MonoBehaviour
         {
             if(other.tag == "building")
             {
-                sp.color = Color.green;
+                sp.color = defaultColor;
                 constructionAllowed = true;
             }
         }

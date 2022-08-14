@@ -126,7 +126,8 @@ public class BuildingManager : MonoBehaviour
             customCursor.gameObject.SetActive(true);
             customCursor.GetComponent<SpriteRenderer>().sprite = part.GetComponent<SpriteRenderer>().sprite;
             customCursor.GetComponent<SpriteRenderer>().size = part.GetComponent<SpriteRenderer>().size;
-            customCursor.GetComponent<SpriteRenderer>().color = Color.green;
+            customCursor.GetComponent<CustomCursor>().defaultColor = part.GetComponent<SpriteRenderer>().color;
+            customCursor.GetComponent<SpriteRenderer>().color = customCursor.GetComponent<CustomCursor>().defaultColor;
             Cursor.visible = false;
             customCursor.GetComponent<CustomCursor>().type = part.GetComponent<buildingType>().type;
             partToConstruct = part;
