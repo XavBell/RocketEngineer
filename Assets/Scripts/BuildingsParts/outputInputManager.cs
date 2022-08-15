@@ -64,6 +64,7 @@ public class outputInputManager : MonoBehaviour
 
     void fuelTransfer()
     {
+        //Fix reverse flow
         if(outputParent)
         {
            if(quantity - rate * Time.deltaTime >= 0)
