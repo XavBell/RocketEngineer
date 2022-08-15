@@ -96,16 +96,16 @@ public class BuildingManager : MonoBehaviour
                         {
                             Vector2 difference = closest.GetComponent<outputInputManager>().input.transform.position - current.GetComponent<outputInputManager>().output.transform.position;
                             current.transform.position+= new Vector3(difference.x, difference.y, 0);
-                            closest.GetComponent<outputInputManager>().attachedOutput = current.GetComponent<outputInputManager>().output;
-                            current.GetComponent<outputInputManager>().attachedInput = current.GetComponent<outputInputManager>().input;
+                            closest.GetComponent<outputInputManager>().attachedInput = current.GetComponent<outputInputManager>().output;
+                            current.GetComponent<outputInputManager>().attachedOutput = current.GetComponent<outputInputManager>().input;
                         }
 
                         if(inputOutputDistance > outputInputDistance)
                         {
                             Vector2 difference = closest.GetComponent<outputInputManager>().output.transform.position - current.GetComponent<outputInputManager>().input.transform.position;
                             current.transform.position+= new Vector3(difference.x, difference.y, 0);
-                            closest.GetComponent<outputInputManager>().attachedInput = current.GetComponent<outputInputManager>().input;
-                            current.GetComponent<outputInputManager>().attachedOutput = current.GetComponent<outputInputManager>().output;
+                            closest.GetComponent<outputInputManager>().attachedOutput = current.GetComponent<outputInputManager>().input;
+                            current.GetComponent<outputInputManager>().attachedInput = current.GetComponent<outputInputManager>().output;
                         }
                     }
 
