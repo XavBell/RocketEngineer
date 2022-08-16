@@ -82,30 +82,30 @@ public class BuildingManager : MonoBehaviour
 
                         float initialDistance = Vector2.Distance(earth.transform.position, current.transform.position);
 
-                        if(closest.GetComponent<outputInputManager>().attachedOutput == null && closest.GetComponent<outputInputManager>().input != null)
+                        if(closest.GetComponent<outputInputManager>().attachedOutput == null && closest.GetComponent<outputInputManager>().output != null)
                         {
-                            inputOutputDistance = Vector2.Distance(closest.GetComponent<outputInputManager>().input.transform.position, current.GetComponent<outputInputManager>().output.transform.position);
+                            inputOutputDistance = Vector2.Distance(closest.GetComponent<outputInputManager>().output.transform.position, current.GetComponent<outputInputManager>().input.transform.position);
                         }
 
-                        if(closest.GetComponent<outputInputManager>().attachedInput == null && closest.GetComponent<outputInputManager>().output != null)
+                        if(closest.GetComponent<outputInputManager>().attachedInput == null && closest.GetComponent<outputInputManager>().input != null)
                         {
-                            outputInputDistance = Vector2.Distance(closest.GetComponent<outputInputManager>().output.transform.position, current.GetComponent<outputInputManager>().input.transform.position);
+                            outputInputDistance = Vector2.Distance(closest.GetComponent<outputInputManager>().input.transform.position, current.GetComponent<outputInputManager>().output.transform.position);
                         }
 
                         if(inputOutputDistance < outputInputDistance)
                         {
-                            Vector2 difference = closest.GetComponent<outputInputManager>().input.transform.position - current.GetComponent<outputInputManager>().output.transform.position;
+                            Vector2 difference = closest.GetComponent<outputInputManager>().output.transform.position - current.GetComponent<outputInputManager>().input.transform.position;
                             current.transform.position+= new Vector3(difference.x, difference.y, 0);
-                            closest.GetComponent<outputInputManager>().attachedInput = current.GetComponent<outputInputManager>().output;
-                            current.GetComponent<outputInputManager>().attachedOutput = current.GetComponent<outputInputManager>().input;
+                            closest.GetComponent<outputInputManager>().attachedOutput = current.GetComponent<outputInputManager>().input;
+                            current.GetComponent<outputInputManager>().attachedInput = closest.GetComponent<outputInputManager>().output;
                         }
 
                         if(inputOutputDistance > outputInputDistance)
                         {
-                            Vector2 difference = closest.GetComponent<outputInputManager>().output.transform.position - current.GetComponent<outputInputManager>().input.transform.position;
+                            Vector2 difference = closest.GetComponent<outputInputManager>().input.transform.position - current.GetComponent<outputInputManager>().output.transform.position;
                             current.transform.position+= new Vector3(difference.x, difference.y, 0);
-                            closest.GetComponent<outputInputManager>().attachedOutput = current.GetComponent<outputInputManager>().input;
-                            current.GetComponent<outputInputManager>().attachedInput = current.GetComponent<outputInputManager>().output;
+                            closest.GetComponent<outputInputManager>().attachedInput = current.GetComponent<outputInputManager>().output;
+                            current.GetComponent<outputInputManager>().attachedOutput = closest.GetComponent<outputInputManager>().input;
                         }
                     }
 

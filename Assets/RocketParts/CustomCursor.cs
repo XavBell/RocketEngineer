@@ -57,7 +57,7 @@ public class CustomCursor : MonoBehaviour
                 if(Input.GetKey(KeyCode.Z))
                 {
                     this.transform.Rotate(0f, 0f, 40f*Time.deltaTime, Space.Self);
-                    zRot = this.transform.rotation.z;
+                    zRot = this.transform.eulerAngles.z;
                 }
 
                 if(Input.GetKey(KeyCode.X))

@@ -53,6 +53,7 @@ public class outputInputManager : MonoBehaviour
     {
         if(inputParent)
         {
+
             rate = inputParent.GetComponent<outputInputManager>().rate;
         }
 
@@ -71,11 +72,11 @@ public class outputInputManager : MonoBehaviour
            {
                 float variation;
                 variation = rate * Time.deltaTime;
-                outputParent.GetComponent<outputInputManager>().quantity -=  variation;
+                quantity -=  variation;
            }
         }
 
-        if(inputParent)
+        if(inputParent && inputParent.GetComponent<outputInputManager>().quantity - inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime > 0)
         {
             quantity += inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime;
         }
