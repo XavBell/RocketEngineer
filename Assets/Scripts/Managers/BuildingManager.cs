@@ -7,6 +7,9 @@ public class BuildingManager : MonoBehaviour
     public GameObject partToConstruct;
     public GameObject customCursor;
     public GameObject earth;
+    public GameObject pipe;
+
+    public string mode = "none";
 
     public List<GameObject> DynamicParts = new List<GameObject>();    
     // Start is called before the first frame update
@@ -41,75 +44,25 @@ public class BuildingManager : MonoBehaviour
                     position = (v.normalized*-(127420f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
                     position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
-                    current.transform.SetParent(earth.transform);
+                    //current.transform.SetParent(earth.transform);
+                }
+
+                if(partToConstruct.GetComponent<buildingType>().type == "launchPad")
+                {
+                    Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
+                    float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+                    position = (v.normalized*-(127420f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
+                    position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
+                    GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
+                    //current.transform.SetParent(earth.transform);
                 }
 
                 if(partToConstruct.GetComponent<buildingType>().type == "pipe")
                 {
-                    GameObject closest = null;
-                    GameObject[] buildings = GameObject.FindGameObjectsWithTag("building");
-                    float lookAngle;
-                    Vector2 v;
-                    foreach(GameObject building in buildings)
-                    {
-                        if(building.GetComponent<outputInputManager>())
-                        {
-                            DynamicParts.Add(building);
-                        }   
-                    }
-
                     Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector3 rotator = new Vector3(0f, 0f, customCursor.GetComponent<CustomCursor>().zRot);
-                    Debug.Log(customCursor.GetComponent<CustomCursor>().zRot);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.identity);
-                    current.transform.eulerAngles += rotator;
-
-                    float bestDistance = Mathf.Infinity;
-                    foreach(GameObject dynamicPart in DynamicParts)
-                    {
-                        float currentDistance = Vector2.Distance(current.transform.position, dynamicPart.transform.position);
-                        if(currentDistance < bestDistance)
-                        {
-                            bestDistance = currentDistance;
-                            closest = dynamicPart;
-                        }
-                    }
-
-                    if(closest != null)
-                    {
-                        float inputOutputDistance = Mathf.Infinity;
-                        float outputInputDistance = Mathf.Infinity;
-
-                        float initialDistance = Vector2.Distance(earth.transform.position, current.transform.position);
-
-                        if(closest.GetComponent<outputInputManager>().attachedOutput == null && closest.GetComponent<outputInputManager>().output != null)
-                        {
-                            inputOutputDistance = Vector2.Distance(closest.GetComponent<outputInputManager>().output.transform.position, current.GetComponent<outputInputManager>().input.transform.position);
-                        }
-
-                        if(closest.GetComponent<outputInputManager>().attachedInput == null && closest.GetComponent<outputInputManager>().input != null)
-                        {
-                            outputInputDistance = Vector2.Distance(closest.GetComponent<outputInputManager>().input.transform.position, current.GetComponent<outputInputManager>().output.transform.position);
-                        }
-
-                        if(inputOutputDistance < outputInputDistance)
-                        {
-                            Vector2 difference = closest.GetComponent<outputInputManager>().output.transform.position - current.GetComponent<outputInputManager>().input.transform.position;
-                            current.transform.position+= new Vector3(difference.x, difference.y, 0);
-                            closest.GetComponent<outputInputManager>().attachedOutput = current.GetComponent<outputInputManager>().input;
-                            current.GetComponent<outputInputManager>().attachedInput = closest.GetComponent<outputInputManager>().output;
-                        }
-
-                        if(inputOutputDistance > outputInputDistance)
-                        {
-                            Vector2 difference = closest.GetComponent<outputInputManager>().input.transform.position - current.GetComponent<outputInputManager>().output.transform.position;
-                            current.transform.position+= new Vector3(difference.x, difference.y, 0);
-                            closest.GetComponent<outputInputManager>().attachedInput = current.GetComponent<outputInputManager>().output;
-                            current.GetComponent<outputInputManager>().attachedOutput = closest.GetComponent<outputInputManager>().input;
-                        }
-                    }
-
-                    current.transform.SetParent(earth.transform);
+                    //current.transform.SetParent(earth.transform);
                 }
 
             }
@@ -117,7 +70,40 @@ public class BuildingManager : MonoBehaviour
             Cursor.visible = true;
             customCursor.gameObject.SetActive(false);
         }
-        
+
+        if(Input.GetKey(KeyCode.C))
+        {
+            if(mode == "none")
+            {
+                mode = "connect";
+                Debug.Log(mode);
+                return;
+            }
+        }
+    }
+
+    public void Connect(GameObject output, GameObject input)
+    {
+        output.GetComponent<outputInputManager>().attachedOutput = input.GetComponent<outputInputManager>().input;
+        input.GetComponent<outputInputManager>().attachedInput = output.GetComponent<outputInputManager>().output;
+        Debug.Log(input.transform.position);
+        Vector2 position = (output.GetComponent<outputInputManager>().output.transform.position + input.GetComponent<outputInputManager>().input.transform.position)/2;
+        GameObject current = Instantiate(pipe, position, Quaternion.identity);
+        float zRot = 0;
+        if(input.GetComponent<outputInputManager>().input.transform.position.y > output.GetComponent<outputInputManager>().output.transform.position.y)
+        {
+            zRot = Vector2.Angle(input.GetComponent<outputInputManager>().input.transform.position, output.GetComponent<outputInputManager>().output.transform.position - current.transform.position)*-1;
+        }
+
+        if(input.GetComponent<outputInputManager>().input.transform.position.y < output.GetComponent<outputInputManager>().output.transform.position.y)
+        {
+            zRot = Vector2.Angle(output.GetComponent<outputInputManager>().output.transform.position- current.transform.position, input.GetComponent<outputInputManager>().input.transform.position);
+        }
+
+        Debug.Log(zRot);
+        current.transform.rotation = Quaternion.Euler(new Vector3(0, 0, zRot+180));
+
+        mode = "none";
     }
 
     public void ConstructPart(GameObject part)

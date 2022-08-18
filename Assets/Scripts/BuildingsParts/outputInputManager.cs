@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class outputInputManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class outputInputManager : MonoBehaviour
 
     public GameObject inputParent;
     public GameObject outputParent;
+
+    public TextMeshProUGUI quantityText;
+    public TextMeshProUGUI rateText;
 
     //Rate is in unit/s
     public float selfRate;
@@ -33,6 +37,16 @@ public class outputInputManager : MonoBehaviour
         updateParents();
         setRate();
         fuelTransfer();
+        if(quantityText != null && log == true){
+            quantityText.enabled = true;
+            rateText.enabled = true;
+            quantityText.text = "Quantity: " + quantity.ToString();
+            rateText.text= "Rate: " + rate.ToString();
+        }else if(quantityText != null && log == false)
+        {
+            quantityText.enabled = false;
+            rateText.enabled = false;
+        }
         DebugLog();
     }
     
