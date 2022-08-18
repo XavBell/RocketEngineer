@@ -184,7 +184,7 @@ public class GameManager_Engine : MonoBehaviour
 
     void calculate()
     {
-        float nozzleExit_nozzleEndRatio = nozzleExitRef.transform.localScale.x/nozzleEndRef.transform.localScale.x;
+        float expansionRatio = nozzleExitRef.transform.localScale.x/nozzleEndRef.transform.localScale.x;
         float turboRate_nozzleLengthRatio = turbopumpRateFloat / nozzleLenghtFloat;
         float turboRate_turboSizeRatio = turbopumpRateFloat / turbopumpRef.transform.localScale.x;
 
@@ -196,14 +196,14 @@ public class GameManager_Engine : MonoBehaviour
             return;
         }
 
-        if(nozzleExit_nozzleEndRatio < 1)
+        if(expansionRatio < 1)
         {
             thrust = 0;
             rate = 0;
             return;
         }
 
-        if (nozzleExit_nozzleEndRatio > 20)
+        if (expansionRatio > 20)
         {
             thrust = 0;
             rate = 0;
@@ -217,10 +217,9 @@ public class GameManager_Engine : MonoBehaviour
             return;
         }
 
-        thrust = (1/turboRate_turboSizeRatio) * turboRate_nozzleLengthRatio * (nozzleExit_nozzleEndRatio / 2) * (turbopumpRateFloat/2) * (1/ turbopumpRef.transform.localScale.x);
+        thrust = (1/turboRate_turboSizeRatio) * turboRate_nozzleLengthRatio * (expansionRatio / 2) * (turbopumpRateFloat/2) * (1/ turbopumpRef.transform.localScale.x);
         rate = ((turboRate_turboSizeRatio)/turbopumpRef.transform.localScale.x)/2;
         mass = 300 * turbopumpRef.transform.localScale.x;
-
     }
 
     public void updateAttachPosition()
