@@ -80,8 +80,6 @@ public class DetectClick : MonoBehaviour
                             {
                                 panel.active = true;
                             }
-
-
                             Debug.Log(panel);
                         }
                             
@@ -109,8 +107,6 @@ public class DetectClick : MonoBehaviour
                             {
                                 panel.active = false;
                             }
-
-
                             Debug.Log(panel);
                         }
                             
