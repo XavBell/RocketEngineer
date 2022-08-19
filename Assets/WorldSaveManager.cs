@@ -15,10 +15,19 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject tankPrefab;
     public GameObject enginePrefab;
     public GameObject decouplerPrefab;
+
+
+    public GameObject designerPrefab;
+    public GameObject pipePrefab;
+    public GameObject fuelTankPrefab;
+    public GameObject launchPadPrefab;
+
     public savePath savePathRef = new savePath();
 
     public GameObject earth;
     public GameObject moon;
+
+    public GameObject camera;
 
     public bool loaded = false;
 
@@ -49,6 +58,14 @@ public class WorldSaveManager : MonoBehaviour
     {
         saveWorld saveWorld = new saveWorld();
 
+        saveWorld.cameraLocX = camera.transform.localPosition.x;
+        saveWorld.cameraLocY = camera.transform.localPosition.y;
+        saveWorld.cameraLocZ = camera.transform.localPosition.z;
+
+        saveWorld.cameraRotX = camera.transform.eulerAngles.x;
+        saveWorld.cameraRotY = camera.transform.eulerAngles.y;
+        saveWorld.cameraRotZ = camera.transform.eulerAngles.z;
+
         saveWorld.earthLocX = earth.transform.localPosition.x;
         saveWorld.earthLocY = earth.transform.localPosition.y;
         saveWorld.earthLocZ = earth.transform.localPosition.z;
@@ -62,6 +79,33 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.moonLocZ = moon.transform.localPosition.z;
 
         saveWorld.previouslyLoaded = true;
+
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag("building");
+        foreach(GameObject building in buildings)
+        {
+            saveWorld.buildingTypes.Add(building.GetComponent<buildingType>().type);
+            saveWorld.buildingLocX.Add(building.transform.localPosition.x);
+            saveWorld.buildingLocY.Add(building.transform.localPosition.y);
+            saveWorld.buildingLocZ.Add(building.transform.localPosition.z);
+
+            saveWorld.buildingRotX.Add(building.transform.eulerAngles.x);
+            saveWorld.buildingRotY.Add(building.transform.eulerAngles.y);
+            saveWorld.buildingRotZ.Add(building.transform.eulerAngles.z);
+
+            if(building.GetComponent<buildingType>().type == "pipe")
+            {
+                saveWorld.buildingScaleX.Add(building.GetComponent<SpriteRenderer>().size.x);
+                saveWorld.buildingScaleY.Add(building.GetComponent<SpriteRenderer>().size.y);
+
+                saveWorld.inputLocX.Add(building.GetComponent<outputInputManager>().input.transform.position.x);
+                saveWorld.inputLocY.Add(building.GetComponent<outputInputManager>().input.transform.position.y);
+                saveWorld.inputLocZ.Add(building.GetComponent<outputInputManager>().input.transform.position.z);
+
+                saveWorld.outputLocX.Add(building.GetComponent<outputInputManager>().output.transform.position.x);
+                saveWorld.outputLocY.Add(building.GetComponent<outputInputManager>().output.transform.position.y);
+                saveWorld.outputLocZ.Add(building.GetComponent<outputInputManager>().output.transform.position.z);
+            }
+        }
 
         GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
         Debug.Log(rockets.Length);
@@ -192,10 +236,64 @@ public class WorldSaveManager : MonoBehaviour
         int tankCount = 0;
         int decouplerCount = 0;
 
-        if(loadedWorld.previouslyLoaded == true){
+        if(loadedWorld.previouslyLoaded == true)
+        {
             earth.transform.localPosition = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
-            earth.transform.rotation = Quaternion.Euler(loadedWorld.earthRotX, loadedWorld.earthRotY, loadedWorld.earthRotZ);
+            camera.transform.localPosition = new Vector3(loadedWorld.cameraLocX, loadedWorld.cameraLocY, loadedWorld.cameraLocZ);
+            earth.transform.eulerAngles = new Vector3(loadedWorld.earthRotX, loadedWorld.earthRotY, loadedWorld.earthRotZ);
+            camera.transform.eulerAngles = new Vector3(loadedWorld.cameraRotX, loadedWorld.cameraRotY, loadedWorld.cameraRotZ);
             moon.transform.localPosition = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+        }
+
+        int pipeCount = 0;
+        int count = 0;
+        foreach(string buildingType in loadedWorld.buildingTypes)
+        {
+            Vector3 position = new Vector3(loadedWorld.buildingLocX[count], loadedWorld.buildingLocY[count], loadedWorld.buildingLocZ[count]);
+            Vector3 rotation = new Vector3(loadedWorld.buildingRotX[count], loadedWorld.buildingRotY[count], loadedWorld.buildingRotZ[count]);
+            if(buildingType == "designer")
+            {
+                GameObject current = Instantiate(designerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                current.transform.SetParent(earth.transform);
+                current.transform.localPosition = position;
+                current.transform.eulerAngles = rotation;
+            }
+
+            if(buildingType == "GSEtank")
+            {
+                GameObject current = Instantiate(fuelTankPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                current.transform.SetParent(earth.transform);
+                current.transform.localPosition = position;
+                current.transform.eulerAngles = rotation;
+            }
+
+            if(buildingType == "launchPad")
+            {
+                GameObject current = Instantiate(launchPadPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                current.transform.SetParent(earth.transform);
+                current.transform.localPosition = position;
+                current.transform.eulerAngles = rotation;
+            }
+
+            if(buildingType == "pipe")
+            {
+                GameObject current = Instantiate(pipePrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                current.transform.SetParent(earth.transform);
+                current.transform.localPosition = position;
+                current.transform.eulerAngles = rotation;
+
+                Vector2 size = new Vector2(loadedWorld.buildingScaleX[pipeCount], loadedWorld.buildingScaleY[pipeCount]);
+                current.GetComponent<SpriteRenderer>().size = size;
+
+                Vector3 inputPos = new Vector3(loadedWorld.inputLocX[pipeCount], loadedWorld.inputLocY[pipeCount], loadedWorld.inputLocZ[pipeCount]);
+                Vector3 outputPos = new Vector3(loadedWorld.outputLocX[pipeCount], loadedWorld.outputLocY[pipeCount], loadedWorld.outputLocZ[pipeCount]);
+                current.GetComponent<outputInputManager>().input.transform.position = inputPos;
+                current.GetComponent<outputInputManager>().output.transform.position = outputPos;
+
+                pipeCount++;
+            }
+
+            count++;
         }
 
         foreach(int rocket in loadedWorld.childrenNumber)

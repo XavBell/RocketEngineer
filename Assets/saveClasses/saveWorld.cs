@@ -7,6 +7,14 @@ public class saveWorld
     public string version = "0.0.4";
     public bool previouslyLoaded = false;
 
+    public float cameraLocX;
+    public float cameraLocY;
+    public float cameraLocZ;
+
+    public float cameraRotX;
+    public float cameraRotY;
+    public float cameraRotZ;
+
     //SolarSystem
     //Earth
     public float earthLocX;
@@ -16,6 +24,27 @@ public class saveWorld
     public float earthRotX;
     public float earthRotY;
     public float earthRotZ;
+
+    //Earth childs
+    public List<string> buildingTypes = new List<string>();
+    public List<float> buildingLocX = new List<float>();
+    public List<float> buildingLocY = new List<float>();
+    public List<float> buildingLocZ = new List<float>();
+
+    public List<float> buildingScaleX = new List<float>();
+    public List<float> buildingScaleY = new List<float>();
+
+    public List<float> buildingRotX = new List<float>();
+    public List<float> buildingRotY = new List<float>();
+    public List<float> buildingRotZ = new List<float>();
+
+    public List<float> inputLocX = new List<float>();
+    public List<float> inputLocY = new List<float>();
+    public List<float> inputLocZ = new List<float>();
+
+    public List<float> outputLocX = new List<float>();
+    public List<float> outputLocY = new List<float>();
+    public List<float> outputLocZ = new List<float>();    
 
     //Moon
     public float moonLocX;

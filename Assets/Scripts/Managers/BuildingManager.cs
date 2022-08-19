@@ -120,6 +120,7 @@ public class BuildingManager : MonoBehaviour
         current.GetComponent<SpriteRenderer>().size = new Vector2(distance, current.GetComponent<SpriteRenderer>().size.y);
         current.GetComponent<outputInputManager>().output.transform.position = (current.transform.right * distance/2) + current.transform.position;
         current.GetComponent<outputInputManager>().input.transform.position = (current.transform.right*-1 * distance/2) + current.transform.position;
+        current.transform.SetParent(earth.transform);
         mode = "none";
     }
 
