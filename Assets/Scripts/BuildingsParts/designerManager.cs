@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class designerManager : MonoBehaviour
 {
-    GameObject Panel;
+    public GameObject Panel;
     WorldSaveManager WorldSaveManager;
     // Start is called before the first frame update
     void Start()

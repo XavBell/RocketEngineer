@@ -70,6 +70,8 @@ public class OnClick : MonoBehaviour
 
         }
 
+        
+
         if(SceneManager.GetActiveScene().name.ToString() == "Menu")
         {
             MasterManager.GetComponent<MasterManager>().FolderName = b1.GetComponentInChildren<TextMeshProUGUI>().text;

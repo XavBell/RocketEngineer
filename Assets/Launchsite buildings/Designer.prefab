@@ -285,7 +285,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4198728557725663722
 RectTransform:
   m_ObjectHideFlags: 0
@@ -391,6 +391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7528af0010cb87049810b3e97db2337a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Panel: {fileID: 3026373003921146434}
 --- !u!1 &4523553907729352331
 GameObject:
   m_ObjectHideFlags: 0
@@ -505,6 +506,7 @@ GameObject:
   - component: {fileID: 8983551850809126466}
   - component: {fileID: 8762847560676954741}
   - component: {fileID: -3751249016971175429}
+  - component: {fileID: 4381031865949620531}
   m_Layer: 0
   m_Name: Designer
   m_TagString: building
@@ -634,6 +636,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: designer
+--- !u!114 &4381031865949620531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4919702563059865179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7528af0010cb87049810b3e97db2337a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Panel: {fileID: 3026373003921146434}
 --- !u!1 &5722280541023371101
 GameObject:
   m_ObjectHideFlags: 0

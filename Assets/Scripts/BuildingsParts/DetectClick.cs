@@ -71,16 +71,27 @@ public class DetectClick : MonoBehaviour
                 {
                     if(raycastHit.transform.gameObject.GetComponent<buildingType>())
                     {
-                        string type = raycastHit.transform.gameObject.GetComponent<buildingType>().type;
+                        
                         GameObject current = raycastHit.transform.gameObject;
+                        string type = current.GetComponent<buildingType>().type;
                         if(type == "designer")
                         {
-                            GameObject panel = current.transform.GetChild(0).GetChild(0).gameObject;
+                            GameObject panel = current.GetComponent<designerManager>().Panel;
                             if(panel.active == false)
                             {
                                 panel.active = true;
                             }
-                            Debug.Log(panel);
+                     
+                        }
+
+                        if(type == "launchPad")
+                        {
+                            GameObject panel = current.GetComponent<launchPadManager>().Panel;
+                            if(panel.active == false)
+                            {
+                                panel.active = true;
+                            }
+                            
                         }
                             
                     }
@@ -98,16 +109,27 @@ public class DetectClick : MonoBehaviour
                 {
                     if(raycastHit.transform.gameObject.GetComponent<buildingType>())
                     {
-                        string type = raycastHit.transform.gameObject.GetComponent<buildingType>().type;
+                        
                         GameObject current = raycastHit.transform.gameObject;
+                        string type = current.GetComponent<buildingType>().type;
                         if(type == "designer")
                         {
-                            GameObject panel = current.transform.GetChild(0).GetChild(0).gameObject;
+                            GameObject panel = current.GetComponent<designerManager>().Panel;
                             if(panel.active == true)
                             {
                                 panel.active = false;
                             }
-                            Debug.Log(panel);
+                            
+                        }
+
+                        if(type == "launchPad")
+                        {
+                            GameObject panel = current.GetComponent<launchPadManager>().Panel;
+                            if(panel.active == true)
+                            {
+                                panel.active = false;
+                            }
+                            
                         }
                             
                     }

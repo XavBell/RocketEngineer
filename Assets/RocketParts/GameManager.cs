@@ -310,10 +310,6 @@ public class GameManager : MonoBehaviour
 
     public void Launch()
     {
-        if(capsule != null)
-        {
-            capsule.GetComponent<PlanetGravity>().possessed = true;
-        }
         
         SceneManager.LoadScene("SampleScene");
     }
