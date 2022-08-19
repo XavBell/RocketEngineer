@@ -44,7 +44,7 @@ public class BuildingManager : MonoBehaviour
                     position = (v.normalized*-(127420f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
                     position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
-                    //current.transform.SetParent(earth.transform);
+                    current.transform.SetParent(earth.transform);
                 }
 
                 if(partToConstruct.GetComponent<buildingType>().type == "launchPad")
@@ -55,14 +55,14 @@ public class BuildingManager : MonoBehaviour
                     position = (v.normalized*-(127420f + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
                     position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
-                    //current.transform.SetParent(earth.transform);
+                    current.transform.SetParent(earth.transform);
                 }
 
                 if(partToConstruct.GetComponent<buildingType>().type == "pipe")
                 {
                     Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.identity);
-                    //current.transform.SetParent(earth.transform);
+                    current.transform.SetParent(earth.transform);
                 }
 
             }
