@@ -19,48 +19,105 @@ public class DetectClick : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(buildingManager.mode == "connect"){
-       if( Input.GetMouseButtonDown(0) )
+        if(buildingManager.mode == "connect")
         {
-            RaycastHit2D raycastHit;
-            Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
-            raycastHit = Physics2D.Raycast(ray, -Vector2.up);
+            if(Input.GetMouseButtonDown(0) )
+            {
+                RaycastHit2D raycastHit;
+                Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
+                raycastHit = Physics2D.Raycast(ray, -Vector2.up);
            
+                    if (raycastHit.transform != null)
+                    {
+                        if(raycastHit.transform.gameObject.GetComponent<buildingType>())
+                        {
+                            string type = raycastHit.transform.gameObject.GetComponent<buildingType>().type;
+                            GameObject current = raycastHit.transform.gameObject;
+                            if(output == null)
+                            {
+                                if(current.GetComponent<outputInputManager>().attachedOutput == null)
+                                {
+                                    output = current;
+                                }
+                                return;
+                            }
+
+                            if(output != null)
+                            {
+                                if(current.GetComponent<outputInputManager>().attachedInput == null)
+                                {
+                                    input = current;
+                                    buildingManager.Connect(output, input);
+                                    output = null;
+                                    input = null;
+                                }
+                            }
+                        }
+                    }
+             
+            }
+        }
+
+        if(buildingManager.mode == "none")
+        {
+           if(Input.GetMouseButtonDown(0))
+           {
+                RaycastHit2D raycastHit;
+                Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
+                raycastHit = Physics2D.Raycast(ray, -Vector2.up);
                 if (raycastHit.transform != null)
                 {
                     if(raycastHit.transform.gameObject.GetComponent<buildingType>())
                     {
                         string type = raycastHit.transform.gameObject.GetComponent<buildingType>().type;
                         GameObject current = raycastHit.transform.gameObject;
-                        if(output == null)
+                        if(type == "designer")
                         {
-                            if(current.GetComponent<outputInputManager>().attachedOutput == null)
+                            GameObject panel = current.transform.GetChild(0).GetChild(0).gameObject;
+                            if(panel.active == false)
                             {
-                                output = current;
+                                panel.active = true;
                             }
-                            return;
-                        }
 
-                        if(output != null)
-                        {
-                            if(current.GetComponent<outputInputManager>().attachedInput == null)
-                            {
-                                input = current;
-                                buildingManager.Connect(output, input);
-                                output = null;
-                                input = null;
-                            }
+
+                            Debug.Log(panel);
                         }
+                            
                     }
+                      
                 }
-             
-        }
+            }
+
+            if(Input.GetMouseButtonDown(1))
+           {
+                RaycastHit2D raycastHit;
+                Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
+                raycastHit = Physics2D.Raycast(ray, -Vector2.up);
+                if (raycastHit.transform != null)
+                {
+                    if(raycastHit.transform.gameObject.GetComponent<buildingType>())
+                    {
+                        string type = raycastHit.transform.gameObject.GetComponent<buildingType>().type;
+                        GameObject current = raycastHit.transform.gameObject;
+                        if(type == "designer")
+                        {
+                            GameObject panel = current.transform.GetChild(0).GetChild(0).gameObject;
+                            if(panel.active == true)
+                            {
+                                panel.active = false;
+                            }
+
+
+                            Debug.Log(panel);
+                        }
+                            
+                    }
+                      
+                }
+            }
         }
     }
-        
-        
-    
-
-    
 }
