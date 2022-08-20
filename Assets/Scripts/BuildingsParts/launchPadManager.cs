@@ -63,6 +63,7 @@ public class launchPadManager : MonoBehaviour
             TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
             b1text.text = Path.GetFileName(file.ToString());
             child.GetComponentInChildren<OnClick>().filePath = savePathRef.rocketFolder;
+            child.GetComponentInChildren<OnClick>().launchPad = this.gameObject;
 
         }
         
