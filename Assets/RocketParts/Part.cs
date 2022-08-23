@@ -13,6 +13,7 @@ public class Part : MonoBehaviour
     public float maxThrust = 0;
     public float mass = 0;
     public float fuel = 0;
+    public float maxFuel = 0;
     public float rate = 0;
     public GameObject referenceDecoupler;
 

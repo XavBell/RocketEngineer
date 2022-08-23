@@ -13,5 +13,6 @@ public class saveTank
     public float usedNum;
 
     public float fuel;
+    public float maxFuel;
     public float mass;
 }

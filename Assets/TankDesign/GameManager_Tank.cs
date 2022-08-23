@@ -153,7 +153,7 @@ public class GameManager_Tank : MonoBehaviour
         saveObject.attachTopPos = attachTopObj.transform.position.y - tankSP.bounds.center.y;
         saveObject.attachBottomPos = tankSP.bounds.center.y - attachTopObj.transform.position.y;
         Debug.Log(saveObject.attachTopPos);
-        saveObject.fuel = fuel;
+        saveObject.maxFuel = fuel;
         saveObject.mass = mass;
 
         var jsonString = JsonConvert.SerializeObject(saveObject);
