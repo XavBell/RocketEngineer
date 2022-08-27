@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5889540978983136384}
   - component: {fileID: 8889202523145183716}
   - component: {fileID: -5808564746016280997}
-  - component: {fileID: 3500344178042700039}
   - component: {fileID: 4537766573156485653}
   - component: {fileID: 8142855468360428412}
   - component: {fileID: -2056247246796802356}
@@ -59,6 +58,7 @@ MonoBehaviour:
   maxThrust: 0
   mass: 0
   fuel: 0
+  maxFuel: 0
   rate: 0
   referenceDecoupler: {fileID: 0}
   nozzleExit: {fileID: 0}
@@ -121,18 +121,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3500344178042700039
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3186944469201897407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b9e83a15c17e3f41838862d47e7dfdd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!50 &4537766573156485653
 Rigidbody2D:
   serializedVersion: 4

@@ -60,16 +60,6 @@ public class MasterManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.G))
-        {
-            SceneManager.LoadScene("TankDesign");
-        }
-
-        if(Input.GetKey(KeyCode.F))
-        {
-            SceneManager.LoadScene("EngineDesign");
-        }
-
         if(currentBuildingBody == null)
         {
             GameObject[] planets = GameObject.FindGameObjectsWithTag("Planet");

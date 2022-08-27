@@ -57,6 +57,7 @@ public class saveWorld
     public List<string> types = new List<string>();
 
     //Capsule
+    public string capsuleType;
     public List<float> capsuleScaleX = new List<float>();
     public List<float> capsuleScaleY = new List<float>();
     public List<float> capsuleScaleZ = new List<float>();

@@ -115,6 +115,7 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.childrenNumber.Add(0);
             
             //Save capsule propreties
+            saveWorld.capsuleType = rocket.GetComponent<Part>().type;
             saveWorld.capsuleLocX.Add(rocket.transform.position.x);
             saveWorld.capsuleLocY.Add(rocket.transform.position.y);
             saveWorld.capsuleLocZ.Add(rocket.transform.position.z);
@@ -211,7 +212,6 @@ public class WorldSaveManager : MonoBehaviour
                     referenceBody = referenceBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
                     saveWorld.childrenNumber[i]++; 
                 }
-                
             }
             i++;
         }
@@ -298,9 +298,13 @@ public class WorldSaveManager : MonoBehaviour
 
         foreach(int rocket in loadedWorld.childrenNumber)
         {
+            GameObject capsule = null;
             Debug.Log("CapsuleID" + capsuleID);
             int childrenNumber = rocket;
-            GameObject capsule = Instantiate(capsulePrefab, Vector3.zero, Quaternion.identity);
+            if(loadedWorld.capsuleType == "capsule")
+            {
+                capsule = Instantiate(capsulePrefab, Vector3.zero, Quaternion.identity);
+            }
             setPosition(loadedWorld.capsuleLocX[capsuleID], loadedWorld.capsuleLocY[capsuleID], loadedWorld.capsuleLocZ[capsuleID], capsule);
             capsule.transform.rotation = Quaternion.Euler(loadedWorld.capsuleRotX[capsuleID], loadedWorld.capsuleRotY[capsuleID], loadedWorld.capsuleRotZ[capsuleID]);
             GameObject currentPrefab = capsule;

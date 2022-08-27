@@ -470,6 +470,8 @@ public class GameManager : MonoBehaviour
 
                 if (type == "decoupler")
                 {
+                    Vector2 attachPosition = attachPoint.transform.position;
+                    currentPrefab = Instantiate(Decoupler, position, Quaternion.identity);
                     setRocketValues(attachPoint, currentPrefab, decouplerBox, decouplerOffset);
                     decouplerPresent = true;
                     lastPrefab = currentPrefab;

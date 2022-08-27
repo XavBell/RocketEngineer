@@ -99,91 +99,45 @@ public class PlanetGravity : MonoBehaviour
             }
 
 
-            updateReferenceBody();
-            //Gravity
-            float Dist = Vector3.Distance(transform.position, planet.transform.position);
-            Vector3 forceDir = (planet.transform.position - transform.position).normalized;
-            Vector3 ForceVector = forceDir * G * Mass * rocketMass / (Dist * Dist);
-
-            Vector3 Thrust = transform.up * thrust;
-            if (Dist < atmoAlt)
-            {
-                //AeroForces = rb.velocity.normalized  *  1/Dist * aeroCoefficient * -1;
-                AeroForces = Vector3.zero;
-            }
-            else
-            {
-                AeroForces = Vector3.zero;
-            }
-
-            Vector3 ResultVector = (ForceVector + Thrust + AeroForces) * Time.fixedDeltaTime;
-            rb.mass = rocketMass;
-            rb.AddForce(ResultVector);
+            
             
 
             if(possessed == true)
             {
-                //updateFloatReference();
                 updateReferenceStage();
                 _orientation();
                 _thrust();
                 updateParticle(thrust, maxThrust);
                 updateScene();
-
-                //Prediction
-                Vector3 currentPos = rb.position;
-                Vector3 prevPos = currentPos;
-                Vector3 currentVelocity = rb.velocity;
-                Vector3 planetCords = planet.transform.position;
-                int stepCount = 5000;
-                line.positionCount = stepCount;
-                List<float> distances = new List<float>();
-                for (int i = 0; i < stepCount; i++)
-                {
-                    Vector3 distance = planetCords - currentPos;
-                    forceDir = (planet.transform.position - currentPos).normalized;
-                    ForceVector = forceDir * G * Mass * rocketMass / (distance.magnitude * distance.magnitude);
-                    currentVelocity += ForceVector * Time.fixedDeltaTime;
-                    currentPos += currentVelocity * Time.fixedDeltaTime;
-                    distances.Add((planet.transform.position - currentPos).magnitude);
-                    prevPos = currentPos;
-                    line.SetPosition(i, prevPos);
-                }
-
-                Debug.Log("Apogee:" + distances.Max().ToString());
-                Debug.Log("Perigee:" + distances.Min().ToString());
-
             }
 
         }
+    }
+
+    void simulateGravity()
+    {
+        updateReferenceBody();
+        //Gravity
+        float Dist = Vector3.Distance(transform.position, planet.transform.position);
+        Vector3 forceDir = (planet.transform.position - transform.position).normalized;
+        Vector3 ForceVector = forceDir * G * Mass * rocketMass / (Dist * Dist);
+
+        Vector3 Thrust = transform.up * thrust;
+        if (Dist < atmoAlt)
+        {
+            //AeroForces = rb.velocity.normalized  *  1/Dist * aeroCoefficient * -1;
+            AeroForces = Vector3.zero;
+        }
+        else
+        {
+            AeroForces = Vector3.zero;
+        }
+
+        Vector3 ResultVector = (ForceVector + Thrust + AeroForces) * Time.fixedDeltaTime;
+        rb.mass = rocketMass;
+        rb.AddForce(ResultVector);
     }
    
-
-    void updateFloatReference()
-    {
-        if(capsule.transform.position.magnitude > threshold){
-            GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
-            GameObject sun = GameObject.FindGameObjectWithTag("Sun");
-            GameObject cam = GameObject.FindGameObjectWithTag("MainCamera");
-            GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
-            Vector3 difference = new Vector3(0, 0, capsule.transform.position.z) - capsule.transform.position;
-            foreach(GameObject go in planetsToMove)
-            {
-                if(go.GetComponent<TypeScript>().type == "earth")
-                go.transform.position = go.transform.position + difference;
-            }
-
-            foreach(GameObject go in rockets)
-            {
-                go.transform.position = go.transform.position + difference; 
-            }
-            cam.transform.position = cam.transform.position + difference;
-            sun.transform.position = sun.transform.position + difference;
-        }
-    }
-
-
-
     void _thrust()
     {
         if(Input.GetKey(KeyCode.LeftShift) && thrust<maxThrust)
@@ -313,7 +267,6 @@ public class PlanetGravity : MonoBehaviour
             }
             if (bestDecoupler != null)
             {
-
                 GameObject decouplerToUse = bestDecoupler.attachBottom.GetComponent<AttachPointScript>().referenceBody;
                 foreach (Part go2 in decouplers)
                 {
@@ -347,8 +300,8 @@ public class PlanetGravity : MonoBehaviour
 
         
         
-      while (x == 0 && capsule.GetComponent<Part>().attachBottom.attachedBody != null)
-      {
+        while (x == 0 && capsule.GetComponent<Part>().attachBottom.attachedBody != null)
+        { 
             if (currentAttach.GetComponent<AttachPointScript>().attachedBody != null)
             {
                 

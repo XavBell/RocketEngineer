@@ -21,6 +21,7 @@ public class OnClick : MonoBehaviour
     public GameObject capsulePrefab;
     public GameObject Tank;
     public GameObject Engine;
+    public GameObject Decoupler;
 
     public savePath savePathRef = new savePath();
     public string path;
@@ -235,6 +236,8 @@ public class OnClick : MonoBehaviour
 
                 if (type == "decoupler")
                 {
+                    Vector2 attachPosition = attachPoint.transform.position;
+                    currentPrefab = Instantiate(Decoupler, position, Quaternion.identity);
                     setRocketValues(attachPoint, currentPrefab, capsule);
                     decouplerPresent = true;
                     lastPrefab = currentPrefab;
@@ -244,8 +247,7 @@ public class OnClick : MonoBehaviour
             }
 
 
-            capsule.transform.localScale = new Vector2(0.5f, 0.5f);
-            
+            capsule.transform.localScale = new Vector2(0.5f, 0.5f);   
 
         }
 
