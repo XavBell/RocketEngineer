@@ -21,7 +21,8 @@ public class outputInputManager : MonoBehaviour
     public float selfRate;
     public float rate;
 
-    public float quantity = 0;
+    public float moles = 0;
+    public float volume = 0;
 
     public bool log = false;
 
@@ -40,7 +41,7 @@ public class outputInputManager : MonoBehaviour
         if(quantityText != null && log == true){
             quantityText.enabled = true;
             rateText.enabled = true;
-            quantityText.text = "Quantity: " + quantity.ToString();
+            quantityText.text = "Quantity: " + moles.ToString();
             rateText.text= "Rate: " + rate.ToString();
         }else if(quantityText != null && log == false)
         {
@@ -71,7 +72,7 @@ public class outputInputManager : MonoBehaviour
             rate = inputParent.GetComponent<outputInputManager>().rate;
         }
 
-        if(!inputParent && quantity != 0)
+        if(!inputParent && moles != 0)
         {
             rate = selfRate;
         }
@@ -82,17 +83,17 @@ public class outputInputManager : MonoBehaviour
         //Fix reverse flow
         if(outputParent)
         {
-           if(quantity - rate * Time.deltaTime >= 0)
+           if(moles - rate * Time.deltaTime >= 0)
            {
                 float variation;
                 variation = rate * Time.deltaTime;
-                quantity -=  variation;
+                moles -=  variation;
            }
         }
 
-        if(inputParent && inputParent.GetComponent<outputInputManager>().quantity - inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime > 0)
+        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime > 0)
         {
-            quantity += inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime;
+            moles += inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime;
         }
     }
 
@@ -100,7 +101,7 @@ public class outputInputManager : MonoBehaviour
     {
         if(log == true)
         {
-            Debug.Log(quantity);
+            Debug.Log(moles);
         }
     }
 }
