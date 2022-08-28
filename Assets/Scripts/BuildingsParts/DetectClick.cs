@@ -13,20 +13,20 @@ public class DetectClick : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(buildingManager.mode == "connect")
+        if(buildingManager.localMode == "connect")
         {
             if(Input.GetMouseButtonDown(0) )
             {
                 RaycastHit2D raycastHit;
-                Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
-                raycastHit = Physics2D.Raycast(ray, -Vector2.up);
+                Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 ray = new Vector2(mousePos.x, mousePos.y);
+                raycastHit = Physics2D.Raycast(ray, Vector2.zero);
            
                     if (raycastHit.transform != null)
                     {
@@ -59,16 +59,18 @@ public class DetectClick : MonoBehaviour
             }
         }
 
-        if(buildingManager.mode == "none")
+        if(buildingManager.localMode == "none")
         {
-           if(Input.GetMouseButtonDown(0))
-           {
+            if(Input.GetMouseButtonDown(0))
+            {
                 RaycastHit2D raycastHit;
                 Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
-                raycastHit = Physics2D.Raycast(ray, -Vector2.up);
+                raycastHit = Physics2D.Raycast(ray, Vector2.zero);
+                Debug.Log(ray);
                 if (raycastHit.transform != null)
                 {
+                    Debug.Log(raycastHit.transform.gameObject);
                     if(raycastHit.transform.gameObject.GetComponent<buildingType>())
                     {
                         
@@ -86,6 +88,7 @@ public class DetectClick : MonoBehaviour
 
                         if(type == "launchPad")
                         {
+                            Debug.Log("Active");
                             GameObject panel = current.GetComponent<launchPadManager>().Panel;
                             if(panel.active == false)
                             {
@@ -100,11 +103,12 @@ public class DetectClick : MonoBehaviour
             }
 
             if(Input.GetMouseButtonDown(1))
-           {
+            {
                 RaycastHit2D raycastHit;
                 Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
                 raycastHit = Physics2D.Raycast(ray, -Vector2.up);
+
                 if (raycastHit.transform != null)
                 {
                     if(raycastHit.transform.gameObject.GetComponent<buildingType>())
@@ -124,6 +128,7 @@ public class DetectClick : MonoBehaviour
 
                         if(type == "launchPad")
                         {
+                            Debug.Log("Active");
                             GameObject panel = current.GetComponent<launchPadManager>().Panel;
                             if(panel.active == true)
                             {

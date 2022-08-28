@@ -9,7 +9,7 @@ public class BuildingManager : MonoBehaviour
     public GameObject earth;
     public GameObject pipe;
 
-    public string mode = "none";
+    public string localMode = "none";
 
     public List<GameObject> DynamicParts = new List<GameObject>();    
     // Start is called before the first frame update
@@ -21,9 +21,6 @@ public class BuildingManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        
-
         if(Input.GetMouseButtonDown(0) && partToConstruct != null)
         {
             if (partToConstruct != null && Cursor.visible == false && customCursor.GetComponent<CustomCursor>().constructionAllowed == true)
@@ -77,10 +74,9 @@ public class BuildingManager : MonoBehaviour
 
         if(Input.GetKey(KeyCode.C))
         {
-            if(mode == "none")
+            if(localMode == "none")
             {
-                mode = "connect";
-                Debug.Log(mode);
+                localMode = "connect";
                 return;
             }
         }
@@ -121,7 +117,7 @@ public class BuildingManager : MonoBehaviour
         current.GetComponent<outputInputManager>().output.transform.position = (current.transform.right * distance/2) + current.transform.position;
         current.GetComponent<outputInputManager>().input.transform.position = (current.transform.right*-1 * distance/2) + current.transform.position;
         current.transform.SetParent(earth.transform);
-        mode = "none";
+        localMode = "none";
     }
 
     public void ConstructPart(GameObject part)

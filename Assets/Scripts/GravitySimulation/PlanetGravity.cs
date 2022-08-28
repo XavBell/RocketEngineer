@@ -51,6 +51,7 @@ public class PlanetGravity : MonoBehaviour
 
     public GameObject TimeRef;
     public TimeManager TimeManager;
+    public MasterManager MasterManager;
 
     public float threshold = 10f;
 
@@ -67,13 +68,24 @@ public class PlanetGravity : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(MasterManager == null)
+        {
+            GameObject MastRef = GameObject.FindGameObjectWithTag("MasterManager");
+            if(TimeRef != null)
+            {
+                MasterManager = MastRef.GetComponent<MasterManager>();
+            }
+        }
+
         if(TimeRef == null)
         {
             TimeRef = GameObject.FindGameObjectWithTag("TimeManager");
-            if(TimeRef != null){
+            if(TimeRef != null)
+            {
                 TimeManager = TimeRef.GetComponent<TimeManager>();
             }
         }
+
         if(WorldSaveManager == null)
         {
             WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
@@ -97,10 +109,6 @@ public class PlanetGravity : MonoBehaviour
                 rb = GetComponent<Rigidbody2D>();
                 posUpdated = true;
             }
-
-
-            
-            
 
             if(possessed == true)
             {

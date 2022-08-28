@@ -101,7 +101,7 @@ public class MasterManager : MonoBehaviour
         }
     }
 
-    IEnumerator Text()  //  <-  its a standalone method
+    IEnumerator Text() 
     {
 	    AlertText.active = true;
         yield return new WaitForSeconds(1);

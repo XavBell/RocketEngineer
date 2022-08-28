@@ -34,8 +34,6 @@ public class launchPadManager : MonoBehaviour
 
     public void retrieveRocketSaved()
     {
-
-        
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("spawnedButton");
         foreach(GameObject but in buttons)
         {
