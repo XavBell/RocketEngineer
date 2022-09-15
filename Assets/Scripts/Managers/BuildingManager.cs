@@ -15,7 +15,7 @@ public class BuildingManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        customCursor.gameObject.SetActive(false);
     }
 
     // Update is called once per frame

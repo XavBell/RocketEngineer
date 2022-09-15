@@ -57,10 +57,9 @@ public class OnClick : MonoBehaviour
 
     public void clicked()
     {
-        Debug.Log("Hi");
         GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
         GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
-
+        Debug.Log("Clicked");
         if (GameManager != null)
         {
             GameManager.GetComponent<GameManager>().path = "/"+ b1.GetComponentInChildren<TextMeshProUGUI>().text;
@@ -86,8 +85,6 @@ public class OnClick : MonoBehaviour
 
         }
 
-        
-
         if(SceneManager.GetActiveScene().name.ToString() == "Menu")
         {
             MasterManager.GetComponent<MasterManager>().FolderName = b1.GetComponentInChildren<TextMeshProUGUI>().text;
@@ -96,14 +93,10 @@ public class OnClick : MonoBehaviour
 
         if(launchPad != null)
         {
-            Debug.Log("Hi");
             path = "/"+b1.GetComponentInChildren<TextMeshProUGUI>().text;
             load(filePath);
             b1.interactable = false;
-            
-        }
-
-        
+        }   
         
     }
 

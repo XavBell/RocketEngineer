@@ -17,29 +17,30 @@ public class launchPadManager : MonoBehaviour
     public GameObject scroll;
     public savePath savePathRef = new savePath();
     public MasterManager MasterManager;
+    public bool Spawned = false;
 
     // Start is called before the first frame update
     void Start()
     {
         GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
         MasterManager = GMM.GetComponent<MasterManager>();
-        retrieveRocketSaved();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Spawned == false)
+        {
+            retrieveRocketSaved();
+            Spawned = true;
+        }
+
     }
 
     public void retrieveRocketSaved()
     {
-        GameObject[] buttons = GameObject.FindGameObjectsWithTag("spawnedButton");
-        foreach(GameObject but in buttons)
-        {
-            Destroy(but);
-        }
-
+        //Panel.active = true;
+        Debug.Log("Spawing");
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
         {
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
@@ -64,6 +65,6 @@ public class launchPadManager : MonoBehaviour
             child.GetComponentInChildren<OnClick>().launchPad = this.gameObject;
 
         }
-        
+        //Panel.active = false;
     }
 }
