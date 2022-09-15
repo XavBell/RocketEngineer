@@ -343,7 +343,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 82395334}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 492879240}
+        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
+        m_MethodName: toggleBuildMenu
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &82395334
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,6 +565,7 @@ MonoBehaviour:
   customCursor: {fileID: 931935178}
   earth: {fileID: 2121345929}
   pipe: {fileID: 4590421016071702574, guid: b341585627a53c74b88c1f170592ba89, type: 3}
+  menu: {fileID: 747798705}
   localMode: none
   DynamicParts: []
 --- !u!4 &492879241
