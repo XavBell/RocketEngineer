@@ -118,7 +118,7 @@ public class PlanetGravity : MonoBehaviour
                 updateParticle(thrust, maxThrust);
                 updateScene();
             }
-
+            simulateGravity();
         }
     }
 
@@ -245,7 +245,7 @@ public class PlanetGravity : MonoBehaviour
             planet = bestPlanet;
         }
 
-        if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 1274200)
+        if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 10274200)
         {
             Mass = 119444000000000000000000.0f;
             atmoAlt = 157420.0f;

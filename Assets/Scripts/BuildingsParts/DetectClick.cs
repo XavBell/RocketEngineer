@@ -10,10 +10,13 @@ public class DetectClick : MonoBehaviour
     public GameObject output = null;
 
     public BuildingManager buildingManager;
+    public MasterManager MasterManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject GM = GameObject.FindGameObjectWithTag("MasterManager");
+        MasterManager = GM.GetComponent<MasterManager>();
     }
 
     // Update is called once per frame
@@ -93,9 +96,19 @@ public class DetectClick : MonoBehaviour
                             if(panel.active == false)
                             {
                                 panel.active = true;
-                            }
-                            
+                            } 
                         }
+                            
+                    }
+
+                    if(raycastHit.transform.gameObject.GetComponent<PlanetGravity>())
+                    {
+                        
+                        GameObject current = raycastHit.transform.gameObject;
+                        Debug.Log("clicked on rocket");
+                        current.GetComponent<PlanetGravity>().possessed = true;
+                        MasterManager.gameState = "Flight";
+                        MasterManager.ActiveRocket = current;
                             
                     }
                       

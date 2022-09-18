@@ -30,28 +30,28 @@ public class CameraControl : MonoBehaviour
     void Start()
     {
         targetZoom = cam.orthographicSize;
-        
+        if(MasterManager == null)
+        {  
+            MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        updateFloatReference();
+        ZoomIn();
 
- 
-
-            
+        if(MasterManager.GetComponent<MasterManager>().gameState == "Building")
+        {  
             QE();
-            ZoomIn();
-            updateFloatReference();
             WASD();
-            if(rocket != null)
-            {
-                //Rocket();
-            }
-            rocket = GameObject.FindGameObjectWithTag("capsule");
-            
+        }
 
-        
+        if(MasterManager.GetComponent<MasterManager>().gameState == "Flight")
+        {  
+            UpdateToRocketPosition();
+        }
     }
 
 
@@ -63,14 +63,6 @@ public class CameraControl : MonoBehaviour
 
         targetZoom -= scrollData * zoomFactor;
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
-    }
-
-    public void Rocket()
-    {
-        if (Input.GetKey(KeyCode.E))
-        {
-            CamRef.transform.position = new Vector3(rocket.transform.position.x, rocket.transform.position.y, -10);
-        }
     }
 
     public void WASD()
@@ -97,6 +89,13 @@ public class CameraControl : MonoBehaviour
         {
             cam.transform.RotateAround(earth.transform.position, earth.transform.forward, 0.02f*Time.deltaTime);
         }
+    }
+
+    void UpdateToRocketPosition()
+    {
+
+        cam.transform.position = MasterManager.GetComponent<MasterManager>().ActiveRocket.transform.position;
+            
     }
 
     void updateFloatReference()

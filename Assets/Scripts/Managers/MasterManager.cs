@@ -32,6 +32,8 @@ public class MasterManager : MonoBehaviour
     public string gameState = "Building";
 
     public GameObject currentBuildingBody;
+
+    public GameObject ActiveRocket;
    
 
     // Start is called before the first frame update
