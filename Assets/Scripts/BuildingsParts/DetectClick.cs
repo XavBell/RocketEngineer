@@ -151,6 +151,18 @@ public class DetectClick : MonoBehaviour
                         }
                             
                     }
+
+                    if(raycastHit.transform.gameObject.GetComponent<PlanetGravity>())
+                    {
+                        
+                        GameObject current = raycastHit.transform.gameObject;
+                        if(current = MasterManager.ActiveRocket)
+                        {
+                            current.GetComponent<PlanetGravity>().possessed = false;
+                            MasterManager.gameState = "Building";
+                            MasterManager.ActiveRocket = null;
+                        }
+                    }
                       
                 }
             }
