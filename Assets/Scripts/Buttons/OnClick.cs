@@ -195,7 +195,7 @@ public class OnClick : MonoBehaviour
                     AttachPointScript currentAttach = currentPrefab.GetComponent<Part>().attachTop;
                     while (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "tank")
                     {
-                        currentPrefab.GetComponent<Part>().fuel += currentAttach.attachedBody.GetComponent<Part>().fuel;
+                        currentPrefab.GetComponent<Part>().maxFuel += currentAttach.attachedBody.GetComponent<Part>().maxFuel;
                         currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
                     }
 
@@ -272,7 +272,7 @@ public class OnClick : MonoBehaviour
                 tankPrefab.GetComponent<Part>().path = loadedTank.path;
                 tankPrefab.GetComponent<Part>().name = loadedTank.name;
 
-                tankPrefab.GetComponent<Part>().fuel = loadedTank.fuel;
+                tankPrefab.GetComponent<Part>().maxFuel = loadedTank.maxFuel;
                 tankPrefab.GetComponent<Part>().mass = loadedTank.mass;
                 tankPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().size = new Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
                 tankPrefab.GetComponent<Part>().attachTop.transform.localPosition = (new Vector3(0, loadedTank.attachTopPos, 0));

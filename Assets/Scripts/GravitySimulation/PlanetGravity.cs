@@ -168,12 +168,12 @@ public class PlanetGravity : MonoBehaviour
             thrust = 0;
         }
 
-        if(currentFuel <= 0.0f)
+        if(activeEngine.GetComponent<Part>().fuel <= 0.0f)
         {
             thrust = 0;
         }
 
-        currentFuel -= thrust/maxThrust * rate;
+        activeEngine.GetComponent<Part>().fuel -= thrust/maxThrust * rate;
         float ratio = currentFuel / maxFuel;
         
         if (ratio < 1.0f && ratio > 0.0f && thrust != 0 && activeEngine != null && rocketMass > 0)
@@ -327,11 +327,11 @@ public class PlanetGravity : MonoBehaviour
 
                         if (currentFuel <= 0)
                         {
-                            maxFuel = CurrentEngine.GetComponent<Part>().fuel;
+                            maxFuel = CurrentEngine.GetComponent<Part>().maxFuel;
                             if(stageUpdated == false)
                             {
                                 activeEngine = CurrentEngine;
-                                currentFuel = maxFuel;
+                                //currentFuel = maxFuel;
                                 stageUpdated = true;
                             }
  
