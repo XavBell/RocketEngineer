@@ -18,6 +18,7 @@ public class launchPadManager : MonoBehaviour
     public savePath savePathRef = new savePath();
     public MasterManager MasterManager;
     public bool Spawned = false;
+    public GameObject ConnectedRocket;
 
     // Start is called before the first frame update
     void Start()

@@ -96,6 +96,7 @@ public class OnClick : MonoBehaviour
             path = "/"+b1.GetComponentInChildren<TextMeshProUGUI>().text;
             load(filePath);
             b1.interactable = false;
+
         }   
         
     }
@@ -240,7 +241,13 @@ public class OnClick : MonoBehaviour
             }
 
 
-            capsule.transform.localScale = new Vector2(0.5f, 0.5f);   
+            capsule.transform.localScale = new Vector2(0.5f, 0.5f);
+            if(launchPad != null && capsule != null)
+            {
+                launchPad.GetComponent<launchPadManager>().ConnectedRocket = capsule;
+                Debug.Log("Still Alive!");
+
+            }   
 
         }
 
@@ -279,6 +286,9 @@ public class OnClick : MonoBehaviour
                 tankPrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new Vector3(0, loadedTank.attachBottomPos, 0));
             }
         filePath = null;
+
+        
+
     }
 
     public void setRocketValues(AttachPointScript attachPoint, GameObject currentPrefab, GameObject capsule)
