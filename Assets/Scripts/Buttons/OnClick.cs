@@ -244,9 +244,18 @@ public class OnClick : MonoBehaviour
             capsule.transform.localScale = new Vector2(0.5f, 0.5f);
             if(launchPad != null && capsule != null)
             {
+                //Reference capsule to the launchPad
+                if(launchPad.GetComponent<launchPadManager>().ConnectedRocket != null)
+                {
+                    Destroy(launchPad.GetComponent<launchPadManager>().ConnectedRocket);
+                }
+
+                //Set Output/Input fuel values
                 launchPad.GetComponent<launchPadManager>().ConnectedRocket = capsule;
                 Debug.Log("Still Alive!");
 
+                capsule.GetComponent<outputInputManager>().inputParent = launchPad;
+                launchPad.GetComponent<outputInputManager>().outputParent = capsule;
             }   
 
         }

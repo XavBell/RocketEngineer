@@ -80,7 +80,7 @@ public class outputInputManager : MonoBehaviour
 
     void fuelTransfer()
     {
-        //Fix reverse flow
+
         if(outputParent)
         {
            if(moles - rate * Time.deltaTime >= 0)
@@ -91,7 +91,7 @@ public class outputInputManager : MonoBehaviour
            }
         }
 
-        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime > 0)
+        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime > 0 && moles + inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < volume)
         {
             moles += inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime;
         }
