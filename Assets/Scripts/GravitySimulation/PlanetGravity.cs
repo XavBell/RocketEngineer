@@ -117,7 +117,14 @@ public class PlanetGravity : MonoBehaviour
                 _thrust();
                 updateParticle(thrust, maxThrust);
                 updateScene();
+                this.GetComponent<outputInputManager>().log = false;
             }
+
+            if(possessed == false)
+            {
+                this.GetComponent<outputInputManager>().log = true;
+            }
+
             simulateGravity();
         }
     }

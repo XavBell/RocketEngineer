@@ -26,6 +26,10 @@ public class outputInputManager : MonoBehaviour
 
     public bool log = false;
 
+    public List<GameObject> engines = new List<GameObject>();
+
+    public string type = "default";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,19 +39,23 @@ public class outputInputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateParents();
-        setRate();
-        fuelTransfer();
-        if(quantityText != null && log == true){
-            quantityText.enabled = true;
-            rateText.enabled = true;
-            quantityText.text = "Quantity: " + moles.ToString();
-            rateText.text= "Rate: " + rate.ToString();
-        }else if(quantityText != null && log == false)
+        if(type == "default")
         {
-            quantityText.enabled = false;
-            rateText.enabled = false;
+            updateParents();
+            setRate();
+            fuelTransfer();
+            if(quantityText != null && log == true){
+                quantityText.enabled = true;
+                rateText.enabled = true;
+                quantityText.text = "Quantity: " + moles.ToString();
+                rateText.text= "Rate: " + rate.ToString();
+            }else if(quantityText != null && log == false)
+            {
+                quantityText.enabled = false;
+                rateText.enabled = false;
+            }
         }
+
         DebugLog();
     }
     
@@ -83,7 +91,7 @@ public class outputInputManager : MonoBehaviour
 
         if(outputParent)
         {
-           if(moles - rate * Time.deltaTime >= 0)
+           if(moles - rate * Time.deltaTime >= 0 && outputParent.GetComponent<outputInputManager>().moles + outputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < outputParent.GetComponent<outputInputManager>().volume)
            {
                 float variation;
                 variation = rate * Time.deltaTime;
@@ -94,6 +102,15 @@ public class outputInputManager : MonoBehaviour
         if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime > 0 && moles + inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < volume)
         {
             moles += inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime;
+
+            if(engines.Count > 0)
+            {
+                float newVolume = moles/engines.Count;
+                foreach(GameObject en in engines)
+                {
+                    en.GetComponent<Part>().fuel = newVolume;
+                }
+            }
         }
     }
 

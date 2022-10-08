@@ -96,7 +96,14 @@ public class DetectClick : MonoBehaviour
                             if(panel.active == false)
                             {
                                 panel.active = true;
-                            } 
+
+                            }
+                            current.GetComponent<outputInputManager>().log = true; 
+                        }
+
+                        if(type == "GSEtank")
+                        {
+                            current.GetComponent<outputInputManager>().log = true; 
                         }
                             
                     }
@@ -147,7 +154,12 @@ public class DetectClick : MonoBehaviour
                             {
                                 panel.active = false;
                             }
-                            
+                            current.GetComponent<outputInputManager>().log = false; 
+                        }
+
+                        if(type == "GSEtank")
+                        {
+                            current.GetComponent<outputInputManager>().log = false; 
                         }
                             
                     }

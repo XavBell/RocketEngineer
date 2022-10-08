@@ -217,9 +217,9 @@ public class GameManager_Engine : MonoBehaviour
             return;
         }
 
-        thrust = (1/turboRate_turboSizeRatio) * turboRate_nozzleLengthRatio * (expansionRatio / 2) * (turbopumpRateFloat/2) * (1/ turbopumpRef.transform.localScale.x);
+        thrust = (1/turboRate_turboSizeRatio) * turboRate_nozzleLengthRatio * (expansionRatio / 2) * (turbopumpRateFloat/2) * (1/ turbopumpRef.transform.localScale.x)*1500;
         rate = ((turboRate_turboSizeRatio)/turbopumpRef.transform.localScale.x)/2;
-        mass = 300 * turbopumpRef.transform.localScale.x;
+        mass = 3*turbopumpRef.transform.localScale.x;
     }
 
     public void updateAttachPosition()

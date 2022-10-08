@@ -224,6 +224,7 @@ public class OnClick : MonoBehaviour
                         }
 
                     }
+                    capsule.GetComponent<outputInputManager>().engines.Add(currentPrefab);
                     engineBuilt = true;
                     lastPrefab = currentPrefab;
                 }
@@ -256,6 +257,12 @@ public class OnClick : MonoBehaviour
 
                 capsule.GetComponent<outputInputManager>().inputParent = launchPad;
                 launchPad.GetComponent<outputInputManager>().outputParent = capsule;
+
+                foreach(GameObject en in capsule.GetComponent<outputInputManager>().engines)
+                {
+                    capsule.GetComponent<outputInputManager>().volume += en.GetComponent<Part>().maxFuel;
+                }
+
             }   
 
         }
@@ -313,5 +320,10 @@ public class OnClick : MonoBehaviour
             capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
         }
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
+    }
+
+    public void AddFuel(GameObject tank)
+    {
+        tank.GetComponent<outputInputManager>().moles = tank.GetComponent<outputInputManager>().volume;
     }
 }

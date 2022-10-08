@@ -36,6 +36,15 @@ public class launchPadManager : MonoBehaviour
             Spawned = true;
         }
 
+        if(ConnectedRocket != null)
+        {
+            if(ConnectedRocket.GetComponent<PlanetGravity>().possessed == true)
+            {
+                ConnectedRocket.GetComponent<outputInputManager>().inputParent = null;
+                ConnectedRocket = null;
+                this.GetComponent<outputInputManager>().outputParent = null;
+            }
+        }
     }
 
     public void retrieveRocketSaved()

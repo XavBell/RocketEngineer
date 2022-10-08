@@ -128,8 +128,8 @@ public class GameManager_Tank : MonoBehaviour
 
     void calculate()
     {
-        fuel = tankDiameterFloat * tankHeightFloat * 100;
-        mass = tankHeightFloat * tankDiameterFloat * 100;
+        fuel = tankDiameterFloat * tankHeightFloat * 400;
+        mass = (tankHeightFloat * tankDiameterFloat);
 
     }
 

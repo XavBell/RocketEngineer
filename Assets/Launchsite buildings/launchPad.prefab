@@ -796,7 +796,7 @@ MonoBehaviour:
   selfRate: 0
   rate: 0
   moles: 0
-  volume: 0
+  volume: 10
   log: 0
 --- !u!114 &6114230335073138526
 MonoBehaviour:
@@ -828,6 +828,7 @@ MonoBehaviour:
   scroll: {fileID: 4617929692229580544}
   MasterManager: {fileID: 0}
   Spawned: 0
+  ConnectedRocket: {fileID: 0}
 --- !u!1 &4617929692229580544
 GameObject:
   m_ObjectHideFlags: 0
