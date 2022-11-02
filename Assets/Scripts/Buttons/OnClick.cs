@@ -326,4 +326,19 @@ public class OnClick : MonoBehaviour
     {
         tank.GetComponent<outputInputManager>().moles = tank.GetComponent<outputInputManager>().volume;
     }
+
+    public void OpenValve(GameObject tank)
+    {
+        if(tank.GetComponent<outputInputManager>().selfRate == 0)
+        {
+            tank.GetComponent<outputInputManager>().selfRate = 2;
+            return;
+        }
+
+        if(tank.GetComponent<outputInputManager>().selfRate > 0)
+        {
+            tank.GetComponent<outputInputManager>().selfRate = 0;
+            return;
+        }
+    }
 }
