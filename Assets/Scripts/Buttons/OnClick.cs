@@ -331,7 +331,7 @@ public class OnClick : MonoBehaviour
     {
         if(tank.GetComponent<outputInputManager>().selfRate == 0)
         {
-            tank.GetComponent<outputInputManager>().selfRate = 2;
+            tank.GetComponent<outputInputManager>().selfRate = 10;
             return;
         }
 
