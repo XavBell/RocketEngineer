@@ -57,6 +57,11 @@ public class GameManager_Engine : MonoBehaviour
     public GameObject panel;
     public GameObject popUpPart;
 
+    //TEMPORARY!!!
+    public TextMeshProUGUI thrustT;
+    public TextMeshProUGUI massT;
+    public TextMeshProUGUI rateT;
+
     public MasterManager MasterManager = new MasterManager();
     // Start is called before the first frame update
     void Start()
@@ -220,6 +225,10 @@ public class GameManager_Engine : MonoBehaviour
         thrust = (1/turboRate_turboSizeRatio) * turboRate_nozzleLengthRatio * (expansionRatio / 2) * (turbopumpRateFloat/2) * (1/ turbopumpRef.transform.localScale.x)*1500;
         rate = ((turboRate_turboSizeRatio)/turbopumpRef.transform.localScale.x)/2;
         mass = 3*turbopumpRef.transform.localScale.x;
+
+        thrustT.text = thrust.ToString();
+        massT.text = mass.ToString();
+        rateT.text = rate.ToString();
     }
 
     public void updateAttachPosition()
@@ -296,7 +305,7 @@ public class GameManager_Engine : MonoBehaviour
 
     public void backToBuild()
     {
-        SceneManager.LoadScene("Building");
+        SceneManager.LoadScene("SampleScene");
     }
 
 }

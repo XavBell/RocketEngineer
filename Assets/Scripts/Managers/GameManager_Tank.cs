@@ -188,7 +188,7 @@ public class GameManager_Tank : MonoBehaviour
 
     public void backToBuild()
     {
-        SceneManager.LoadScene("Building");
+        SceneManager.LoadScene("SampleScene");
     }
 
 }
