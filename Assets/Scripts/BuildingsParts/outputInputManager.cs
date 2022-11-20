@@ -26,6 +26,8 @@ public class outputInputManager : MonoBehaviour
 
     public bool log = false;
 
+    public float variation;
+
     public List<GameObject> engines = new List<GameObject>();
 
     public string type = "default";
@@ -57,6 +59,11 @@ public class outputInputManager : MonoBehaviour
         }
 
         DebugLog();
+    }
+
+    void FixedUpdate()
+    {
+        fuelTransfer();
     }
     
     void updateParents()
@@ -93,15 +100,14 @@ public class outputInputManager : MonoBehaviour
         {
            if(moles - rate * Time.deltaTime >= 0 && outputParent.GetComponent<outputInputManager>().moles + outputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < outputParent.GetComponent<outputInputManager>().volume)
            {
-                float variation;
                 variation = rate * Time.deltaTime;
                 moles -=  variation;
            }
         }
 
-        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime > 0 && moles + inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < volume)
+        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().variation > 0 && moles + inputParent.GetComponent<outputInputManager>().variation < volume)
         {
-            moles += inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime;
+            moles += inputParent.GetComponent<outputInputManager>().variation;
 
             if(engines.Count > 0)
             {

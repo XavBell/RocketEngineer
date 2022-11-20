@@ -57,6 +57,8 @@ public class PlanetGravity : MonoBehaviour
 
     public float previousApogee;
 
+    public float time = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -112,7 +114,12 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                updateReferenceStage();
+                time = time + Time.deltaTime;
+                Debug.Log(time);
+                if(time > 1)
+                { 
+                    updateReferenceStage();
+                }
                 _orientation();
                 _thrust();
                 updateParticle(thrust, maxThrust);
@@ -155,6 +162,7 @@ public class PlanetGravity : MonoBehaviour
    
     void _thrust()
     {
+        if(activeEngine != null){
         if(Input.GetKey(KeyCode.LeftShift) && thrust<maxThrust)
         {
             thrust += Time.deltaTime * 1;
@@ -191,6 +199,7 @@ public class PlanetGravity : MonoBehaviour
         if(rocketMass < 0.0f)
         {
             rocketMass = 0.01f;
+        }
         }
     }
 
@@ -266,17 +275,18 @@ public class PlanetGravity : MonoBehaviour
     {
         int x = 0;
         AttachPointScript currentAttach = capsule.GetComponent<Part>().attachBottom;
-        if (Input.GetKey(KeyCode.Space))
+        if (Input.GetKey(KeyCode.Space) && stageUpdated == true)
         {
             Part[] decouplers;
             decouplers = GameObject.FindObjectsOfType<Part>();
             float bestDist = 0;
             Part bestDecoupler = null;
-            Debug.Log("Hello");
+            
             foreach(Part go1 in decouplers)
             {
                 if((go1.transform.position - transform.position).magnitude > bestDist && go1.GetComponent<Part>().type.ToString() == "decoupler")
                 {
+                    bestDist = (go1.transform.position - transform.position).magnitude;
                     bestDecoupler = go1;
                 }
             }
@@ -288,6 +298,7 @@ public class PlanetGravity : MonoBehaviour
                     GameObject referenceGo = go2.attachBottom.GetComponent<AttachPointScript>().referenceBody;
                     if (decouplerToUse == referenceGo.GetComponent<Part>().referenceDecoupler)
                     {
+                        Debug.Log("Hello");
                         if(referenceGo.GetComponent<Part>().type.ToString() == "tank")
                         {
                             rocketMass -= (referenceGo.GetComponent<Part>().mass - maxFuel);
@@ -304,13 +315,14 @@ public class PlanetGravity : MonoBehaviour
                         
                     }
                 }
-                decouplerToUse.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
+                //decouplerToUse.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
                 Destroy(decouplerToUse);
             }
             
             if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null){
                 stageUpdated = false;
             }
+            time = 0;
         }
 
         
