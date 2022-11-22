@@ -96,6 +96,7 @@ public class OnClick : MonoBehaviour
             path = "/"+b1.GetComponentInChildren<TextMeshProUGUI>().text;
             load(filePath);
             b1.interactable = false;
+
         }   
         
     }
@@ -195,7 +196,7 @@ public class OnClick : MonoBehaviour
                     AttachPointScript currentAttach = currentPrefab.GetComponent<Part>().attachTop;
                     while (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "tank")
                     {
-                        currentPrefab.GetComponent<Part>().fuel += currentAttach.attachedBody.GetComponent<Part>().fuel;
+                        currentPrefab.GetComponent<Part>().maxFuel += currentAttach.attachedBody.GetComponent<Part>().maxFuel;
                         currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
                     }
 
@@ -223,6 +224,7 @@ public class OnClick : MonoBehaviour
                         }
 
                     }
+                    capsule.GetComponent<outputInputManager>().engines.Add(currentPrefab);
                     engineBuilt = true;
                     lastPrefab = currentPrefab;
                 }
@@ -240,7 +242,28 @@ public class OnClick : MonoBehaviour
             }
 
 
-            capsule.transform.localScale = new Vector2(0.5f, 0.5f);   
+            capsule.transform.localScale = new Vector2(0.5f, 0.5f);
+            if(launchPad != null && capsule != null)
+            {
+                //Reference capsule to the launchPad
+                if(launchPad.GetComponent<launchPadManager>().ConnectedRocket != null)
+                {
+                    Destroy(launchPad.GetComponent<launchPadManager>().ConnectedRocket);
+                }
+
+                //Set Output/Input fuel values
+                launchPad.GetComponent<launchPadManager>().ConnectedRocket = capsule;
+                Debug.Log("Still Alive!");
+
+                capsule.GetComponent<outputInputManager>().inputParent = launchPad;
+                launchPad.GetComponent<outputInputManager>().outputParent = capsule;
+
+                foreach(GameObject en in capsule.GetComponent<outputInputManager>().engines)
+                {
+                    capsule.GetComponent<outputInputManager>().volume += en.GetComponent<Part>().maxFuel;
+                }
+
+            }   
 
         }
 
@@ -272,13 +295,16 @@ public class OnClick : MonoBehaviour
                 tankPrefab.GetComponent<Part>().path = loadedTank.path;
                 tankPrefab.GetComponent<Part>().name = loadedTank.name;
 
-                tankPrefab.GetComponent<Part>().fuel = loadedTank.fuel;
+                tankPrefab.GetComponent<Part>().maxFuel = loadedTank.maxFuel;
                 tankPrefab.GetComponent<Part>().mass = loadedTank.mass;
                 tankPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().size = new Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
                 tankPrefab.GetComponent<Part>().attachTop.transform.localPosition = (new Vector3(0, loadedTank.attachTopPos, 0));
                 tankPrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new Vector3(0, loadedTank.attachBottomPos, 0));
             }
         filePath = null;
+
+        
+
     }
 
     public void setRocketValues(AttachPointScript attachPoint, GameObject currentPrefab, GameObject capsule)
@@ -294,5 +320,25 @@ public class OnClick : MonoBehaviour
             capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
         }
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
+    }
+
+    public void AddFuel(GameObject tank)
+    {
+        tank.GetComponent<outputInputManager>().moles = tank.GetComponent<outputInputManager>().volume;
+    }
+
+    public void OpenValve(GameObject tank)
+    {
+        if(tank.GetComponent<outputInputManager>().selfRate == 0)
+        {
+            tank.GetComponent<outputInputManager>().selfRate = 10;
+            return;
+        }
+
+        if(tank.GetComponent<outputInputManager>().selfRate > 0)
+        {
+            tank.GetComponent<outputInputManager>().selfRate = 0;
+            return;
+        }
     }
 }

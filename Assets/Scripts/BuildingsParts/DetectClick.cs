@@ -10,10 +10,13 @@ public class DetectClick : MonoBehaviour
     public GameObject output = null;
 
     public BuildingManager buildingManager;
+    public MasterManager MasterManager;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameObject GM = GameObject.FindGameObjectWithTag("MasterManager");
+        MasterManager = GM.GetComponent<MasterManager>();
     }
 
     // Update is called once per frame
@@ -93,9 +96,26 @@ public class DetectClick : MonoBehaviour
                             if(panel.active == false)
                             {
                                 panel.active = true;
+
                             }
-                            
+                            current.GetComponent<outputInputManager>().log = true; 
                         }
+
+                        if(type == "GSEtank")
+                        {
+                            current.GetComponent<outputInputManager>().log = true; 
+                        }
+                            
+                    }
+
+                    if(raycastHit.transform.gameObject.GetComponent<PlanetGravity>())
+                    {
+                        
+                        GameObject current = raycastHit.transform.gameObject;
+                        Debug.Log("clicked on rocket");
+                        current.GetComponent<PlanetGravity>().possessed = true;
+                        MasterManager.gameState = "Flight";
+                        MasterManager.ActiveRocket = current;
                             
                     }
                       
@@ -134,9 +154,26 @@ public class DetectClick : MonoBehaviour
                             {
                                 panel.active = false;
                             }
-                            
+                            current.GetComponent<outputInputManager>().log = false; 
+                        }
+
+                        if(type == "GSEtank")
+                        {
+                            current.GetComponent<outputInputManager>().log = false; 
                         }
                             
+                    }
+
+                    if(raycastHit.transform.gameObject.GetComponent<PlanetGravity>())
+                    {
+                        
+                        GameObject current = raycastHit.transform.gameObject;
+                        if(current = MasterManager.ActiveRocket)
+                        {
+                            current.GetComponent<PlanetGravity>().possessed = false;
+                            MasterManager.gameState = "Building";
+                            MasterManager.ActiveRocket = null;
+                        }
                     }
                       
                 }

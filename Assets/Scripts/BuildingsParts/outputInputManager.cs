@@ -26,6 +26,12 @@ public class outputInputManager : MonoBehaviour
 
     public bool log = false;
 
+    public float variation;
+
+    public List<GameObject> engines = new List<GameObject>();
+
+    public string type = "default";
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,20 +41,29 @@ public class outputInputManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateParents();
-        setRate();
-        fuelTransfer();
-        if(quantityText != null && log == true){
-            quantityText.enabled = true;
-            rateText.enabled = true;
-            quantityText.text = "Quantity: " + moles.ToString();
-            rateText.text= "Rate: " + rate.ToString();
-        }else if(quantityText != null && log == false)
+        if(type == "default")
         {
-            quantityText.enabled = false;
-            rateText.enabled = false;
+            updateParents();
+            setRate();
+            fuelTransfer();
+            if(quantityText != null && log == true){
+                quantityText.enabled = true;
+                rateText.enabled = true;
+                quantityText.text = "Quantity: " + moles.ToString();
+                rateText.text= "Rate: " + rate.ToString();
+            }else if(quantityText != null && log == false)
+            {
+                quantityText.enabled = false;
+                rateText.enabled = false;
+            }
         }
+
         DebugLog();
+    }
+
+    void FixedUpdate()
+    {
+        fuelTransfer();
     }
     
     void updateParents()
@@ -80,20 +95,28 @@ public class outputInputManager : MonoBehaviour
 
     void fuelTransfer()
     {
-        //Fix reverse flow
+
         if(outputParent)
         {
-           if(moles - rate * Time.deltaTime >= 0)
+           if(moles - rate * Time.deltaTime >= 0 && outputParent.GetComponent<outputInputManager>().moles + outputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < outputParent.GetComponent<outputInputManager>().volume)
            {
-                float variation;
                 variation = rate * Time.deltaTime;
                 moles -=  variation;
            }
         }
 
-        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime > 0)
+        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().variation > 0 && moles + inputParent.GetComponent<outputInputManager>().variation < volume)
         {
-            moles += inputParent.GetComponent<outputInputManager>().rate*Time.deltaTime;
+            moles += inputParent.GetComponent<outputInputManager>().variation;
+
+            if(engines.Count > 0)
+            {
+                float newVolume = moles/engines.Count;
+                foreach(GameObject en in engines)
+                {
+                    en.GetComponent<Part>().fuel = newVolume;
+                }
+            }
         }
     }
 

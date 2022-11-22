@@ -8,6 +8,7 @@ public class BuildingManager : MonoBehaviour
     public GameObject customCursor;
     public GameObject earth;
     public GameObject pipe;
+    public GameObject menu;
 
     public string localMode = "none";
 
@@ -132,6 +133,21 @@ public class BuildingManager : MonoBehaviour
             Cursor.visible = false;
             customCursor.GetComponent<CustomCursor>().type = part.GetComponent<buildingType>().type;
             partToConstruct = part;
+        }
+    }
+
+    public void toggleBuildMenu()
+    {
+        if(menu.activeSelf == true)
+        {
+            menu.SetActive(false);
+            return;
+        }
+
+        if(menu.activeSelf == false)
+        {
+            menu.SetActive(true);
+            return;
         }
     }
 }

@@ -18,6 +18,7 @@ public class launchPadManager : MonoBehaviour
     public savePath savePathRef = new savePath();
     public MasterManager MasterManager;
     public bool Spawned = false;
+    public GameObject ConnectedRocket;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +36,15 @@ public class launchPadManager : MonoBehaviour
             Spawned = true;
         }
 
+        if(ConnectedRocket != null)
+        {
+            if(ConnectedRocket.GetComponent<PlanetGravity>().possessed == true)
+            {
+                ConnectedRocket.GetComponent<outputInputManager>().inputParent = null;
+                ConnectedRocket = null;
+                this.GetComponent<outputInputManager>().outputParent = null;
+            }
+        }
     }
 
     public void retrieveRocketSaved()

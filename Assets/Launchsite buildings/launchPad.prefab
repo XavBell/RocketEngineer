@@ -198,7 +198,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 5857232261206408954}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999959
+  m_Size: 0.99999756
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -796,7 +796,7 @@ MonoBehaviour:
   selfRate: 0
   rate: 0
   moles: 0
-  volume: 0
+  volume: 10
   log: 0
 --- !u!114 &6114230335073138526
 MonoBehaviour:
@@ -828,6 +828,7 @@ MonoBehaviour:
   scroll: {fileID: 4617929692229580544}
   MasterManager: {fileID: 0}
   Spawned: 0
+  ConnectedRocket: {fileID: 0}
 --- !u!1 &4617929692229580544
 GameObject:
   m_ObjectHideFlags: 0
@@ -864,7 +865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.008979797, y: 0.00020489529}
+  m_AnchoredPosition: {x: 1192.6696, y: 0.0013952537}
   m_SizeDelta: {x: -816.3534, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7848527207386546627
@@ -1071,7 +1072,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 840543549518492980}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

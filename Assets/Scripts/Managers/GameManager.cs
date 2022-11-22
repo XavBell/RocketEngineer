@@ -227,7 +227,6 @@ public class GameManager : MonoBehaviour
                     if (bestAttachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().type.ToString() == "tank")
                     {
                         currentPrefab.GetComponent<Part>().StageNumber = bestAttachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().StageNumber;
-
                     }
 
                     AttachPointScript currentAttach = currentPrefab.GetComponent<Part>().attachTop;
@@ -299,7 +298,6 @@ public class GameManager : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Escape))
         {
-            Debug.Log("Hello");
             Application.Quit();
  
         }
@@ -436,7 +434,7 @@ public class GameManager : MonoBehaviour
                     AttachPointScript currentAttach = currentPrefab.GetComponent<Part>().attachTop;
                     while (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "tank")
                     {
-                        currentPrefab.GetComponent<Part>().fuel += currentAttach.attachedBody.GetComponent<Part>().fuel;
+                        currentPrefab.GetComponent<Part>().maxFuel += currentAttach.attachedBody.GetComponent<Part>().maxFuel;
                         currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
                     }
 

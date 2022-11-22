@@ -32,6 +32,17 @@ public class MasterManager : MonoBehaviour
     public string gameState = "Building";
 
     public GameObject currentBuildingBody;
+
+    public GameObject ActiveRocket;
+
+    public GameObject MainCanvas;
+    public GameObject ScrollCanvas;
+
+
+
+    public float MenuThrust = 200;
+    public GameObject MenuRocket;
+    public bool rocketActive = false;
    
 
     // Start is called before the first frame update
@@ -71,6 +82,11 @@ public class MasterManager : MonoBehaviour
                 }
             }
         }
+
+        if(SceneManager.GetActiveScene().name == "Menu")
+        {
+            thrust();
+        }
     }
 
     public void newGame()
@@ -98,6 +114,23 @@ public class MasterManager : MonoBehaviour
         {
             worldPath = Application.persistentDataPath + savePathRef.worldsFolder + "/" + FolderName + "/" + FolderName + ".json";
             SceneManager.LoadScene("SampleScene");
+        }
+    }
+
+    public void play()
+    {
+        rocketActive = true;
+        MainCanvas.SetActive(false);
+        ScrollCanvas.SetActive(true);
+        
+    }
+
+    void thrust()
+    {
+        if(rocketActive == true)
+        {
+            Vector3 Thrust = MenuRocket.transform.up * MenuThrust;
+            MenuRocket.GetComponent<Rigidbody2D>().AddForce(Thrust);
         }
     }
 
