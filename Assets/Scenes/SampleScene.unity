@@ -598,6 +598,7 @@ MonoBehaviour:
   input: {fileID: 0}
   output: {fileID: 0}
   buildingManager: {fileID: 492879240}
+  MasterManager: {fileID: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,6 +1570,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -2443,11 +2445,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5038023259826297798, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.13
       objectReference: {fileID: 0}
     - target: {fileID: 5038023259826297798, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1.13
       objectReference: {fileID: 0}
     - target: {fileID: 5038023259826297798, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_LocalScale.z
