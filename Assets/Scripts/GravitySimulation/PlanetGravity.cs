@@ -19,6 +19,7 @@ public class PlanetGravity : MonoBehaviour
     private float G = 0.0000000000667f; //Gravitational constant
     public float atmoAlt = 70.0f;
     public float aeroCoefficient = 5f;
+    public float planetRadius = 127421f;
     float maxAlt;
 
 
@@ -103,7 +104,7 @@ public class PlanetGravity : MonoBehaviour
                 foreach(GameObject planet in planetsToMove) {
                     if(planet.GetComponent<TypeScript>().type == "earth")
                     {
-                        transform.position = new Vector3(planet.transform.position.x, planet.transform.position.y + 127421f, 0);
+                        transform.position = new Vector3(planet.transform.position.x, planet.transform.position.y + planetRadius, 0);
                     }
                 }
                 
@@ -143,7 +144,6 @@ public class PlanetGravity : MonoBehaviour
         float Dist = Vector3.Distance(transform.position, planet.transform.position);
         Vector3 forceDir = (planet.transform.position - transform.position).normalized;
         Vector3 ForceVector = forceDir * G * Mass * rocketMass / (Dist * Dist);
-
         Vector3 Thrust = transform.up * thrust;
         if (Dist < atmoAlt)
         {
@@ -258,6 +258,7 @@ public class PlanetGravity : MonoBehaviour
             Mass = 5456514633570000000.0f;
             atmoAlt = 10.0f;
             aeroCoefficient = 0.0f;
+            planetRadius = 127421f;
             planet = bestPlanet;
         }
 
@@ -266,6 +267,7 @@ public class PlanetGravity : MonoBehaviour
             Mass = 119444000000000000000000.0f;
             atmoAlt = 157420.0f;
             aeroCoefficient = 0f;
+            planetRadius = 127421f;
             planet = bestPlanet;
         }
 
