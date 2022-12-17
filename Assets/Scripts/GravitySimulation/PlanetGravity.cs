@@ -145,6 +145,14 @@ public class PlanetGravity : MonoBehaviour
         Vector3 forceDir = (planet.transform.position - transform.position).normalized;
         Vector3 ForceVector = forceDir * G * Mass * rocketMass / (Dist * Dist);
         Vector3 Thrust = transform.up * thrust;
+        
+        //Fake collision
+        if(Dist <= planetRadius)
+        {
+            ForceVector = new Vector3(0, 0, 0);
+            rb.velocity = new Vector2(0,0);
+        }
+
         if (Dist < atmoAlt)
         {
             //AeroForces = rb.velocity.normalized  *  1/Dist * aeroCoefficient * -1;
