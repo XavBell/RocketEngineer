@@ -19,7 +19,7 @@ public class PlanetGravity : MonoBehaviour
     private float G = 0.0000000000667f; //Gravitational constant
     public float atmoAlt = 70.0f;
     public float aeroCoefficient = 5f;
-    public float planetRadius = 127421f;
+    public float planetRadius = 127400f;
     float maxAlt;
 
 
@@ -41,6 +41,7 @@ public class PlanetGravity : MonoBehaviour
     public GameObject activeEngine;
     public float[] maxThrusts;
     public GameObject[] engines;
+    public GameObject EngineColliderDetector;
 
     public bool stageUpdated = false;
     public float capsuleInitialSizeX;
@@ -60,6 +61,10 @@ public class PlanetGravity : MonoBehaviour
 
     public float time = 0;
 
+    public bool FixedUpdatePassed = false;
+
+    public Vector3 previousRocketPos;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -68,7 +73,6 @@ public class PlanetGravity : MonoBehaviour
         rb.mass = rocketMass;
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         if(MasterManager == null)
@@ -135,6 +139,11 @@ public class PlanetGravity : MonoBehaviour
 
             simulateGravity();
         }
+
+        if(FixedUpdatePassed == false)
+        {
+            FixedUpdatePassed = true;
+        }
     }
 
     void simulateGravity()
@@ -142,15 +151,24 @@ public class PlanetGravity : MonoBehaviour
         updateReferenceBody();
         //Gravity
         float Dist = Vector3.Distance(transform.position, planet.transform.position);
+        float EngineDist = Vector3.Distance(EngineColliderDetector.transform.position, planet.transform.position);
         Vector3 forceDir = (planet.transform.position - transform.position).normalized;
         Vector3 ForceVector = forceDir * G * Mass * rocketMass / (Dist * Dist);
         Vector3 Thrust = transform.up * thrust;
         
         //Fake collision
-        if(Dist <= planetRadius)
+        if(EngineDist <= planetRadius)
         {
             ForceVector = new Vector3(0, 0, 0);
             rb.velocity = new Vector2(0,0);
+
+            float k = planetRadius/Dist;
+            float a = transform.position.x - planet.transform.position.x;
+            float b = transform.position.y - planet.transform.position.y;
+            float mA = a*k-a;
+            float mB = b*k-b;
+            //transform.position = new Vector3(mA, mB, 0);
+            transform.position = previousRocketPos;
         }
 
         if (Dist < atmoAlt)
@@ -166,6 +184,8 @@ public class PlanetGravity : MonoBehaviour
         Vector3 ResultVector = (ForceVector + Thrust + AeroForces) * Time.fixedDeltaTime;
         rb.mass = rocketMass;
         rb.AddForce(ResultVector);
+        previousRocketPos = transform.position;
+
     }
    
     void _thrust()
@@ -273,9 +293,9 @@ public class PlanetGravity : MonoBehaviour
         if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 10274200)
         {
             Mass = 119444000000000000000000.0f;
-            atmoAlt = 157420.0f;
+            atmoAlt = 157400.0f;
             aeroCoefficient = 0f;
-            planetRadius = 127421f;
+            planetRadius = 127420f;
             planet = bestPlanet;
         }
 
@@ -360,6 +380,7 @@ public class PlanetGravity : MonoBehaviour
                             if(stageUpdated == false)
                             {
                                 activeEngine = CurrentEngine;
+                                EngineColliderDetector = CurrentEngine;
                                 //currentFuel = maxFuel;
                                 stageUpdated = true;
                             }

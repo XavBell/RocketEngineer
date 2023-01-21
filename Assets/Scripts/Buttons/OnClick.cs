@@ -198,6 +198,7 @@ public class OnClick : MonoBehaviour
                     {
                         currentPrefab.GetComponent<Part>().maxFuel += currentAttach.attachedBody.GetComponent<Part>().maxFuel;
                         currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
+                        capsule.GetComponent<PlanetGravity>().EngineColliderDetector = currentPrefab;
                     }
 
 

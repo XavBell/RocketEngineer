@@ -124,7 +124,7 @@ public class outputInputManager : MonoBehaviour
     {
         if(log == true)
         {
-            Debug.Log(moles);
+            //Debug.Log(moles);
         }
     }
 }
