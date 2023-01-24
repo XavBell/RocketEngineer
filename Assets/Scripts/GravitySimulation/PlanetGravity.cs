@@ -15,11 +15,11 @@ public class PlanetGravity : MonoBehaviour
     public GameObject capsule;
     //Gravity variables for Earth
     public GameObject planet;
-    public float Mass = 90000000000.0f; //Planet mass in kg
+    public float Mass = 5927000000000000000000.0f; //Planet mass in kg
     private float G = 0.0000000000667f; //Gravitational constant
     public float atmoAlt = 70.0f;
     public float aeroCoefficient = 5f;
-    public float planetRadius = 127400f;
+    public float planetRadius = 6371;
     float maxAlt;
 
 
@@ -168,7 +168,7 @@ public class PlanetGravity : MonoBehaviour
             float mA = a*k-a;
             float mB = b*k-b;
             //transform.position = new Vector3(mA, mB, 0);
-            transform.position = previousRocketPos;
+            //transform.position = previousRocketPos;
         }
 
         if (Dist < atmoAlt)
@@ -292,10 +292,10 @@ public class PlanetGravity : MonoBehaviour
 
         if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 10274200)
         {
-            Mass = 119444000000000000000000.0f;
+            Mass = 5927000000000000000000.0f;
             atmoAlt = 157400.0f;
             aeroCoefficient = 0f;
-            planetRadius = 127420f;
+            planetRadius = 6371.0f;
             planet = bestPlanet;
         }
 

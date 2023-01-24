@@ -8,6 +8,7 @@ public class CustomCursor : MonoBehaviour
     private SpriteRenderer sp;
     private BoxCollider2D box;
     public GameObject earth;
+    public float planetRadius = 6371;
     public bool constructionAllowed = true;
 
     public float zRot;
@@ -35,7 +36,7 @@ public class CustomCursor : MonoBehaviour
                 Vector2 position = this.transform.position;
                 Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
                 float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                position = (v.normalized*-(127420f + sp.size.y/2));
+                position = (v.normalized*-(planetRadius + sp.size.y/2));
                 position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                 this.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
                 this.transform.position = position;
@@ -46,7 +47,7 @@ public class CustomCursor : MonoBehaviour
                 Vector2 position = this.transform.position;
                 Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
                 float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                position = (v.normalized*-(127420f + sp.size.y/2));
+                position = (v.normalized*-(planetRadius + sp.size.y/2));
                 this.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
                 position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                 this.transform.position = position;
@@ -57,7 +58,7 @@ public class CustomCursor : MonoBehaviour
                 Vector2 position = this.transform.position;
                 Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
                 float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                position = (v.normalized*-(127420f + sp.size.y/2));
+                position = (v.normalized*-(planetRadius + sp.size.y/2));
                 this.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
                 position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                 this.transform.position = position;
