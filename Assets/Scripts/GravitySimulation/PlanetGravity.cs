@@ -9,7 +9,7 @@ using System.Linq;
 public class PlanetGravity : MonoBehaviour
 {
 
-
+    //public LineRenderer PlLR;
     public GameObject[] planets;
     public bool posUpdated = false;
     public GameObject capsule;
@@ -150,8 +150,8 @@ public class PlanetGravity : MonoBehaviour
     {
         updateReferenceBody();
         //Gravity
-        float Dist = Vector3.Distance(transform.position, planet.transform.position);
-        float EngineDist = Vector3.Distance(EngineColliderDetector.transform.position, planet.transform.position);
+        float Dist = Vector2.Distance(transform.position, planet.transform.position);
+        float EngineDist = Vector2.Distance(transform.position, planet.transform.position);
         Vector3 forceDir = (planet.transform.position - transform.position).normalized;
         Vector3 ForceVector = forceDir * G * Mass * rocketMass / (Dist * Dist);
         Vector3 Thrust = transform.up * thrust;
@@ -162,13 +162,8 @@ public class PlanetGravity : MonoBehaviour
             ForceVector = new Vector3(0, 0, 0);
             rb.velocity = new Vector2(0,0);
 
-            float k = planetRadius/Dist;
-            float a = transform.position.x - planet.transform.position.x;
-            float b = transform.position.y - planet.transform.position.y;
-            float mA = a*k-a;
-            float mB = b*k-b;
-            //transform.position = new Vector3(mA, mB, 0);
-            //transform.position = previousRocketPos;
+       
+
         }
 
         if (Dist < atmoAlt)
