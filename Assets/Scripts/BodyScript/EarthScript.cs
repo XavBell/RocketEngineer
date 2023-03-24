@@ -62,8 +62,6 @@ public class EarthScript : MonoBehaviour
             Vector2 v = earth.transform.position - current.transform.position;
             float lookAngle =  90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
             current.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
-
-
         }
         //Poly.SetPath(0, edges);
         EdgeCollider2D.SetPoints(edges);
