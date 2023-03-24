@@ -18,6 +18,7 @@ public class EarthScript : MonoBehaviour
     public LineRenderer circleRenderer;
 
     public GameObject blockCollider;
+    public GameObject earth;
     // Start is called before the first frame update
         void Start()
     {
@@ -55,10 +56,10 @@ public class EarthScript : MonoBehaviour
             edges.Add(new Vector2(x, y-6371));
             circleRenderer.SetPosition(currentStep, currentPosition);
 
-            Vector2 v = new Vector3(transform.position.x, transform.position.y, 0) - currentPosition;
-            float lookAngle = 45 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+            Vector2 v = new Vector3(earth.transform.position.x, earth.transform.position.y, 0) + currentPosition;
+            float lookAngle =  90+Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
             
-            Instantiate(blockCollider, new Vector3(x, y-6371,0), Quaternion.Euler(0f, 0f, lookAngle));
+            GameObject current = Instantiate(blockCollider, new Vector3(x, y-6371,0), Quaternion.Euler(0f, 0f, lookAngle));
 
         }
         //Poly.SetPath(0, edges);
