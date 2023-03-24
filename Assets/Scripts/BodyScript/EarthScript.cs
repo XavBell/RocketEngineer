@@ -52,18 +52,22 @@ public class EarthScript : MonoBehaviour
             float x = xScaled * radius;
             float y = yScaled * radius;
 
-            Vector3 currentPosition = new Vector3(x, y-6371, 0);
-            edges.Add(new Vector2(x, y-6371));
+            Vector3 currentPosition = new Vector3(x, y, 0);
+            edges.Add(currentPosition);
             circleRenderer.SetPosition(currentStep, currentPosition);
-
-            Vector2 v = new Vector3(earth.transform.position.x, earth.transform.position.y, 0) + currentPosition;
-            float lookAngle =  90+Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
             
-            GameObject current = Instantiate(blockCollider, new Vector3(x, y-6371,0), Quaternion.Euler(0f, 0f, lookAngle));
+            
+            GameObject current = Instantiate(blockCollider, currentPosition, Quaternion.Euler(0f, 0f, 0f));
+
+            Vector2 v = earth.transform.position - current.transform.position;
+            float lookAngle =  90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+            current.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
+
 
         }
         //Poly.SetPath(0, edges);
         EdgeCollider2D.SetPoints(edges);
+
     }
 
     
