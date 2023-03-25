@@ -185,6 +185,11 @@ public class PlanetGravity : MonoBehaviour
     void _thrust()
     {
         if(activeEngine != null){
+            if(thrust == 1)
+            {
+                rocketMass -= Time.deltaTime*rate;    
+            }
+
             if (Input.GetKey(KeyCode.Z))
             {
                 thrust = maxThrust;
@@ -200,18 +205,7 @@ public class PlanetGravity : MonoBehaviour
                 thrust = 0;
             }
 
-            activeEngine.GetComponent<Part>().fuel -= thrust/maxThrust * rate;
-            float ratio = currentFuel / maxFuel;
-        
-            if (ratio < 1.0f && ratio > 0.0f && thrust != 0 && activeEngine != null && rocketMass > 0)
-            {
-                rocketMass -= (thrust / maxThrust * (rate))/2;
-            }
-
-            if(rocketMass < 0.0f)
-            {
-                rocketMass = 0.01f;
-            }
+            
         }
     }
 

@@ -177,12 +177,8 @@ public class GameManager_Engine : MonoBehaviour
                 nozzleExitRef.transform.localScale = Vector3.Lerp(startingScaleEy, new Vector3(nozzleExitRef.transform.localScale.x, nozzleLenghtFloat, 0), currentEy*5);
                 currentEy += Time.deltaTime;
                 float changeY = initialScaleY - nozzleExitRef.transform.localScale.y;
-
-                    nozzleExitRef.transform.position += new Vector3(0, changeY/2, 0);
-
-                    initialScaleY = nozzleExitRef.transform.localScale.y;
-                    Debug.Log(changeY);
-                
+                nozzleExitRef.transform.position += new Vector3(0, changeY/2, 0);
+                initialScaleY = nozzleExitRef.transform.localScale.y;  
             }
 
 
@@ -197,6 +193,8 @@ public class GameManager_Engine : MonoBehaviour
         {
             thrust = float.Parse(thrustInput.text);
         }
+
+        mass = 1600f; //Assuming Raptor Engine
     }
 
 
