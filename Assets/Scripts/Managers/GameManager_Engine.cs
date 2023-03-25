@@ -14,11 +14,17 @@ using Newtonsoft.Json;
 
 public class GameManager_Engine : MonoBehaviour
 {
+    //Visual
     public TMP_InputField nozzleExitSize;
     public TMP_InputField nozzleEndSize;
     public TMP_InputField turbopumpSize;
     public TMP_InputField nozzleLenght;
-    public TMP_InputField turbopumpRate;
+
+    //Specs
+    public TMP_InputField massFlowRate;
+    public TMP_InputField thrustInput;
+
+
 
     public TMP_InputField savePath;
     public string saveName;
@@ -31,12 +37,14 @@ public class GameManager_Engine : MonoBehaviour
     public AttachPointScript attachBottomRef;
     public GameObject attachBottomObj;
 
+    //Visual float
     public float nozzleExitSizeFloat;
     public float nozzleEndSizeFloat;
     public float turbopumpSizeFloat;
     public float nozzleLenghtFloat;
-    public float turbopumpRateFloat;
 
+    
+    //Specs Float
     public float mass;
     public float thrust;
     public float rate;
@@ -94,7 +102,6 @@ public class GameManager_Engine : MonoBehaviour
         if (SceneManager.GetActiveScene().name.ToString() == "EngineDesign")
         {
             updateSize();
-            calculate();
             updateAttachPosition();
         }
 
@@ -181,55 +188,17 @@ public class GameManager_Engine : MonoBehaviour
 
         }
 
-        if (float.TryParse(turbopumpRate.text, out number))
+        if (float.TryParse(massFlowRate.text, out number))
         {
-            turbopumpRateFloat = float.Parse(turbopumpRate.text);
+            rate = float.Parse(massFlowRate.text);
+        }
+
+        if (float.TryParse(thrustInput.text, out number))
+        {
+            thrust = float.Parse(thrustInput.text);
         }
     }
 
-    void calculate()
-    {
-        float expansionRatio = nozzleExitRef.transform.localScale.x/nozzleEndRef.transform.localScale.x;
-        float turboRate_nozzleLengthRatio = turbopumpRateFloat / nozzleLenghtFloat;
-        float turboRate_turboSizeRatio = turbopumpRateFloat / turbopumpRef.transform.localScale.x;
-
-        //Debug.Log(turboRate_turboSizeRatio);
-        if(nozzleEndSizeFloat == 0 || nozzleExitSizeFloat == 0 || turbopumpSizeFloat == 0 || nozzleLenghtFloat == 0 || turbopumpRateFloat == 0)
-        {
-            thrust = 0;
-            rate = 0;
-            return;
-        }
-
-        if(expansionRatio < 1)
-        {
-            thrust = 0;
-            rate = 0;
-            return;
-        }
-
-        if (expansionRatio > 20)
-        {
-            thrust = 0;
-            rate = 0;
-            return;
-        }
-
-        if (turboRate_turboSizeRatio > 20)
-        {
-            thrust = 0;
-            rate = 0;
-            return;
-        }
-
-        thrust = (1/turboRate_turboSizeRatio) * turboRate_nozzleLengthRatio * (expansionRatio / 2) * (turbopumpRateFloat/2) * (1/ turbopumpRef.transform.localScale.x)*1500;
-        rate = ((turboRate_turboSizeRatio)/turbopumpRef.transform.localScale.x)/2;
-        mass = 3*turbopumpRef.transform.localScale.x;
-
-        thrustT.text = thrust.ToString();
-        massT.text = mass.ToString();
-        rateT.text = rate.ToString();
-    }
 
     public void updateAttachPosition()
     {
