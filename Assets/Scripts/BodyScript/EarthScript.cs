@@ -19,10 +19,19 @@ public class EarthScript : MonoBehaviour
 
     public GameObject blockCollider;
     public GameObject earth;
+
+    private float G = 0.0000000000667f; //Gravitational constant
+    public float gSlvl = 9.8f;
+    public float earthMass = 0f;
+    public float earthRadius = 6371.0f;
+
+
+
     // Start is called before the first frame update
-        void Start()
+    void Start()
     {
-        DrawCircle(5000, 6371);
+        InitializeEarth();
+        DrawCircle(5000, earthRadius);
         
         TimeManager = TimeRef.GetComponent<TimeManager>();
     }
@@ -39,6 +48,8 @@ public class EarthScript : MonoBehaviour
     {
         circleRenderer.positionCount = steps;
         List<Vector2> edges = new List<Vector2>();
+        Vector3 previousPos = new Vector3(0f, 0f, 0f);
+        GameObject previous = null;
 
         for(int currentStep = 0; currentStep<steps; currentStep++)
         {
@@ -57,15 +68,40 @@ public class EarthScript : MonoBehaviour
             circleRenderer.SetPosition(currentStep, currentPosition);
             
             
-            GameObject current = Instantiate(blockCollider, currentPosition, Quaternion.Euler(0f, 0f, 0f));
+            GameObject current = Instantiate(blockCollider, currentPosition - new Vector3(0f, .5f, 0f), Quaternion.Euler(0f, 0f, 0f));
+
+            if(currentStep == 0)
+            {
+                previous = current;
+            }
 
             Vector2 v = earth.transform.position - current.transform.position;
             float lookAngle =  90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
             current.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
+
+            if(currentStep != 0)
+            {
+                float newX = (current.transform.position - previousPos).magnitude;
+                current.transform.localScale = new Vector3(newX, current.transform.localScale.y, current.transform.localScale.z);
+
+                if(currentStep == 1)
+                {
+                    previous.transform.localScale = new Vector3(newX, previous.transform.localScale.y, previous.transform.localScale.z);
+                }
+            }
+
+            previousPos = current.transform.position;
+
+            current.transform.SetParent(earth.transform);
         }
         //Poly.SetPath(0, edges);
         EdgeCollider2D.SetPoints(edges);
 
+    }
+
+    void InitializeEarth()
+    {
+        earthMass = gSlvl*(earthRadius*earthRadius)/G;
     }
 
     
