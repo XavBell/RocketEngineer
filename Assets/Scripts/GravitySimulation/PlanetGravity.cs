@@ -17,17 +17,18 @@ public class PlanetGravity : MonoBehaviour
     //Gravity variables for Earth
     public GameObject planet;
     public float Mass = 0f; //Planet mass in kg
-    private float G = 0.0000000000667f; //Gravitational constant
+    public float G = 0.0000000000667f; //Gravitational constant
     public float atmoAlt = 70.0f;
     public float aeroCoefficient = 5f;
     public float planetRadius = 0f; //Planet radius in m
     float maxAlt;
 
-
+    
     public LineRenderer line;
 
 
     //Rocket variables
+    public float dryMass = 0.0f;
     public float rocketMass = 0.0f;
     public float thrust = 0.0f;
     public float maxThrust = 0.0f;
@@ -71,6 +72,7 @@ public class PlanetGravity : MonoBehaviour
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         rb = GetComponent<Rigidbody2D>();
+        dryMass = rocketMass;
         rb.mass = rocketMass;
     }
 
@@ -131,6 +133,7 @@ public class PlanetGravity : MonoBehaviour
                 updateParticle(thrust, maxThrust);
                 updateScene();
                 this.GetComponent<outputInputManager>().log = false;
+                MasterManager.ActiveRocket = capsule;
             }
 
             if(possessed == false)
@@ -150,20 +153,13 @@ public class PlanetGravity : MonoBehaviour
     void simulateGravity()
     {
         updateReferenceBody();
-        Debug.Log(planetRadius);
         //Gravity
         float Dist = Vector2.Distance(transform.position, planet.transform.position);
         float EngineDist = Vector2.Distance(transform.position, planet.transform.position);
         Vector3 forceDir = (planet.transform.position - transform.position).normalized;
-        Vector3 ForceVector = forceDir * G * Mass * rocketMass / (Dist * Dist);
+        Vector3 ForceVector = forceDir * ((G * Mass * rocketMass) / (Dist * Dist));
         Vector3 Thrust = transform.up * thrust;
         
-        //Fake collision
-        if(EngineDist <= planetRadius)
-        {
-            //ForceVector = new Vector3(0, 0, 0);
-            //rb.velocity = new Vector2(0,0);
-        }
 
         if (Dist < atmoAlt)
         {
@@ -178,19 +174,29 @@ public class PlanetGravity : MonoBehaviour
         Vector3 ResultVector = (ForceVector + Thrust + AeroForces) * Time.fixedDeltaTime;
         rb.mass = rocketMass;
         rb.AddForce(ResultVector);
-        previousRocketPos = transform.position;
-
     }
    
     void _thrust()
     {
         if(activeEngine != null){
-            if(thrust == 1)
+            if(thrust == maxThrust)
             {
-                rocketMass -= Time.deltaTime*rate;    
+                float dF = rate * Time.deltaTime;
+                Debug.Log(dF);
+                if(activeEngine.GetComponent<Part>().fuel - dF > 0f)
+                {
+                    activeEngine.GetComponent<Part>().fuel -= dF;
+                    rocketMass -= dF;
+                    
+                }else{
+                    rocketMass -= activeEngine.GetComponent<Part>().fuel;
+                    activeEngine.GetComponent<Part>().fuel = 0;
+                    thrust = 0;
+                }
             }
 
-            if (Input.GetKey(KeyCode.Z))
+
+            if (Input.GetKey(KeyCode.Z) && activeEngine.GetComponent<Part>().fuel >= 0.0f)
             {
                 thrust = maxThrust;
             }
@@ -198,14 +204,7 @@ public class PlanetGravity : MonoBehaviour
             if (Input.GetKey(KeyCode.X))
             {
                 thrust = 0;
-            }
-
-            if(activeEngine.GetComponent<Part>().fuel <= 0.0f)
-            {
-                thrust = 0;
-            }
-
-            
+            }       
         }
     }
 
@@ -309,7 +308,7 @@ public class PlanetGravity : MonoBehaviour
                         Debug.Log("Hello");
                         if(referenceGo.GetComponent<Part>().type.ToString() == "tank")
                         {
-                            rocketMass -= (referenceGo.GetComponent<Part>().mass - maxFuel);
+                            rocketMass -= referenceGo.GetComponent<Part>().mass;
                         }
 
                         if (referenceGo.GetComponent<Part>().type.ToString() == "engine")

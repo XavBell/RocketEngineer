@@ -25,7 +25,7 @@ public class CameraControl : MonoBehaviour
 
     public GameObject MasterManager;
 
-    public float threshold = 1000;
+    public float threshold = 5000;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +39,7 @@ public class CameraControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateFloatReference();
+        
         ZoomIn();
 
         if(MasterManager.GetComponent<MasterManager>().gameState == "Building")
@@ -52,6 +52,11 @@ public class CameraControl : MonoBehaviour
         {  
             UpdateToRocketPosition();
         }
+    }
+
+    void FixedUpdate()
+    {
+        updateFloatReference();
     }
 
 
@@ -115,6 +120,7 @@ public class CameraControl : MonoBehaviour
             {
                 go.transform.position = go.transform.position + difference; 
             }
+            
             sun.transform.position = sun.transform.position + difference;
             customCursor.transform.position += difference;
             transform.position += difference;

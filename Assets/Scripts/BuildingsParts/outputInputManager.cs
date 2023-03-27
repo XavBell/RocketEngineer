@@ -115,6 +115,7 @@ public class outputInputManager : MonoBehaviour
                 foreach(GameObject en in engines)
                 {
                     en.GetComponent<Part>().fuel = newVolume;
+                    this.GetComponent<PlanetGravity>().rocketMass += inputParent.GetComponent<outputInputManager>().variation;
                 }
             }
         }
