@@ -4,43 +4,19 @@ using UnityEngine;
 
 public class EarthScript : MonoBehaviour
 {
-    
-    
-    //[RequireComponent(typeof(EdgeCollider2D))]
-
-    public EdgeCollider2D EdgeCollider2D;
-    public PolygonCollider2D Poly;
-
     public GameObject sun;
     public GameObject TimeRef;
     public TimeManager TimeManager;
 
-    public LineRenderer circleRenderer;
-
     public GameObject blockCollider;
     public GameObject earth;
 
-    private float G = 0.0000000000667f; //Gravitational constant
-    public float gSlvl = 9.8f;
+    private float G; //Gravitational constant
+    public float gSlvl;
     public float earthMass = 0f;
-    public float earthRadius = 6371.0f;
+    public float earthRadius;
 
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    public void InitializeSolarSystem()
-    {
-        InitializeEarth();
-        DrawCircle(5000, earthRadius);
-        
-        TimeManager = TimeRef.GetComponent<TimeManager>();
-    }
-
+    SolarSystemManager SolarSystemManager = new SolarSystemManager();
 
     // Update is called once per frame
     void FixedUpdate()
@@ -49,9 +25,16 @@ public class EarthScript : MonoBehaviour
         //transform.RotateAround(sun.transform.position, rotateAxis, 0.0000000001f * Time.deltaTime);
     }
 
+    public void InitializeEarth()
+    {
+        SetEarthMass();
+        DrawCircle(5000, earthRadius);
+        
+        TimeManager = TimeRef.GetComponent<TimeManager>();
+    }
+
     void DrawCircle(int steps, float radius)
     {
-        circleRenderer.positionCount = steps;
         List<Vector2> edges = new List<Vector2>();
         Vector3 previousPos = new Vector3(0f, 0f, 0f);
         GameObject previous = null;
@@ -70,8 +53,6 @@ public class EarthScript : MonoBehaviour
 
             Vector3 currentPosition = new Vector3(x, y, 0);
             edges.Add(currentPosition);
-            circleRenderer.SetPosition(currentStep, currentPosition);
-            
             
             GameObject current = Instantiate(blockCollider, currentPosition - new Vector3(0f, .5f, 0f), Quaternion.Euler(0f, 0f, 0f));
 
@@ -99,14 +80,20 @@ public class EarthScript : MonoBehaviour
 
             current.transform.SetParent(earth.transform);
         }
-        //Poly.SetPath(0, edges);
-        EdgeCollider2D.SetPoints(edges);
 
     }
 
-    void InitializeEarth()
+    void SetEarthMass()
     {
+        GetValues();
         earthMass = gSlvl*(earthRadius*earthRadius)/G;
+    }
+
+    void GetValues()
+    {
+        G = SolarSystemManager.G;
+        earthRadius = SolarSystemManager.earthRadius;
+        gSlvl = SolarSystemManager.earthgSlvl;
     }
 
     

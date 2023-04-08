@@ -278,6 +278,7 @@ public class PlanetGravity : MonoBehaviour
 
     }
 
+    //TODO STRONGLY BAD CODE REDO THAT ASAP
     void updateReferenceStage()
     {
         int x = 0;
@@ -322,7 +323,6 @@ public class PlanetGravity : MonoBehaviour
                         
                     }
                 }
-                //decouplerToUse.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
                 Destroy(decouplerToUse);
             }
             

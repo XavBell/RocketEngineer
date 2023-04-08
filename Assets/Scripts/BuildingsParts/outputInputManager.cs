@@ -5,6 +5,7 @@ using TMPro;
 
 public class outputInputManager : MonoBehaviour
 {
+    [SerializeField]
     public GameObject input;
     public GameObject output;
 
@@ -31,12 +32,6 @@ public class outputInputManager : MonoBehaviour
     public List<GameObject> engines = new List<GameObject>();
 
     public string type = "default";
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void Update()
@@ -98,7 +93,7 @@ public class outputInputManager : MonoBehaviour
 
         if(outputParent)
         {
-           if(moles - rate * Time.deltaTime >= 0 && outputParent.GetComponent<outputInputManager>().moles + outputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < outputParent.GetComponent<-+>().volume)
+           if(moles - rate * Time.deltaTime >= 0 && outputParent.GetComponent<outputInputManager>().moles + outputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < outputParent.GetComponent<outputInputManager>().volume)
            {
                 variation = rate * Time.deltaTime;
                 moles -=  variation;
