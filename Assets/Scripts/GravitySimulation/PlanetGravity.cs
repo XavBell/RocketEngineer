@@ -236,6 +236,7 @@ public class PlanetGravity : MonoBehaviour
         }
     }
 
+    //TODO Calculate when is the gravity negligible enough to a new SOI
     void updateReferenceBody()
     {
         planets = GameObject.FindGameObjectsWithTag("Planet");
@@ -278,49 +279,51 @@ public class PlanetGravity : MonoBehaviour
 
     }
 
+
+
     //TODO STRONGLY BAD CODE REDO THAT ASAP
     void updateReferenceStage()
     {
+        //Decoupling Logic
         int x = 0;
         AttachPointScript currentAttach = capsule.GetComponent<Part>().attachBottom;
         if (Input.GetKey(KeyCode.Space) && stageUpdated == true)
         {
             Part[] decouplers;
             decouplers = GameObject.FindObjectsOfType<Part>();
-            float bestDist = 0;
-            Part bestDecoupler = null;
+            float farthestDecouplerDistance = 0;
+            Part bestDecouplerPartRef = null;
             
-            foreach(Part go1 in decouplers)
+            //Find Closest Decoupler
+            foreach(Part rocketPart in decouplers)
             {
-                if((go1.transform.position - transform.position).magnitude > bestDist && go1.GetComponent<Part>().type.ToString() == "decoupler")
+                if((rocketPart.transform.position - transform.position).magnitude > farthestDecouplerDistance && rocketPart.GetComponent<Part>().type.ToString() == "decoupler")
                 {
-                    bestDist = (go1.transform.position - transform.position).magnitude;
-                    bestDecoupler = go1;
+                    farthestDecouplerDistance = (rocketPart.transform.position - transform.position).magnitude;
+                    bestDecouplerPartRef = rocketPart;
                 }
             }
-            if (bestDecoupler != null)
+
+            //Decouple if decoupler found
+            if (bestDecouplerPartRef != null)
             {
-                GameObject decouplerToUse = bestDecoupler.attachBottom.GetComponent<AttachPointScript>().referenceBody;
-                foreach (Part go2 in decouplers)
+                GameObject decouplerToUse = bestDecouplerPartRef.attachBottom.GetComponent<AttachPointScript>().referenceBody;
+                if(decouplerToUse.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                 {
-                    GameObject referenceGo = go2.attachBottom.GetComponent<AttachPointScript>().referenceBody;
-                    if (decouplerToUse == referenceGo.GetComponent<Part>().referenceDecoupler)
+                    GameObject currentPartChecker = decouplerToUse.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
+                    while(currentPartChecker.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                     {
-                        Debug.Log("Hello");
-                        if(referenceGo.GetComponent<Part>().type.ToString() == "tank")
-                        {
-                            rocketMass -= referenceGo.GetComponent<Part>().mass;
-                        }
+                        GameObject PartToBeDestroyed = currentPartChecker;
 
-                        if (referenceGo.GetComponent<Part>().type.ToString() == "engine")
-                        {
-                            rocketMass -= referenceGo.GetComponent<Part>().mass;
-                        }
+                        updateMass(rocketMass, currentPartChecker);
+                        currentPartChecker = currentPartChecker.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
+                        Destroy(PartToBeDestroyed);
 
-                        if(referenceGo != null){
-                            Destroy(referenceGo);
+                        if(currentPartChecker.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
+                        {
+                            updateMass(rocketMass, currentPartChecker);
+                            Destroy(currentPartChecker);
                         }
-                        
                     }
                 }
                 Destroy(decouplerToUse);
@@ -331,9 +334,9 @@ public class PlanetGravity : MonoBehaviour
             }
             time = 0;
         }
-
         
-        
+        //TODO move to another function
+        //Update Current Engine
         while (x == 0 && capsule.GetComponent<Part>().attachBottom.attachedBody != null)
         { 
             if (currentAttach.GetComponent<AttachPointScript>().attachedBody != null)
@@ -344,8 +347,6 @@ public class PlanetGravity : MonoBehaviour
                 {
                     if (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "engine" && currentAttach.attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
                     {
-                        
-
                         GameObject CurrentEngine = currentAttach.attachedBody;
                         maxThrust = CurrentEngine.GetComponent<Part>().maxThrust;
                         rate = CurrentEngine.GetComponent<Part>().rate;
@@ -381,6 +382,20 @@ public class PlanetGravity : MonoBehaviour
             }
       }
         
+    }
+
+    //TODO Is the mass really updated correctly even with fuel
+    void updateMass(float rocketMass, GameObject part)
+    {
+        if(part.GetComponent<Part>().type.ToString() == "tank")
+        {
+            rocketMass -= part.GetComponent<Part>().mass;
+        }
+                
+        if (part.GetComponent<Part>().type.ToString() == "engine")
+        {
+            rocketMass -= part.GetComponent<Part>().mass;
+        }
     }
 
     void updateScene()
