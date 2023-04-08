@@ -19,6 +19,7 @@ public class BuildingManager : MonoBehaviour
     void Start()
     {
         customCursor.gameObject.SetActive(false);
+        earth.GetComponent<EarthScript>().InitializeSolarSystem();
     }
 
     // Update is called once per frame

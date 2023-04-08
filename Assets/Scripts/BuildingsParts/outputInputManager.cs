@@ -98,7 +98,7 @@ public class outputInputManager : MonoBehaviour
 
         if(outputParent)
         {
-           if(moles - rate * Time.deltaTime >= 0 && outputParent.GetComponent<outputInputManager>().moles + outputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < outputParent.GetComponent<outputInputManager>().volume)
+           if(moles - rate * Time.deltaTime >= 0 && outputParent.GetComponent<outputInputManager>().moles + outputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < outputParent.GetComponent<-+>().volume)
            {
                 variation = rate * Time.deltaTime;
                 moles -=  variation;

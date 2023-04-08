@@ -30,6 +30,11 @@ public class EarthScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+    }
+
+    public void InitializeSolarSystem()
+    {
         InitializeEarth();
         DrawCircle(5000, earthRadius);
         
