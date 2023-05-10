@@ -9,8 +9,9 @@ public class CameraControl : MonoBehaviour
     public Rigidbody2D camBox;
     private float targetZoom;
     Vector3 dragOrigin;
-    private float zoomFactor = 10f;
+    private float zoomFactor = 0.5f;
     private float zoomLerp = 10f;
+    private float moveFactor = 0.01f;
     Vector3 position;
     public GameObject sun;
     public GameObject earth;
@@ -24,6 +25,10 @@ public class CameraControl : MonoBehaviour
     public GameObject customCursor;
 
     public GameObject MasterManager;
+
+    public GameObject MoonSprite;
+    public GameObject EarthSprite;
+    
 
     public float threshold = 5000;
     // Start is called before the first frame update
@@ -46,6 +51,7 @@ public class CameraControl : MonoBehaviour
         {  
             QE();
             WASD();
+            MapView();
         }
 
         if(MasterManager.GetComponent<MasterManager>().gameState == "Flight")
@@ -66,15 +72,15 @@ public class CameraControl : MonoBehaviour
         float scrollData;
         scrollData = Input.GetAxis("Mouse ScrollWheel");
 
-        targetZoom -= scrollData * zoomFactor;
+        targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
         cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
     }
 
     public void WASD()
     {
         Vector2 dist = this.transform.position;
-        float xAxisValue = Input.GetAxis("Horizontal");
-        float yAxisValue = Input.GetAxis("Vertical");
+        float xAxisValue = Input.GetAxis("Horizontal") * cam.orthographicSize * moveFactor;
+        float yAxisValue = Input.GetAxis("Vertical") * cam.orthographicSize * moveFactor;
         if(cam != null)
         {
 
@@ -96,6 +102,15 @@ public class CameraControl : MonoBehaviour
         }
     }
 
+    void MapView()
+    {
+        if(Input.GetKey(KeyCode.M))
+        {
+            cam.orthographicSize = 150000f;
+            targetZoom = cam.orthographicSize;
+        }
+    }
+
     void UpdateToRocketPosition()
     {
 
@@ -112,7 +127,6 @@ public class CameraControl : MonoBehaviour
             Vector3 difference = new Vector3(0, 0, transform.position.z) - transform.position;
             foreach(GameObject go in planetsToMove)
             {
-                if(go.GetComponent<TypeScript>().type == "earth")
                 go.transform.position = go.transform.position + difference;
             }
 

@@ -7,6 +7,7 @@ public class BuildingManager : MonoBehaviour
     public GameObject partToConstruct;
     public GameObject customCursor;
     public GameObject earth;
+    public GameObject moon;
     public GameObject pipe;
     public GameObject menu;
 
@@ -20,6 +21,7 @@ public class BuildingManager : MonoBehaviour
     {
         customCursor.gameObject.SetActive(false);
         earth.GetComponent<EarthScript>().InitializeEarth();
+        moon.GetComponent<MoonScript>().InitializeMoon();
     }
 
     // Update is called once per frame

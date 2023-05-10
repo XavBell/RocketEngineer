@@ -236,44 +236,60 @@ public class PlanetGravity : MonoBehaviour
         }
     }
 
-    //TODO Calculate when is the gravity negligible enough to a new SOI
     void updateReferenceBody()
     {
         planets = GameObject.FindGameObjectsWithTag("Planet");
         float bestDistance = Mathf.Infinity;
         GameObject bestPlanet = null;
+        
+        GameObject Earth = null;
+        GameObject Moon = null;
+
         foreach(GameObject go in planets)
-        { 
+        {
             Vector3 distance = go.transform.position - transform.position;
             float distMag = distance.magnitude;
+
             if(distMag < bestDistance)
             {
                 bestDistance = distMag;
                 bestPlanet = go;
             }
+
+            if(go.GetComponent<TypeScript>().type == "earth")
+            {
+                Earth = go;
+            }
+
+            if(go.GetComponent<TypeScript>().type == "moon")
+            {
+                Moon = go;
+            }
         }
 
-        if(bestDistance < 1274200)
+        if (bestPlanet.GetComponent<TypeScript>().type == "earth")
         {
-            planet = GameObject.FindGameObjectWithTag("Sun");
-            Mass = 14639429504700000000000000000.0f;
-        }
-
-        if (bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 1274200)
-        {
-            Mass = 5456514633570000000.0f;
-            atmoAlt = 10.0f;
+            Mass = bestPlanet.GetComponent<EarthScript>().earthMass;
+            atmoAlt = 0.0f;
             aeroCoefficient = 0.0f;
-            planetRadius = 127421f;
+            planetRadius = bestPlanet.GetComponent<EarthScript>().earthMass;
             planet = bestPlanet;
         }
 
-        if (bestPlanet.GetComponent<TypeScript>().type == "earth" && bestDistance < 1027420000)
+        if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 6700)
         {
+            Mass = bestPlanet.GetComponent<MoonScript>().moonMass;
+            atmoAlt = 0.0f;
+            aeroCoefficient = 0.0f;
+            planetRadius = bestPlanet.GetComponent<MoonScript>().moonRadius;
+            planet = bestPlanet;
+            Debug.Log("Moon");
+        }else if(Earth != null) {
+            bestPlanet = Earth;
             Mass = bestPlanet.GetComponent<EarthScript>().earthMass;
-            atmoAlt = 157400.0f;
-            aeroCoefficient = 0f;
-            planetRadius = bestPlanet.GetComponent<EarthScript>().earthRadius;
+            atmoAlt = 0.0f;
+            aeroCoefficient = 0.0f;
+            planetRadius = bestPlanet.GetComponent<EarthScript>().earthMass;
             planet = bestPlanet;
         }
 

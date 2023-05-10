@@ -51,7 +51,7 @@ public class EarthScript : MonoBehaviour
             float x = xScaled * radius;
             float y = yScaled * radius;
 
-            Vector3 currentPosition = new Vector3(x, y, 0);
+            Vector3 currentPosition = new Vector3(x, y, 0) + earth.transform.position;
             edges.Add(currentPosition);
             
             GameObject current = Instantiate(blockCollider, currentPosition - new Vector3(0f, .5f, 0f), Quaternion.Euler(0f, 0f, 0f));

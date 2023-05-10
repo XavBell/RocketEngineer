@@ -72,8 +72,8 @@ public class Prediction : MonoBehaviour
                 Vector2 forceDir = (planetCords - currentPos).normalized;
                 Vector2 ForceVector =  (forceDir * (G * Mass * rocketMass/ (distance * distance)));
                 Vector2 acceleration = ForceVector/rb.mass * Time.fixedDeltaTime;
-                currentVelocity += acceleration * Time.fixedDeltaTime * 5f;
-                currentPos += currentVelocity * Time.fixedDeltaTime * 5f;
+                currentVelocity += acceleration * Time.fixedDeltaTime * 50f;
+                currentPos += currentVelocity * Time.fixedDeltaTime * 50f;
                 prevPos = currentPos;
 
                 line.SetPosition(i, prevPos);
