@@ -76,49 +76,15 @@ public class PlanetGravity : MonoBehaviour
         rb.mass = rocketMass;
     }
 
+
     void FixedUpdate()
     {
-        if(MasterManager == null)
-        {
-            GameObject MastRef = GameObject.FindGameObjectWithTag("MasterManager");
-            if(TimeRef != null)
-            {
-                MasterManager = MastRef.GetComponent<MasterManager>();
-            }
-        }
-
-        if(TimeRef == null)
-        {
-            TimeRef = GameObject.FindGameObjectWithTag("TimeManager");
-            if(TimeRef != null)
-            {
-                TimeManager = TimeRef.GetComponent<TimeManager>();
-            }
-        }
-
-        if(WorldSaveManager == null)
-        {
-            WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
-        }
-
+        checkManager();
 
         if (SceneManager.GetActiveScene().name == "SampleScene" )
         {
-            if (posUpdated == false)
-            {
-                //Set initial position and scale of rocket when it enters the world
-                GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
-                foreach(GameObject planet in planetsToMove) {
-                    if(planet.GetComponent<TypeScript>().type == "earth")
-                    {
-                        transform.position = new Vector3(planet.transform.position.x, planet.transform.position.y + planetRadius, 0);
-                    }
-                }
-                
-                transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
-                rb = GetComponent<Rigidbody2D>();
-                posUpdated = true;
-            }
+
+            initializeRocket();
 
             if(possessed == true)
             {
@@ -205,6 +171,51 @@ public class PlanetGravity : MonoBehaviour
             {
                 thrust = 0;
             }       
+        }
+    }
+
+    void checkManager()
+    {
+        if(MasterManager == null)
+        {
+            GameObject MastRef = GameObject.FindGameObjectWithTag("MasterManager");
+            if(TimeRef != null)
+            {
+                MasterManager = MastRef.GetComponent<MasterManager>();
+            }
+        }
+
+        if(TimeRef == null)
+        {
+            TimeRef = GameObject.FindGameObjectWithTag("TimeManager");
+            if(TimeRef != null)
+            {
+                TimeManager = TimeRef.GetComponent<TimeManager>();
+            }
+        }
+
+        if(WorldSaveManager == null)
+        {
+            WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
+        }
+    }
+
+    void initializeRocket()
+    {
+        if (posUpdated == false)
+        {
+            //Set initial position and scale of rocket when it enters the world
+            GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
+            foreach(GameObject planet in planetsToMove) {
+                if(planet.GetComponent<TypeScript>().type == "earth")
+                {
+                    transform.position = new Vector3(planet.transform.position.x, planet.transform.position.y + planetRadius, 0);
+                }
+            }
+                
+            transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            rb = GetComponent<Rigidbody2D>();
+            posUpdated = true;
         }
     }
 
