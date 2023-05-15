@@ -99,8 +99,6 @@ public class GameManager : MonoBehaviour
                 Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 capsule = Instantiate(partToConstruct, position, Quaternion.identity);
                 capsule.GetComponent<PlanetGravity>().capsule = capsule;
-                capsuleInitialSizeX = capsule.GetComponent<BoxCollider2D>().size.x;
-                capsule.GetComponent<PlanetGravity>().capsuleInitialSizeX = capsuleInitialSizeX;
                 capsuleBuilt = true;
                 Debug.Log(capsuleBuilt);
             }
@@ -503,7 +501,7 @@ public class GameManager : MonoBehaviour
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
             enginePrefab.GetComponent<Part>().path = loadedEngine.path;
-            enginePrefab.GetComponent<Part>().name = loadedEngine.name;
+            enginePrefab.GetComponent<Part>().partName = loadedEngine.engineName;
             enginePrefab.GetComponent<Part>().maxThrust = loadedEngine.thrust_s;
             enginePrefab.GetComponent<Part>().rate = loadedEngine.rate_s;
             enginePrefab.GetComponent<Part>().mass = loadedEngine.mass_s;
@@ -522,7 +520,7 @@ public class GameManager : MonoBehaviour
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
 
             tankPrefab.GetComponent<Part>().path = loadedTank.path;
-            tankPrefab.GetComponent<Part>().name = loadedTank.name;
+            tankPrefab.GetComponent<Part>().partName = loadedTank.tankName;
 
             tankPrefab.GetComponent<Part>().maxFuel = loadedTank.maxFuel;
             tankPrefab.GetComponent<Part>().mass = loadedTank.mass;
@@ -558,32 +556,32 @@ public class GameManager : MonoBehaviour
                     if(attachedBody.GetComponent<Part>().type == "engine")
                     {
                         saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
+                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().partName);
 
                         //Add 1 to usedNum
                         saveEngine saveEngine = new saveEngine();
                         var jsonString1 = JsonConvert.SerializeObject(saveEngine);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json");
                         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
                         loadedEngine.usedNum += 1;
                         jsonString1 = JsonConvert.SerializeObject(loadedEngine);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
                     }
 
                     if (attachedBody.GetComponent<Part>().type == "tank")
                     {
                         saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
+                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().partName);
 
 
                         //Add 1 to usedNum
                         saveTank saveTank = new saveTank();
                         var jsonString1 = JsonConvert.SerializeObject(saveTank);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json");
                         saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
                         loadedTank.usedNum += 1;
                         jsonString1 = JsonConvert.SerializeObject(loadedTank);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
 
                     }
 
@@ -597,29 +595,29 @@ public class GameManager : MonoBehaviour
                     if (attachedBody.GetComponent<Part>().type == "engine")
                     {
                         saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().name);
+                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().partName);
                         //Add 1 to usedNum
                         saveEngine saveEngine = new saveEngine();
                         var jsonString1 = JsonConvert.SerializeObject(saveEngine);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json");
                         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
                         loadedEngine.usedNum = 1.0f + loadedEngine.usedNum;
                         jsonString1 = JsonConvert.SerializeObject(loadedEngine);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
 
                     }
                     if (attachedBody.GetComponent<Part>().type == "tank")
                     {
                         saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().name);
+                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().partName);
                         //Add 1 to usedNum
                         saveTank saveTank = new saveTank();
                         var jsonString1 = JsonConvert.SerializeObject(saveTank);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json");
+                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json");
                         saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
                         loadedTank.usedNum += 1;
                         jsonString1 = JsonConvert.SerializeObject(loadedTank);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().name + ".json", jsonString1);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
                     }
                 }
                 jsonString = JsonConvert.SerializeObject(saveObject);
@@ -630,7 +628,7 @@ public class GameManager : MonoBehaviour
                 int y = Screen.height / 2;
                 Vector2 position = new Vector2(x, y);
                 Instantiate(popUp, position, Quaternion.identity);
-                panel.active = false;
+                panel.SetActive(false);
                 //Tell player to either change the save name or delete the rocket of the same name, add delete button
                 Debug.Log("AlreadyExists");
                 saveObject = null;
@@ -815,7 +813,7 @@ public class GameManager : MonoBehaviour
                     int y = Screen.height / 2;
                     Vector2 position = new Vector2(x, y);
                     Instantiate(popUpPart, position, Quaternion.identity);
-                    panel.active = false;
+                    panel.SetActive(false);
                 }
             }
 
@@ -835,7 +833,7 @@ public class GameManager : MonoBehaviour
                     int y = Screen.height / 2;
                     Vector2 position = new Vector2(x, y);
                     Instantiate(popUpPart, position, Quaternion.identity);
-                    panel.active = false;
+                    panel.SetActive(false);
                 }
             }
         }else if(capsule != null)

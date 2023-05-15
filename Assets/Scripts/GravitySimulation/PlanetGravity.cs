@@ -28,7 +28,6 @@ public class PlanetGravity : MonoBehaviour
 
 
     //Rocket variables
-    public float dryMass = 0.0f;
     public float rocketMass = 0.0f;
     public float thrust = 0.0f;
     public float maxThrust = 0.0f;
@@ -43,10 +42,8 @@ public class PlanetGravity : MonoBehaviour
     public GameObject activeEngine;
     public float[] maxThrusts;
     public GameObject[] engines;
-    public GameObject EngineColliderDetector;
 
     public bool stageUpdated = false;
-    public float capsuleInitialSizeX;
 
     public GameObject sun;
     public GameObject WorldSaveManager;
@@ -63,8 +60,6 @@ public class PlanetGravity : MonoBehaviour
 
     public float time = 0;
 
-    public bool FixedUpdatePassed = false;
-
     public Vector3 previousRocketPos;
 
     // Start is called before the first frame update
@@ -72,7 +67,6 @@ public class PlanetGravity : MonoBehaviour
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         rb = GetComponent<Rigidbody2D>();
-        dryMass = rocketMass;
         rb.mass = rocketMass;
     }
 
@@ -88,12 +82,7 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                time = time + Time.deltaTime;
-                //Debug.Log(time);
-                if(time > 1)
-                { 
-                    updateReferenceStage();
-                }
+                stageControl();
                 _orientation();
                 _thrust();
                 updateParticle(thrust, maxThrust);
@@ -102,18 +91,10 @@ public class PlanetGravity : MonoBehaviour
                 MasterManager.ActiveRocket = capsule;
             }
 
-            if(possessed == false)
-            {
-                this.GetComponent<outputInputManager>().log = true;
-            }
-
             simulateGravity();
         }
 
-        if(FixedUpdatePassed == false)
-        {
-            FixedUpdatePassed = true;
-        }
+
     }
 
     void simulateGravity()
@@ -172,6 +153,15 @@ public class PlanetGravity : MonoBehaviour
                 thrust = 0;
             }       
         }
+    }
+
+    void stageControl()
+    {
+        time = time + Time.deltaTime;
+        if(time > 1)
+        { 
+            updateReferenceStage();
+        }   
     }
 
     void checkManager()
@@ -306,8 +296,6 @@ public class PlanetGravity : MonoBehaviour
 
     }
 
-
-
     //TODO STRONGLY BAD CODE REDO THAT ASAP
     void updateReferenceStage()
     {
@@ -385,7 +373,6 @@ public class PlanetGravity : MonoBehaviour
                             if(stageUpdated == false)
                             {
                                 activeEngine = CurrentEngine;
-                                EngineColliderDetector = CurrentEngine;
                                 //currentFuel = maxFuel;
                                 stageUpdated = true;
                             }
@@ -434,7 +421,7 @@ public class PlanetGravity : MonoBehaviour
                 UnityEngine.Object.Destroy(capsule);
                 posUpdated = true;
                 SceneManager.LoadScene("Building");
-                line.SetVertexCount(0);
+                line.positionCount = 0;
             }
 
             if (SceneManager.GetActiveScene().name == "Building")

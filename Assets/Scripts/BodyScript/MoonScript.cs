@@ -15,13 +15,11 @@ public class MoonScript : MonoBehaviour
     public float gSlvl;
     public float moonMass = 0f;
     public float moonRadius;
-
-    SolarSystemManager SolarSystemManager = new SolarSystemManager();
-
-    // Start is called before the first frame update
+    public SolarSystemManager SolarSystemManager;
+    
     void Start()
     {
-        TimeManager = TimeRef.GetComponent<TimeManager>();
+        SolarSystemManager = gameObject.AddComponent<SolarSystemManager>() as SolarSystemManager;SolarSystemManager = gameObject.AddComponent<SolarSystemManager>() as SolarSystemManager;
     }
 
     // Update is called once per frame
@@ -36,7 +34,6 @@ public class MoonScript : MonoBehaviour
         SetMoonMass();
         DrawCircle(1000, moonRadius);
         
-        TimeManager = TimeRef.GetComponent<TimeManager>();
     }
 
     void DrawCircle(int steps, float radius)

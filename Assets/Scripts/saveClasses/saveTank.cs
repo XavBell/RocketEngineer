@@ -5,7 +5,7 @@ using UnityEngine;
 public class saveTank
 {
     public string path;
-    public string name;
+    public string tankName;
     public float tankSizeX;
     public float tankSizeY;
     public float attachTopPos;

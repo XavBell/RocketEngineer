@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Part : MonoBehaviour
 {
     public string type = "null";
@@ -22,22 +21,8 @@ public class Part : MonoBehaviour
     public GameObject turbopump;
     public GameObject tank;
     public string path;
-    public string name;
+    public string partName;
 
     public Vector2 boxSize;
     public Vector2 offsets;
-
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

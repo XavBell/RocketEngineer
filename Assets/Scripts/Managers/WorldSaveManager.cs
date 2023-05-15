@@ -27,7 +27,7 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject earth;
     public GameObject moon;
 
-    public GameObject camera;
+    public GameObject worldCamera;
 
     public bool loaded = false;
 
@@ -58,13 +58,13 @@ public class WorldSaveManager : MonoBehaviour
     {
         saveWorld saveWorld = new saveWorld();
 
-        saveWorld.cameraLocX = camera.transform.localPosition.x;
-        saveWorld.cameraLocY = camera.transform.localPosition.y;
-        saveWorld.cameraLocZ = camera.transform.localPosition.z;
+        saveWorld.cameraLocX = worldCamera.transform.localPosition.x;
+        saveWorld.cameraLocY = worldCamera.transform.localPosition.y;
+        saveWorld.cameraLocZ = worldCamera.transform.localPosition.z;
 
-        saveWorld.cameraRotX = camera.transform.eulerAngles.x;
-        saveWorld.cameraRotY = camera.transform.eulerAngles.y;
-        saveWorld.cameraRotZ = camera.transform.eulerAngles.z;
+        saveWorld.cameraRotX = worldCamera.transform.eulerAngles.x;
+        saveWorld.cameraRotY = worldCamera.transform.eulerAngles.y;
+        saveWorld.cameraRotZ = worldCamera.transform.eulerAngles.z;
 
         saveWorld.earthLocX = earth.transform.localPosition.x;
         saveWorld.earthLocY = earth.transform.localPosition.y;
@@ -239,9 +239,9 @@ public class WorldSaveManager : MonoBehaviour
         if(loadedWorld.previouslyLoaded == true)
         {
             earth.transform.localPosition = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
-            camera.transform.localPosition = new Vector3(loadedWorld.cameraLocX, loadedWorld.cameraLocY, loadedWorld.cameraLocZ);
+            worldCamera.transform.localPosition = new Vector3(loadedWorld.cameraLocX, loadedWorld.cameraLocY, loadedWorld.cameraLocZ);
             earth.transform.eulerAngles = new Vector3(loadedWorld.earthRotX, loadedWorld.earthRotY, loadedWorld.earthRotZ);
-            camera.transform.eulerAngles = new Vector3(loadedWorld.cameraRotX, loadedWorld.cameraRotY, loadedWorld.cameraRotZ);
+            worldCamera.transform.eulerAngles = new Vector3(loadedWorld.cameraRotX, loadedWorld.cameraRotY, loadedWorld.cameraRotZ);
             moon.transform.localPosition = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
         }
 

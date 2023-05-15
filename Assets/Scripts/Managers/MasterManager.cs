@@ -136,8 +136,8 @@ public class MasterManager : MonoBehaviour
 
     IEnumerator Text() 
     {
-	    AlertText.active = true;
+	    AlertText.SetActive(true);
         yield return new WaitForSeconds(1);
-        AlertText.active = false;
+        AlertText.SetActive(false);
     }
 }

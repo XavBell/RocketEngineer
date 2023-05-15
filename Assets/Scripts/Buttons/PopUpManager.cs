@@ -24,17 +24,17 @@ public class PopUpManager : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name == "Building")
         {
-            GameManager.GetComponent<GameManager>().panel.active = true;
+            GameManager.GetComponent<GameManager>().panel.SetActive(true);
         }
 
         if(SceneManager.GetActiveScene().name == "EngineDesign")
         {
-            GameManager.GetComponent<GameManager_Engine>().panel.active = true;
+            GameManager.GetComponent<GameManager_Engine>().panel.SetActive(true);
         }
 
         if(SceneManager.GetActiveScene().name == "TankDesign")
         {
-            GameManager.GetComponent<GameManager_Tank>().panel.active = true;
+            GameManager.GetComponent<GameManager_Tank>().panel.SetActive(true);
         }
 
         Destroy(refObj);   
