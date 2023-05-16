@@ -72,8 +72,16 @@ public class CameraControl : MonoBehaviour
         float scrollData;
         scrollData = Input.GetAxis("Mouse ScrollWheel");
 
-        targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
-        cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
+        if(targetZoom - scrollData * zoomFactor * cam.orthographicSize > 1)
+        {
+            targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
+        }if(targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
+        {
+            targetZoom = 1;
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
+        }
+        
     }
 
     public void WASD()

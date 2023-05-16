@@ -16,6 +16,7 @@ public class BuildingManager : MonoBehaviour
     public string localMode = "none";
 
     public List<GameObject> DynamicParts = new List<GameObject>();    
+    
     // Start is called before the first frame update
     void Start()
     {

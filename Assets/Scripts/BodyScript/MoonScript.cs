@@ -17,11 +17,6 @@ public class MoonScript : MonoBehaviour
     public float moonRadius;
     public SolarSystemManager SolarSystemManager;
     
-    void Start()
-    {
-        SolarSystemManager = gameObject.AddComponent<SolarSystemManager>() as SolarSystemManager;SolarSystemManager = gameObject.AddComponent<SolarSystemManager>() as SolarSystemManager;
-    }
-
     // Update is called once per frame
     void Update()
     {

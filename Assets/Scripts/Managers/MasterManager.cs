@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -113,6 +114,7 @@ public class MasterManager : MonoBehaviour
         if(FolderName != null)
         {
             worldPath = Application.persistentDataPath + savePathRef.worldsFolder + "/" + FolderName + "/" + FolderName + ".json";
+            UnityEngine.Debug.Log(worldPath);
             SceneManager.LoadScene("SampleScene");
         }
     }

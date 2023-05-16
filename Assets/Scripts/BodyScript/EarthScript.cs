@@ -17,12 +17,6 @@ public class EarthScript : MonoBehaviour
     public float earthRadius;
 
     public SolarSystemManager SolarSystemManager;
-    
-    void Start()
-    {
-        SolarSystemManager = gameObject.AddComponent<SolarSystemManager>() as SolarSystemManager;SolarSystemManager = gameObject.AddComponent<SolarSystemManager>() as SolarSystemManager;
-    }
-    
 
     // Update is called once per frame
     void FixedUpdate()
