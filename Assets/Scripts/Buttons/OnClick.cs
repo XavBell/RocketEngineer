@@ -118,7 +118,7 @@ public class OnClick : MonoBehaviour
             int engineCount = 0;
             int tankCount = 0;
 
-            Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y+launchPad.GetComponent<BoxCollider2D>().bounds.max.y/2);
+            Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y+launchPad.GetComponent<BoxCollider2D>().bounds.max.y/2+10);
             GameObject capsule = Instantiate(capsulePrefab, position, Quaternion.identity);
             capsule.GetComponent<PlanetGravity>().posUpdated = true;
             capsule.transform.position = position;

@@ -2,6 +2,7 @@ using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class BuildingManager : MonoBehaviour
     public GameObject menu;
 
     public MasterManager MasterManager;
+    public WorldSaveManager WorldSaveManager;
 
     public float planetRadius = 6371;
 
@@ -27,6 +29,9 @@ public class BuildingManager : MonoBehaviour
     {
         GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
         MasterManager = GMM.GetComponent<MasterManager>();
+
+        GameObject GWS = GameObject.FindGameObjectWithTag("WorldSaveManager");
+        WorldSaveManager = GWS.GetComponent<WorldSaveManager>();
 
         customCursor.gameObject.SetActive(false);
         earth.GetComponent<EarthScript>().InitializeEarth();
@@ -102,6 +107,13 @@ public class BuildingManager : MonoBehaviour
                 localMode = "connect";
                 return;
             }
+        }
+
+        if(Input.GetKey(KeyCode.Escape))
+        {
+            WorldSaveManager.saveTheWorld();
+            Destroy(MasterManager.gameObject);
+            SceneManager.LoadScene("Menu");
         }
     }
 

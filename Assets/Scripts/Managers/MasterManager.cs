@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
@@ -117,6 +118,11 @@ public class MasterManager : MonoBehaviour
             UnityEngine.Debug.Log(worldPath);
             SceneManager.LoadScene("SampleScene");
         }
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
     public void play()
