@@ -62,6 +62,13 @@ public class saveWorld
 
     //Capsule
     public string capsuleType;
+
+    public List<bool> connectedAsRocket = new List<bool>();
+    public List<int> capsuleInputParentIDs = new List<int>();
+
+    public List<float> capsuleVolume = new List<float>();
+    public List<float> capsuleMoles = new List<float>();
+
     public List<float> capsuleScaleX = new List<float>();
     public List<float> capsuleScaleY = new List<float>();
     public List<float> capsuleScaleZ = new List<float>();

@@ -7,6 +7,7 @@ public class outputInputManager : MonoBehaviour
 {
     [SerializeField]
     public int selfID = 0;
+    public bool connectedAsRocket = false;
     public GameObject input;
     public GameObject output;
 
@@ -39,7 +40,10 @@ public class outputInputManager : MonoBehaviour
 
     void Start()
     {
-        selfID = this.GetComponent<buildingType>().buildingID;
+        if(this.GetComponent<buildingType>())
+        {
+            selfID = this.GetComponent<buildingType>().buildingID;
+        }
     }
 
     // Update is called once per frame
@@ -55,7 +59,7 @@ public class outputInputManager : MonoBehaviour
             InitializeOutput();
         }
 
-        if(type == "default" && (inputParentID != 0 || outputParentID != 0))
+        if(type == "default")
         {
             updateParents();
             setRate();
@@ -142,6 +146,12 @@ public class outputInputManager : MonoBehaviour
             if(input.GetComponent<buildingType>().buildingID == inputParentID)
             {
                 inputParent = input;
+
+                if(connectedAsRocket)
+                {
+                    input.GetComponent<launchPadManager>().ConnectedRocket = this.gameObject;
+                    input.GetComponent<outputInputManager>().outputParent = this.gameObject; 
+                }
             }
         }
     }

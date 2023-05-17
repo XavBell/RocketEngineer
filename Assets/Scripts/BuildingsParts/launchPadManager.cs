@@ -49,8 +49,6 @@ public class launchPadManager : MonoBehaviour
 
     public void retrieveRocketSaved()
     {
-        //Panel.active = true;
-        Debug.Log("Spawing");
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
         {
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
@@ -75,6 +73,5 @@ public class launchPadManager : MonoBehaviour
             child.GetComponentInChildren<OnClick>().launchPad = this.gameObject;
 
         }
-        //Panel.active = false;
     }
 }

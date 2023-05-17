@@ -142,6 +142,10 @@ public class WorldSaveManager : MonoBehaviour
             
             //Save capsule propreties
             saveWorld.capsuleType = rocket.GetComponent<Part>().type;
+            saveWorld.capsuleInputParentIDs.Add(rocket.GetComponent<outputInputManager>().inputParentID);
+            saveWorld.connectedAsRocket.Add(rocket.GetComponent<outputInputManager>().connectedAsRocket);
+            saveWorld.capsuleVolume.Add(rocket.GetComponent<outputInputManager>().volume);
+            saveWorld.capsuleMoles.Add(rocket.GetComponent<outputInputManager>().moles);
             saveWorld.capsuleLocX.Add(rocket.transform.position.x);
             saveWorld.capsuleLocY.Add(rocket.transform.position.y);
             saveWorld.capsuleLocZ.Add(rocket.transform.position.z);
@@ -357,6 +361,11 @@ public class WorldSaveManager : MonoBehaviour
             currentPrefab.GetComponent<PlanetGravity>().maxFuel = loadedWorld.maxFuel[capsuleID];
 
             currentPrefab.GetComponent<PlanetGravity>().rb.velocity = new Vector2(loadedWorld.capsuleSpeedX[capsuleID], loadedWorld.capsuleSpeedY[capsuleID]);
+            
+            currentPrefab.GetComponent<outputInputManager>().inputParentID = loadedWorld.capsuleInputParentIDs[capsuleID];
+            currentPrefab.GetComponent<outputInputManager>().connectedAsRocket = loadedWorld.connectedAsRocket[capsuleID];
+            currentPrefab.GetComponent<outputInputManager>().volume = loadedWorld.capsuleVolume[capsuleID];
+            currentPrefab.GetComponent<outputInputManager>().moles = loadedWorld.capsuleMoles[capsuleID];
 
             bool decouplerPresent = false;
             int i = 0;

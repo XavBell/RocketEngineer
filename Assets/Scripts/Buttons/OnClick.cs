@@ -251,6 +251,9 @@ public class OnClick : MonoBehaviour
                 Debug.Log("Still Alive!");
 
                 capsule.GetComponent<outputInputManager>().inputParent = launchPad;
+                capsule.GetComponent<outputInputManager>().connectedAsRocket = true;
+                capsule.GetComponent<outputInputManager>().inputParentID = launchPad.GetComponent<outputInputManager>().selfID;
+                
                 launchPad.GetComponent<outputInputManager>().outputParent = capsule;
 
                 foreach(GameObject en in capsule.GetComponent<outputInputManager>().engines)

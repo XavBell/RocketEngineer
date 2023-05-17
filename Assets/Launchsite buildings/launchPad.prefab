@@ -197,7 +197,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1882369228787020992}
   m_HandleRect: {fileID: 5857232261206408954}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.99999756
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -785,11 +785,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selfID: 0
   input: {fileID: 4289878972004835255}
   output: {fileID: 3232015971127353902}
   attachedInput: {fileID: 0}
   attachedOutput: {fileID: 0}
+  inputParentID: 0
   inputParent: {fileID: 0}
+  outputParentID: 0
   outputParent: {fileID: 0}
   quantityText: {fileID: 6757149807117173399}
   rateText: {fileID: 1428756828448938760}
@@ -798,6 +801,9 @@ MonoBehaviour:
   moles: 0
   volume: 10
   log: 0
+  variation: 0
+  engines: []
+  type: default
 --- !u!114 &6114230335073138526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,6 +817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: launchPad
+  buildingID: 0
 --- !u!114 &5381789719691407045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,7 +872,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 1192.6696, y: 0.0013952537}
+  m_AnchoredPosition: {x: 3893.1008, y: -0.00029321667}
   m_SizeDelta: {x: -816.3534, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &7848527207386546627
