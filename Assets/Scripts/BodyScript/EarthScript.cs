@@ -16,7 +16,7 @@ public class EarthScript : MonoBehaviour
     public float earthMass = 0f;
     public float earthRadius;
 
-    SolarSystemManager SolarSystemManager = new SolarSystemManager();
+    public SolarSystemManager SolarSystemManager;
 
     // Update is called once per frame
     void FixedUpdate()

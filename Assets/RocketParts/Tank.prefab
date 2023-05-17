@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ee3568413c090ea4192aeaca6b284760, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 7e71e4aa0863eff47a33f6d45cbdd117, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -102,7 +102,7 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.36914062, y: 0.39453125, z: 0.359375, w: 0.10546875}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
@@ -333,6 +333,7 @@ MonoBehaviour:
   maxThrust: 0
   mass: 0
   fuel: 0
+  maxFuel: 0
   rate: 0
   referenceDecoupler: {fileID: 0}
   nozzleExit: {fileID: 0}
@@ -340,7 +341,7 @@ MonoBehaviour:
   turbopump: {fileID: 0}
   tank: {fileID: 2846947961852703489}
   path: 
-  name: 
+  partName: 
   boxSize: {x: 0, y: 0}
   offsets: {x: 0, y: 0}
 --- !u!1001 &3205861159745704494

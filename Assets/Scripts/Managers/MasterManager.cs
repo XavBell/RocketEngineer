@@ -1,3 +1,5 @@
+using System.Net.Mime;
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -113,8 +115,14 @@ public class MasterManager : MonoBehaviour
         if(FolderName != null)
         {
             worldPath = Application.persistentDataPath + savePathRef.worldsFolder + "/" + FolderName + "/" + FolderName + ".json";
+            UnityEngine.Debug.Log(worldPath);
             SceneManager.LoadScene("SampleScene");
         }
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 
     public void play()
@@ -136,8 +144,8 @@ public class MasterManager : MonoBehaviour
 
     IEnumerator Text() 
     {
-	    AlertText.active = true;
+	    AlertText.SetActive(true);
         yield return new WaitForSeconds(1);
-        AlertText.active = false;
+        AlertText.SetActive(false);
     }
 }

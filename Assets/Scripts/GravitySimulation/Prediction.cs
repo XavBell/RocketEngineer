@@ -59,9 +59,6 @@ public class Prediction : MonoBehaviour
             line.positionCount = stepCount;
             List<float> distances = new List<float>();
 
-            bool checkpoint1 = false;
-            bool checkpoint2 = false;
-
 
             line.SetPosition(0, currentPos);
             for (int i = 1; i < stepCount; i++)

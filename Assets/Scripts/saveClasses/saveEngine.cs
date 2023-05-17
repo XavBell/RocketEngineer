@@ -6,7 +6,7 @@ using UnityEngine;
 public class saveEngine
 {
     public string path;
-    public string name;
+    public string engineName;
     public float nozzleExitSize_s;
     public float nozzleEndSize_s;
     public float turbopumpSize_s;

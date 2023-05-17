@@ -219,7 +219,7 @@ public class GameManager_Engine : MonoBehaviour
             List<float> sizes = new List<float>();
 
             saveObject.path = savePathRef.engineFolder;
-            saveObject.name = saveName;
+            saveObject.engineName = saveName;
             saveObject.nozzleExitSize_s = nozzleExitRef.GetComponent<SpriteRenderer>().transform.localScale.x;
             sizes.Add(saveObject.nozzleExitSize_s);
             saveObject.nozzleEndSize_s = nozzleEndRef.GetComponent<SpriteRenderer>().transform.localScale.x;
@@ -266,7 +266,7 @@ public class GameManager_Engine : MonoBehaviour
             int y = Screen.height / 2;
             Vector2 position = new Vector2(x, y);
             Instantiate(popUpPart, position, Quaternion.identity);
-            panel.active = false;
+            panel.SetActive(false);
         }
     }
 

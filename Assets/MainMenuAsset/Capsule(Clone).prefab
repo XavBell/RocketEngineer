@@ -65,7 +65,7 @@ MonoBehaviour:
   turbopump: {fileID: 90595011186103041}
   tank: {fileID: 90096249732846785}
   path: /engines
-  name: /GoodEngine
+  partName: 
   boxSize: {x: 0, y: 0}
   offsets: {x: 0, y: 0}
 --- !u!212 &8549611201935794836
@@ -346,7 +346,7 @@ MonoBehaviour:
   turbopump: {fileID: 0}
   tank: {fileID: 4831724281866489523}
   path: /tanks
-  name: /tank
+  partName: 
   boxSize: {x: 0, y: 0}
   offsets: {x: 0, y: 0}
 --- !u!1 &3179973688331988371
@@ -561,8 +561,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: c68bee4b7e6a9f04b909dd090c9567ed, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 7482667652216324306, guid: 7e71e4aa0863eff47a33f6d45cbdd117, type: 3}
+  m_Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -589,7 +589,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.0001136, y: 1.0065025}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
@@ -5486,7 +5486,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: ee3568413c090ea4192aeaca6b284760, type: 3}
+  m_Sprite: {fileID: 7482667652216324306, guid: 7e71e4aa0863eff47a33f6d45cbdd117, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -5512,7 +5512,7 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.36914062, y: 0.39453125, z: 0.359375, w: 0.10546875}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 3}
@@ -6141,8 +6141,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 3d919ab8b63d45c42b7f38b1266abb48, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 7482667652216324306, guid: 7e71e4aa0863eff47a33f6d45cbdd117, type: 3}
+  m_Color: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

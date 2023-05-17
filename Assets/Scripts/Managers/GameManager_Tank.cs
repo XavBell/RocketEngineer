@@ -149,7 +149,7 @@ public class GameManager_Tank : MonoBehaviour
         {
         saveTank saveObject = new saveTank();
         saveObject.path = savePathRef.tankFolder;
-        saveObject.name = saveName;
+        saveObject.tankName = saveName;
         saveObject.tankSizeX = tankSP.size.x;
         saveObject.tankSizeY = tankSP.size.y;
         saveObject.attachTopPos = attachTopObj.transform.position.y - tankSP.bounds.center.y;
@@ -178,7 +178,7 @@ public class GameManager_Tank : MonoBehaviour
             int y = Screen.height / 2;
             Vector2 position = new Vector2(x, y);
             Instantiate(popUpPart, position, Quaternion.identity);
-            panel.active = false;
+            panel.SetActive(false);
         }
     }
 

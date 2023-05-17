@@ -104,8 +104,6 @@ public class OnClick : MonoBehaviour
     public void load(string fileTypePath)
     {
         bool decouplerPresent = false;
-        bool tankBuilt = false;
-        bool engineBuilt = false;
         GameObject MasterManagerGO = GameObject.FindGameObjectWithTag("MasterManager");
         MasterManager MasterManager = MasterManagerGO.GetComponent<MasterManager>();
         saveRocket saveObject = new saveRocket();
@@ -120,7 +118,7 @@ public class OnClick : MonoBehaviour
             int engineCount = 0;
             int tankCount = 0;
 
-            Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y+launchPad.GetComponent<BoxCollider2D>().bounds.max.y/2);
+            Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y+launchPad.GetComponent<BoxCollider2D>().bounds.max.y/2+10);
             GameObject capsule = Instantiate(capsulePrefab, position, Quaternion.identity);
             capsule.GetComponent<PlanetGravity>().posUpdated = true;
             capsule.transform.position = position;
@@ -166,8 +164,6 @@ public class OnClick : MonoBehaviour
                         }
                     }
 
-                    tankBuilt = true;
-
                     lastPrefab = currentPrefab;
                 }
 
@@ -198,7 +194,6 @@ public class OnClick : MonoBehaviour
                     {
                         currentPrefab.GetComponent<Part>().maxFuel += currentAttach.attachedBody.GetComponent<Part>().maxFuel;
                         currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
-                        capsule.GetComponent<PlanetGravity>().EngineColliderDetector = currentPrefab;
                     }
 
 
@@ -226,7 +221,6 @@ public class OnClick : MonoBehaviour
 
                     }
                     capsule.GetComponent<outputInputManager>().engines.Add(currentPrefab);
-                    engineBuilt = true;
                     lastPrefab = currentPrefab;
                 }
 
@@ -257,6 +251,9 @@ public class OnClick : MonoBehaviour
                 Debug.Log("Still Alive!");
 
                 capsule.GetComponent<outputInputManager>().inputParent = launchPad;
+                capsule.GetComponent<outputInputManager>().connectedAsRocket = true;
+                capsule.GetComponent<outputInputManager>().inputParentID = launchPad.GetComponent<outputInputManager>().selfID;
+                
                 launchPad.GetComponent<outputInputManager>().outputParent = capsule;
 
                 foreach(GameObject en in capsule.GetComponent<outputInputManager>().engines)
@@ -275,7 +272,7 @@ public class OnClick : MonoBehaviour
                 saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
 
                 enginePrefab.GetComponent<Part>().path = loadedEngine.path;
-                enginePrefab.GetComponent<Part>().name = loadedEngine.name;
+                enginePrefab.GetComponent<Part>().partName = loadedEngine.engineName;
                 enginePrefab.GetComponent<Part>().maxThrust = loadedEngine.thrust_s;
                 enginePrefab.GetComponent<Part>().rate = loadedEngine.rate_s;
                 enginePrefab.GetComponent<Part>().mass = loadedEngine.mass_s;
@@ -294,7 +291,7 @@ public class OnClick : MonoBehaviour
                 saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
 
                 tankPrefab.GetComponent<Part>().path = loadedTank.path;
-                tankPrefab.GetComponent<Part>().name = loadedTank.name;
+                tankPrefab.GetComponent<Part>().partName = loadedTank.tankName;
 
                 tankPrefab.GetComponent<Part>().maxFuel = loadedTank.maxFuel;
                 tankPrefab.GetComponent<Part>().mass = loadedTank.mass;

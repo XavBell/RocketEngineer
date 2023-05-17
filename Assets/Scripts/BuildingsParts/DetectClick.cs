@@ -84,7 +84,7 @@ public class DetectClick : MonoBehaviour
                             GameObject panel = current.GetComponent<designerManager>().Panel;
                             if(panel.active == false)
                             {
-                                panel.active = true;
+                                panel.SetActive(true);
                             }
                      
                         }
@@ -95,7 +95,7 @@ public class DetectClick : MonoBehaviour
                             GameObject panel = current.GetComponent<launchPadManager>().Panel;
                             if(panel.active == false)
                             {
-                                panel.active = true;
+                                panel.SetActive(true);
 
                             }
                             current.GetComponent<outputInputManager>().log = true; 
@@ -141,7 +141,7 @@ public class DetectClick : MonoBehaviour
                             GameObject panel = current.GetComponent<designerManager>().Panel;
                             if(panel.active == true)
                             {
-                                panel.active = false;
+                                panel.SetActive(false);
                             }
                             
                         }
@@ -152,7 +152,7 @@ public class DetectClick : MonoBehaviour
                             GameObject panel = current.GetComponent<launchPadManager>().Panel;
                             if(panel.active == true)
                             {
-                                panel.active = false;
+                                panel.SetActive(false);
                             }
                             current.GetComponent<outputInputManager>().log = false; 
                         }
