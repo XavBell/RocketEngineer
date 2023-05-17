@@ -567,8 +567,10 @@ MonoBehaviour:
   moon: {fileID: 680244244}
   pipe: {fileID: 4590421016071702574, guid: b341585627a53c74b88c1f170592ba89, type: 3}
   menu: {fileID: 747798705}
+  MasterManager: {fileID: 0}
   planetRadius: 6371
   localMode: none
+  IDMax: 0
   DynamicParts: []
 --- !u!4 &492879241
 Transform:
@@ -2214,6 +2216,7 @@ MonoBehaviour:
   worldCamera: {fileID: 519420028}
   loaded: 0
   MasterManager: {fileID: 0}
+  BuildingManager: {fileID: 492879239}
 --- !u!4 &1533443822
 Transform:
   m_ObjectHideFlags: 0

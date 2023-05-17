@@ -1,3 +1,4 @@
+using System.Xml;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,15 +12,22 @@ public class BuildingManager : MonoBehaviour
     public GameObject pipe;
     public GameObject menu;
 
+    public MasterManager MasterManager;
+
     public float planetRadius = 6371;
 
     public string localMode = "none";
+
+    public int IDMax = 0;
 
     public List<GameObject> DynamicParts = new List<GameObject>();    
     
     // Start is called before the first frame update
     void Start()
     {
+        GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
+        MasterManager = GMM.GetComponent<MasterManager>();
+
         customCursor.gameObject.SetActive(false);
         earth.GetComponent<EarthScript>().InitializeEarth();
         moon.GetComponent<MoonScript>().InitializeMoon();
@@ -41,6 +49,8 @@ public class BuildingManager : MonoBehaviour
                     position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
                     current.transform.SetParent(earth.transform);
+                    current.GetComponent<buildingType>().buildingID = IDMax+1;
+                    IDMax += 1;
                 }
 
                 if(partToConstruct.GetComponent<buildingType>().type == "GSEtank")
@@ -52,6 +62,8 @@ public class BuildingManager : MonoBehaviour
                     position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
                     current.transform.SetParent(earth.transform);
+                    current.GetComponent<buildingType>().buildingID = IDMax+1;
+                    IDMax += 1;
                 }
 
                 if(partToConstruct.GetComponent<buildingType>().type == "launchPad")
@@ -63,6 +75,8 @@ public class BuildingManager : MonoBehaviour
                     position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
                     current.transform.SetParent(earth.transform);
+                    current.GetComponent<buildingType>().buildingID = IDMax+1;
+                    IDMax += 1;
                 }
 
                 if(partToConstruct.GetComponent<buildingType>().type == "pipe")
@@ -71,6 +85,8 @@ public class BuildingManager : MonoBehaviour
                     GameObject current = Instantiate(partToConstruct, position, Quaternion.identity);
                     current.transform.SetParent(earth.transform);
                     current.transform.eulerAngles = new Vector3(0, 0, customCursor.GetComponent<CustomCursor>().zRot);
+                    current.GetComponent<buildingType>().buildingID = IDMax+1;
+                    IDMax += 1;
                 }
 
             }
@@ -92,7 +108,9 @@ public class BuildingManager : MonoBehaviour
     public void Connect(GameObject output, GameObject input)
     {
         output.GetComponent<outputInputManager>().attachedOutput = input.GetComponent<outputInputManager>().input;
+        output.GetComponent<outputInputManager>().outputParentID = input.GetComponent<outputInputManager>().selfID;
         input.GetComponent<outputInputManager>().attachedInput = output.GetComponent<outputInputManager>().output;
+        input.GetComponent<outputInputManager>().inputParentID = output.GetComponent<outputInputManager>().selfID;
         Debug.Log(input.transform.position);
         Vector2 position = (output.GetComponent<outputInputManager>().output.transform.position + input.GetComponent<outputInputManager>().input.transform.position)/2;
         GameObject current = Instantiate(pipe, position, Quaternion.identity);

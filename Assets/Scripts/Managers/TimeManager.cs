@@ -1,3 +1,4 @@
+using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,11 +32,11 @@ public class TimeManager : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.O))
         {
-            Time.fixedDeltaTime = 0.02f*50;
+            Time.timeScale = 10;
         }
         if (Input.GetKey(KeyCode.I))
         {
-            Time.fixedDeltaTime = 0.02f;
+            Time.timeScale = 1;
         }
     }
 }

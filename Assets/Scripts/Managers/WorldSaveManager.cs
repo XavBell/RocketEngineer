@@ -1,3 +1,5 @@
+using System.Xml;
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +18,6 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject enginePrefab;
     public GameObject decouplerPrefab;
 
-
     public GameObject designerPrefab;
     public GameObject pipePrefab;
     public GameObject fuelTankPrefab;
@@ -32,6 +33,8 @@ public class WorldSaveManager : MonoBehaviour
     public bool loaded = false;
 
     public GameObject MasterManager;
+    public GameObject BuildingManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,12 +81,15 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.moonLocY = moon.transform.localPosition.y;
         saveWorld.moonLocZ = moon.transform.localPosition.z;
 
+        saveWorld.IDMax = BuildingManager.GetComponent<BuildingManager>().IDMax;
+
         saveWorld.previouslyLoaded = true;
 
         GameObject[] buildings = GameObject.FindGameObjectsWithTag("building");
         foreach(GameObject building in buildings)
         {
             saveWorld.buildingTypes.Add(building.GetComponent<buildingType>().type);
+            saveWorld.buildingIDs.Add(building.GetComponent<buildingType>().buildingID);
             saveWorld.buildingLocX.Add(building.transform.localPosition.x);
             saveWorld.buildingLocY.Add(building.transform.localPosition.y);
             saveWorld.buildingLocZ.Add(building.transform.localPosition.z);
@@ -91,6 +97,24 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.buildingRotX.Add(building.transform.eulerAngles.x);
             saveWorld.buildingRotY.Add(building.transform.eulerAngles.y);
             saveWorld.buildingRotZ.Add(building.transform.eulerAngles.z);
+
+            if(building.GetComponent<buildingType>().type == "designer")
+            {
+                saveWorld.inputIDs.Add(0);
+                saveWorld.outputIDs.Add(0);
+            }
+
+            if(building.GetComponent<buildingType>().type == "GSEtank")
+            {
+                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
+                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
+            }
+            
+            if(building.GetComponent<buildingType>().type == "launchPad")
+            {
+                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
+                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
+            }
 
             if(building.GetComponent<buildingType>().type == "pipe")
             {
@@ -104,11 +128,13 @@ public class WorldSaveManager : MonoBehaviour
                 saveWorld.outputLocX.Add(building.GetComponent<outputInputManager>().output.transform.position.x);
                 saveWorld.outputLocY.Add(building.GetComponent<outputInputManager>().output.transform.position.y);
                 saveWorld.outputLocZ.Add(building.GetComponent<outputInputManager>().output.transform.position.z);
+
+                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
+                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
             }
         }
 
         GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
-        Debug.Log(rockets.Length);
         int i = 0;
         foreach(GameObject rocket in rockets)
         {
@@ -218,7 +244,7 @@ public class WorldSaveManager : MonoBehaviour
 
         var jsonString = JsonConvert.SerializeObject(saveWorld);
         System.IO.File.WriteAllText(MasterManager.GetComponent<MasterManager>().worldPath, jsonString);
-        Debug.Log("saved");
+        UnityEngine.Debug.Log(MasterManager.GetComponent<MasterManager>().worldPath);
     }
 
     public void loadWorld()
@@ -247,16 +273,21 @@ public class WorldSaveManager : MonoBehaviour
 
         int pipeCount = 0;
         int count = 0;
+
+        BuildingManager.GetComponent<BuildingManager>().IDMax = loadedWorld.IDMax;
+
         foreach(string buildingType in loadedWorld.buildingTypes)
         {
             Vector3 position = new Vector3(loadedWorld.buildingLocX[count], loadedWorld.buildingLocY[count], loadedWorld.buildingLocZ[count]);
             Vector3 rotation = new Vector3(loadedWorld.buildingRotX[count], loadedWorld.buildingRotY[count], loadedWorld.buildingRotZ[count]);
+
             if(buildingType == "designer")
             {
                 GameObject current = Instantiate(designerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
                 current.transform.SetParent(earth.transform);
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
+                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
             }
 
             if(buildingType == "GSEtank")
@@ -265,6 +296,9 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.SetParent(earth.transform);
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
+                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
             }
 
             if(buildingType == "launchPad")
@@ -273,6 +307,9 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.SetParent(earth.transform);
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
+                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
             }
 
             if(buildingType == "pipe")
@@ -281,6 +318,9 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.SetParent(earth.transform);
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
+                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
 
                 Vector2 size = new Vector2(loadedWorld.buildingScaleX[pipeCount], loadedWorld.buildingScaleY[pipeCount]);
                 current.GetComponent<SpriteRenderer>().size = size;
@@ -289,17 +329,17 @@ public class WorldSaveManager : MonoBehaviour
                 Vector3 outputPos = new Vector3(loadedWorld.outputLocX[pipeCount], loadedWorld.outputLocY[pipeCount], loadedWorld.outputLocZ[pipeCount]);
                 current.GetComponent<outputInputManager>().input.transform.position = inputPos;
                 current.GetComponent<outputInputManager>().output.transform.position = outputPos;
-
                 pipeCount++;
             }
 
             count++;
         }
 
+        
+
         foreach(int rocket in loadedWorld.childrenNumber)
         {
             GameObject capsule = null;
-            Debug.Log("CapsuleID" + capsuleID);
             int childrenNumber = rocket;
             if(loadedWorld.capsuleType == "capsule")
             {
@@ -352,7 +392,6 @@ public class WorldSaveManager : MonoBehaviour
                             while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
                             {
                                 newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                                Debug.Log(newPrefabDetach);
                                 if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
                                 {
                                     currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
@@ -412,7 +451,6 @@ public class WorldSaveManager : MonoBehaviour
                             while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
                             {
                                 newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                                Debug.Log(newPrefabDetach);
                                 if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
                                 {
                                     currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
@@ -444,7 +482,7 @@ public class WorldSaveManager : MonoBehaviour
         loaded = true;
         } else if(loadedWorld.version != version.currentVersion)
         {
-           Debug.Log("File version not compatible");
+           UnityEngine.Debug.Log("File version not compatible");
         }
     }
 

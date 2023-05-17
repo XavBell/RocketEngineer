@@ -6,13 +6,17 @@ using TMPro;
 public class outputInputManager : MonoBehaviour
 {
     [SerializeField]
+    public int selfID = 0;
     public GameObject input;
     public GameObject output;
 
     public GameObject attachedInput;
     public GameObject attachedOutput;
-
+    
+    public int inputParentID = 0;
     public GameObject inputParent;
+
+    public int outputParentID = 0;
     public GameObject outputParent;
 
     public TextMeshProUGUI quantityText;
@@ -33,10 +37,25 @@ public class outputInputManager : MonoBehaviour
 
     public string type = "default";
 
+    void Start()
+    {
+        selfID = this.GetComponent<buildingType>().buildingID;
+    }
+
     // Update is called once per frame
     void Update()
     {
-        if(type == "default")
+        if(inputParentID > 0 && inputParent == null)
+        {
+            InitializeInput();
+        }
+
+        if(outputParentID > 0 && outputParent == null)
+        {
+            InitializeOutput();
+        }
+
+        if(type == "default" && (inputParentID != 0 || outputParentID != 0))
         {
             updateParents();
             setRate();
@@ -52,8 +71,6 @@ public class outputInputManager : MonoBehaviour
                 rateText.enabled = false;
             }
         }
-
-        DebugLog();
     }
 
     void FixedUpdate()
@@ -112,6 +129,32 @@ public class outputInputManager : MonoBehaviour
                     en.GetComponent<Part>().fuel = newVolume;
                     this.GetComponent<PlanetGravity>().rocketMass += inputParent.GetComponent<outputInputManager>().variation;
                 }
+            }
+        }
+    }
+
+    public void InitializeInput()
+    {
+        GameObject[] Inputs;
+        Inputs = GameObject.FindGameObjectsWithTag("building");
+        foreach (GameObject input in Inputs)
+        {
+            if(input.GetComponent<buildingType>().buildingID == inputParentID)
+            {
+                inputParent = input;
+            }
+        }
+    }
+
+    public void InitializeOutput()
+    {
+        GameObject[] Outputs;
+        Outputs = GameObject.FindGameObjectsWithTag("building");
+        foreach (GameObject output in Outputs)
+        {
+            if(output.GetComponent<buildingType>().buildingID == outputParentID)
+            {
+                outputParent = output;
             }
         }
     }
