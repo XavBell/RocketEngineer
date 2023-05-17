@@ -55,14 +55,11 @@ public class GameManager_Tank : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name.ToString() == "TankDesign")
         {
-            tankRef = Tank.GetComponent<Part>().tank;
-            tankSP = tankRef.GetComponent<SpriteRenderer>();
+            tankSP = Tank.GetComponent<SpriteRenderer>();
 
-            attachTopRef = Tank.GetComponent<Part>().attachTop;
-            attachTopObj = GameObject.Find(attachTopRef.name);
+            attachTopObj = Tank.GetComponent<Tank>()._attachTop;
 
-            attachBottomRef = Tank.GetComponent<Part>().attachBottom;
-            attachBottomObj = GameObject.Find(attachBottomRef.name);
+            attachBottomObj = Tank.GetComponent<Tank>()._attachBottom;
 
             startingScaleD = tankSP.transform.localScale;
             startingScaleH = tankSP.transform.localScale;

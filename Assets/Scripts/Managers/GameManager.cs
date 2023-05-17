@@ -104,7 +104,7 @@ public class GameManager : MonoBehaviour
             }
 
 
-            if (partToConstruct.GetComponent<Part>().type.ToString() == "tank" && capsuleBuilt == true && Cursor.visible == false)
+            if (partToConstruct.GetComponent<RocketPart>()._partType == "tank" && capsuleBuilt == true && Cursor.visible == false)
             {
                 parts = GameObject.FindObjectsOfType<Part>();
                 attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
 
 
 
-            if (partToConstruct.GetComponent<Part>().type.ToString() == "engine" && capsuleBuilt == true && Cursor.visible == false)
+            if (partToConstruct.GetComponent<RocketPart>()._partType.ToString() == "engine" && capsuleBuilt == true && Cursor.visible == false)
             {
                 parts = GameObject.FindObjectsOfType<Part>();
                 attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
