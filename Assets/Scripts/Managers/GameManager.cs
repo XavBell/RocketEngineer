@@ -100,15 +100,11 @@ public class GameManager : MonoBehaviour
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 capsule = Instantiate(partToConstruct, position, UnityEngine.Quaternion.identity);
-                capsule.GetComponent<PlanetGravity>().capsule = capsule;
-                capsuleBuilt = true;
             }
 
 
-            if (partToConstruct.GetComponent<RocketPart>()._partType == "tank" && capsuleBuilt == true && Cursor.visible == false)
+            if (partToConstruct.GetComponent<RocketPart>()._partType == "tank" && Cursor.visible == false)
             {
-                parts = GameObject.FindObjectsOfType<Part>();
-                attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.identity);
                 tankPrefab = currentPrefab;
@@ -116,54 +112,13 @@ public class GameManager : MonoBehaviour
                 {
                     load(partPath);
                 }
-                float bestDist = Mathf.Infinity;
-                AttachPointScript bestAttachPoint = null;
-                
-                    foreach (AttachPointScript go1 in attachPoints)
-                    {
-                        float currentDistance = (go1.transform.position - currentPrefab.transform.position).magnitude;
-                        if (currentDistance < bestDist && go1.GetComponent<AttachPointScript>().attachedBody == null)
-                        {
-                            bestDist = currentDistance;
-                            bestAttachPoint = go1;
-                        }
-                    }
-
-                if (bestAttachPoint != null)
-                {
-                    tankBuilt = true;
-                    UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
-                    setPosition(prefabPos, currentPrefab);
-
-                    GameObject newPrefabDetach = currentPrefab;
-                    if (decouplerPresent == true)
-                    {
-                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
-                        {
-                            currentPrefab.GetComponent<Part>().referenceDecoupler = currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                        }
-
-                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
-                        {
-                            while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
-                            {
-                                newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                                if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
-                                {
-                                    currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
-                                }
-                            }
-                        }
-                    }
-
-                    
-                }
+                UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
+                setPosition(prefabPos, currentPrefab);
             }
 
 
             if (partToConstruct.GetComponent<RocketPart>()._partType == "decoupler" && Cursor.visible == false)
             {
-                attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.identity);
                 setPosition(currentPrefab.transform.position, currentPrefab);
@@ -171,10 +126,8 @@ public class GameManager : MonoBehaviour
 
 
 
-            if (partToConstruct.GetComponent<RocketPart>()._partType.ToString() == "engine" && capsuleBuilt == true && Cursor.visible == false)
+            if (partToConstruct.GetComponent<RocketPart>()._partType.ToString() == "engine" && Cursor.visible == false)
             {
-                parts = GameObject.FindObjectsOfType<Part>();
-                attachPoints = GameObject.FindObjectsOfType<AttachPointScript>();
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.identity);
                 enginePrefab = currentPrefab;
@@ -184,45 +137,19 @@ public class GameManager : MonoBehaviour
                 }
                 UnityEngine.Vector2 enginePosition = new UnityEngine.Vector2(enginePrefab.transform.position.x, enginePrefab.transform.position.y);
                 setPosition(enginePosition, enginePrefab);
-                
             }
 
 
             partToConstruct = null;
             customCursor.GetComponent<SpriteRenderer>().sprite = null;
             Cursor.visible = true;
-
-            if (capsuleBuilt == false)
-            {
-                //DecouplerButton.interactable = false;
-            }
-
-            if (capsuleBuilt == true)
-            {
-                CapsuleButton.interactable = false;
-                //DecouplerButton.interactable = false;
-            }
-
-            if (tankBuilt == true)
-            {
-                //DecouplerButton.interactable = true;
-            }
-
-            if (engineBuilt == true)
-            {
-                //DecouplerButton.interactable = true;
-            }
         }
-
 
         if (Input.GetKey(KeyCode.Escape))
         {
             Application.Quit();
  
         }
-
-
-
     }
 
     public void Launch()
@@ -772,12 +699,10 @@ public class GameManager : MonoBehaviour
         List<GameObject> availableAttachs = findAvailableAttachPoint(currentPart);
         GameObject bestAttach = null;
         float bestDistance = Mathf.Infinity;
-        UnityEngine.Debug.Log(availableAttachs.Count);
         foreach (GameObject attach in availableAttachs)
         {
             UnityEngine.Vector2 attachPos = new UnityEngine.Vector2(attach.transform.position.x, attach.transform.position.y);
             float distance = UnityEngine.Vector2.Distance(attachPos, position);
-            UnityEngine.Debug.Log(distance);
             if(distance < bestDistance)
             {
                 bestAttach = attach;
@@ -785,16 +710,12 @@ public class GameManager : MonoBehaviour
             }
         }
         return bestAttach;
-        
     }
 
     public void setPosition(UnityEngine.Vector2 partPosition, GameObject part)
     {
         GameObject attachPoint = findClosestAttach(partPosition, part);
         AttachPointScript attachRef = attachPoint.GetComponent<AttachPointScript>();
-
-        //CODE REFACTORING GONNA TAKE FOREVER AAAAAAAAAAAA
-        GameObject bestSelfAttach = null;
         List<GameObject> attachsSelf = new List<GameObject>();
         
         if(part.GetComponent<RocketPart>()._attachBottom != null)
@@ -837,7 +758,5 @@ public class GameManager : MonoBehaviour
         UnityEngine.Vector2 difference = partPosition - pointPosition;
         part.transform.position = attachPointPos + difference;
     }
-    
-
 
 }
