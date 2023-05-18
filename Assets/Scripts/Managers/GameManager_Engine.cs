@@ -34,7 +34,6 @@ public class GameManager_Engine : MonoBehaviour
     public GameObject nozzleEndRef;
     public GameObject turbopumpRef;
 
-    public AttachPointScript attachBottomRef;
     public GameObject attachBottomObj;
 
     //Visual float
@@ -76,9 +75,9 @@ public class GameManager_Engine : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name.ToString() == "EngineDesign")
         {
-            nozzleExitRef = Engine.GetComponent<Part>().nozzleExit;
-            nozzleEndRef = Engine.GetComponent<Part>().nozzleEnd;
-            turbopumpRef = Engine.GetComponent<Part>().turbopump;
+            nozzleExitRef = Engine.GetComponent<Engine>()._nozzleEnd;
+            nozzleEndRef = Engine.GetComponent<Engine>()._nozzleStart;
+            turbopumpRef = Engine.GetComponent<Engine>()._turbopump;
 
             startingScaleE = nozzleExitRef.transform.localScale;
             startingScaleEy = nozzleExitRef.transform.localScale;
@@ -86,8 +85,7 @@ public class GameManager_Engine : MonoBehaviour
             startingScaleEn = nozzleEndRef.transform.localScale;
             startingScaleT = turbopumpRef.transform.localScale;
 
-            attachBottomRef = Engine.GetComponent<Part>().attachBottom;
-            attachBottomObj = GameObject.Find(attachBottomRef.name);
+            attachBottomObj = Engine.GetComponent<Engine>()._attachBottom;
 
             GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
             MasterManager = GMM.GetComponent<MasterManager>();

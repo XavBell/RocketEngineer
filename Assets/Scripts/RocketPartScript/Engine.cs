@@ -6,7 +6,9 @@ using UnityEngine;
 public class Engine : RocketPart
 { 
     public float _thrust{get; set;}
-    private UnityEngine.Vector2 _turbopumpSize{get; set;}
-    private UnityEngine.Vector2 _nozzleStartSize{get; set;}
-    private UnityEngine.Vector2 _nozzleEndSize{get; set;}
+    public float _rate{get; set;}
+
+    [field: SerializeField]public GameObject _turbopump{get; private set;}
+    [field: SerializeField]public GameObject _nozzleStart{get; private set;}
+    [field: SerializeField]public GameObject _nozzleEnd{get; private set;}
 }

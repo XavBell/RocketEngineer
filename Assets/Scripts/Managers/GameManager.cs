@@ -182,64 +182,8 @@ public class GameManager : MonoBehaviour
                 {
                     load(partPath);
                 }
-                float bestDist = Mathf.Infinity;
-                AttachPointScript bestAttachPoint = null;
-
-                foreach (AttachPointScript go1 in attachPoints)
-                {
-                    float currentDistance = (go1.transform.position - currentPrefab.transform.position).magnitude;
-                    if (currentDistance < bestDist && go1.GetComponent<AttachPointScript>().attachedBody == null)
-                    {
-                        bestDist = currentDistance;
-                        bestAttachPoint = go1;
-                    }
-                }
-
-                if (bestAttachPoint != null)
-                {
-                    engineBuilt = true;
-                    //setRocketValues(bestAttachPoint, currentPrefab, engineBox, engineOffset);
-
-                    if (bestAttachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().type.ToString() == "tank")
-                    {
-                        currentPrefab.GetComponent<Part>().StageNumber = bestAttachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().StageNumber;
-                    }
-
-                    AttachPointScript currentAttach = currentPrefab.GetComponent<Part>().attachTop;
-                    while (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "tank")
-                    {
-                        currentPrefab.GetComponent<Part>().maxFuel += currentAttach.attachedBody.GetComponent<Part>().maxFuel;
-                        currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
-                    }
-
-
-
-                    GameObject newPrefabDetach = currentPrefab;
-                    if (decouplerPresent == true)
-                    {
-                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
-                        {
-                            currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                        }
-
-                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
-                        {
-                            while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
-                            {
-                                newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                                if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
-                                {
-                                    currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
-                                }
-                            }
-
-                        }
-
-                    }
-
-
-                }
-
+                UnityEngine.Vector2 enginePosition = new UnityEngine.Vector2(enginePrefab.transform.position.x, enginePrefab.transform.position.y);
+                setPosition(enginePosition, enginePrefab);
                 
             }
 
@@ -473,17 +417,17 @@ public class GameManager : MonoBehaviour
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
-            enginePrefab.GetComponent<Part>().path = loadedEngine.path;
-            enginePrefab.GetComponent<Part>().partName = loadedEngine.engineName;
-            enginePrefab.GetComponent<Part>().maxThrust = loadedEngine.thrust_s;
-            enginePrefab.GetComponent<Part>().rate = loadedEngine.rate_s;
-            enginePrefab.GetComponent<Part>().mass = loadedEngine.mass_s;
+            enginePrefab.GetComponent<RocketPart>()._path = loadedEngine.path;
+            enginePrefab.GetComponent<RocketPart>()._partName = loadedEngine.engineName;
+            enginePrefab.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
+            enginePrefab.GetComponent<Engine>()._rate = loadedEngine.rate_s;
+            enginePrefab.GetComponent<RocketPart>()._partMass = loadedEngine.mass_s;
 
-            enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleExitSize_s, loadedEngine.verticalSize_s);
-            enginePrefab.GetComponent<Part>().nozzleExit.transform.localPosition = new UnityEngine.Vector2(enginePrefab.GetComponent<Part>().nozzleExit.transform.localPosition.x, loadedEngine.verticalPos);
-            enginePrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedEngine.attachBottomPos, 0));
-            enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Part>().nozzleEnd.GetComponent<SpriteRenderer>().transform.localScale.y);
-            enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new UnityEngine.Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
+            enginePrefab.GetComponent<Engine>()._nozzleEnd.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleExitSize_s, loadedEngine.verticalSize_s);
+            enginePrefab.GetComponent<Engine>()._nozzleEnd.transform.localPosition = new UnityEngine.Vector2(enginePrefab.GetComponent<Engine>()._nozzleEnd.transform.localPosition.x, loadedEngine.verticalPos);
+            enginePrefab.GetComponent<Engine>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedEngine.attachBottomPos, 0));
+            enginePrefab.GetComponent<Engine>()._nozzleStart.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Engine>()._nozzleStart.GetComponent<SpriteRenderer>().transform.localScale.y);
+            enginePrefab.GetComponent<Engine>()._turbopump.transform.localScale = new UnityEngine.Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Engine>()._turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
         }
 
         if (fileTypePath == savePathRef.tankFolder)
