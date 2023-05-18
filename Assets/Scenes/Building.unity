@@ -1419,7 +1419,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 381655844}
   m_HandleRect: {fileID: 381655843}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -2144,7 +2144,6 @@ MonoBehaviour:
   savePath: {fileID: 0}
   saveName: 
   Tank: {fileID: 0}
-  tankRef: {fileID: 0}
   tankSP: {fileID: 0}
   attachTopRef: {fileID: 0}
   attachTopObj: {fileID: 0}
@@ -2152,7 +2151,7 @@ MonoBehaviour:
   attachBottomObj: {fileID: 0}
   tankHeightFloat: 0
   tankDiameterFloat: 0
-  fuel: 0
+  volume: 0
   mass: 0
   currentD: 0
   currentH: 0
@@ -2260,7 +2259,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1593925445}
   m_HandleRect: {fileID: 1593925444}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -3344,7 +3343,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.015265823, y: 0.023000002}
   m_AnchorMax: {x: 0.19100001, y: 1}
-  m_AnchoredPosition: {x: 106.56784, y: 0.6034851}
+  m_AnchoredPosition: {x: 106.56781, y: 0.6034546}
   m_SizeDelta: {x: 176.8801, y: -82.7965}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1002608896
@@ -5325,6 +5324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   earth: {fileID: 0}
+  planetRadius: 6371
   constructionAllowed: 1
   zRot: 0
   type: 
@@ -6305,7 +6305,8 @@ MonoBehaviour:
   nozzleEndSize: {fileID: 0}
   turbopumpSize: {fileID: 0}
   nozzleLenght: {fileID: 0}
-  turbopumpRate: {fileID: 0}
+  massFlowRate: {fileID: 0}
+  thrustInput: {fileID: 0}
   savePath: {fileID: 0}
   saveName: 
   Engine: {fileID: 0}
@@ -6318,7 +6319,6 @@ MonoBehaviour:
   nozzleEndSizeFloat: 0
   turbopumpSizeFloat: 0
   nozzleLenghtFloat: 0
-  turbopumpRateFloat: 0
   mass: 0
   thrust: 0
   rate: 0
@@ -6333,6 +6333,9 @@ MonoBehaviour:
   initialScaleY: 0
   panel: {fileID: 0}
   popUpPart: {fileID: 0}
+  thrustT: {fileID: 0}
+  massT: {fileID: 0}
+  rateT: {fileID: 0}
   MasterManager: {fileID: 0}
 --- !u!4 &1992725477
 Transform:

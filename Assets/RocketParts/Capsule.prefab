@@ -382,13 +382,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5889540978983136384}
-  - component: {fileID: 8889202523145183716}
   - component: {fileID: -5808564746016280997}
   - component: {fileID: 4537766573156485653}
   - component: {fileID: 8142855468360428412}
   - component: {fileID: -2056247246796802356}
   - component: {fileID: 2520105278773700788}
   - component: {fileID: 6623856652470056655}
+  - component: {fileID: 2080045861758558677}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: capsule
@@ -415,36 +415,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8889202523145183716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3186944469201897407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 753ee8c432f8fce4c9c7f87d517a825a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  type: capsule
-  attachTop: {fileID: 0}
-  attachBottom: {fileID: 8077763017376720838}
-  StageNumber: 0
-  maxThrust: 0
-  mass: 0
-  fuel: 0
-  maxFuel: 0
-  rate: 0
-  referenceDecoupler: {fileID: 0}
-  nozzleExit: {fileID: 0}
-  nozzleEnd: {fileID: 0}
-  turbopump: {fileID: 0}
-  tank: {fileID: 0}
-  path: 
-  name: 
-  boxSize: {x: 0, y: 0}
-  offsets: {x: 0, y: 0}
 --- !u!212 &-5808564746016280997
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -566,7 +536,6 @@ MonoBehaviour:
   aeroCoefficient: 0.05
   planetRadius: 127421
   line: {fileID: 8535568482800535129}
-  dryMass: 0
   rocketMass: 20
   thrust: 0
   maxThrust: 0
@@ -578,9 +547,7 @@ MonoBehaviour:
   activeEngine: {fileID: 0}
   maxThrusts: []
   engines: []
-  EngineColliderDetector: {fileID: 0}
   stageUpdated: 0
-  capsuleInitialSizeX: 0
   sun: {fileID: 0}
   WorldSaveManager: {fileID: 0}
   possessed: 0
@@ -590,7 +557,6 @@ MonoBehaviour:
   threshold: 5
   previousApogee: 0
   time: 0
-  FixedUpdatePassed: 0
   previousRocketPos: {x: 0, y: 0, z: 0}
 --- !u!114 &2520105278773700788
 MonoBehaviour:
@@ -604,11 +570,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selfID: 0
+  connectedAsRocket: 0
   input: {fileID: 0}
   output: {fileID: 0}
   attachedInput: {fileID: 0}
   attachedOutput: {fileID: 0}
+  inputParentID: 0
   inputParent: {fileID: 0}
+  outputParentID: 0
   outputParent: {fileID: 0}
   quantityText: {fileID: 6427997352798664347}
   rateText: {fileID: 2617595200640417561}
@@ -634,6 +604,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   altitudeText: {fileID: 6370072224297353334}
   planetGravity: {fileID: -2056247246796802356}
+--- !u!114 &2080045861758558677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3186944469201897407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0630ebcf30b504f81a48d9d962ff2066, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <_partType>k__BackingField: satellite
+  <_attachTop>k__BackingField: {fileID: 0}
+  <_attachBottom>k__BackingField: {fileID: 2200220295266798373}
+  <_attachRight>k__BackingField: {fileID: 0}
+  <_attachLeft>k__BackingField: {fileID: 0}
 --- !u!1 &3472807573632103729
 GameObject:
   m_ObjectHideFlags: 0
@@ -851,17 +838,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3180017098855079596, guid: de80f39a63e00ec4f84d0638d81f57bd, type: 3}
   m_PrefabInstance: {fileID: 4184129677348468706}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8077763017376720838 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5334788015736786980, guid: de80f39a63e00ec4f84d0638d81f57bd, type: 3}
+--- !u!1 &2200220295266798373 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2637353970229443783, guid: de80f39a63e00ec4f84d0638d81f57bd, type: 3}
   m_PrefabInstance: {fileID: 4184129677348468706}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53270fce38b342c47910113860c5026b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4212985450001362479
 PrefabInstance:
   m_ObjectHideFlags: 0

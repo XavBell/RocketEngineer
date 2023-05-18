@@ -80,6 +80,7 @@ public class OnClick : MonoBehaviour
             {
                 GameManager.GetComponent<GameManager>().partPath = filePath;
                 GameManager.GetComponent<GameManager>().PrefabToConstruct = GameManager.GetComponent<GameManager>().Tank;
+                UnityEngine.Debug.Log(GameManager.GetComponent<GameManager>().PrefabToConstruct.GetComponent<Tank>()._partType);
                 b1.interactable = false;
             }
 
@@ -293,7 +294,7 @@ public class OnClick : MonoBehaviour
                 tankPrefab.GetComponent<Part>().path = loadedTank.path;
                 tankPrefab.GetComponent<Part>().partName = loadedTank.tankName;
 
-                tankPrefab.GetComponent<Part>().maxFuel = loadedTank.maxFuel;
+                tankPrefab.GetComponent<Part>().maxFuel = loadedTank.volume;
                 tankPrefab.GetComponent<Part>().mass = loadedTank.mass;
                 tankPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().size = new Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
                 tankPrefab.GetComponent<Part>().attachTop.transform.localPosition = (new Vector3(0, loadedTank.attachTopPos, 0));

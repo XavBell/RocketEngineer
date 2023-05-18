@@ -11,8 +11,6 @@ public class saveTank
     public float attachTopPos;
     public float attachBottomPos;
     public float usedNum;
-
-    public float fuel;
-    public float maxFuel;
+    public float volume;
     public float mass;
 }
