@@ -132,8 +132,8 @@ public class GameManager : MonoBehaviour
                 if (bestAttachPoint != null)
                 {
                     tankBuilt = true;
-
-                    setRocketValues(bestAttachPoint, currentPrefab, tankBox, tankOffset);
+                    UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
+                    setPosition(prefabPos, currentPrefab);
 
                     GameObject newPrefabDetach = currentPrefab;
                     if (decouplerPresent == true)
@@ -198,7 +198,7 @@ public class GameManager : MonoBehaviour
                 if (bestAttachPoint != null)
                 {
                     engineBuilt = true;
-                    setRocketValues(bestAttachPoint, currentPrefab, engineBox, engineOffset);
+                    //setRocketValues(bestAttachPoint, currentPrefab, engineBox, engineOffset);
 
                     if (bestAttachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().type.ToString() == "tank")
                     {
@@ -354,7 +354,7 @@ public class GameManager : MonoBehaviour
                     load(TypePath);
                     tankCount++;
 
-                    setRocketValues(attachPoint, currentPrefab, tankBox, tankOffset);
+                    //setRocketValues(attachPoint, currentPrefab, tankBox, tankOffset);
 
                     GameObject newPrefabDetach = currentPrefab;
                     if (decouplerPresent == true)
@@ -394,7 +394,7 @@ public class GameManager : MonoBehaviour
                     load(TypePath);
                     engineCount++;
 
-                    setRocketValues(attachPoint, currentPrefab, engineBox, engineOffset);
+                    //setRocketValues(attachPoint, currentPrefab, engineBox, engineOffset);
 
                     if (attachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().type.ToString() == "tank")
                     {
@@ -441,7 +441,7 @@ public class GameManager : MonoBehaviour
                 {
                     UnityEngine.Vector2 attachPosition = attachPoint.transform.position;
                     currentPrefab = Instantiate(Decoupler, position, UnityEngine.Quaternion.identity);
-                    setRocketValues(attachPoint, currentPrefab, decouplerBox, decouplerOffset);
+                    //setRocketValues(attachPoint, currentPrefab, decouplerBox, decouplerOffset);
                     decouplerPresent = true;
                     lastPrefab = currentPrefab;
                 }
@@ -492,14 +492,14 @@ public class GameManager : MonoBehaviour
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
 
-            tankPrefab.GetComponent<Part>().path = loadedTank.path;
-            tankPrefab.GetComponent<Part>().partName = loadedTank.tankName;
+            tankPrefab.GetComponent<RocketPart>()._path = loadedTank.path;
+            tankPrefab.GetComponent<RocketPart>()._partName = loadedTank.tankName;
 
-            tankPrefab.GetComponent<Part>().maxFuel = loadedTank.volume;
-            tankPrefab.GetComponent<Part>().mass = loadedTank.mass;
-            tankPrefab.GetComponent<Part>().tank.GetComponent<SpriteRenderer>().size = new UnityEngine.Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
-            tankPrefab.GetComponent<Part>().attachTop.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachTopPos, 0));
-            tankPrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0));
+            tankPrefab.GetComponent<Tank>()._volume = loadedTank.volume;
+            tankPrefab.GetComponent<RocketPart>()._partMass = loadedTank.mass;
+            tankPrefab.GetComponent<SpriteRenderer>().size = new UnityEngine.Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
+            tankPrefab.GetComponent<RocketPart>()._attachTop.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachTopPos, 0));
+            tankPrefab.GetComponent<RocketPart>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0));
         }
 
         filePath = null;
@@ -807,20 +807,6 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void setRocketValues(AttachPointScript attachPoint, GameObject currentPrefab, UnityEngine.Vector2 boxScale, UnityEngine.Vector2 offsets)
-    {
-        attachPoint.GetComponent<AttachPointScript>().attachedBody = currentPrefab;
-        currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody = attachPoint.GetComponent<AttachPointScript>().referenceBody;
-        UnityEngine.Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
-        currentPrefab.transform.position = attachPoint.transform.position + difference;
-        currentPrefab.transform.SetParent(capsule.transform);
-        if(currentPrefab.GetComponent<Part>().type == "engine")
-        {
-            capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
-        }
-        capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
     }
 
     public List<GameObject> findAvailableAttachPoint(GameObject currentPart)

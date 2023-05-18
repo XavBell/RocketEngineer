@@ -7,9 +7,13 @@ public class RocketPart : MonoBehaviour
 {
     [field: SerializeField] public string _partType{get; protected set;}
 
+    public string _partName{get; set;}
+
     public int _partID{get; set;}
 
     public float _partMass{get; set;}
+
+    public string _path{get; set;}
 
     public UnityEngine.Vector2 _position{get; set;}
 
