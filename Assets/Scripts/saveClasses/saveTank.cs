@@ -10,6 +10,8 @@ public class saveTank
     public float tankSizeY;
     public float attachTopPos;
     public float attachBottomPos;
+    public float attachRightPos;
+    public float attachLeftPos;
     public float usedNum;
     public float volume;
     public float mass;

@@ -94,6 +94,13 @@ public class CustomCursor : MonoBehaviour
                 constructionAllowed = false;
             }
         }
+
+        if(box != null && SceneManager.GetActiveScene().name == "Building")
+        {
+           
+            sp.color = Color.red;
+            //constructionAllowed = false;
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -105,6 +112,13 @@ public class CustomCursor : MonoBehaviour
                 sp.color = defaultColor;
                 constructionAllowed = true;
             }
+        }
+
+        if(box != null && SceneManager.GetActiveScene().name == "Building")
+        {
+           
+            sp.color = defaultColor;
+            //constructionAllowed = true;
         }
     }
 }

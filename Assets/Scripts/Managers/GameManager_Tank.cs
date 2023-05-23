@@ -1,3 +1,4 @@
+using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,11 +24,10 @@ public class GameManager_Tank : MonoBehaviour
     public GameObject Tank;
     public SpriteRenderer tankSP;
 
-    public AttachPointScript attachTopRef;
     public GameObject attachTopObj;
-
-    public AttachPointScript attachBottomRef;
     public GameObject attachBottomObj;
+    public GameObject attachRightObj;
+    public GameObject attachLeftObj;
 
     public float tankHeightFloat;
     public float tankDiameterFloat;
@@ -44,8 +44,8 @@ public class GameManager_Tank : MonoBehaviour
 
     public float elapsedFrames = 0;
 
-    public Vector3 startingScaleD;
-    public Vector3 startingScaleH;
+    public UnityEngine.Vector3 startingScaleD;
+    public UnityEngine.Vector3 startingScaleH;
 
     public MasterManager MasterManager = new MasterManager();
     // Start is called before the first frame update
@@ -58,6 +58,10 @@ public class GameManager_Tank : MonoBehaviour
             attachTopObj = Tank.GetComponent<Tank>()._attachTop;
 
             attachBottomObj = Tank.GetComponent<Tank>()._attachBottom;
+
+            attachRightObj = Tank.GetComponent<Tank>()._attachRight;
+
+            attachLeftObj = Tank.GetComponent<Tank>()._attachLeft;
 
             startingScaleD = tankSP.transform.localScale;
             startingScaleH = tankSP.transform.localScale;
@@ -96,7 +100,7 @@ public class GameManager_Tank : MonoBehaviour
 
             if(tankSP.size.x != tankDiameterFloat)
             {
-                tankSP.size = Vector2.Lerp(startingScaleD, new Vector2(tankDiameterFloat, tankSP.size.y), currentD * 5);
+                tankSP.size = UnityEngine.Vector2.Lerp(startingScaleD, new UnityEngine.Vector2(tankDiameterFloat, tankSP.size.y), currentD * 5);
                 currentD += Time.deltaTime;
             }
             
@@ -113,7 +117,7 @@ public class GameManager_Tank : MonoBehaviour
 
             if(tankSP.size.y != tankHeightFloat)
             {
-                tankSP.size = Vector2.Lerp(startingScaleH, new Vector2(tankSP.size.x, tankHeightFloat), currentH*5);
+                tankSP.size = UnityEngine.Vector2.Lerp(startingScaleH, new UnityEngine.Vector2(tankSP.size.x, tankHeightFloat), currentH*5);
                 currentH += Time.deltaTime;
             }
             
@@ -148,6 +152,8 @@ public class GameManager_Tank : MonoBehaviour
             saveObject.tankSizeY = tankSP.size.y;
             saveObject.attachTopPos = attachTopObj.transform.position.y - tankSP.bounds.center.y;
             saveObject.attachBottomPos = tankSP.bounds.center.y - attachTopObj.transform.position.y;
+            saveObject.attachRightPos = attachRightObj.transform.position.x - tankSP.bounds.center.x;
+            saveObject.attachLeftPos = attachLeftObj.transform.position.x - tankSP.bounds.center.x;
             saveObject.volume = volume;
             saveObject.mass = mass;
 
@@ -169,16 +175,18 @@ public class GameManager_Tank : MonoBehaviour
 
             int x = Screen.width / 2;
             int y = Screen.height / 2;
-            Vector2 position = new Vector2(x, y);
-            Instantiate(popUpPart, position, Quaternion.identity);
+            UnityEngine.Vector2 position = new UnityEngine.Vector2(x, y);
+            Instantiate(popUpPart, position, UnityEngine.Quaternion.identity);
             panel.SetActive(false);
         }
     }
 
     public void updateAttachPosition()
     {
-        attachTopObj.transform.position = new Vector2(attachTopObj.transform.position.x, tankSP.bounds.max.y);
-        attachBottomObj.transform.position = new Vector2(attachBottomObj.transform.position.x, tankSP.bounds.min.y);
+        attachTopObj.transform.position = new UnityEngine.Vector2(attachTopObj.transform.position.x, tankSP.bounds.max.y);
+        attachBottomObj.transform.position = new UnityEngine.Vector2(attachBottomObj.transform.position.x, tankSP.bounds.min.y);
+        attachRightObj.transform.position = new UnityEngine.Vector2(tankSP.bounds.max.x, attachRightObj.transform.position.y);
+        attachLeftObj.transform.position = new UnityEngine.Vector2(tankSP.bounds.min.x, attachLeftObj.transform.position.y);
     }
 
     public void backToBuild()

@@ -174,6 +174,7 @@ public class GameManager : MonoBehaviour
             customCursor.gameObject.SetActive(true);
             customCursor.GetComponent<SpriteRenderer>().sprite = part.GetComponent<SpriteRenderer>().sprite;
             customCursor.GetComponent<SpriteRenderer>().color = part.GetComponent<SpriteRenderer>().color;
+            customCursor.GetComponent<CustomCursor>().defaultColor = part.GetComponent<SpriteRenderer>().color;
             Cursor.visible = false;
             partToConstruct = part;
         }
@@ -371,6 +372,8 @@ public class GameManager : MonoBehaviour
             tankPrefab.GetComponent<SpriteRenderer>().size = new UnityEngine.Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
             tankPrefab.GetComponent<RocketPart>()._attachTop.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachTopPos, 0));
             tankPrefab.GetComponent<RocketPart>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0));
+            tankPrefab.GetComponent<RocketPart>()._attachRight.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0));
+            tankPrefab.GetComponent<RocketPart>()._attachLeft.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0));
         }
 
         filePath = null;
