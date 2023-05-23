@@ -91,22 +91,21 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Rotate();
         updateSaveName();
         if(Input.GetMouseButtonDown(0) && partToConstruct != null)
         {
-
+            UnityEngine.Debug.Log("Cursor Rot: " + customCursor.transform.eulerAngles);
             if (partToConstruct.GetComponent<RocketPart>()._partType == "satellite" && capsuleBuilt == false && Cursor.visible == false)
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                capsule = Instantiate(partToConstruct, position, UnityEngine.Quaternion.identity);
+                capsule = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
             }
-
 
             if (partToConstruct.GetComponent<RocketPart>()._partType == "tank" && Cursor.visible == false)
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.identity);
+                GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
                 tankPrefab = currentPrefab;
                 if (partPath != null)
                 {
@@ -116,20 +115,17 @@ public class GameManager : MonoBehaviour
                 setPosition(prefabPos, currentPrefab);
             }
 
-
             if (partToConstruct.GetComponent<RocketPart>()._partType == "decoupler" && Cursor.visible == false)
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.identity);
+                GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
                 setPosition(currentPrefab.transform.position, currentPrefab);
             }
-
-
 
             if (partToConstruct.GetComponent<RocketPart>()._partType.ToString() == "engine" && Cursor.visible == false)
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.identity);
+                GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
                 enginePrefab = currentPrefab;
                 if (partPath != null)
                 {
@@ -138,7 +134,6 @@ public class GameManager : MonoBehaviour
                 UnityEngine.Vector2 enginePosition = new UnityEngine.Vector2(enginePrefab.transform.position.x, enginePrefab.transform.position.y);
                 setPosition(enginePosition, enginePrefab);
             }
-
 
             partToConstruct = null;
             customCursor.GetComponent<SpriteRenderer>().sprite = null;
@@ -177,6 +172,18 @@ public class GameManager : MonoBehaviour
             customCursor.GetComponent<CustomCursor>().defaultColor = part.GetComponent<SpriteRenderer>().color;
             Cursor.visible = false;
             partToConstruct = part;
+        }
+    }
+
+    public void Rotate()
+    {
+        if(Cursor.visible == false)
+        {
+            if(Input.GetKey(KeyCode.R))
+            {
+                customCursor.transform.Rotate(0, 0, 90);
+            }
+            
         }
     }
 
