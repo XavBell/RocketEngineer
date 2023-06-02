@@ -48,13 +48,13 @@ public class GameManager : MonoBehaviour
     public GameObject Tank;
     public GameObject Engine;
     public GameObject Decoupler;
+
     public GameObject PrefabToConstruct;
     public GameObject EngineManager;
 
     public GameObject buttonPrefab;
     public GameObject engineButtonPrefab;
     public GameObject tankButtonPrefab;
-
 
     public UnityEngine.Vector2 engineBox = new UnityEngine.Vector2(0, 0);
     public UnityEngine.Vector2 tankBox = new UnityEngine.Vector2(0, 0);
@@ -73,6 +73,13 @@ public class GameManager : MonoBehaviour
     public GameObject panel;
 
     public MasterManager MasterManager = new MasterManager();
+    
+    public bool delayStarted = false;
+
+    public string partType;
+    public GameObject CursorGameObject;
+
+    public List<GameObject> DebugList = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -94,22 +101,21 @@ public class GameManager : MonoBehaviour
         Rotate();
         updateSaveName();
         if(Input.GetMouseButtonDown(0) && partToConstruct != null)
-        {
-            UnityEngine.Debug.Log("Cursor Rot: " + customCursor.transform.eulerAngles);
+        { 
+            Destroy(customCursor.transform.GetChild(0).gameObject);
             if (partToConstruct.GetComponent<RocketPart>()._partType == "satellite" && capsuleBuilt == false && Cursor.visible == false)
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                capsule = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
+                capsule = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles)); 
             }
 
             if (partToConstruct.GetComponent<RocketPart>()._partType == "tank" && Cursor.visible == false)
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 GameObject currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
-                tankPrefab = currentPrefab;
                 if (partPath != null)
                 {
-                    load(partPath);
+                    load(partPath, currentPrefab);
                 }
                 UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
@@ -129,12 +135,11 @@ public class GameManager : MonoBehaviour
                 enginePrefab = currentPrefab;
                 if (partPath != null)
                 {
-                    load(partPath);
+                    load(partPath, enginePrefab);
                 }
                 UnityEngine.Vector2 enginePosition = new UnityEngine.Vector2(enginePrefab.transform.position.x, enginePrefab.transform.position.y);
                 setPosition(enginePosition, enginePrefab);
             }
-
             partToConstruct = null;
             customCursor.GetComponent<SpriteRenderer>().sprite = null;
             Cursor.visible = true;
@@ -167,9 +172,14 @@ public class GameManager : MonoBehaviour
         if(Cursor.visible == true)
         {
             customCursor.gameObject.SetActive(true);
-            customCursor.GetComponent<SpriteRenderer>().sprite = part.GetComponent<SpriteRenderer>().sprite;
-            customCursor.GetComponent<SpriteRenderer>().color = part.GetComponent<SpriteRenderer>().color;
-            customCursor.GetComponent<CustomCursor>().defaultColor = part.GetComponent<SpriteRenderer>().color;
+            if(partPath != null)
+            {
+                UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                CursorGameObject = Instantiate(part, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
+                CursorGameObject.transform.SetParent(customCursor.transform);
+                load(partPath, CursorGameObject);
+            }
+
             Cursor.visible = false;
             partToConstruct = part;
         }
@@ -177,14 +187,21 @@ public class GameManager : MonoBehaviour
 
     public void Rotate()
     {
-        if(Cursor.visible == false)
+        if(Cursor.visible == false && delayStarted == false)
         {
             if(Input.GetKey(KeyCode.R))
             {
                 customCursor.transform.Rotate(0, 0, 90);
+                StartCoroutine(Delay());
             }
-            
         }
+    }
+
+    IEnumerator Delay() 
+    {
+        delayStarted = true;
+        yield return new WaitForSeconds(0.3f);
+        delayStarted = false;
     }
 
     public void updateSaveName()
@@ -192,7 +209,7 @@ public class GameManager : MonoBehaviour
         savePath = "/" + saveName.text;
     }
 
-    public void load(string fileTypePath)
+    public void load(string fileTypePath, GameObject prefab)
     {
         saveRocket saveObject = new saveRocket();
         saveEngine saveEngine = new saveEngine();
@@ -230,7 +247,7 @@ public class GameManager : MonoBehaviour
                     tankPrefab = currentPrefab;
                     string TypePath = loadedRocket.tankPaths[tankCount];
                     path = loadedRocket.tankNames[tankCount] + ".json";
-                    load(TypePath);
+                    load(TypePath, tankPrefab);
                     tankCount++;
 
                     //setRocketValues(attachPoint, currentPrefab, tankBox, tankOffset);
@@ -270,7 +287,7 @@ public class GameManager : MonoBehaviour
                     enginePrefab = currentPrefab;
                     string TypePath = loadedRocket.enginePaths[engineCount];
                     path = loadedRocket.engineNames[engineCount] + ".json";
-                    load(TypePath);
+                    load(TypePath, enginePrefab);
                     engineCount++;
 
                     //setRocketValues(attachPoint, currentPrefab, engineBox, engineOffset);
@@ -320,7 +337,6 @@ public class GameManager : MonoBehaviour
                 {
                     UnityEngine.Vector2 attachPosition = attachPoint.transform.position;
                     currentPrefab = Instantiate(Decoupler, position, UnityEngine.Quaternion.identity);
-                    //setRocketValues(attachPoint, currentPrefab, decouplerBox, decouplerOffset);
                     decouplerPresent = true;
                     lastPrefab = currentPrefab;
                 }
@@ -343,7 +359,6 @@ public class GameManager : MonoBehaviour
             {
                 DecouplerButton.interactable = true;
             }
-
         }
 
         if(fileTypePath == savePathRef.engineFolder)
@@ -352,17 +367,17 @@ public class GameManager : MonoBehaviour
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
-            enginePrefab.GetComponent<RocketPart>()._path = loadedEngine.path;
-            enginePrefab.GetComponent<RocketPart>()._partName = loadedEngine.engineName;
-            enginePrefab.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
-            enginePrefab.GetComponent<Engine>()._rate = loadedEngine.rate_s;
-            enginePrefab.GetComponent<RocketPart>()._partMass = loadedEngine.mass_s;
+            prefab.GetComponent<RocketPart>()._path = loadedEngine.path;
+            prefab.GetComponent<RocketPart>()._partName = loadedEngine.engineName;
+            prefab.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
+            prefab.GetComponent<Engine>()._rate = loadedEngine.rate_s;
+            prefab.GetComponent<RocketPart>()._partMass = loadedEngine.mass_s;
 
-            enginePrefab.GetComponent<Engine>()._nozzleEnd.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleExitSize_s, loadedEngine.verticalSize_s);
-            enginePrefab.GetComponent<Engine>()._nozzleEnd.transform.localPosition = new UnityEngine.Vector2(enginePrefab.GetComponent<Engine>()._nozzleEnd.transform.localPosition.x, loadedEngine.verticalPos);
-            enginePrefab.GetComponent<Engine>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedEngine.attachBottomPos, 0));
-            enginePrefab.GetComponent<Engine>()._nozzleStart.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Engine>()._nozzleStart.GetComponent<SpriteRenderer>().transform.localScale.y);
-            enginePrefab.GetComponent<Engine>()._turbopump.transform.localScale = new UnityEngine.Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Engine>()._turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
+            prefab.GetComponent<Engine>()._nozzleEnd.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleExitSize_s, loadedEngine.verticalSize_s);
+            prefab.GetComponent<Engine>()._nozzleEnd.transform.localPosition = new UnityEngine.Vector2(prefab.GetComponent<Engine>()._nozzleEnd.transform.localPosition.x, loadedEngine.verticalPos);
+            prefab.GetComponent<Engine>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedEngine.attachBottomPos, 0));
+            prefab.GetComponent<Engine>()._nozzleStart.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleEndSize_s, prefab.GetComponent<Engine>()._nozzleStart.GetComponent<SpriteRenderer>().transform.localScale.y);
+            prefab.GetComponent<Engine>()._turbopump.transform.localScale = new UnityEngine.Vector2(loadedEngine.turbopumpSize_s, prefab.GetComponent<Engine>()._turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
         }
 
         if (fileTypePath == savePathRef.tankFolder)
@@ -371,18 +386,17 @@ public class GameManager : MonoBehaviour
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
 
-            tankPrefab.GetComponent<RocketPart>()._path = loadedTank.path;
-            tankPrefab.GetComponent<RocketPart>()._partName = loadedTank.tankName;
+            prefab.GetComponent<RocketPart>()._path = loadedTank.path;
+            prefab.GetComponent<RocketPart>()._partName = loadedTank.tankName;
 
-            tankPrefab.GetComponent<Tank>()._volume = loadedTank.volume;
-            tankPrefab.GetComponent<RocketPart>()._partMass = loadedTank.mass;
-            tankPrefab.GetComponent<SpriteRenderer>().size = new UnityEngine.Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
-            tankPrefab.GetComponent<RocketPart>()._attachTop.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachTopPos, 0));
-            tankPrefab.GetComponent<RocketPart>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0));
-            tankPrefab.GetComponent<RocketPart>()._attachRight.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0));
-            tankPrefab.GetComponent<RocketPart>()._attachLeft.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0));
+            prefab.GetComponent<Tank>()._volume = loadedTank.volume;
+            prefab.GetComponent<RocketPart>()._partMass = loadedTank.mass;
+            prefab.GetComponent<SpriteRenderer>().size = new UnityEngine.Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
+            prefab.GetComponent<RocketPart>()._attachTop.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachTopPos, 0));
+            prefab.GetComponent<RocketPart>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0));
+            prefab.GetComponent<RocketPart>()._attachRight.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0));
+            prefab.GetComponent<RocketPart>()._attachLeft.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0));
         }
-
         filePath = null;
     }
 
@@ -427,7 +441,6 @@ public class GameManager : MonoBehaviour
                         saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
                         saveObject.tankNames.Add(attachedBody.GetComponent<Part>().partName);
 
-
                         //Add 1 to usedNum
                         saveTank saveTank = new saveTank();
                         var jsonString1 = JsonConvert.SerializeObject(saveTank);
@@ -436,13 +449,10 @@ public class GameManager : MonoBehaviour
                         loadedTank.usedNum += 1;
                         jsonString1 = JsonConvert.SerializeObject(loadedTank);
                         System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
-
                     }
-
                     attachedBody = attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
                 }
             
-
                 if(attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
                 {
                     saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
@@ -450,6 +460,7 @@ public class GameManager : MonoBehaviour
                     {
                         saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
                         saveObject.engineNames.Add(attachedBody.GetComponent<Part>().partName);
+
                         //Add 1 to usedNum
                         saveEngine saveEngine = new saveEngine();
                         var jsonString1 = JsonConvert.SerializeObject(saveEngine);
@@ -458,12 +469,12 @@ public class GameManager : MonoBehaviour
                         loadedEngine.usedNum = 1.0f + loadedEngine.usedNum;
                         jsonString1 = JsonConvert.SerializeObject(loadedEngine);
                         System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
-
                     }
                     if (attachedBody.GetComponent<Part>().type == "tank")
                     {
                         saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
                         saveObject.tankNames.Add(attachedBody.GetComponent<Part>().partName);
+                        
                         //Add 1 to usedNum
                         saveTank saveTank = new saveTank();
                         var jsonString1 = JsonConvert.SerializeObject(saveTank);
@@ -487,8 +498,6 @@ public class GameManager : MonoBehaviour
                 saveObject = null;
                 return;
             }
-
-
 
         } 
 
@@ -546,8 +555,6 @@ public class GameManager : MonoBehaviour
 
     public void retrieveRocketSaved()
     {
-
-        
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("spawnedButton");
         foreach(GameObject but in buttons)
         {
@@ -690,23 +697,27 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
+    //Refactorized code
     public List<GameObject> findAvailableAttachPoint(GameObject currentPart)
     {
         AttachPointScript[] attachs = FindObjectsOfType<AttachPointScript>();
         List<GameObject> potentialAttach = new List<GameObject>();
         foreach (AttachPointScript attach in attachs)
         {
-            if(attach.attachedBody == null && attach.referenceBody != currentPart)
+            if(attach.attachedBody == null && attach.referenceBody != currentPart && CursorGameObject != attach.referenceBody)
             {
                 potentialAttach.Add(attach.gameObject);
             }
         }
+        UnityEngine.Debug.Log(potentialAttach.Count);
         return potentialAttach;
     }
 
     public GameObject findClosestAttach(UnityEngine.Vector2 position, GameObject currentPart)
     {
         List<GameObject> availableAttachs = findAvailableAttachPoint(currentPart);
+        DebugList = availableAttachs;
         GameObject bestAttach = null;
         float bestDistance = Mathf.Infinity;
         foreach (GameObject attach in availableAttachs)

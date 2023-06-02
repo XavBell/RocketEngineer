@@ -2145,10 +2145,10 @@ MonoBehaviour:
   saveName: 
   Tank: {fileID: 0}
   tankSP: {fileID: 0}
-  attachTopRef: {fileID: 0}
   attachTopObj: {fileID: 0}
-  attachBottomRef: {fileID: 0}
   attachBottomObj: {fileID: 0}
+  attachRightObj: {fileID: 0}
+  attachLeftObj: {fileID: 0}
   tankHeightFloat: 0
   tankDiameterFloat: 0
   volume: 0
@@ -3438,6 +3438,10 @@ MonoBehaviour:
   Tank: {fileID: 9057782884087415771, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
   Engine: {fileID: 1884268472767985740, guid: f2c6cc36f959a17458714979d591058c, type: 3}
   Decoupler: {fileID: 1120019584567089529, guid: 3ffda7662d024d84a8cd5a8cd4c4be2d, type: 3}
+  CapsuleCursor: {fileID: 0}
+  TankCursor: {fileID: 0}
+  EngineCursor: {fileID: 0}
+  DecouplerCursor: {fileID: 0}
   PrefabToConstruct: {fileID: 0}
   EngineManager: {fileID: 0}
   buttonPrefab: {fileID: 4939193850173480501, guid: 6cd6fc681df88e84a9bfcf832ed4a136, type: 3}
@@ -3455,6 +3459,7 @@ MonoBehaviour:
   popUpPart: {fileID: 7245972115667552792, guid: 664db208f93e17b4683e220113e1e0fd, type: 3}
   panel: {fileID: 1002608894}
   MasterManager: {fileID: 0}
+  delayStarted: 0
 --- !u!224 &1055678837
 RectTransform:
   m_ObjectHideFlags: 0
