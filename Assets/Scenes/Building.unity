@@ -2176,6 +2176,51 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &561314761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 561314762}
+  - component: {fileID: 561314763}
+  m_Layer: 0
+  m_Name: Rocket
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &561314762
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561314761}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 907.2981, y: 401.16702, z: -13.887641}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &561314763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561314761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2167f7f86dd4749088f472784afbbb3c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Stages: []
 --- !u!1 &575714530
 GameObject:
   m_ObjectHideFlags: 0
@@ -3438,10 +3483,6 @@ MonoBehaviour:
   Tank: {fileID: 9057782884087415771, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
   Engine: {fileID: 1884268472767985740, guid: f2c6cc36f959a17458714979d591058c, type: 3}
   Decoupler: {fileID: 1120019584567089529, guid: 3ffda7662d024d84a8cd5a8cd4c4be2d, type: 3}
-  CapsuleCursor: {fileID: 0}
-  TankCursor: {fileID: 0}
-  EngineCursor: {fileID: 0}
-  DecouplerCursor: {fileID: 0}
   PrefabToConstruct: {fileID: 0}
   EngineManager: {fileID: 0}
   buttonPrefab: {fileID: 4939193850173480501, guid: 6cd6fc681df88e84a9bfcf832ed4a136, type: 3}
@@ -3460,6 +3501,10 @@ MonoBehaviour:
   panel: {fileID: 1002608894}
   MasterManager: {fileID: 0}
   delayStarted: 0
+  partType: 
+  CursorGameObject: {fileID: 0}
+  Rocket: {fileID: 561314761}
+  DebugList: []
 --- !u!224 &1055678837
 RectTransform:
   m_ObjectHideFlags: 0
