@@ -147,6 +147,8 @@ public class GameManager : MonoBehaviour
                 UnityEngine.Vector2 enginePosition = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(enginePosition, currentPrefab);
             }
+
+            currentPrefab.GetComponent<RocketPart>().SetGuid();
             
             if(currentPrefab != null && Rocket.GetComponent<Rocket>().core == null)
             {

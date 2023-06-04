@@ -1,3 +1,5 @@
+using System.Diagnostics;
+using System;
 using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ public class RocketPart : MonoBehaviour
 
     public string _partName{get; set;}
 
-    public int _partID{get; set;}
+    public Guid _partID{get; set;}
 
     public float _partMass{get; set;}
 
@@ -21,4 +23,10 @@ public class RocketPart : MonoBehaviour
     [field: SerializeField] public GameObject _attachBottom{get; set;}
     [field: SerializeField] public GameObject _attachRight{get; set;}
     [field: SerializeField] public GameObject _attachLeft{get; set;}
+
+    public void SetGuid()
+    {
+        _partID = Guid.NewGuid();
+        UnityEngine.Debug.Log(_partID);
+    }
 }

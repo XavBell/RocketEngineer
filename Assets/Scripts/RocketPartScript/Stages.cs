@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Stages : MonoBehaviour
 {
+    public List<System.Guid> PartsID = new List<System.Guid>();
+    public List<RocketPart> Parts = new List<RocketPart>();
+
     // Start is called before the first frame update
     void Start()
     {

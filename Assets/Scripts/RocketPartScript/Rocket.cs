@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,16 +12,19 @@ public class Rocket : MonoBehaviour
 
     public void scanRocket()
     {
+        findRocketParts();
+        List<RocketPart> Engines = filterEngine(RocketParts);
+        createStage(Engines);
+    }
+
+    public void findRocketParts()
+    {
         RocketParts = new List<RocketPart>();
         RocketPart[] rocketParts = FindObjectsOfType<RocketPart>();
-        UnityEngine.Debug.Log(rocketParts.Length);
         foreach(RocketPart rp in rocketParts)
         {
             RocketParts.Add(rp);
         }
-        
-        List<RocketPart> Engines = filterEngine(RocketParts);
-        UnityEngine.Debug.Log(Engines.Count);
     }
 
     public List<RocketPart> filterEngine(List<RocketPart> PartsToFilter)
@@ -34,5 +38,22 @@ public class Rocket : MonoBehaviour
             }
         }
         return Engines;
+    }
+
+    public void createStage(List<RocketPart> Engines)
+    {
+        foreach(RocketPart Engine in Engines)
+        {
+            Stages Stage = new Stages();
+            AttachPointScript TopAttach = Engine.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>();
+            while(TopAttach.attachedBody != null)
+            {
+                RocketPart NextPart = TopAttach.attachedBody.GetComponent<RocketPart>();
+                if(NextPart._partType == "tank")
+                {
+                    
+                }
+            }
+        }
     }    
 }
