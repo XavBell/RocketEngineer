@@ -115,6 +115,7 @@ public class GameManager : MonoBehaviour
                 //}
                 UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
+                currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
 
             if (partToConstruct.GetComponent<RocketPart>()._partType == "tank" && Cursor.visible == false)
@@ -127,6 +128,7 @@ public class GameManager : MonoBehaviour
                 }
                 UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
+                currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
 
             if (partToConstruct.GetComponent<RocketPart>()._partType == "decoupler" && Cursor.visible == false)
@@ -134,6 +136,7 @@ public class GameManager : MonoBehaviour
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
                 setPosition(currentPrefab.transform.position, currentPrefab);
+                currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
 
             if (partToConstruct.GetComponent<RocketPart>()._partType.ToString() == "engine" && Cursor.visible == false)
@@ -146,9 +149,10 @@ public class GameManager : MonoBehaviour
                 }
                 UnityEngine.Vector2 enginePosition = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(enginePosition, currentPrefab);
+                currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
 
-            currentPrefab.GetComponent<RocketPart>().SetGuid();
+            
             
             if(currentPrefab != null && Rocket.GetComponent<Rocket>().core == null)
             {
