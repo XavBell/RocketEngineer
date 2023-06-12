@@ -11,29 +11,29 @@ public class Rocket : MonoBehaviour
     [field: SerializeField]
     public GameObject core {get; set;}
     public List<Stages> Stages = new List<Stages>();
-    public List<RocketPart> RocketParts = new List<RocketPart>();
     public int numberOfStages;
 
     public void scanRocket()
     {
         Stages.Clear();
-        findRocketParts();
-        List<RocketPart> Engines = filterPart(RocketParts, "engine");
+        List<RocketPart> RocketParts = findRocketParts();
         List<RocketPart> Decouplers = filterPart(RocketParts, "decoupler");
         numberOfStages = Decouplers.Count + 1;
-        List<AttachPointScript> Attachs = findAttachPoints();
-        CreateStage(Attachs);
+        CreateStage(RocketParts);
+        addDecouplerStages(Decouplers);
+        //addDecouplerStages();
         scanStage();
     }
 
-    public void findRocketParts()
+    public List<RocketPart> findRocketParts()
     {
-        RocketParts = new List<RocketPart>();
+        List<RocketPart> RocketParts = new List<RocketPart>();
         RocketPart[] rocketParts = FindObjectsOfType<RocketPart>();
         foreach(RocketPart rp in rocketParts)
         {
             RocketParts.Add(rp);
         }
+        return RocketParts;
     }
 
     public List<RocketPart> filterPart(List<RocketPart> PartsToFilter, string type)
@@ -58,6 +58,7 @@ public class Rocket : MonoBehaviour
             AttachPoints.Add(attach);
         }
         AttachPoints = filterAttachPoints(AttachPoints);
+        AttachPoints = GroupAttachPoints(AttachPoints);
         return AttachPoints;
     }
 
@@ -71,26 +72,29 @@ public class Rocket : MonoBehaviour
                 FilteredAttachPoints.Add(attach);
             }   
         }
-
-        FilteredAttachPoints = GroupAttachPoints(FilteredAttachPoints);
         return FilteredAttachPoints;
     }
 
     public List<AttachPointScript> GroupAttachPoints(List<AttachPointScript> AttachToGroup)
     {
-        List<AttachPointScript> GroupedAttach = new List<AttachPointScript>();
-        GroupedAttach = AttachToGroup;
-        for (int i = 0; i < AttachToGroup.Count; i++)
+        List<AttachPointScript> AttachToRemove = new List<AttachPointScript>();
+        foreach (AttachPointScript Attach in AttachToGroup)
         {
-            if(AttachToGroup[i].referenceBody.GetComponent<RocketPart>()._partType == "decoupler" || AttachToGroup[i].attachedBody.GetComponent<RocketPart>()._partType == "decoupler")
+            if(Attach.referenceBody.GetComponent<RocketPart>()._partType == "decoupler" || Attach.attachedBody.GetComponent<RocketPart>()._partType == "decoupler")
             {
-                GroupedAttach.Remove(AttachToGroup[i]);
+                AttachToRemove.Add(Attach);
             }
         }
-        return GroupedAttach;
+
+        foreach (AttachPointScript removeAtt in AttachToRemove)
+        {
+            AttachToGroup.Remove(removeAtt);
+        }
+
+        return AttachToGroup;
     }
 
-    public List<RocketPart> FilterRocketParts(List<RocketPart> PartsToFilter)
+    public List<RocketPart> RemoveDecouplersFromList(List<RocketPart> PartsToFilter)
     {
         List<RocketPart> FilteredRocketParts = new List<RocketPart>();
         FilteredRocketParts = PartsToFilter;
@@ -106,11 +110,11 @@ public class Rocket : MonoBehaviour
     }
 
 
-    public void CreateStage(List<AttachPointScript> ActiveAttachs)
+    public void CreateStage(List<RocketPart> RocketParts)
     {
-        List<AttachPointScript> GroupedAttach = GroupAttachPoints(ActiveAttachs);
+        List<AttachPointScript> GroupedAttach = findAttachPoints();
         
-        List<RocketPart> FilteredRocketParts = FilterRocketParts(RocketParts);
+        List<RocketPart> FilteredRocketParts = RemoveDecouplersFromList(RocketParts);
 
         List<RocketPart> PartsPlaced = new List<RocketPart>();
 
@@ -141,6 +145,34 @@ public class Rocket : MonoBehaviour
                         Stage.Parts.Add(RPA);
                     }
                     Stages.Add(Stage);
+                }
+            }
+        }
+    }
+
+    public void addDecouplerStages(List<RocketPart> Decouplers)
+    {
+        foreach (RocketPart _decoupler in Decouplers)
+        {
+            if(_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+            {
+                RocketPart BottomPart = _decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody.gameObject.GetComponent<RocketPart>();
+
+                foreach(Stages Stage in Stages)
+                {
+                    List<RocketPart> PartsToAdd = new List<RocketPart>(); 
+                    foreach(RocketPart Part in Stage.Parts)
+                    {
+                        if(Part == BottomPart)
+                        {
+                            PartsToAdd.Add(_decoupler);
+                        }
+                    }
+
+                    foreach (RocketPart rp in PartsToAdd)
+                    {
+                        Stage.Parts.Add(rp);   
+                    }
                 }
             }
         }

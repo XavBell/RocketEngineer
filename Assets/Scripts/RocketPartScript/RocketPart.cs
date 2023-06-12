@@ -27,6 +27,5 @@ public class RocketPart : MonoBehaviour
     public void SetGuid()
     {
         _partID = Guid.NewGuid();
-        UnityEngine.Debug.Log(_partID);
     }
 }
