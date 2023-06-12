@@ -22,7 +22,7 @@ public class Rocket : MonoBehaviour
         List<RocketPart> Decouplers = filterPart(RocketParts, "decoupler");
         numberOfStages = Decouplers.Count + 1;
         List<AttachPointScript> Attachs = findAttachPoints();
-        GroupAttachPoints(Attachs);
+        CreateStage(Attachs);
         scanStage();
     }
 
@@ -58,8 +58,6 @@ public class Rocket : MonoBehaviour
             AttachPoints.Add(attach);
         }
         AttachPoints = filterAttachPoints(AttachPoints);
-        AttachPoints = GroupAttachPointsAgain(AttachPoints);
-        
         return AttachPoints;
     }
 
@@ -73,10 +71,12 @@ public class Rocket : MonoBehaviour
                 FilteredAttachPoints.Add(attach);
             }   
         }
+
+        FilteredAttachPoints = GroupAttachPoints(FilteredAttachPoints);
         return FilteredAttachPoints;
     }
 
-    public List<AttachPointScript> GroupAttachPointsAgain(List<AttachPointScript> AttachToGroup)
+    public List<AttachPointScript> GroupAttachPoints(List<AttachPointScript> AttachToGroup)
     {
         List<AttachPointScript> GroupedAttach = new List<AttachPointScript>();
         GroupedAttach = AttachToGroup;
@@ -106,13 +106,14 @@ public class Rocket : MonoBehaviour
     }
 
 
-    public void GroupAttachPoints(List<AttachPointScript> AttachToGroup)
+    public void CreateStage(List<AttachPointScript> ActiveAttachs)
     {
-        List<AttachPointScript> GroupedAttach = GroupAttachPointsAgain(AttachToGroup);
+        List<AttachPointScript> GroupedAttach = GroupAttachPoints(ActiveAttachs);
         
         List<RocketPart> FilteredRocketParts = FilterRocketParts(RocketParts);
 
         List<RocketPart> PartsPlaced = new List<RocketPart>();
+
         for (int x = 0; x < numberOfStages; x++)
         {
             foreach(RocketPart RP in FilteredRocketParts)
@@ -137,7 +138,7 @@ public class Rocket : MonoBehaviour
 
                     foreach (RocketPart RPA in PartsInStage)
                     {
-                        Stage.Parts.Add(RPA);   
+                        Stage.Parts.Add(RPA);
                     }
                     Stages.Add(Stage);
                 }

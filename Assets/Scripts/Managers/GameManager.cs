@@ -19,10 +19,8 @@ public class GameManager : MonoBehaviour
 
     private GameObject partToConstruct;
     private GameObject capsule;
-    private Part[] parts;
     private GameObject attachPoint;
     private AttachPointScript[] attachPoints;
-    public int currentStage;
     public CustomCursor customCursor;
     public bool decouplerPresent = false;
     public bool capsuleBuilt = false;
@@ -56,14 +54,6 @@ public class GameManager : MonoBehaviour
     public GameObject engineButtonPrefab;
     public GameObject tankButtonPrefab;
 
-    public UnityEngine.Vector2 engineBox = new UnityEngine.Vector2(0, 0);
-    public UnityEngine.Vector2 tankBox = new UnityEngine.Vector2(0, 0);
-    public UnityEngine.Vector2 engineOffset = new UnityEngine.Vector2(0, 0);
-    public UnityEngine.Vector2 tankOffset = new UnityEngine.Vector2(0, 0);
-    public UnityEngine.Vector2 decouplerBox = new UnityEngine.Vector2(0, 0);
-    public UnityEngine.Vector2 decouplerOffset = new UnityEngine.Vector2(0, 0);
-
-    public float capsuleInitialSizeX;
     public savePath savePathRef = new savePath();
     public string partPath;
 
@@ -237,151 +227,8 @@ public class GameManager : MonoBehaviour
 
     public void load(string fileTypePath, GameObject prefab)
     {
-        saveRocket saveObject = new saveRocket();
         saveEngine saveEngine = new saveEngine();
         saveTank saveTank = new saveTank();
-
-        if (fileTypePath == savePathRef.rocketFolder)
-        {
-            var jsonString = JsonConvert.SerializeObject(saveObject);
-            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
-            saveRocket loadedRocket = JsonConvert.DeserializeObject<saveRocket>(jsonString);
-            int engineCount = 0;
-            int tankCount = 0;
-            if (capsule != null)
-            {
-                Destroy(capsule);
-                tankBuilt = false;
-                engineBuilt = false;
-                decouplerPresent = false;
-            }
-
-            UnityEngine.Vector2 position = new UnityEngine.Vector2(420, 264);
-            capsule = Instantiate(Capsule, position, UnityEngine.Quaternion.identity);
-
-            AttachPointScript attachPoint = capsule.GetComponent<Part>().attachBottom;
-            GameObject currentPrefab = null;
-            GameObject lastPrefab = capsule;
-            capsuleBuilt = true;
-            foreach (string type in loadedRocket.attachedBodies)
-            {
-                if (type == "tank")
-                {
-                    UnityEngine.Vector2 attachPosition = attachPoint.transform.position;
-                    currentPrefab = Instantiate(Tank, position, UnityEngine.Quaternion.identity);
-
-                    tankPrefab = currentPrefab;
-                    string TypePath = loadedRocket.tankPaths[tankCount];
-                    path = loadedRocket.tankNames[tankCount] + ".json";
-                    load(TypePath, tankPrefab);
-                    tankCount++;
-
-                    GameObject newPrefabDetach = currentPrefab;
-                    if (decouplerPresent == true)
-                    {
-                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
-                        {
-                            currentPrefab.GetComponent<Part>().referenceDecoupler = currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                        }
-
-                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
-                        {
-                            while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
-                            {
-                                newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                                if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
-                                {
-                                    currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
-                                }
-                            }
-                        }
-                    }
-
-                    tankBuilt = true;
-
-                    lastPrefab = currentPrefab;
-                }
-
-                if (type == "engine")
-                {
-                
-                    UnityEngine.Vector2 attachPosition = attachPoint.transform.position;
-                    currentPrefab = Instantiate(Engine, position, UnityEngine.Quaternion.identity);
-
-                    enginePrefab = currentPrefab;
-                    string TypePath = loadedRocket.enginePaths[engineCount];
-                    path = loadedRocket.engineNames[engineCount] + ".json";
-                    load(TypePath, enginePrefab);
-                    engineCount++;
-
-                    if (attachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().type.ToString() == "tank")
-                    {
-                        currentPrefab.GetComponent<Part>().StageNumber = attachPoint.GetComponent<AttachPointScript>().referenceBody.GetComponent<Part>().StageNumber;
-
-                    }
-
-
-                    AttachPointScript currentAttach = currentPrefab.GetComponent<Part>().attachTop;
-                    while (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "tank")
-                    {
-                        currentPrefab.GetComponent<Part>().maxFuel += currentAttach.attachedBody.GetComponent<Part>().maxFuel;
-                        currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachTop;
-                    }
-
-
-
-                    GameObject newPrefabDetach = currentPrefab;
-                    if (decouplerPresent == true)
-                    {
-                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() == "decoupler")
-                        {
-                             currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                        }
-
-                        if (currentPrefab.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<Part>().type.ToString() != "decoupler")
-                        {
-                            while (currentPrefab.GetComponent<Part>().referenceDecoupler == null)
-                            {
-                                newPrefabDetach = newPrefabDetach.GetComponent<Part>().attachTop.GetComponent<AttachPointScript>().attachedBody;
-                                if (newPrefabDetach.GetComponent<Part>().type.ToString() == "decoupler")
-                                {
-                                    currentPrefab.GetComponent<Part>().referenceDecoupler = newPrefabDetach;
-                                }
-                            }
-                        }
-
-                    }
-                        engineBuilt = true;
-                        lastPrefab = currentPrefab;
-                }
-
-                if (type == "decoupler")
-                {
-                    UnityEngine.Vector2 attachPosition = attachPoint.transform.position;
-                    currentPrefab = Instantiate(Decoupler, position, UnityEngine.Quaternion.identity);
-                    decouplerPresent = true;
-                    lastPrefab = currentPrefab;
-                }
-
-                attachPoint = lastPrefab.GetComponent<Part>().attachBottom;
-            }
-
-            if (capsuleBuilt == false)
-            {
-                DecouplerButton.interactable = false;
-            }
-
-            if (capsuleBuilt == true)
-            {
-                CapsuleButton.interactable = false;
-                DecouplerButton.interactable = false;
-            }
-
-            if (engineBuilt == true)
-            {
-                DecouplerButton.interactable = true;
-            }
-        }
 
         if(fileTypePath == savePathRef.engineFolder)
         {
@@ -420,112 +267,6 @@ public class GameManager : MonoBehaviour
             prefab.GetComponent<RocketPart>()._attachLeft.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0));
         }
         filePath = null;
-    }
-
-    public void save()
-    {
-        saveRocket saveObject = new saveRocket();
-        GameObject attachedBody;
-        if(capsule != null)
-        {
-           if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
-           {
-            var jsonString = JsonConvert.SerializeObject(saveObject);
-            if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
-            {
-                Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
-            }
-
-            if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json"))
-            {
-                attachedBody = capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
-
-                while (attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
-                {
-                    saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
-                    if(attachedBody.GetComponent<Part>().type == "engine")
-                    {
-                        saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().partName);
-
-                        //Add 1 to usedNum
-                        saveEngine saveEngine = new saveEngine();
-                        var jsonString1 = JsonConvert.SerializeObject(saveEngine);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json");
-                        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
-                        loadedEngine.usedNum += 1;
-                        jsonString1 = JsonConvert.SerializeObject(loadedEngine);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
-                    }
-
-                    if (attachedBody.GetComponent<Part>().type == "tank")
-                    {
-                        saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().partName);
-
-                        //Add 1 to usedNum
-                        saveTank saveTank = new saveTank();
-                        var jsonString1 = JsonConvert.SerializeObject(saveTank);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json");
-                        saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
-                        loadedTank.usedNum += 1;
-                        jsonString1 = JsonConvert.SerializeObject(loadedTank);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
-                    }
-                    attachedBody = attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
-                }
-            
-                if(attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
-                {
-                    saveObject.attachedBodies.Add(attachedBody.GetComponent<Part>().type.ToString());
-                    if (attachedBody.GetComponent<Part>().type == "engine")
-                    {
-                        saveObject.enginePaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.engineNames.Add(attachedBody.GetComponent<Part>().partName);
-
-                        //Add 1 to usedNum
-                        saveEngine saveEngine = new saveEngine();
-                        var jsonString1 = JsonConvert.SerializeObject(saveEngine);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json");
-                        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
-                        loadedEngine.usedNum = 1.0f + loadedEngine.usedNum;
-                        jsonString1 = JsonConvert.SerializeObject(loadedEngine);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
-                    }
-                    if (attachedBody.GetComponent<Part>().type == "tank")
-                    {
-                        saveObject.tankPaths.Add(attachedBody.GetComponent<Part>().path);
-                        saveObject.tankNames.Add(attachedBody.GetComponent<Part>().partName);
-                        
-                        //Add 1 to usedNum
-                        saveTank saveTank = new saveTank();
-                        var jsonString1 = JsonConvert.SerializeObject(saveTank);
-                        jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json");
-                        saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
-                        loadedTank.usedNum += 1;
-                        jsonString1 = JsonConvert.SerializeObject(loadedTank);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + attachedBody.GetComponent<Part>().path + attachedBody.GetComponent<Part>().partName + ".json", jsonString1);
-                    }
-                }
-                jsonString = JsonConvert.SerializeObject(saveObject);
-                System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json", jsonString);
-            } else if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json"))
-            {
-                int x = Screen.width / 2;
-                int y = Screen.height / 2;
-                UnityEngine.Vector2 position = new UnityEngine.Vector2(x, y);
-                Instantiate(popUp, position, UnityEngine.Quaternion.identity);
-                panel.SetActive(false);
-                //Tell player to either change the save name or delete the rocket of the same name, add delete button
-                saveObject = null;
-                return;
-            }
-
-        } 
-
-        }
-
-        
     }
 
     public void deleteRocket()

@@ -2220,7 +2220,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2167f7f86dd4749088f472784afbbb3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <core>k__BackingField: {fileID: 0}
   Stages: []
+  RocketParts: []
+  numberOfStages: 0
 --- !u!1 &575714530
 GameObject:
   m_ObjectHideFlags: 0
@@ -3459,7 +3462,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 546a07bf373686a4297d95ed8028777a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentStage: 0
   customCursor: {fileID: 1655616455}
   decouplerPresent: 0
   capsuleBuilt: 0
@@ -3488,13 +3490,6 @@ MonoBehaviour:
   buttonPrefab: {fileID: 4939193850173480501, guid: 6cd6fc681df88e84a9bfcf832ed4a136, type: 3}
   engineButtonPrefab: {fileID: 4939193850173480501, guid: c09ec9b954250a248bf734ee24c2e648, type: 3}
   tankButtonPrefab: {fileID: 4939193850173480501, guid: d2f4f79a37361bd4fa8f0262a0ebe095, type: 3}
-  engineBox: {x: 0, y: 0.5}
-  tankBox: {x: 0, y: 1}
-  engineOffset: {x: 0, y: -0.3}
-  tankOffset: {x: 0, y: -0.5}
-  decouplerBox: {x: 0, y: 0}
-  decouplerOffset: {x: 0, y: 0}
-  capsuleInitialSizeX: 0
   partPath: 
   popUp: {fileID: 7245972115667552792, guid: 21c0240167342c34e834b3ab0747add7, type: 3}
   popUpPart: {fileID: 7245972115667552792, guid: 664db208f93e17b4683e220113e1e0fd, type: 3}
@@ -4588,7 +4583,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 263.02914
+  orthographic size: 100
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -4599,7 +4594,7 @@ Camera:
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
+  m_AllowDynamicResolution: 1
   m_ForceIntoRT: 0
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
@@ -4612,7 +4607,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1399454839}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 420, y: 264, z: -1}
+  m_LocalPosition: {x: 420, y: 264, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
