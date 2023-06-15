@@ -158,22 +158,32 @@ public class Rocket : MonoBehaviour
             {
                 RocketPart BottomPart = _decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody.gameObject.GetComponent<RocketPart>();
 
-                foreach(Stages Stage in Stages)
+                if (BottomPart != null)
                 {
-                    List<RocketPart> PartsToAdd = new List<RocketPart>(); 
-                    foreach(RocketPart Part in Stage.Parts)
+                    foreach(Stages Stage in Stages)
                     {
-                        if(Part == BottomPart)
+                        List<RocketPart> PartsToAdd = new List<RocketPart>(); 
+                        foreach(RocketPart Part in Stage.Parts)
                         {
-                            PartsToAdd.Add(_decoupler);
+                            if(Part == BottomPart)
+                            {
+                                PartsToAdd.Add(_decoupler);
+                            }
+                        }
+    
+                        foreach (RocketPart rp in PartsToAdd)
+                        {
+                            Stage.Parts.Add(rp);   
                         }
                     }
-
-                    foreach (RocketPart rp in PartsToAdd)
-                    {
-                        Stage.Parts.Add(rp);   
-                    }
                 }
+            }
+
+            if(_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
+            {
+                Stages Stage = new Stages();
+                Stage.Parts.Add(_decoupler);
+                Stages.Add(Stage);
             }
         }
     }
