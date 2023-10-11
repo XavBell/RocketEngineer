@@ -29,7 +29,7 @@ public class PopUpManager : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name == "EngineDesign")
         {
-            GameManager.GetComponent<GameManager_Engine>().panel.SetActive(true);
+            //GameManager.GetComponent<GameManager_Engine>().panel.SetActive(true);
         }
 
         if(SceneManager.GetActiveScene().name == "TankDesign")

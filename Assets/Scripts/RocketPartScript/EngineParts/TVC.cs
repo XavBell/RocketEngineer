@@ -4,15 +4,7 @@ using UnityEngine;
 
 public class TVC : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    string TVCName = "default";
+    float maxAngle = 0.0f;
+    float mass = 0f;
 }

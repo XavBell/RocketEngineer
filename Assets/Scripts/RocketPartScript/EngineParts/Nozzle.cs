@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Nozzle : MonoBehaviour
 {
-    string nozzleName;
-    float thrustModifier;
-    float rateModifier;
+    string nozzleName = "default";
+    float thrustModifier = 0f;
+    float rateModifier = 1f;
+    float mass = 0f;
 }

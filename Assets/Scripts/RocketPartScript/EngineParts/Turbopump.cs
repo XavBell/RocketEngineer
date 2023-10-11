@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class turbopump : MonoBehaviour
 {
-    string turbopumpName;
-    float thrust;
-    float rate;
+    string turbopumpName = "default";
+    float thrust = 0f;
+    float rate = 0f;
+    float mass = 0f;
 }
