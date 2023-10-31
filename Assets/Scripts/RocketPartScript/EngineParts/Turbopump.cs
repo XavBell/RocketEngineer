@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class turbopump : MonoBehaviour
+public class Turbopump : MonoBehaviour
 {
-    string turbopumpName = "default";
-    float thrust = 0f;
-    float rate = 0f;
-    float mass = 0f;
+    public string turbopumpName = "default";
+    public float thrust = 0f;
+    public float rate = 0f;
+    public float mass = 0f;
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TVC : MonoBehaviour
 {
-    string TVCName = "default";
-    float maxAngle = 0.0f;
-    float mass = 0f;
+    public string TVCName = "default";
+    public float maxAngle = 0.0f;
+    public float mass = 0f;
 }

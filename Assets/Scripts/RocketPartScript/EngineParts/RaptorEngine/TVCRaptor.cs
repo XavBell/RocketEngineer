@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TVCRaptor : TVC
+public class TVCRaptor : MonoBehaviour
 {
-    string TVCName = "TVC Raptor";
-    float maxAngle = 5.0f;
-    float mass = 2f;
+    public string TVCName = "TVC Raptor";
+    public float maxAngle = 5.0f;
+    public float mass = 2f;
 }
