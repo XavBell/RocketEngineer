@@ -111,7 +111,6 @@ public class PlanetGravity : MonoBehaviour
         if (Dist < atmoAlt)
         {
             //AeroForces = rb.velocity.normalized  *  1/Dist * aeroCoefficient * -1;
-            AeroForces = Vector3.zero;
         }
         else
         {
@@ -129,7 +128,6 @@ public class PlanetGravity : MonoBehaviour
             if(thrust == maxThrust)
             {
                 float dF = rate * Time.deltaTime;
-                Debug.Log(dF);
                 if(activeEngine.GetComponent<Part>().fuel - dF > 0f)
                 {
                     activeEngine.GetComponent<Part>().fuel -= dF;
@@ -285,6 +283,7 @@ public class PlanetGravity : MonoBehaviour
             planetRadius = bestPlanet.GetComponent<MoonScript>().moonRadius;
             planet = bestPlanet;
             Debug.Log("Moon");
+            
         }else if(Earth != null) {
             bestPlanet = Earth;
             Mass = bestPlanet.GetComponent<EarthScript>().earthMass;
