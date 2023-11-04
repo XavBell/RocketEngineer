@@ -1,3 +1,4 @@
+using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,9 +18,9 @@ public class PlanetGravity : MonoBehaviour
     //Gravity variables for Earth
     public GameObject planet;
     public float Mass = 0f; //Planet mass in kg
-    public float G = 0.0000000000667f; //Gravitational constant
-    public float atmoAlt = 70.0f;
-    public float aeroCoefficient = 5f;
+    public float G = 0f; //Gravitational constant
+    public float atmoAlt = 0.0f;
+    public float aeroCoefficient = 0f;
     public float planetRadius = 0f; //Planet radius in m
     float maxAlt;
 
@@ -33,7 +34,7 @@ public class PlanetGravity : MonoBehaviour
     public float maxThrust = 0.0f;
     public float rate = 0.0f;
     public Rigidbody2D rb;
-    Vector3 AeroForces;
+    UnityEngine.Vector3 AeroForces;
     public ParticleSystem particle;
 
     public float currentFuel = 0.0f;
@@ -60,14 +61,16 @@ public class PlanetGravity : MonoBehaviour
 
     public float time = 0;
 
-    public Vector3 previousRocketPos;
+    public SolarSystemManager SolarSystemManager;
 
     // Start is called before the first frame update
     void Start()
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
+        SolarSystemManager = GameObject.FindObjectOfType<SolarSystemManager>();
         rb = GetComponent<Rigidbody2D>();
         rb.mass = rocketMass;
+        G = SolarSystemManager.G;
     }
 
 
@@ -101,24 +104,13 @@ public class PlanetGravity : MonoBehaviour
     {
         updateReferenceBody();
         //Gravity
-        float Dist = Vector2.Distance(transform.position, planet.transform.position);
-        float EngineDist = Vector2.Distance(transform.position, planet.transform.position);
-        Vector3 forceDir = (planet.transform.position - transform.position).normalized;
-        Vector3 ForceVector = forceDir * ((G * Mass * rocketMass) / (Dist * Dist));
-        Vector3 Thrust = transform.up * thrust;
-        
-
-        if (Dist < atmoAlt)
-        {
-            //AeroForces = rb.velocity.normalized  *  1/Dist * aeroCoefficient * -1;
-        }
-        else
-        {
-            AeroForces = Vector3.zero;
-        }
-
-        Vector3 ResultVector = (ForceVector + Thrust + AeroForces) * Time.fixedDeltaTime;
         rb.mass = rocketMass;
+
+        float Dist = UnityEngine.Vector2.Distance(transform.position, planet.transform.position);
+        UnityEngine.Vector3 forceDir = (planet.transform.position - transform.position).normalized;
+        UnityEngine.Vector3 ForceVector = forceDir * (G*((Mass*rocketMass)/ (Dist * Dist)));
+        UnityEngine.Vector3 Thrust = transform.up * thrust;
+        UnityEngine.Vector3 ResultVector = (ForceVector + Thrust);
         rb.AddForce(ResultVector);
     }
    
@@ -197,11 +189,11 @@ public class PlanetGravity : MonoBehaviour
             foreach(GameObject planet in planetsToMove) {
                 if(planet.GetComponent<TypeScript>().type == "earth")
                 {
-                    transform.position = new Vector3(planet.transform.position.x, planet.transform.position.y + planetRadius, 0);
+                    transform.position = new UnityEngine.Vector3(planet.transform.position.x, planet.transform.position.y + planetRadius, 0);
                 }
             }
                 
-            transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+            transform.localScale = new UnityEngine.Vector3(0.5f, 0.5f, 0.5f);
             rb = GetComponent<Rigidbody2D>();
             posUpdated = true;
         }
@@ -246,7 +238,7 @@ public class PlanetGravity : MonoBehaviour
 
         foreach(GameObject go in planets)
         {
-            Vector3 distance = go.transform.position - transform.position;
+            UnityEngine.Vector3 distance = go.transform.position - transform.position;
             float distMag = distance.magnitude;
 
             if(distMag < bestDistance)
@@ -271,7 +263,7 @@ public class PlanetGravity : MonoBehaviour
             Mass = bestPlanet.GetComponent<EarthScript>().earthMass;
             atmoAlt = 0.0f;
             aeroCoefficient = 0.0f;
-            planetRadius = bestPlanet.GetComponent<EarthScript>().earthMass;
+            planetRadius = bestPlanet.GetComponent<EarthScript>().earthRadius;
             planet = bestPlanet;
         }
 
@@ -282,14 +274,12 @@ public class PlanetGravity : MonoBehaviour
             aeroCoefficient = 0.0f;
             planetRadius = bestPlanet.GetComponent<MoonScript>().moonRadius;
             planet = bestPlanet;
-            Debug.Log("Moon");
-            
         }else if(Earth != null) {
             bestPlanet = Earth;
             Mass = bestPlanet.GetComponent<EarthScript>().earthMass;
             atmoAlt = 0.0f;
             aeroCoefficient = 0.0f;
-            planetRadius = bestPlanet.GetComponent<EarthScript>().earthMass;
+            planetRadius = bestPlanet.GetComponent<EarthScript>().earthRadius;
             planet = bestPlanet;
         }
 

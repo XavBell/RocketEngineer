@@ -28,6 +28,7 @@ public class CameraControl : MonoBehaviour
 
     public GameObject MoonSprite;
     public GameObject EarthSprite;
+    public GameObject Prediction;
     
 
     public float threshold = 5000;
@@ -146,6 +147,7 @@ public class CameraControl : MonoBehaviour
             sun.transform.position = sun.transform.position + difference;
             customCursor.transform.position += difference;
             transform.position += difference;
+            Prediction.GetComponent<Prediction>().updated = false;
         }
     }
 
