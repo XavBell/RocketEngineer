@@ -76,12 +76,18 @@ public class Prediction : MonoBehaviour
         if(Input.GetKey("z") || updated == false)
         {
             SetKeplerParams(keplerParams, rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, time);
-            if(rb.velocity.magnitude != 0 && keplerParams.eccentricity != 1)
+            if(rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)
             {
                 CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
                 line.positionCount = numPoints;
                 line.SetPositions(positions);
-            } 
+            }
+
+            if(rb.velocity.magnitude != 0 && keplerParams.eccentricity > 1)
+            {
+                CalculateParametersHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, time, line);
+            }
+
             updated = true;
         }
 
@@ -277,6 +283,84 @@ public class Prediction : MonoBehaviour
 
             time += timeIncrement;
         }
+    }
+
+    public void CalculateParametersHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam, float time, LineRenderer line)
+    {
+        //Calculate rocket position in 3D and transform it for Kepler
+        UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, rocketPosition2D.y, 0);
+        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0); 
+        
+        rocketPosition3D = rocketPosition3D - planetPosition3D; //Assume planet at (0,0,0)
+
+        //Calculate velocity
+        UnityEngine.Vector3 rocketVelocity3D = new UnityEngine.Vector3(rocketVelocity2D.x, rocketVelocity2D.y, 0); 
+
+        //Find position and velocity magnitude
+        float r = rocketPosition3D.magnitude;
+        float v = rocketVelocity3D.magnitude;
+
+        //Calculate specific angular momentum
+        UnityEngine.Vector3 h_bar = UnityEngine.Vector3.Cross(rocketPosition3D, rocketVelocity3D);
+        float h = h_bar.magnitude;
+
+        //Calculate eccentricity vector
+        UnityEngine.Vector3 eccentricity_bar = UnityEngine.Vector3.Cross(rocketVelocity3D, h_bar)/gravityParam - rocketPosition3D/r;
+        float e = eccentricity_bar.magnitude;
+        
+        //Calculate inclination
+        float i = Mathf.Atan2(-eccentricity_bar.y, -eccentricity_bar.x);
+
+        //Calculate semi-major axis
+        float a  = 1/(2/r - Mathf.Pow(v, 2)/gravityParam);
+        
+        //Calculate raw position
+        UnityEngine.Vector2 p = new UnityEngine.Vector2(rocketPosition3D.x*Mathf.Cos(i)+rocketPosition3D.y*Mathf.Sin(i), rocketPosition3D.y*Mathf.Cos(i)-rocketPosition3D.x*Mathf.Sin(i));
+        //Moon.transform.position = p;
+
+        //Calculate Hyperbolic anomaly
+        float Ho = (float)Math.Atanh((p.y/(a*Mathf.Sqrt(Mathf.Pow(e, 2)-1)))/(e-p.x/a));
+
+        
+        float Mo = (float)(Math.Sinh(Ho)*e-Ho);
+
+
+        //Determine branch of hyperbola
+        float dot = UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D);
+        float det = rocketPosition3D.x*rocketVelocity3D.y - rocketVelocity3D.x * rocketPosition3D.y;
+
+        float angle = Mathf.Atan2(det, dot);
+
+        //Calculate mean velocity
+        float n = Mathf.Sqrt(gravityParam/Mathf.Abs(Mathf.Pow(a, 3)))*Mathf.Sign(angle);
+
+        //Plot positions
+        float timeStep = 10f;
+        int maxStep = 300;
+        UnityEngine.Vector3[] positions = new UnityEngine.Vector3[maxStep];
+        float H = Ho;
+
+        for(int ia = 0; ia<maxStep; ia++)
+        {
+            //Calculate mean anomaly
+            float M = Mo + (((ia)*timeStep-time) + time)*n;
+
+            //Calculate current hyperbolic anomaly
+            H = (float)(H + (M - e*Math.Sinh(H) + H)/(e*Math.Cosh(H)-1));
+
+            //Raw position vector
+            UnityEngine.Vector2 rawP = new UnityEngine.Vector2((float)(a*(e - Math.Cosh(H))), (float)(a*Mathf.Sqrt(Mathf.Pow(e, 2)-1)*Math.Sinh(H)));
+            //positions[ia] = new UnityEngine.Vector2((float)(a*(e - Math.Cosh(H))), (float)(a*Mathf.Sqrt(Mathf.Pow(e, 2)-1)*Math.Sinh(H)));
+            positions[ia] = new UnityEngine.Vector2(rawP.x*Mathf.Cos(i)-rawP.y*Mathf.Sin(i), rawP.x*Mathf.Sin(i)+rawP.y*Mathf.Cos(i)) + planetPosition2D;     
+        }
+
+        
+ 
+        line.positionCount = maxStep;
+        line.SetPositions(positions);
+
+        //Moon.transform.position = positions[0];
+        //UnityEngine.Debug.Log(e);
     }
 
 }
