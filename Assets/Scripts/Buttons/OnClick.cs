@@ -277,12 +277,6 @@ public class OnClick : MonoBehaviour
                 enginePrefab.GetComponent<Part>().maxThrust = loadedEngine.thrust_s;
                 enginePrefab.GetComponent<Part>().rate = loadedEngine.rate_s;
                 enginePrefab.GetComponent<Part>().mass = loadedEngine.mass_s;
-
-                enginePrefab.GetComponent<Part>().nozzleExit.transform.localScale = new Vector2(loadedEngine.nozzleExitSize_s, loadedEngine.verticalSize_s);
-                enginePrefab.GetComponent<Part>().nozzleExit.transform.localPosition = new Vector2(enginePrefab.GetComponent<Part>().nozzleExit.transform.localPosition.x, loadedEngine.verticalPos);
-                enginePrefab.GetComponent<Part>().attachBottom.transform.localPosition = (new Vector3(0, loadedEngine.attachBottomPos, 0));
-                enginePrefab.GetComponent<Part>().nozzleEnd.transform.localScale = new Vector2(loadedEngine.nozzleEndSize_s, enginePrefab.GetComponent<Part>().nozzleEnd.GetComponent<SpriteRenderer>().transform.localScale.y);
-                enginePrefab.GetComponent<Part>().turbopump.transform.localScale = new Vector2(loadedEngine.turbopumpSize_s, enginePrefab.GetComponent<Part>().turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
             }
 
             if (fileTypePath == savePathRef.tankFolder)

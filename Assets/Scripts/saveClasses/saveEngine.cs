@@ -7,16 +7,10 @@ public class saveEngine
 {
     public string path;
     public string engineName;
-    public float nozzleExitSize_s;
-    public float nozzleEndSize_s;
-    public float turbopumpSize_s;
-    public float horizontalBestSize_s;
-    public float verticalSize_s;
-    public float attachBottomPos;
-    public float verticalPos;
     public float usedNum;
-
     public float mass_s;
     public float thrust_s;
     public float rate_s;
+    public float tvcSpeed_s;
+    public float tvcMaxAngle_s;
 }

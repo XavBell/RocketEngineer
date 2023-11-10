@@ -241,12 +241,6 @@ public class GameManager : MonoBehaviour
             prefab.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
             prefab.GetComponent<Engine>()._rate = loadedEngine.rate_s;
             prefab.GetComponent<RocketPart>()._partMass = loadedEngine.mass_s;
-
-            prefab.GetComponent<Engine>()._nozzleEnd.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleExitSize_s, loadedEngine.verticalSize_s);
-            prefab.GetComponent<Engine>()._nozzleEnd.transform.localPosition = new UnityEngine.Vector2(prefab.GetComponent<Engine>()._nozzleEnd.transform.localPosition.x, loadedEngine.verticalPos);
-            prefab.GetComponent<Engine>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedEngine.attachBottomPos, 0));
-            prefab.GetComponent<Engine>()._nozzleStart.transform.localScale = new UnityEngine.Vector2(loadedEngine.nozzleEndSize_s, prefab.GetComponent<Engine>()._nozzleStart.GetComponent<SpriteRenderer>().transform.localScale.y);
-            prefab.GetComponent<Engine>()._turbopump.transform.localScale = new UnityEngine.Vector2(loadedEngine.turbopumpSize_s, prefab.GetComponent<Engine>()._turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
         }
 
         if (fileTypePath == savePathRef.tankFolder)

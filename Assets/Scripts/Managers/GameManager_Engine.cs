@@ -19,8 +19,16 @@ public class GameManager_Engine : MonoBehaviour
     public float thrust;
     public float rate;
     public float maxAngle;
+    public float speed;
+    public string pumpName;
+    public string turbineName;
+    public string nozzleName;
+    public string TVCName;
+    public TMP_InputField savePath;
+    public string saveName;
 
-    public TMP_Dropdown turbopumpDropdown;
+    public TMP_Dropdown pumpDropdown;
+    public TMP_Dropdown turbineDropdown;
 
     public TMP_Dropdown nozzleDropdown;
 
@@ -34,7 +42,8 @@ public class GameManager_Engine : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name.ToString() == "EngineDesign")
         {
-            
+            GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
+            MasterManager = GMM.GetComponent<MasterManager>();
         }
         
     }
@@ -58,23 +67,30 @@ public class GameManager_Engine : MonoBehaviour
     public void Create()
     {
         Nozzle nozzle = new Nozzle();
-        Turbopump turbopump = new Turbopump();
+        Pump pump = new Pump();
+        Turbine turbine = new Turbine();
         TVC tvc = new TVC();
 
-        //Turbopump
-        string selectedTurbopump = turbopumpDropdown.options[turbopumpDropdown.value].text.ToString();
-        if(selectedTurbopump == "TurbopumpRaptor")
-        {
-            TurbopumpRaptor turbopumpRaptor = new TurbopumpRaptor();
-
-            turbopump.turbopumpName = turbopumpRaptor.turbopumpName;
-            turbopump.mass = turbopumpRaptor.mass;
-            turbopump.rate = turbopumpRaptor.rate;
-            turbopump.thrust = turbopumpRaptor.thrust;
-        }
-
-        //Nozzle
+        string selectedTurbine = turbineDropdown.options[turbineDropdown.value].text.ToString();
+        string selectedPump = pumpDropdown.options[pumpDropdown.value].text.ToString();
         string selectedNozzle = nozzleDropdown.options[nozzleDropdown.value].text.ToString();
+        string selectedTVC = tvcDropdown.options[tvcDropdown.value].text.ToString();
+
+        setTurbine(selectedTurbine, turbine);
+        setPump(selectedPump, pump);
+        setNozzle(selectedNozzle, nozzle);
+        setTVC(selectedTVC, tvc);
+
+        setValues(tvc, nozzle, turbine, pump);
+
+        if(savePath.text != null)
+        {
+            save();
+        }
+    }
+
+    public void setNozzle(string selectedNozzle, Nozzle nozzle)
+    {
         if(selectedNozzle == "NozzleRaptor")
         {
             NozzleRaptor nozzleRaptor = new NozzleRaptor();
@@ -84,30 +100,106 @@ public class GameManager_Engine : MonoBehaviour
             nozzle.thrustModifier = nozzleRaptor.thrustModifier;
             nozzle.rateModifier = nozzleRaptor.rateModifier;
         }
+    }
 
-        //TVC
-        string selectedTVC = tvcDropdown.options[tvcDropdown.value].text.ToString();
+    public void setTurbine(string selectedTurbine, Turbine turbine)
+    {
+        if(selectedTurbine == "TurbineRaptor")
+        {
+            TurbineRaptor turbineRaptor = new TurbineRaptor();
+
+            turbine.turbineName = turbineRaptor.turbineName;
+            turbine.mass = turbineRaptor.mass;
+            turbine.rate = turbineRaptor.rate;
+            turbine.thrustModifier = turbineRaptor.thrustModifier;
+        }
+    }
+
+    public void setPump(string selectedPump, Pump pump)
+    {
+        if(selectedPump == "PumpRaptor")
+        {
+            PumpRaptor pumpRaptor = new PumpRaptor();
+
+            pump.pumpName = pumpRaptor.pumpName;
+            pump.mass = pumpRaptor.mass;
+            pump.thrust = pumpRaptor.thrust;
+        }
+    }
+
+    public void setTVC(string selectedTVC, TVC tvc)
+    {
         if(selectedTVC == "TVCRaptor")
         {
             TVCRaptor tvcRaptor = new TVCRaptor();
 
             tvc.TVCName = tvcRaptor.TVCName;
             tvc.mass = tvcRaptor.mass;
-            tvc.maxAngle = tvcRaptor.maxAngle; 
+            tvc.maxAngle = tvcRaptor.maxAngle;
+            tvc.speed = tvcRaptor.speed; 
+        }
+    }
+
+    public void setValues(TVC tvc, Nozzle nozzle, Turbine turbine, Pump pump)
+    {
+        TVCName = tvc.TVCName;
+        nozzleName = nozzle.nozzleName;
+        pumpName = pump.pumpName;
+        turbineName = turbine.turbineName;
+
+        //Order is important
+        rate = turbine.rate;
+        thrust = pump.thrust;
+
+        float rateChangeNozzle = rate * (1-nozzle.rateModifier);
+        float thrustChangeNozzle = thrust * (1-nozzle.thrustModifier);
+        float thrustChangeTurbine = thrust * (1-turbine.thrustModifier);
+
+        rate += rateChangeNozzle;
+        thrust += thrustChangeNozzle + thrustChangeTurbine;
+
+        maxAngle = tvc.maxAngle;
+        speed = tvc.speed;
+
+        mass = turbine.mass + tvc.mass + nozzle.mass + pump.mass;
+    }
+
+    public void save()
+    {
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder);
         }
 
-        rate = turbopump.rate;
-        mass = turbopump.mass;
-        thrust = turbopump.thrust;
+        saveName = "/" + savePath.text;
 
-        mass += nozzle.mass;
-        rate *= nozzle.rateModifier;
-        thrust *= nozzle.thrustModifier;
+        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
+        {
+            saveEngine saveObject = new saveEngine();
+            saveObject.path = savePathRef.engineFolder;
+            saveObject.engineName = saveName;
+            saveObject.thrust_s = thrust;
+            saveObject.mass_s = mass;
+            saveObject.rate_s = rate;
+            saveObject.tvcSpeed_s = speed;
+            saveObject.tvcMaxAngle_s = maxAngle;
 
-        mass += tvc.mass;
-        maxAngle = tvc.maxAngle;
+            var jsonString = JsonConvert.SerializeObject(saveObject);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json", jsonString);
+        }else if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName+ savePathRef.engineFolder + saveName + ".json"))
+        {
+            saveEngine saveEngine = new saveEngine();
+            var jsonString2 = JsonConvert.SerializeObject(saveEngine);
+            jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json");
+            saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString2);
 
-        UnityEngine.Debug.Log("Mass: " + mass + " Rate: " + rate + " Thrust: " + thrust + " Max Angle: " + maxAngle );
+            if(loadedEngine.usedNum == 0)
+            {
+                File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json");
+                save();
+                return;
+            }
+        }
     }
 
 }

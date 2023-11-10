@@ -70,7 +70,11 @@ public class PlanetGravity : MonoBehaviour
         SolarSystemManager = GameObject.FindObjectOfType<SolarSystemManager>();
         rb = GetComponent<Rigidbody2D>();
         rb.mass = rocketMass;
-        G = SolarSystemManager.G;
+        if(SceneManager.GetActiveScene().name == "SampleScene")
+        {
+            G = SolarSystemManager.G;
+        }
+        
     }
 
 
