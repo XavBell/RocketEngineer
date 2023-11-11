@@ -85,7 +85,7 @@ public class GameManager_Engine : MonoBehaviour
 
         if(savePath.text != null)
         {
-            save();
+            save(selectedTVC, selectedNozzle, selectedPump, selectedTurbine);
         }
     }
 
@@ -164,7 +164,7 @@ public class GameManager_Engine : MonoBehaviour
         mass = turbine.mass + tvc.mass + nozzle.mass + pump.mass;
     }
 
-    public void save()
+    public void save(string selectedTVC, string selectedNozzle, string selectedPump, string selectedTurbine)
     {
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder))
         {
@@ -184,6 +184,12 @@ public class GameManager_Engine : MonoBehaviour
             saveObject.tvcSpeed_s = speed;
             saveObject.tvcMaxAngle_s = maxAngle;
 
+            saveObject.tvcName_s = selectedTVC;
+            saveObject.nozzleName_s = selectedNozzle;
+            saveObject.turbineName_s = selectedTurbine;
+            saveObject.pumpName_s = selectedPump;
+
+
             var jsonString = JsonConvert.SerializeObject(saveObject);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json", jsonString);
         }else if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName+ savePathRef.engineFolder + saveName + ".json"))
@@ -196,7 +202,7 @@ public class GameManager_Engine : MonoBehaviour
             if(loadedEngine.usedNum == 0)
             {
                 File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json");
-                save();
+                save(selectedTVC, selectedNozzle, selectedPump, selectedTurbine);
                 return;
             }
         }

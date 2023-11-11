@@ -236,11 +236,20 @@ public class GameManager : MonoBehaviour
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
-            prefab.GetComponent<RocketPart>()._path = loadedEngine.path;
-            prefab.GetComponent<RocketPart>()._partName = loadedEngine.engineName;
-            prefab.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
-            prefab.GetComponent<Engine>()._rate = loadedEngine.rate_s;
-            prefab.GetComponent<RocketPart>()._partMass = loadedEngine.mass_s;
+            Engine engine = prefab.GetComponent<Engine>();
+
+            engine._path = loadedEngine.path;
+            engine._partName = loadedEngine.engineName;
+            engine._thrust = loadedEngine.thrust_s;
+            engine._rate = loadedEngine.rate_s;
+            engine._partMass = loadedEngine.mass_s;
+            engine._tvcSpeed = loadedEngine.tvcSpeed_s;
+            engine._maxAngle = loadedEngine.tvcMaxAngle_s;
+            engine._tvcName = loadedEngine.tvcName_s;
+            engine._nozzleName = loadedEngine.nozzleName_s;
+            engine._pumpName = loadedEngine.pumpName_s;
+            engine._turbineName = loadedEngine.turbineName_s;
+            
         }
 
         if (fileTypePath == savePathRef.tankFolder)

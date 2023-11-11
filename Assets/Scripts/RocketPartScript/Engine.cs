@@ -5,10 +5,13 @@ using UnityEngine;
 
 public class Engine : RocketPart
 { 
-    public float _thrust{get; set;}
-    public float _rate{get; set;}
+    public float _thrust;
+    public float _rate;
+    public float _tvcSpeed;
+    public float _maxAngle;
 
-    [field: SerializeField]public GameObject _turbopump{get; private set;}
-    [field: SerializeField]public GameObject _nozzleStart{get; private set;}
-    [field: SerializeField]public GameObject _nozzleEnd{get; private set;}
+    public string _tvcName;
+    public string _nozzleName;
+    public string _pumpName;
+    public string _turbineName;
 }
