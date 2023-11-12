@@ -19,6 +19,7 @@ public class GameManager_Tank : MonoBehaviour
     public TMP_InputField tankDiameter;
 
     public TMP_InputField savePath;
+    public TMP_Dropdown materialDropdown;
     public string saveName;
 
     public GameObject Tank;
