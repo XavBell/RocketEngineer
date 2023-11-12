@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class Material : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //Heat capacity in J/gC
+    float specificHeatCapacity;
+    //Max pressure in KPa
+    float maxPressure;
+    float coefficientArea;
 }

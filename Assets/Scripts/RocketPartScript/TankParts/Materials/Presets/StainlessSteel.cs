@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class StainlessSteel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //Heat capacity in J/gC
+    float specificHeatCapacity = 0.5f;
+    //Max pressure in KPa
+    float maxPressure = 800f;
+    float coefficientArea = 1.2f;
 }
