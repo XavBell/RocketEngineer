@@ -2142,6 +2142,7 @@ MonoBehaviour:
   tankHeight: {fileID: 0}
   tankDiameter: {fileID: 0}
   savePath: {fileID: 0}
+  materialDropdown: {fileID: 0}
   saveName: 
   Tank: {fileID: 0}
   tankSP: {fileID: 0}
@@ -2160,6 +2161,7 @@ MonoBehaviour:
   elapsedFrames: 0
   startingScaleD: {x: 0, y: 0, z: 0}
   startingScaleH: {x: 0, y: 0, z: 0}
+  tankMaterial: 
   MasterManager: {fileID: 0}
 --- !u!4 &516084789
 Transform:
@@ -2222,7 +2224,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <core>k__BackingField: {fileID: 0}
   Stages: []
-  RocketParts: []
   numberOfStages: 0
 --- !u!1 &575714530
 GameObject:
@@ -6388,40 +6389,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f79ccf7ecf2997243a7d5c7b2a951ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nozzleExitSize: {fileID: 0}
-  nozzleEndSize: {fileID: 0}
-  turbopumpSize: {fileID: 0}
-  nozzleLenght: {fileID: 0}
-  massFlowRate: {fileID: 0}
-  thrustInput: {fileID: 0}
-  savePath: {fileID: 0}
-  saveName: 
-  Engine: {fileID: 0}
-  nozzleExitRef: {fileID: 0}
-  nozzleEndRef: {fileID: 0}
-  turbopumpRef: {fileID: 0}
-  attachBottomObj: {fileID: 0}
-  nozzleExitSizeFloat: 0
-  nozzleEndSizeFloat: 0
-  turbopumpSizeFloat: 0
-  nozzleLenghtFloat: 0
   mass: 0
   thrust: 0
   rate: 0
-  currentE: 0
-  currentEn: 0
-  currentT: 0
-  currentEy: 0
-  startingScaleE: {x: 0, y: 0, z: 0}
-  startingScaleEn: {x: 0, y: 0, z: 0}
-  startingScaleT: {x: 0, y: 0, z: 0}
-  startingScaleEy: {x: 0, y: 0, z: 0}
-  initialScaleY: 0
-  panel: {fileID: 0}
-  popUpPart: {fileID: 0}
-  thrustT: {fileID: 0}
-  massT: {fileID: 0}
-  rateT: {fileID: 0}
+  maxAngle: 0
+  speed: 0
+  pumpName: 
+  turbineName: 
+  nozzleName: 
+  TVCName: 
+  savePath: {fileID: 0}
+  saveName: 
+  pumpDropdown: {fileID: 0}
+  turbineDropdown: {fileID: 0}
+  nozzleDropdown: {fileID: 0}
+  tvcDropdown: {fileID: 0}
   MasterManager: {fileID: 0}
 --- !u!4 &1992725477
 Transform:

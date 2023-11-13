@@ -15,4 +15,5 @@ public class saveTank
     public float usedNum;
     public float volume;
     public float mass;
+    public string tankMaterial;
 }

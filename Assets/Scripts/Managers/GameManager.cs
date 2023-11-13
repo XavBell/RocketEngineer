@@ -99,10 +99,6 @@ public class GameManager : MonoBehaviour
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
-                //if (partPath != null)
-                //{
-                //    load(partPath, currentPrefab);
-                //}
                 UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
@@ -257,17 +253,21 @@ public class GameManager : MonoBehaviour
             var jsonString = JsonConvert.SerializeObject(saveTank);
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
-
-            prefab.GetComponent<RocketPart>()._path = loadedTank.path;
-            prefab.GetComponent<RocketPart>()._partName = loadedTank.tankName;
-
-            prefab.GetComponent<Tank>()._volume = loadedTank.volume;
-            prefab.GetComponent<RocketPart>()._partMass = loadedTank.mass;
+            
             prefab.GetComponent<SpriteRenderer>().size = new UnityEngine.Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
-            prefab.GetComponent<RocketPart>()._attachTop.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachTopPos, 0));
-            prefab.GetComponent<RocketPart>()._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0));
-            prefab.GetComponent<RocketPart>()._attachRight.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0));
-            prefab.GetComponent<RocketPart>()._attachLeft.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0));
+
+            Tank tank = prefab.GetComponent<Tank>();
+
+            tank._path = loadedTank.path;
+            tank._partName = loadedTank.tankName;
+
+            tank._volume = loadedTank.volume;
+            tank._partMass = loadedTank.mass;
+            tank._attachTop.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachTopPos, 0));
+            tank._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0));
+            tank._attachRight.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0));
+            tank._attachLeft.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0));
+            tank.tankMaterial = loadedTank.tankMaterial;
         }
         filePath = null;
     }

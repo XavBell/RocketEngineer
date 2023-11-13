@@ -6,4 +6,5 @@ public class Tank : RocketPart
 {
     public float _volume{get; set;}
     public UnityEngine.Vector2 _size{get; set;}
+    public string tankMaterial;
 }

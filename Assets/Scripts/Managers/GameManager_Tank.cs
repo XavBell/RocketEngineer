@@ -47,6 +47,7 @@ public class GameManager_Tank : MonoBehaviour
 
     public UnityEngine.Vector3 startingScaleD;
     public UnityEngine.Vector3 startingScaleH;
+    public string tankMaterial;
 
     public MasterManager MasterManager = new MasterManager();
     // Start is called before the first frame update
@@ -132,6 +133,7 @@ public class GameManager_Tank : MonoBehaviour
         float fuelDensity = 460.0f; //Assuming methane
         volume = Mathf.PI * tankDiameterFloat/2 * tankDiameterFloat/2 * tankHeightFloat * fuelDensity;
         mass = (tankHeightFloat * tankDiameterFloat * massDensity);
+        tankMaterial = materialDropdown.options[materialDropdown.value].text.ToString();
     }
 
 
@@ -157,6 +159,7 @@ public class GameManager_Tank : MonoBehaviour
             saveObject.attachLeftPos = attachLeftObj.transform.position.x - tankSP.bounds.center.x;
             saveObject.volume = volume;
             saveObject.mass = mass;
+            saveObject.tankMaterial = tankMaterial;
 
             var jsonString = JsonConvert.SerializeObject(saveObject);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json", jsonString);
