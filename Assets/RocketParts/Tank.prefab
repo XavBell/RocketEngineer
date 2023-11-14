@@ -103,11 +103,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e779284f7a91c4bedaae507b04b1131c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <_partType>k__BackingField: tank
+  _partType: tank
   <_attachTop>k__BackingField: {fileID: 640710487304089321}
   <_attachBottom>k__BackingField: {fileID: 1457844105156421105}
   <_attachRight>k__BackingField: {fileID: 3720249373727873476}
   <_attachLeft>k__BackingField: {fileID: 760482239936326389}
+  tankMaterial: 
 --- !u!61 &6995648078010050905
 BoxCollider2D:
   m_ObjectHideFlags: 0

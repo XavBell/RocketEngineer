@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class RocketPart : MonoBehaviour
 {
-    [field: SerializeField] public string _partType{get; protected set;}
+    [field: SerializeField] public string _partType;
 
     public string _partName{get; set;}
 

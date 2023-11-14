@@ -94,12 +94,14 @@ public class GameManager : MonoBehaviour
         updateSaveName();
         if(Input.GetMouseButtonDown(0) && partToConstruct != null)
         {
+            UnityEngine.Debug.Log(partToConstruct);
             ResetCursorGameObject();
             GameObject currentPrefab = null;
             if (partToConstruct.GetComponent<RocketPart>()._partType == "satellite" && capsuleBuilt == false && Cursor.visible == false)
             {
                 UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
+                UnityEngine.Debug.Log("hi");
                 UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
@@ -559,6 +561,7 @@ public class GameManager : MonoBehaviour
         {
             savecraft saveRocket = new savecraft();
             int i = 0;
+            saveRocket.coreID = Rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
             foreach(Stages stage in Rocket.GetComponent<Rocket>().Stages)
             {
                 foreach(RocketPart part in stage.Parts)
@@ -566,6 +569,10 @@ public class GameManager : MonoBehaviour
                     saveRocket.StageNumber.Add(i);
                     saveRocket.PartsID.Add(part._partID);
                     saveRocket.partType.Add(part._partType);
+
+                    saveRocket.x_pos.Add(part.transform.localPosition.x);
+                    saveRocket.y_pos.Add(part.transform.localPosition.y);
+                    saveRocket.z_pos.Add(part.transform.localPosition.z);
                 }
                 i++;
             }

@@ -102,14 +102,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63444afaa45934b81a8bf46a6050cf74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <_partType>k__BackingField: engine
+  _partType: engine
   <_attachTop>k__BackingField: {fileID: 2632861862024081867}
   <_attachBottom>k__BackingField: {fileID: 498988792802685914}
   <_attachRight>k__BackingField: {fileID: 0}
   <_attachLeft>k__BackingField: {fileID: 0}
-  <_turbopump>k__BackingField: {fileID: 5374762625071775897}
-  <_nozzleStart>k__BackingField: {fileID: 5018022124775737825}
-  <_nozzleEnd>k__BackingField: {fileID: 8404881303628639225}
+  _thrust: 0
+  _rate: 0
+  _tvcSpeed: 0
+  _maxAngle: 0
+  _tvcName: 
+  _nozzleName: 
+  _pumpName: 
+  _turbineName: 
 --- !u!1 &5018022124775737825
 GameObject:
   m_ObjectHideFlags: 0

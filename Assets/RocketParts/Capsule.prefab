@@ -557,7 +557,7 @@ MonoBehaviour:
   threshold: 5
   previousApogee: 0
   time: 0
-  previousRocketPos: {x: 0, y: 0, z: 0}
+  SolarSystemManager: {fileID: 0}
 --- !u!114 &2520105278773700788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -616,7 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0630ebcf30b504f81a48d9d962ff2066, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <_partType>k__BackingField: satellite
+  _partType: satellite
   <_attachTop>k__BackingField: {fileID: 0}
   <_attachBottom>k__BackingField: {fileID: 2200220295266798373}
   <_attachRight>k__BackingField: {fileID: 0}
