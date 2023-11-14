@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using System.Diagnostics;
 using System.Numerics;
 using System.Collections;
@@ -545,6 +546,36 @@ public class GameManager : MonoBehaviour
             part.transform.position = attachPointPos + difference;
         }
         
+    }
+
+    public void save()
+    {
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
+        }
+
+        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath))
+        {
+            savecraft saveRocket = new savecraft();
+            int i = 0;
+            foreach(Stages stage in Rocket.GetComponent<Rocket>().Stages)
+            {
+                foreach(RocketPart part in stage.Parts)
+                {
+                    saveRocket.StageNumber.Add(i);
+                    saveRocket.PartsID.Add(part._partID);
+                    saveRocket.partType.Add(part._partType);
+                }
+                i++;
+            }
+
+            var jsonString = JsonConvert.SerializeObject(saveRocket);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json", jsonString);
+
+        }else{
+            UnityEngine.Debug.Log("File exist");
+        }
     }
 
 }
