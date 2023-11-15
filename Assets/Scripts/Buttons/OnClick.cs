@@ -119,7 +119,18 @@ public class OnClick : MonoBehaviour
 
             Rocket rocket = new Rocket();
             int maxSteps = loadedRocket.PartsID.Count;
+            int maxStage = Mathf.Max(loadedRocket.StageNumber.ToArray());
             List<GameObject> newParts = new List<GameObject>();
+
+            //Create stages
+            for(int i = 0; i<=maxStage; i++)
+            {
+                Stages stage = new Stages();
+                rocket.Stages.Add(stage);
+                UnityEngine.Debug.Log(maxStage);
+            }
+
+            //Put parts in stages
             for(int i = 0; i < maxSteps; i++)
             {
                 RocketPart part = new RocketPart();
@@ -155,8 +166,6 @@ public class OnClick : MonoBehaviour
 
             core.GetComponent<Rocket>().core = core;
             core.GetComponent<Rocket>().Stages = rocket.Stages;
-
-            foreach()
         }
         filePath = null;
     }
