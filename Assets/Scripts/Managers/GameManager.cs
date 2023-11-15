@@ -570,9 +570,10 @@ public class GameManager : MonoBehaviour
                     saveRocket.PartsID.Add(part._partID);
                     saveRocket.partType.Add(part._partType);
 
-                    saveRocket.x_pos.Add(part.transform.localPosition.x);
-                    saveRocket.y_pos.Add(part.transform.localPosition.y);
-                    saveRocket.z_pos.Add(part.transform.localPosition.z);
+                    UnityEngine.Vector3 positionCore = Rocket.GetComponent<Rocket>().core.transform.position;
+                    saveRocket.x_pos.Add(part.transform.position.x -positionCore.x);
+                    saveRocket.y_pos.Add(part.transform.position.y - positionCore.y);
+                    saveRocket.z_pos.Add(part.transform.position.z - positionCore.z);
                 }
                 i++;
             }

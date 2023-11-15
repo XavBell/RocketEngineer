@@ -89,7 +89,7 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                stageControl();
+                //stageControl();
                 _orientation();
                 _thrust();
                 updateParticle(thrust, maxThrust);
@@ -193,7 +193,7 @@ public class PlanetGravity : MonoBehaviour
             foreach(GameObject planet in planetsToMove) {
                 if(planet.GetComponent<TypeScript>().type == "earth")
                 {
-                    transform.position = new UnityEngine.Vector3(planet.transform.position.x, planet.transform.position.y + planetRadius, 0);
+                    //transform.position = new UnityEngine.Vector3(planet.transform.position.x, planet.transform.position.y + planetRadius, 0);
                 }
             }
                 

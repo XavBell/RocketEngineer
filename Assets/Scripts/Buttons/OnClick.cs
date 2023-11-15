@@ -136,19 +136,10 @@ public class OnClick : MonoBehaviour
                 RocketPart part = new RocketPart();
                 part._partID = loadedRocket.PartsID[i];
                 part._partType = loadedRocket.partType[i];
-                UnityEngine.Vector3 position = new UnityEngine.Vector3(loadedRocket.x_pos[i], loadedRocket.y_pos[i], loadedRocket.z_pos[i]);
+                UnityEngine.Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y+launchPad.GetComponent<BoxCollider2D>().bounds.max.y/2 + 10);
 
-                if(rocket.Stages.Count < loadedRocket.StageNumber[i]+1)
-                {
-                    Stages stage = new Stages();
-                    stage.PartsID.Add(loadedRocket.PartsID[i]);
-                    stage.Parts.Add(part);
-                    rocket.Stages.Add(stage);
-                }else if(rocket.Stages[loadedRocket.StageNumber[i]] != null)
-                {
-                    rocket.Stages[loadedRocket.StageNumber[i]].PartsID.Add(loadedRocket.PartsID[i]);
-                    rocket.Stages[loadedRocket.StageNumber[i]].Parts.Add(part);
-                }
+                rocket.Stages[loadedRocket.StageNumber[i]].Parts.Add(part);
+                rocket.Stages[loadedRocket.StageNumber[i]].PartsID.Add(part._partID);
 
                 GameObject currentPart = SpawnPart(position, part._partType);
                 newParts.Add(currentPart);
@@ -160,12 +151,24 @@ public class OnClick : MonoBehaviour
                     currentPart.AddComponent<Rocket>();
                     rocket.core = currentPart;
                     core = currentPart;
-                    newParts.Remove(currentPart);
+                    //newParts.Remove(currentPart);
                 }
             }
 
             core.GetComponent<Rocket>().core = core;
             core.GetComponent<Rocket>().Stages = rocket.Stages;
+
+            //Parent core
+            int j = 0;
+            foreach(GameObject part in newParts)
+            {
+                if(part != core)
+                {
+                    part.transform.SetParent(core.transform);
+                    part.transform.position = new UnityEngine.Vector3(loadedRocket.x_pos[j] + core.transform.position.x, loadedRocket.y_pos[j]+ core.transform.position.y, loadedRocket.z_pos[j]+ core.transform.position.z);
+                }
+                j++;
+            }
         }
         filePath = null;
     }
