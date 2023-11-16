@@ -75,6 +75,9 @@ public class PlanetGravity : MonoBehaviour
             if(possessed == true)
             {
                 MasterManager.ActiveRocket = core;
+                core.GetComponent<Rocket>().controlThrust();
+                core.GetComponent<Rocket>()._orientation();
+                core.GetComponent<Rocket>().updateRocketStaging();
             }
 
             simulateGravity();

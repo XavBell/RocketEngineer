@@ -23,9 +23,7 @@ public class Rocket : MonoBehaviour
     void Update()
     {
 
-        controlThrust();
-        _orientation();
-        updateRocketStaging();
+        
     }
 
     public void controlThrust()
@@ -111,6 +109,7 @@ public class Rocket : MonoBehaviour
                     {
                         rp = part;
                         stagePos = i;
+                        part.GetComponent<Decoupler>().activated = false;
                     }
                 }
                 
@@ -125,6 +124,8 @@ public class Rocket : MonoBehaviour
             
             rp.gameObject.AddComponent<Rocket>();
             rp.gameObject.AddComponent<PlanetGravity>();
+            rp.GetComponent<PlanetGravity>().initialized = true;
+            rp.GetComponent<PlanetGravity>().possessed = false;
             rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
             rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
 
@@ -137,6 +138,7 @@ public class Rocket : MonoBehaviour
             foreach(RocketPart part in Stages[stagePos].Parts)
             {
                 inStage.Add(part);
+                UnityEngine.Debug.Log("hi");
             }
 
             while(currentCount != previousCount)
@@ -147,6 +149,10 @@ public class Rocket : MonoBehaviour
                     {
                         if(part._partType == "decoupler")
                         {
+                            if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+                            {
+
+                            
                             if(inStage.Contains(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
                             {
                                 int j = 0;
@@ -159,6 +165,7 @@ public class Rocket : MonoBehaviour
                                 }
                                 j++;
                             }
+                            }
                         }
                     }
                 }
@@ -166,15 +173,18 @@ public class Rocket : MonoBehaviour
                 previousCount = currentCount;
                 currentCount = inPos.Count;
             }
-            
             foreach(int pos in inPos)
             {
                 rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
+                foreach(RocketPart part in Stages[pos].Parts)
+                {
+                    part.gameObject.transform.parent = rp.gameObject.transform;
+                }
                 this.Stages.RemoveAt(pos);
             }
 
             rp.gameObject.transform.parent = null;
-            rp.transform.localScale = new UnityEngine.Vector3(0.5f, 0.5f, 0.5f);
+            
         }
 
     }
