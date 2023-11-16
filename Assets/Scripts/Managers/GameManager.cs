@@ -570,10 +570,86 @@ public class GameManager : MonoBehaviour
                     saveRocket.PartsID.Add(part._partID);
                     saveRocket.partType.Add(part._partType);
 
+                    saveRocket.mass.Add(part._partMass);
+
                     UnityEngine.Vector3 positionCore = Rocket.GetComponent<Rocket>().core.transform.position;
                     saveRocket.x_pos.Add(part.transform.position.x -positionCore.x);
                     saveRocket.y_pos.Add(part.transform.position.y - positionCore.y);
                     saveRocket.z_pos.Add(part.transform.position.z - positionCore.z);
+
+                    //Set attachpoints references
+                    if(part._attachTop != null)
+                    {
+                        if(part._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+                        {
+                            saveRocket.attachedTop.Add(part._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
+                        }else{
+                            saveRocket.attachedTop.Add(new Guid());
+                        }
+
+                    }else if(part._attachTop == null)
+                    {
+                        saveRocket.attachedTop.Add(new Guid());
+                    }
+
+                    if(part._attachBottom != null)
+                    {
+                        if(part._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                        {
+                            saveRocket.attachedBottom.Add(part._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
+                        }else{
+                            saveRocket.attachedBottom.Add(new Guid());
+                        }
+
+                    }else if(part._attachBottom == null)
+                    {
+                        saveRocket.attachedBottom.Add(new Guid());
+                    }
+
+                    if(part._attachLeft != null)
+                    {
+                        if(part._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                        {
+                            saveRocket.attachedLeft.Add(part._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
+                        }else{
+                            saveRocket.attachedLeft.Add(new Guid());
+                        }
+
+                    }else if(part._attachLeft == null)
+                    {
+                        saveRocket.attachedLeft.Add(new Guid());
+                    }
+
+                    if(part._attachRight != null)
+                    {
+                        if(part._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                        {
+                            saveRocket.attachedRight.Add(part._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
+                        }else{
+                            saveRocket.attachedRight.Add(new Guid());
+                        }
+
+                    }else if(part._attachRight == null)
+                    {
+                        saveRocket.attachedRight.Add(new Guid());
+                    }
+
+
+                    //Set tank
+                    if(part._partType == "tank")
+                    {
+                        saveRocket.x_scale.Add(part.GetComponent<BoxCollider2D>().size.x);
+                        saveRocket.y_scale.Add(part.GetComponent<BoxCollider2D>().size.y);
+                    }
+                    
+                    //Set Engine
+                    if(part._partType == "engine")
+                    {
+                        saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
+                        saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
+                    }
+
+
                 }
                 i++;
             }

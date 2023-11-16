@@ -127,24 +127,29 @@ public class OnClick : MonoBehaviour
             {
                 Stages stage = new Stages();
                 rocket.Stages.Add(stage);
-                UnityEngine.Debug.Log(maxStage);
             }
+
+            UnityEngine.Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y+launchPad.GetComponent<BoxCollider2D>().bounds.max.y/2 + 10);
+
+            List<System.Guid> partsGuid = new List<System.Guid>();
+            List<System.Guid> topGuid = new List<System.Guid>();
+            List<System.Guid> bottomGuid = new List<System.Guid>();
+            List<System.Guid> leftGuid = new List<System.Guid>();
+            List<System.Guid> rightGuid = new List<System.Guid>();
 
             //Put parts in stages
             for(int i = 0; i < maxSteps; i++)
             {
-                RocketPart part = new RocketPart();
-                part._partID = loadedRocket.PartsID[i];
-                part._partType = loadedRocket.partType[i];
-                UnityEngine.Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y+launchPad.GetComponent<BoxCollider2D>().bounds.max.y/2 + 10);
+                GameObject currentPart = SpawnPart(position, loadedRocket.partType[i]);
+                newParts.Add(currentPart);
+                RocketPart part = currentPart.GetComponent<RocketPart>();
 
+                part._partID = loadedRocket.PartsID[i];
+                part._partMass = loadedRocket.mass[i];
+                
+                //Add part to stage
                 rocket.Stages[loadedRocket.StageNumber[i]].Parts.Add(part);
                 rocket.Stages[loadedRocket.StageNumber[i]].PartsID.Add(part._partID);
-
-                GameObject currentPart = SpawnPart(position, part._partType);
-                newParts.Add(currentPart);
-
-                UnityEngine.Debug.Log(currentPart);
 
                 if(loadedRocket.coreID == loadedRocket.PartsID[i])
                 {
@@ -153,24 +158,84 @@ public class OnClick : MonoBehaviour
                     core = currentPart;
                     //newParts.Remove(currentPart);
                 }
+
+                topGuid.Add(loadedRocket.attachedTop[i]);
+                bottomGuid.Add(loadedRocket.attachedBottom[i]);
+                rightGuid.Add(loadedRocket.attachedRight[i]);
+                leftGuid.Add(loadedRocket.attachedLeft[i]);
+                partsGuid.Add(part._partID);
             }
 
             core.GetComponent<Rocket>().core = core;
             core.GetComponent<Rocket>().Stages = rocket.Stages;
+            linkParts(newParts, topGuid,bottomGuid,rightGuid, leftGuid, partsGuid);
 
-            //Parent core
+            //Parent core and set values to proper parts
             int j = 0;
+            int tankID = 0;
+            int engineID = 0;
             foreach(GameObject part in newParts)
             {
                 if(part != core)
                 {
                     part.transform.SetParent(core.transform);
                     part.transform.position = new UnityEngine.Vector3(loadedRocket.x_pos[j] + core.transform.position.x, loadedRocket.y_pos[j]+ core.transform.position.y, loadedRocket.z_pos[j]+ core.transform.position.z);
+
+                    if(part.GetComponent<RocketPart>()._partType == "tank")
+                    {
+                        part.transform.localScale = new UnityEngine.Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
+                        tankID++;
+                    }
+
+                    if(part.GetComponent<RocketPart>()._partType == "engine")
+                    {
+                        part.GetComponent<Engine>()._thrust = loadedRocket.thrust[engineID];
+                        part.GetComponent<Engine>()._rate = loadedRocket.flowRate[engineID];
+                        engineID++;
+                    }
                 }
                 j++;
             }
+            
         }
         filePath = null;
+    }
+
+    public void linkParts(List<GameObject> parts, List<System.Guid> topRef, List<System.Guid> bottomRef, List<System.Guid> rightRef, List<System.Guid> leftRef, List<System.Guid> partsID)
+    {
+        int i = 0;
+        foreach(System.Guid partID in partsID)
+        {
+            bool top = topRef.Contains(partID);
+            bool bottom = bottomRef.Contains(partID);
+            bool left = leftRef.Contains(partID);
+            bool right = rightRef.Contains(partID);
+
+            if(top == true)
+            {
+                int pos = topRef.IndexOf(partID);
+                parts[pos].GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = parts[i];
+            }
+
+            if(bottom == true)
+            {
+                int pos = bottomRef.IndexOf(partID);
+                parts[pos].GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody = parts[i];
+            }
+
+            if(left == true)
+            {
+                int pos = leftRef.IndexOf(partID);
+                parts[pos].GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody = parts[i];
+            }
+
+            if(right == true)
+            {
+                int pos = rightRef.IndexOf(partID);
+                parts[pos].GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody = parts[i];
+            }
+            i++;
+        }
     }
 
     GameObject SpawnPart(UnityEngine.Vector3 position, string type)

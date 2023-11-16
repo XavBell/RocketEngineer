@@ -89,7 +89,7 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                //stageControl();
+                stageControl();
                 _orientation();
                 _thrust();
                 updateParticle(thrust, maxThrust);
@@ -123,21 +123,21 @@ public class PlanetGravity : MonoBehaviour
         if(activeEngine != null){
             if(thrust == maxThrust)
             {
-                float dF = rate * Time.deltaTime;
-                if(activeEngine.GetComponent<Part>().fuel - dF > 0f)
-                {
-                    activeEngine.GetComponent<Part>().fuel -= dF;
-                    rocketMass -= dF;
-                    
-                }else{
-                    rocketMass -= activeEngine.GetComponent<Part>().fuel;
-                    activeEngine.GetComponent<Part>().fuel = 0;
-                    thrust = 0;
-                }
+                //float dF = rate * Time.deltaTime;
+                //if(activeEngine.GetComponent<Part>().fuel - dF > 0f)
+                //{
+                //    activeEngine.GetComponent<Part>().fuel -= dF;
+                //    rocketMass -= dF;
+                //    
+                //}else{
+                //    rocketMass -= activeEngine.GetComponent<Part>().fuel;
+                //    activeEngine.GetComponent<Part>().fuel = 0;
+                //    thrust = 0;
+                //}
             }
 
 
-            if (Input.GetKey(KeyCode.Z) && activeEngine.GetComponent<Part>().fuel >= 0.0f)
+            if (Input.GetKey(KeyCode.Z))
             {
                 thrust = maxThrust;
             }
@@ -294,7 +294,8 @@ public class PlanetGravity : MonoBehaviour
     {
         //Decoupling Logic
         int x = 0;
-        AttachPointScript currentAttach = capsule.GetComponent<Part>().attachBottom;
+        AttachPointScript currentAttach = capsule.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>();
+
         if (Input.GetKey(KeyCode.Space) && stageUpdated == true)
         {
             Part[] decouplers;
@@ -345,24 +346,24 @@ public class PlanetGravity : MonoBehaviour
         
         //TODO move to another function
         //Update Current Engine
-        while (x == 0 && capsule.GetComponent<Part>().attachBottom.attachedBody != null)
+        while (x == 0 && capsule.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
         { 
             if (currentAttach.GetComponent<AttachPointScript>().attachedBody != null)
             {
                 
-                currentAttach = currentAttach.attachedBody.GetComponent<Part>().attachBottom;
+                currentAttach = currentAttach.attachedBody.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>();
                 if(currentAttach.attachedBody != null)
                 {
-                    if (currentAttach.attachedBody.GetComponent<Part>().type.ToString() == "engine" && currentAttach.attachedBody.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
+                    if (currentAttach.attachedBody.GetComponent<RocketPart>()._partType.ToString() == "engine")
                     {
                         GameObject CurrentEngine = currentAttach.attachedBody;
-                        maxThrust = CurrentEngine.GetComponent<Part>().maxThrust;
-                        rate = CurrentEngine.GetComponent<Part>().rate;
+                        maxThrust = CurrentEngine.GetComponent<Engine>()._thrust;
+                        //rate = CurrentEngine.GetComponent<Part>().rate;
                         particle.transform.position = CurrentEngine.transform.position;
 
                         if (currentFuel <= 0)
                         {
-                            maxFuel = CurrentEngine.GetComponent<Part>().maxFuel;
+                            //maxFuel = CurrentEngine.GetComponent<Part>().maxFuel;
                             if(stageUpdated == false)
                             {
                                 activeEngine = CurrentEngine;
