@@ -385,9 +385,7 @@ GameObject:
   - component: {fileID: -5808564746016280997}
   - component: {fileID: 4537766573156485653}
   - component: {fileID: 8142855468360428412}
-  - component: {fileID: -2056247246796802356}
   - component: {fileID: 2520105278773700788}
-  - component: {fileID: 6623856652470056655}
   - component: {fileID: 2080045861758558677}
   m_Layer: 0
   m_Name: Capsule
@@ -514,50 +512,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1, y: 2}
   m_EdgeRadius: 0
---- !u!114 &-2056247246796802356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3186944469201897407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1ad7b4680998ea42a77f56efef95808, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planets: []
-  posUpdated: 0
-  capsule: {fileID: 3186944469201897407}
-  planet: {fileID: 0}
-  Mass: 9e+10
-  G: 6.67e-11
-  atmoAlt: 70
-  aeroCoefficient: 0.05
-  planetRadius: 127421
-  line: {fileID: 8535568482800535129}
-  rocketMass: 20
-  thrust: 0
-  maxThrust: 0
-  rate: 0
-  rb: {fileID: 0}
-  particle: {fileID: 7559554041202738659}
-  currentFuel: 0
-  maxFuel: 0
-  activeEngine: {fileID: 0}
-  maxThrusts: []
-  engines: []
-  stageUpdated: 0
-  sun: {fileID: 0}
-  WorldSaveManager: {fileID: 0}
-  possessed: 0
-  TimeRef: {fileID: 0}
-  TimeManager: {fileID: 0}
-  MasterManager: {fileID: 0}
-  threshold: 5
-  previousApogee: 0
-  time: 0
-  SolarSystemManager: {fileID: 0}
 --- !u!114 &2520105278773700788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -590,20 +544,6 @@ MonoBehaviour:
   variation: 0
   engines: []
   type: default
---- !u!114 &6623856652470056655
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3186944469201897407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5fdbce7d1670ea4f956065501d4b9d1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  altitudeText: {fileID: 6370072224297353334}
-  planetGravity: {fileID: -2056247246796802356}
 --- !u!114 &2080045861758558677
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -904,11 +844,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fb6edd7f6af82d4dbea3d1e4febc8ec, type: 3}
---- !u!198 &7559554041202738659 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5953593416129080268, guid: 1fb6edd7f6af82d4dbea3d1e4febc8ec, type: 3}
-  m_PrefabInstance: {fileID: 4212985450001362479}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8101242273257805422 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5339830030078883905, guid: 1fb6edd7f6af82d4dbea3d1e4febc8ec, type: 3}
@@ -1003,11 +938,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fde3c9b621e576044ad273eafe332cff, type: 3}
---- !u!120 &8535568482800535129 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 3942354640608216146, guid: fde3c9b621e576044ad273eafe332cff, type: 3}
-  m_PrefabInstance: {fileID: 4666398712137269771}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8997023394286135729 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4330697010505427898, guid: fde3c9b621e576044ad273eafe332cff, type: 3}

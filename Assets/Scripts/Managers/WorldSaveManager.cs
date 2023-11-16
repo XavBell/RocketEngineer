@@ -161,12 +161,6 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.capsuleRotY.Add(rocket.transform.eulerAngles.y);
             saveWorld.capsuleRotZ.Add(rocket.transform.eulerAngles.z);
 
-            saveWorld.rocketMass.Add(rocket.GetComponent<PlanetGravity>().rocketMass);
-            saveWorld.maxFuel.Add(rocket.GetComponent<PlanetGravity>().maxFuel);
-            saveWorld.currentFuel.Add(rocket.GetComponent<PlanetGravity>().currentFuel);
-
-            saveWorld.stageUpdated.Add(rocket.GetComponent<PlanetGravity>().stageUpdated);
-
             if(rocket.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
             {
                 GameObject referenceBody = rocket;
@@ -352,13 +346,8 @@ public class WorldSaveManager : MonoBehaviour
             setPosition(loadedWorld.capsuleLocX[capsuleID], loadedWorld.capsuleLocY[capsuleID], loadedWorld.capsuleLocZ[capsuleID], capsule);
             capsule.transform.rotation = Quaternion.Euler(loadedWorld.capsuleRotX[capsuleID], loadedWorld.capsuleRotY[capsuleID], loadedWorld.capsuleRotZ[capsuleID]);
             GameObject currentPrefab = capsule;
-            currentPrefab.GetComponent<PlanetGravity>().posUpdated = true;
-            currentPrefab.GetComponent<PlanetGravity>().stageUpdated = loadedWorld.stageUpdated[capsuleID];
+            currentPrefab.GetComponent<PlanetGravity>().initialized = true;
             currentPrefab.GetComponent<PlanetGravity>().rb = currentPrefab.GetComponent<Rigidbody2D>();
-
-            currentPrefab.GetComponent<PlanetGravity>().rocketMass = loadedWorld.rocketMass[capsuleID];
-            currentPrefab.GetComponent<PlanetGravity>().currentFuel = loadedWorld.currentFuel[capsuleID];
-            currentPrefab.GetComponent<PlanetGravity>().maxFuel = loadedWorld.maxFuel[capsuleID];
 
             currentPrefab.GetComponent<PlanetGravity>().rb.velocity = new Vector2(loadedWorld.capsuleSpeedX[capsuleID], loadedWorld.capsuleSpeedY[capsuleID]);
             
@@ -443,8 +432,6 @@ public class WorldSaveManager : MonoBehaviour
 
                     GameObject turbopump = currentPrefab.GetComponent<Part>().turbopump;
                     turbopump.GetComponent<SpriteRenderer>().transform.localScale = new Vector2(loadedWorld.turbopumpSizeX[engineCount], turbopump.GetComponent<SpriteRenderer>().transform.localScale.y);
-
-                    capsule.GetComponent<PlanetGravity>().activeEngine = currentPrefab;
 
 
                     GameObject newPrefabDetach = currentPrefab;

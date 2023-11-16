@@ -51,8 +51,8 @@ public class Prediction : MonoBehaviour
             planetGravity = MasterManager.ActiveRocket.GetComponent<PlanetGravity>();
             rb = planetGravity.rb;
             G = planetGravity.G;
-            rocketMass = planetGravity.rocketMass;
-            gravityParam = G*planetGravity.Mass;
+            rocketMass = planetGravity.rb.mass;
+            gravityParam = G*(planetGravity.Mass);
 
         }
 
@@ -160,7 +160,7 @@ public class Prediction : MonoBehaviour
 
         float EA = MA;
 
-        for (int count = 0; count < 3; count++)
+        for (int count = 0; count < 10; count++)
         {
             float dE = (EA - eccentricity * Mathf.Sin(EA) - MA) / (1 - eccentricity * Mathf.Cos(EA));
             EA -= dE;

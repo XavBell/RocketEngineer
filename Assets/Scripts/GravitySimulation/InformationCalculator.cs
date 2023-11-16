@@ -19,8 +19,8 @@ public class InformationCalculator : MonoBehaviour
     {
         if(planetGravity.planet != null)
         {
-            float dist = (planetGravity.planet.transform.position - this.transform.position).magnitude - planetGravity.planetRadius;
-            altitudeText.text = dist.ToString();
+            //float dist = (planetGravity.planet.transform.position - this.transform.position).magnitude - planetGravity.planetRadius;
+            //altitudeText.text = dist.ToString();
         }
         
     }

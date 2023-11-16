@@ -13,8 +13,9 @@ public class PlanetGravity : MonoBehaviour
 
     //public LineRenderer PlLR;
     public GameObject[] planets;
-    public bool posUpdated = false;
-    public GameObject capsule;
+    public bool initialized = false;
+    public GameObject core;
+
     //Gravity variables for Earth
     public GameObject planet;
     public float Mass = 0f; //Planet mass in kg
@@ -24,29 +25,16 @@ public class PlanetGravity : MonoBehaviour
     public float planetRadius = 0f; //Planet radius in m
     float maxAlt;
 
-    
-    public LineRenderer line;
-
 
     //Rocket variables
-    public float rocketMass = 0.0f;
-    public float thrust = 0.0f;
-    public float maxThrust = 0.0f;
-    public float rate = 0.0f;
     public Rigidbody2D rb;
+    public float rocketMass;
+    public float thrust;
     UnityEngine.Vector3 AeroForces;
     public ParticleSystem particle;
 
-    public float currentFuel = 0.0f;
-    public float maxFuel = 0.0f;
-
-    public GameObject activeEngine;
-    public float[] maxThrusts;
-    public GameObject[] engines;
-
     public bool stageUpdated = false;
 
-    public GameObject sun;
     public GameObject WorldSaveManager;
 
     public bool possessed = false;
@@ -54,10 +42,6 @@ public class PlanetGravity : MonoBehaviour
     public GameObject TimeRef;
     public TimeManager TimeManager;
     public MasterManager MasterManager;
-
-    public float threshold = 10f;
-
-    public float previousApogee;
 
     public float time = 0;
 
@@ -69,7 +53,8 @@ public class PlanetGravity : MonoBehaviour
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         SolarSystemManager = GameObject.FindObjectOfType<SolarSystemManager>();
         rb = GetComponent<Rigidbody2D>();
-        rb.mass = rocketMass;
+        core.GetComponent<Rocket>().updateMass();
+        rb.mass = core.GetComponent<Rocket>().rocketMass;
         if(SceneManager.GetActiveScene().name == "SampleScene")
         {
             G = SolarSystemManager.G;
@@ -89,13 +74,7 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                stageControl();
-                _orientation();
-                _thrust();
-                updateParticle(thrust, maxThrust);
-                updateScene();
-                this.GetComponent<outputInputManager>().log = false;
-                MasterManager.ActiveRocket = capsule;
+                MasterManager.ActiveRocket = core;
             }
 
             simulateGravity();
@@ -107,55 +86,15 @@ public class PlanetGravity : MonoBehaviour
     void simulateGravity()
     {
         updateReferenceBody();
+        
         //Gravity
-        rb.mass = rocketMass;
-
-        float Dist = UnityEngine.Vector2.Distance(transform.position, planet.transform.position);
-        UnityEngine.Vector3 forceDir = (planet.transform.position - transform.position).normalized;
-        UnityEngine.Vector3 ForceVector = forceDir * (G*((Mass*rocketMass)/ (Dist * Dist)));
-        UnityEngine.Vector3 Thrust = transform.up * thrust;
+        rb.mass = core.GetComponent<Rocket>().rocketMass;
+        float Dist = UnityEngine.Vector2.Distance(rb.transform.position, planet.transform.position);
+        UnityEngine.Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
+        UnityEngine.Vector3 ForceVector = forceDir * (G*((Mass*rb.mass)/ (Dist * Dist)));
+        UnityEngine.Vector3 Thrust = new UnityEngine.Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
         UnityEngine.Vector3 ResultVector = (ForceVector + Thrust);
         rb.AddForce(ResultVector);
-    }
-   
-    void _thrust()
-    {
-        if(activeEngine != null){
-            if(thrust == maxThrust)
-            {
-                //float dF = rate * Time.deltaTime;
-                //if(activeEngine.GetComponent<Part>().fuel - dF > 0f)
-                //{
-                //    activeEngine.GetComponent<Part>().fuel -= dF;
-                //    rocketMass -= dF;
-                //    
-                //}else{
-                //    rocketMass -= activeEngine.GetComponent<Part>().fuel;
-                //    activeEngine.GetComponent<Part>().fuel = 0;
-                //    thrust = 0;
-                //}
-            }
-
-
-            if (Input.GetKey(KeyCode.Z))
-            {
-                thrust = maxThrust;
-            }
-
-            if (Input.GetKey(KeyCode.X))
-            {
-                thrust = 0;
-            }       
-        }
-    }
-
-    void stageControl()
-    {
-        time = time + Time.deltaTime;
-        if(time > 1)
-        { 
-            updateReferenceStage();
-        }   
     }
 
     void checkManager()
@@ -186,48 +125,11 @@ public class PlanetGravity : MonoBehaviour
 
     void initializeRocket()
     {
-        if (posUpdated == false)
-        {
-            //Set initial position and scale of rocket when it enters the world
-            GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
-            foreach(GameObject planet in planetsToMove) {
-                if(planet.GetComponent<TypeScript>().type == "earth")
-                {
-                    //transform.position = new UnityEngine.Vector3(planet.transform.position.x, planet.transform.position.y + planetRadius, 0);
-                }
-            }
-                
+        if (initialized == false)
+        {       
             transform.localScale = new UnityEngine.Vector3(0.5f, 0.5f, 0.5f);
             rb = GetComponent<Rigidbody2D>();
-            posUpdated = true;
-        }
-    }
-
-    void _orientation()
-    {
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Rotate(0, 0 , Time.deltaTime*50);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Rotate(0, 0, Time.deltaTime * -50);
-        }
-    }
-
-    void updateParticle(float thrust, float maxThrust)
-    {
-        if(thrust == 0)
-        {
-            var emission = particle.emission;
-            emission.enabled = false;
-        }
-        else if(thrust > 0)
-        {
-            float rate = thrust / maxThrust;
-            var emission = particle.emission;
-            emission.enabled = true;
-            emission.rateOverTime = rate*10;
+            initialized = true;
         }
     }
 
@@ -287,141 +189,5 @@ public class PlanetGravity : MonoBehaviour
             planet = bestPlanet;
         }
 
-    }
-
-    //TODO STRONGLY BAD CODE REDO THAT ASAP
-    void updateReferenceStage()
-    {
-        //Decoupling Logic
-        int x = 0;
-        AttachPointScript currentAttach = capsule.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>();
-
-        if (Input.GetKey(KeyCode.Space) && stageUpdated == true)
-        {
-            Part[] decouplers;
-            decouplers = GameObject.FindObjectsOfType<Part>();
-            float farthestDecouplerDistance = 0;
-            Part bestDecouplerPartRef = null;
-            
-            //Find Closest Decoupler
-            foreach(Part rocketPart in decouplers)
-            {
-                if((rocketPart.transform.position - transform.position).magnitude > farthestDecouplerDistance && rocketPart.GetComponent<Part>().type.ToString() == "decoupler")
-                {
-                    farthestDecouplerDistance = (rocketPart.transform.position - transform.position).magnitude;
-                    bestDecouplerPartRef = rocketPart;
-                }
-            }
-
-            //Decouple if decoupler found
-            if (bestDecouplerPartRef != null)
-            {
-                GameObject decouplerToUse = bestDecouplerPartRef.attachBottom.GetComponent<AttachPointScript>().referenceBody;
-                if(decouplerToUse.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
-                {
-                    GameObject currentPartChecker = decouplerToUse.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
-                    while(currentPartChecker.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
-                    {
-                        GameObject PartToBeDestroyed = currentPartChecker;
-
-                        updateMass(rocketMass, currentPartChecker);
-                        currentPartChecker = currentPartChecker.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody;
-                        Destroy(PartToBeDestroyed);
-
-                        if(currentPartChecker.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
-                        {
-                            updateMass(rocketMass, currentPartChecker);
-                            Destroy(currentPartChecker);
-                        }
-                    }
-                }
-                Destroy(decouplerToUse);
-            }
-            
-            if(capsule.GetComponent<Part>().attachBottom.GetComponent<AttachPointScript>().attachedBody != null){
-                stageUpdated = false;
-            }
-            time = 0;
-        }
-        
-        //TODO move to another function
-        //Update Current Engine
-        while (x == 0 && capsule.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
-        { 
-            if (currentAttach.GetComponent<AttachPointScript>().attachedBody != null)
-            {
-                
-                currentAttach = currentAttach.attachedBody.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>();
-                if(currentAttach.attachedBody != null)
-                {
-                    if (currentAttach.attachedBody.GetComponent<RocketPart>()._partType.ToString() == "engine")
-                    {
-                        GameObject CurrentEngine = currentAttach.attachedBody;
-                        maxThrust = CurrentEngine.GetComponent<Engine>()._thrust;
-                        //rate = CurrentEngine.GetComponent<Part>().rate;
-                        particle.transform.position = CurrentEngine.transform.position;
-
-                        if (currentFuel <= 0)
-                        {
-                            //maxFuel = CurrentEngine.GetComponent<Part>().maxFuel;
-                            if(stageUpdated == false)
-                            {
-                                activeEngine = CurrentEngine;
-                                //currentFuel = maxFuel;
-                                stageUpdated = true;
-                            }
- 
-                        }
-
-                        x = 1;
-                    }
-                }
-
-                if(currentAttach.attachedBody == null)
-                {
-                    x = 1;
-                }
-            }
-
-
-            if (currentAttach == null)
-            {
-                break;
-            }
-      }
-        
-    }
-
-    //TODO Is the mass really updated correctly even with fuel
-    void updateMass(float rocketMass, GameObject part)
-    {
-        if(part.GetComponent<Part>().type.ToString() == "tank")
-        {
-            rocketMass -= part.GetComponent<Part>().mass;
-        }
-                
-        if (part.GetComponent<Part>().type.ToString() == "engine")
-        {
-            rocketMass -= part.GetComponent<Part>().mass;
-        }
-    }
-
-    void updateScene()
-    {
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            if (SceneManager.GetActiveScene().name == "SampleScene")
-            {
-                UnityEngine.Object.Destroy(capsule);
-                posUpdated = true;
-                SceneManager.LoadScene("Building");
-                line.positionCount = 0;
-            }
-
-            if (SceneManager.GetActiveScene().name == "Building")
-            {
-                Application.Quit();
-            }
-        }  
     }
 }

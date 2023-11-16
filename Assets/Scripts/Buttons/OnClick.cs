@@ -166,8 +166,13 @@ public class OnClick : MonoBehaviour
                 partsGuid.Add(part._partID);
             }
 
+            core.AddComponent<PlanetGravity>();
+            core.GetComponent<PlanetGravity>().core = core;
             core.GetComponent<Rocket>().core = core;
-            core.GetComponent<Rocket>().Stages = rocket.Stages;
+            foreach(Stages stage in rocket.Stages)
+            {
+                core.GetComponent<Rocket>().Stages.Add(stage);
+            }
             linkParts(newParts, topGuid,bottomGuid,rightGuid, leftGuid, partsGuid);
 
             //Parent core and set values to proper parts

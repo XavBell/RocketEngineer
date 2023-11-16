@@ -14,4 +14,5 @@ public class Engine : RocketPart
     public string _nozzleName;
     public string _pumpName;
     public string _turbineName;
+    public bool active = true;
 }

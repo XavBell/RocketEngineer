@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.ComTypes;
 using System.Data;
 using System.Net.Mail;
 using System.Globalization;
@@ -12,6 +13,85 @@ public class Rocket : MonoBehaviour
     public GameObject core {get; set;}
     public List<Stages> Stages = new List<Stages>();
     public int numberOfStages;
+
+    public float rocketMass;
+    public float throttle = 100f;
+    public List<Engine> engines = new List<Engine>();
+    public UnityEngine.Vector2 currentThrust;
+
+    void Update()
+    {
+        controlThrust();
+        _orientation();
+    }
+
+    public void controlThrust()
+    {
+        updateActiveEngines();
+        if(Input.GetKey(KeyCode.Z))
+        {
+            UnityEngine.Debug.Log(Stages.Count);
+            List<UnityEngine.Vector2> totalThrust = new List<UnityEngine.Vector2>();  
+            foreach(Engine engine in engines)
+            {
+                totalThrust.Add(engine.gameObject.transform.up.normalized * engine._thrust * throttle);
+            }
+            currentThrust = new UnityEngine.Vector2(0, 0);
+            foreach(UnityEngine.Vector2 thrust in totalThrust)
+            {
+                currentThrust += thrust;
+            }
+            UnityEngine.Debug.Log(currentThrust);
+
+        }
+        if(!Input.GetKey(KeyCode.Z) && currentThrust != new UnityEngine.Vector2(0, 0))
+        {
+            currentThrust = new UnityEngine.Vector2(0,0);
+        }
+    }
+
+    public void updateMass()
+    {
+        rocketMass = 0;
+        foreach(Stages stage in Stages)
+        {
+            foreach(RocketPart part in stage.Parts)
+            {
+                rocketMass += part._partMass;
+            }
+        }
+    }
+
+    public void _orientation()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Rotate(0, 0 , Time.deltaTime*50);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(0, 0, Time.deltaTime * -50);
+        }
+    }
+
+    public void updateActiveEngines()
+    {
+        engines.Clear();
+        foreach(Stages stage in Stages)
+        {
+            foreach(RocketPart part in stage.Parts)
+            {
+                if(part._partType == "engine")
+                {
+                    if(part.GetComponent<Engine>().active == true)
+                    {
+                        engines.Add(part.GetComponent<Engine>());
+                    }
+                }
+                
+            }
+        }
+    }
 
     public void scanRocket()
     {
