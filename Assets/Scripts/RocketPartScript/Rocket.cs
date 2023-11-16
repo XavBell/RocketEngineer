@@ -1,3 +1,5 @@
+using System.Numerics;
+using System;
 using System.Runtime.InteropServices.ComTypes;
 using System.Data;
 using System.Net.Mail;
@@ -9,8 +11,7 @@ using UnityEngine;
 
 public class Rocket : MonoBehaviour
 {
-    [field: SerializeField]
-    public GameObject core {get; set;}
+    public GameObject core;
     public List<Stages> Stages = new List<Stages>();
     public int numberOfStages;
 
@@ -21,8 +22,10 @@ public class Rocket : MonoBehaviour
 
     void Update()
     {
+
         controlThrust();
         _orientation();
+        updateRocketStaging();
     }
 
     public void controlThrust()
@@ -91,6 +94,89 @@ public class Rocket : MonoBehaviour
                 
             }
         }
+    }
+
+    public void updateRocketStaging()
+    {
+        RocketPart rp = new RocketPart();
+        int i = 0;
+        int stagePos = 1000*1000;
+        foreach(Stages stage in Stages)
+        {
+            foreach(RocketPart part in stage.Parts)
+            {
+                if(part._partType == "decoupler")
+                {
+                    if(part.GetComponent<Decoupler>().activated == true)
+                    {
+                        rp = part;
+                        stagePos = i;
+                    }
+                }
+                
+            }
+            i++;
+        }
+
+        if(stagePos != 1000*1000)
+        {
+            rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
+            rp.GetComponent<Rigidbody2D>().simulated = true;
+            
+            rp.gameObject.AddComponent<Rocket>();
+            rp.gameObject.AddComponent<PlanetGravity>();
+            rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
+            rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+
+            List<RocketPart> inStage = new List<RocketPart>();
+            List<int> inPos = new List<int>();
+            inPos.Add(stagePos);
+            int previousCount = 0;
+            int currentCount = 1;
+
+            foreach(RocketPart part in Stages[stagePos].Parts)
+            {
+                inStage.Add(part);
+            }
+
+            while(currentCount != previousCount)
+            {
+                foreach(Stages stage in Stages)
+                {
+                    foreach(RocketPart part in stage.Parts)
+                    {
+                        if(part._partType == "decoupler")
+                        {
+                            if(inStage.Contains(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
+                            {
+                                int j = 0;
+                                foreach(Stages stage2 in Stages)
+                                {
+                                    if(stage2.Parts.Contains(part) && (inPos.Contains(j)) == false)
+                                    {
+                                        inPos.Add(j);
+                                    }
+                                }
+                                j++;
+                            }
+                        }
+                    }
+                }
+
+                previousCount = currentCount;
+                currentCount = inPos.Count;
+            }
+            
+            foreach(int pos in inPos)
+            {
+                rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
+                this.Stages.RemoveAt(pos);
+            }
+
+            rp.gameObject.transform.parent = null;
+            rp.transform.localScale = new UnityEngine.Vector3(0.5f, 0.5f, 0.5f);
+        }
+
     }
 
     public void scanRocket()
