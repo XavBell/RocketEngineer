@@ -29,6 +29,14 @@ public class outputInputManager : MonoBehaviour
 
     public float moles = 0;
     public float volume = 0;
+    public float externalTemperature = 298f;
+    public float pressure;
+    public float internalTemperature;
+    public string substance = "none";
+
+    public float substanceDensity; //g/cm3
+    public float substanceLiquidTemperature; //K
+    public float substanceMolarMass; //g/mol
 
     public bool log = false;
 
@@ -47,7 +55,7 @@ public class outputInputManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(inputParentID > 0 && inputParent == null)
         {
@@ -64,22 +72,22 @@ public class outputInputManager : MonoBehaviour
             updateParents();
             setRate();
             fuelTransfer();
-            if(quantityText != null && log == true){
-                quantityText.enabled = true;
-                rateText.enabled = true;
-                quantityText.text = "Quantity: " + moles.ToString();
-                rateText.text= "Rate: " + rate.ToString();
-            }else if(quantityText != null && log == false)
-            {
-                quantityText.enabled = false;
-                rateText.enabled = false;
-            }
         }
     }
 
-    void FixedUpdate()
+    void setProperty(string substance)
     {
-        fuelTransfer();
+        if(substance == "kerosene")
+        {
+            substanceDensity = 0.81f;
+            substanceLiquidTemperature = 298f;
+        }
+
+        if(substance == "LOX")
+        {
+            substanceDensity = 1.141f;
+            substanceLiquidTemperature = 80f;
+        }
     }
     
     void updateParents()
@@ -87,11 +95,13 @@ public class outputInputManager : MonoBehaviour
         if(!inputParent  && attachedInput)
         {
             inputParent = attachedInput.transform.parent.gameObject;
+            substance = attachedInput.GetComponent<outputInputManager>().substance;
         }
         
         if(!outputParent && attachedOutput)
         {
             outputParent = attachedOutput.transform.parent.gameObject;
+            attachedOutput.GetComponent<outputInputManager>().substance = substance;
         }
     }
 
@@ -135,6 +145,32 @@ public class outputInputManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    void calculateInternalConditions()
+    {
+        float mass = substanceMolarMass * moles;
+
+        string state = "none";
+        if(substanceLiquidTemperature-25 < internalTemperature < substanceLiquidTemperature+25)
+        {
+            state = "liquid";
+        }
+        else if((substanceLiquidTemperature + 100) > internalTemperature > (substanceLiquidTemperature + 100))
+        {
+            state = "gas";
+        }
+
+        if(state == "liquid")
+        {
+
+        }
+
+        if(state == "gas")
+        {
+            
+        }
+
     }
 
     public void InitializeInput()
