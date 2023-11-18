@@ -152,11 +152,11 @@ public class outputInputManager : MonoBehaviour
         float mass = substanceMolarMass * moles;
 
         string state = "none";
-        if(substanceLiquidTemperature-25 < internalTemperature < substanceLiquidTemperature+25)
+        if((substanceLiquidTemperature-25) < internalTemperature  && internalTemperature < (substanceLiquidTemperature+25))
         {
             state = "liquid";
         }
-        else if((substanceLiquidTemperature + 100) > internalTemperature > (substanceLiquidTemperature + 100))
+        else if((substanceLiquidTemperature + 100) > internalTemperature & internalTemperature > (substanceLiquidTemperature + 100))
         {
             state = "gas";
         }

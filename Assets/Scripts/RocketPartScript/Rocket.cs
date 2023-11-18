@@ -119,7 +119,7 @@ public class Rocket : MonoBehaviour
 
         if(stagePos != 1000*1000)
         {
-            RocketPart previousPartToo = rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody;
+            RocketPart previousPartToo = rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>();
             rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
             List<RocketPart> inStage = new List<RocketPart>();
             List<int> inPos = new List<int>();
@@ -183,6 +183,18 @@ public class Rocket : MonoBehaviour
                 previousCount = currentCount;
                 currentCount = inPos.Count;
             }
+
+            rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
+            rp.GetComponent<Rigidbody2D>().simulated = true;
+            rp.GetComponent<Rigidbody2D>().freezeRotation = true;
+            
+            rp.gameObject.AddComponent<Rocket>();
+            rp.gameObject.AddComponent<PlanetGravity>();
+            rp.GetComponent<PlanetGravity>().initialized = true;
+            rp.GetComponent<PlanetGravity>().possessed = false;
+            rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
+            rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+
             foreach(int pos in inPos)
             {
                 rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
@@ -192,15 +204,7 @@ public class Rocket : MonoBehaviour
                 }
                 this.Stages.RemoveAt(pos);
             }
-            rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
-            rp.GetComponent<Rigidbody2D>().simulated = true;
-            
-            rp.gameObject.AddComponent<Rocket>();
-            rp.gameObject.AddComponent<PlanetGravity>();
-            rp.GetComponent<PlanetGravity>().initialized = true;
-            rp.GetComponent<PlanetGravity>().possessed = false;
-            rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
-            rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+
             rp.gameObject.transform.parent = null;
             
         }
