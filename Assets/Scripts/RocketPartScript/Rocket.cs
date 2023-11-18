@@ -119,15 +119,7 @@ public class Rocket : MonoBehaviour
 
         if(stagePos != 1000*1000)
         {
-            rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
-            rp.GetComponent<Rigidbody2D>().simulated = true;
             
-            rp.gameObject.AddComponent<Rocket>();
-            rp.gameObject.AddComponent<PlanetGravity>();
-            rp.GetComponent<PlanetGravity>().initialized = true;
-            rp.GetComponent<PlanetGravity>().possessed = false;
-            rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
-            rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
 
             List<RocketPart> inStage = new List<RocketPart>();
             List<int> inPos = new List<int>();
@@ -182,7 +174,15 @@ public class Rocket : MonoBehaviour
                 }
                 this.Stages.RemoveAt(pos);
             }
-
+            rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
+            rp.GetComponent<Rigidbody2D>().simulated = true;
+            
+            rp.gameObject.AddComponent<Rocket>();
+            rp.gameObject.AddComponent<PlanetGravity>();
+            rp.GetComponent<PlanetGravity>().initialized = true;
+            rp.GetComponent<PlanetGravity>().possessed = false;
+            rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
+            rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
             rp.gameObject.transform.parent = null;
             
         }
