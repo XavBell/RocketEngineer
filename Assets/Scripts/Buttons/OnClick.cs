@@ -309,23 +309,19 @@ public class OnClick : MonoBehaviour
         GameObject go = null;
         if(type == "satellite")
         {
-            go = Instantiate(capsulePrefab, position, UnityEngine.Quaternion.identity);
-            go.transform.rotation = Quaternion.Euler(0, 0, rotation.z);
+            go = Instantiate(capsulePrefab, position, UnityEngine.Quaternion.Euler(0, 0, rotation.z));
         }
         if(type == "engine")
         {
-            go = Instantiate(Engine, position, UnityEngine.Quaternion.identity);
-            go.transform.rotation = Quaternion.Euler(0, 0, rotation.z);
+            go = Instantiate(Engine, position, UnityEngine.Quaternion.Euler(0, 0, rotation.z));
         }
         if(type == "tank")
         {
-            go = Instantiate(Tank, position, UnityEngine.Quaternion.identity);
-            go.transform.rotation =  Quaternion.Euler(0, 0, rotation.z);
+            go = Instantiate(Tank, position, UnityEngine.Quaternion.Euler(0, 0, rotation.z));
 
         }if(type == "decoupler")
         {
-            go = Instantiate(Decoupler, position, UnityEngine.Quaternion.identity);
-            go.transform.rotation =  Quaternion.Euler(0, 0, rotation.z);
+            go = Instantiate(Decoupler, position, UnityEngine.Quaternion.Euler(0, 0, rotation.z));
         }
 
         return go;

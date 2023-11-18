@@ -566,6 +566,8 @@ public class GameManager : MonoBehaviour
             {
                 foreach(RocketPart part in stage.Parts)
                 {
+                    if(!saveRocket.PartsID.Contains(part._partID))
+                    {
                     saveRocket.StageNumber.Add(i);
                     saveRocket.PartsID.Add(part._partID);
                     saveRocket.partType.Add(part._partType);
@@ -576,7 +578,7 @@ public class GameManager : MonoBehaviour
                     saveRocket.x_pos.Add(part.transform.position.x - positionCore.x);
                     saveRocket.y_pos.Add(part.transform.position.y - positionCore.y);
                     saveRocket.z_pos.Add(part.transform.position.z - positionCore.z);
-                    saveRocket.z_rot.Add(part.transform.rotation.z);
+                    saveRocket.z_rot.Add(part.transform.localEulerAngles.z);
 
                     //Set attachpoints references
                     if(part._attachTop != null)
@@ -649,6 +651,7 @@ public class GameManager : MonoBehaviour
                         saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
                         saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
                     }
+                }
 
 
                 }

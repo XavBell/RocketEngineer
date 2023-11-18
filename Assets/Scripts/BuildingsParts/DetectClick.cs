@@ -73,7 +73,6 @@ public class DetectClick : MonoBehaviour
                 Debug.Log(ray);
                 if (raycastHit.transform != null)
                 {
-                    Debug.Log(raycastHit.transform.gameObject);
                     if(raycastHit.transform.gameObject.GetComponent<buildingType>())
                     {
                         
@@ -112,12 +111,12 @@ public class DetectClick : MonoBehaviour
                     {
                         
                         GameObject current = raycastHit.transform.gameObject;
-                        Debug.Log("clicked on rocket");
                         current.GetComponent<PlanetGravity>().possessed = true;
                         MasterManager.gameState = "Flight";
                         MasterManager.ActiveRocket = current;
                             
                     }
+
                       
                 }
             }

@@ -144,8 +144,6 @@ public class Rocket : MonoBehaviour
                         {
                             if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                             {
-
-                            
                                 if(inStage.Contains(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
                                 {
                                     int j = 0;
@@ -161,9 +159,7 @@ public class Rocket : MonoBehaviour
                             }
 
                             if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
-                            {
-
-                            
+                            {                            
                                 if(inStage.Contains(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
                                 {
                                     int j = 0;
@@ -230,7 +226,7 @@ public class Rocket : MonoBehaviour
             if(coreIn == true)
             {
                 rp.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
-                rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = previousPartToo.gameObject;
+                //rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = previousPartToo.gameObject;
                 rp = previousPartToo;
 
                 //Find stage pos

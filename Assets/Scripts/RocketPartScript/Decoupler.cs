@@ -5,15 +5,9 @@ using UnityEngine;
 public class Decoupler : RocketPart
 {
     public bool activated = false;
-    // Start is called before the first frame update
-    void Start()
+    public void activate()
     {
-        
+        activated = true;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }
