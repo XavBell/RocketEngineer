@@ -573,7 +573,7 @@ public class GameManager : MonoBehaviour
                     saveRocket.mass.Add(part._partMass);
 
                     UnityEngine.Vector3 positionCore = Rocket.GetComponent<Rocket>().core.transform.position;
-                    saveRocket.x_pos.Add(part.transform.position.x -positionCore.x);
+                    saveRocket.x_pos.Add(part.transform.position.x - positionCore.x);
                     saveRocket.y_pos.Add(part.transform.position.y - positionCore.y);
                     saveRocket.z_pos.Add(part.transform.position.z - positionCore.z);
 
@@ -583,7 +583,7 @@ public class GameManager : MonoBehaviour
                         if(part._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                         {
                             saveRocket.attachedTop.Add(part._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
-                        }else{
+                        }else if(part._attachTop.GetComponent<AttachPointScript>().attachedBody == null){
                             saveRocket.attachedTop.Add(new Guid());
                         }
 
@@ -597,7 +597,7 @@ public class GameManager : MonoBehaviour
                         if(part._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                         {
                             saveRocket.attachedBottom.Add(part._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
-                        }else{
+                        }else if(part._attachBottom.GetComponent<AttachPointScript>().attachedBody == null){
                             saveRocket.attachedBottom.Add(new Guid());
                         }
 
@@ -611,7 +611,7 @@ public class GameManager : MonoBehaviour
                         if(part._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
                         {
                             saveRocket.attachedLeft.Add(part._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
-                        }else{
+                        }else if(part._attachLeft.GetComponent<AttachPointScript>().attachedBody == null){
                             saveRocket.attachedLeft.Add(new Guid());
                         }
 
@@ -625,7 +625,7 @@ public class GameManager : MonoBehaviour
                         if(part._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
                         {
                             saveRocket.attachedRight.Add(part._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
-                        }else{
+                        }else if(part._attachRight.GetComponent<AttachPointScript>().attachedBody == null){
                             saveRocket.attachedRight.Add(new Guid());
                         }
 

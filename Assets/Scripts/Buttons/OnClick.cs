@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.ComTypes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
@@ -120,10 +121,9 @@ public class OnClick : MonoBehaviour
             Rocket rocket = new Rocket();
             int maxSteps = loadedRocket.PartsID.Count;
             int maxStage = Mathf.Max(loadedRocket.StageNumber.ToArray());
-            List<GameObject> newParts = new List<GameObject>();
 
             //Create stages
-            for(int i = 0; i<=maxStage; i++)
+            for(int i = 0; i <= maxStage; i++)
             {
                 Stages stage = new Stages();
                 rocket.Stages.Add(stage);
@@ -136,12 +136,12 @@ public class OnClick : MonoBehaviour
             List<System.Guid> bottomGuid = new List<System.Guid>();
             List<System.Guid> leftGuid = new List<System.Guid>();
             List<System.Guid> rightGuid = new List<System.Guid>();
+            List<GameObject> rocketPart = new List<GameObject>();
 
             //Put parts in stages
             for(int i = 0; i < maxSteps; i++)
             {
                 GameObject currentPart = SpawnPart(position, loadedRocket.partType[i]);
-                newParts.Add(currentPart);
                 RocketPart part = currentPart.GetComponent<RocketPart>();
 
                 part._partID = loadedRocket.PartsID[i];
@@ -164,7 +164,10 @@ public class OnClick : MonoBehaviour
                 rightGuid.Add(loadedRocket.attachedRight[i]);
                 leftGuid.Add(loadedRocket.attachedLeft[i]);
                 partsGuid.Add(part._partID);
+                rocketPart.Add(part.gameObject);
             }
+            
+ 
 
             core.AddComponent<PlanetGravity>();
             core.GetComponent<PlanetGravity>().core = core;
@@ -173,13 +176,15 @@ public class OnClick : MonoBehaviour
             {
                 core.GetComponent<Rocket>().Stages.Add(stage);
             }
-            linkParts(newParts, topGuid,bottomGuid,rightGuid, leftGuid, partsGuid);
+            //UnityEngine.Debug.Log(topGuid.Count + bottomGuid.Count);
+
+            linkParts(rocketPart, loadedRocket.attachedTop,loadedRocket.attachedBottom,loadedRocket.attachedRight, loadedRocket.attachedLeft);
 
             //Parent core and set values to proper parts
             int j = 0;
             int tankID = 0;
             int engineID = 0;
-            foreach(GameObject part in newParts)
+            foreach(GameObject part in rocketPart)
             {
                 if(part != core)
                 {
@@ -206,11 +211,14 @@ public class OnClick : MonoBehaviour
         filePath = null;
     }
 
-    public void linkParts(List<GameObject> parts, List<System.Guid> topRef, List<System.Guid> bottomRef, List<System.Guid> rightRef, List<System.Guid> leftRef, List<System.Guid> partsID)
+    public void linkParts(List<GameObject> parts, List<System.Guid> topRef, List<System.Guid> bottomRef, List<System.Guid> rightRef, List<System.Guid> leftRef)
     {
         int i = 0;
-        foreach(System.Guid partID in partsID)
+        foreach(GameObject part in parts)
         {
+            System.Guid partID = part.GetComponent<RocketPart>()._partID;
+            UnityEngine.Debug.Log(partID);
+
             bool top = topRef.Contains(partID);
             bool bottom = bottomRef.Contains(partID);
             bool left = leftRef.Contains(partID);
@@ -218,26 +226,78 @@ public class OnClick : MonoBehaviour
 
             if(top == true)
             {
-                int pos = topRef.IndexOf(partID);
-                parts[pos].GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = parts[i];
+                List<int> pos = new List<int>();
+                int l = 0;
+                foreach(System.Guid id in topRef)
+                {
+                    if(id == partID)
+                    {
+                        pos.Add(l);
+                    }
+                    l++;
+                }
+
+                foreach(int position in pos)
+                {
+                    parts[position].GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = part;
+                }
             }
 
             if(bottom == true)
             {
-                int pos = bottomRef.IndexOf(partID);
-                parts[pos].GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody = parts[i];
+                List<int> pos = new List<int>();
+                int l = 0;
+                foreach(System.Guid id in bottomRef)
+                {
+                    if(id == partID)
+                    {
+                        pos.Add(l);
+                    }
+                    l++;
+                }
+
+                foreach(int position in pos)
+                {
+                    parts[position].GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody = part;
+                }
             }
 
             if(left == true)
             {
-                int pos = leftRef.IndexOf(partID);
-                parts[pos].GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody = parts[i];
+                List<int> pos = new List<int>();
+                int l = 0;
+                foreach(System.Guid id in leftRef)
+                {
+                    if(id == partID)
+                    {
+                        pos.Add(l);
+                    }
+                    l++;
+                }
+
+                foreach(int position in pos)
+                {
+                    parts[position].GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody = part;
+                }
             }
 
             if(right == true)
             {
-                int pos = rightRef.IndexOf(partID);
-                parts[pos].GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody = parts[i];
+                List<int> pos = new List<int>();
+                int l = 0;
+                foreach(System.Guid id in rightRef)
+                {
+                    if(id == partID)
+                    {
+                        pos.Add(l);
+                    }
+                    l++;
+                }
+
+                foreach(int position in pos)
+                {
+                    parts[position].GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody = part;
+                }
             }
             i++;
         }

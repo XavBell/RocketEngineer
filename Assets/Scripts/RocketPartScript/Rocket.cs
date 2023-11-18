@@ -127,10 +127,11 @@ public class Rocket : MonoBehaviour
             int previousCount = 0;
             int currentCount = 1;
 
+            bool coreIn = false;
+
             foreach(RocketPart part in Stages[stagePos].Parts)
             {
                 inStage.Add(part);
-                UnityEngine.Debug.Log("hi");
             }
 
             while(currentCount != previousCount)
@@ -145,36 +146,36 @@ public class Rocket : MonoBehaviour
                             {
 
                             
-                            if(inStage.Contains(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
-                            {
-                                int j = 0;
-                                foreach(Stages stage2 in Stages)
+                                if(inStage.Contains(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
                                 {
-                                    if(stage2.Parts.Contains(part) && (inPos.Contains(j)) == false)
+                                    int j = 0;
+                                    foreach(Stages stage2 in Stages)
                                     {
-                                        inPos.Add(j);
+                                        if(stage2.Parts.Contains(part) && (inPos.Contains(j)) == false)
+                                        {
+                                            inPos.Add(j);
+                                        }
                                     }
+                                    j++;
                                 }
-                                j++;
-                            }
                             }
 
                             if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                             {
 
                             
-                            if(inStage.Contains(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
-                            {
-                                int j = 0;
-                                foreach(Stages stage2 in Stages)
+                                if(inStage.Contains(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
                                 {
-                                    if(stage2.Parts.Contains(part) && (inPos.Contains(j)) == false)
+                                    int j = 0;
+                                    foreach(Stages stage2 in Stages)
                                     {
-                                        inPos.Add(j);
+                                        if(stage2.Parts.Contains(part) && (inPos.Contains(j)) == false)
+                                        {
+                                            inPos.Add(j);
+                                        }
                                     }
+                                    j++;
                                 }
-                                j++;
-                            }
                             }
                         }
                     }
@@ -184,28 +185,54 @@ public class Rocket : MonoBehaviour
                 currentCount = inPos.Count;
             }
 
-            rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
-            rp.GetComponent<Rigidbody2D>().simulated = true;
-            rp.GetComponent<Rigidbody2D>().freezeRotation = true;
-            
-            rp.gameObject.AddComponent<Rocket>();
-            rp.gameObject.AddComponent<PlanetGravity>();
-            rp.GetComponent<PlanetGravity>().initialized = true;
-            rp.GetComponent<PlanetGravity>().possessed = false;
-            rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
-            rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
-
+            //Check if in other way
             foreach(int pos in inPos)
             {
-                rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
                 foreach(RocketPart part in Stages[pos].Parts)
                 {
-                    part.gameObject.transform.parent = rp.gameObject.transform;
+                    if(part.gameObject == core.gameObject)
+                    {
+                        coreIn = true;
+                    }
                 }
-                this.Stages.RemoveAt(pos);
             }
 
-            rp.gameObject.transform.parent = null;
+            if(coreIn == false)
+            {
+                rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
+                if(rp.GetComponent<Rigidbody2D>()== null)
+                {
+                    rp.gameObject.AddComponent<Rigidbody2D>();
+                }
+                rp.GetComponent<Rigidbody2D>().simulated = true;
+                rp.GetComponent<Rigidbody2D>().freezeRotation = true;
+            
+                rp.gameObject.AddComponent<Rocket>();
+                rp.gameObject.AddComponent<PlanetGravity>();
+                rp.GetComponent<PlanetGravity>().initialized = true;
+                rp.GetComponent<PlanetGravity>().possessed = false;
+                rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
+                rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+
+                foreach(int pos in inPos)
+                {
+                    rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
+                    foreach(RocketPart part in Stages[pos].Parts)
+                    {
+                        part.gameObject.transform.parent = rp.gameObject.transform;
+                    }
+                    this.Stages.RemoveAt(pos);
+                }
+
+                rp.gameObject.transform.parent = null;
+            }
+
+            if(coreIn == true)
+            {
+                UnityEngine.Debug.Log("true");
+            }
+
+            
             
         }
 
