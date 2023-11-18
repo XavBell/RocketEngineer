@@ -576,6 +576,7 @@ public class GameManager : MonoBehaviour
                     saveRocket.x_pos.Add(part.transform.position.x - positionCore.x);
                     saveRocket.y_pos.Add(part.transform.position.y - positionCore.y);
                     saveRocket.z_pos.Add(part.transform.position.z - positionCore.z);
+                    saveRocket.z_rot.Add(part.transform.rotation.z);
 
                     //Set attachpoints references
                     if(part._attachTop != null)

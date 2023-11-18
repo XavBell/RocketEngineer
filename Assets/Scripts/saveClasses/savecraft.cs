@@ -15,6 +15,7 @@ public class savecraft
     public List<float> x_pos = new List<float>();
     public List<float> y_pos = new List<float>();
     public List<float> z_pos = new List<float>();
+    public List<float> z_rot = new List<float>();
 
     //AttachPoints
     public List<System.Guid> attachedTop = new List<System.Guid>();

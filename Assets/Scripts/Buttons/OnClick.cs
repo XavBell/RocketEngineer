@@ -141,7 +141,8 @@ public class OnClick : MonoBehaviour
             //Put parts in stages
             for(int i = 0; i < maxSteps; i++)
             {
-                GameObject currentPart = SpawnPart(position, loadedRocket.partType[i]);
+                UnityEngine.Vector3 rotation = new UnityEngine.Vector3(0, 0, loadedRocket.z_rot[i]);
+                GameObject currentPart = SpawnPart(position, rotation, loadedRocket.partType[i]);
                 RocketPart part = currentPart.GetComponent<RocketPart>();
 
                 part._partID = loadedRocket.PartsID[i];
@@ -303,24 +304,28 @@ public class OnClick : MonoBehaviour
         }
     }
 
-    GameObject SpawnPart(UnityEngine.Vector3 position, string type)
+    GameObject SpawnPart(UnityEngine.Vector3 position, UnityEngine.Vector3 rotation, string type)
     {
         GameObject go = null;
         if(type == "satellite")
         {
             go = Instantiate(capsulePrefab, position, UnityEngine.Quaternion.identity);
-            UnityEngine.Debug.Log(go);
+            go.transform.rotation = Quaternion.Euler(0, 0, rotation.z);
         }
         if(type == "engine")
         {
             go = Instantiate(Engine, position, UnityEngine.Quaternion.identity);
+            go.transform.rotation = Quaternion.Euler(0, 0, rotation.z);
         }
         if(type == "tank")
         {
             go = Instantiate(Tank, position, UnityEngine.Quaternion.identity);
+            go.transform.rotation =  Quaternion.Euler(0, 0, rotation.z);
+
         }if(type == "decoupler")
         {
             go = Instantiate(Decoupler, position, UnityEngine.Quaternion.identity);
+            go.transform.rotation =  Quaternion.Euler(0, 0, rotation.z);
         }
 
         return go;
