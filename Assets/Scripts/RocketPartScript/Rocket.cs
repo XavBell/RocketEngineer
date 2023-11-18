@@ -119,8 +119,8 @@ public class Rocket : MonoBehaviour
 
         if(stagePos != 1000*1000)
         {
-            
-
+            RocketPart previousPartToo = rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody;
+            rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
             List<RocketPart> inStage = new List<RocketPart>();
             List<int> inPos = new List<int>();
             inPos.Add(stagePos);
@@ -146,6 +146,24 @@ public class Rocket : MonoBehaviour
 
                             
                             if(inStage.Contains(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
+                            {
+                                int j = 0;
+                                foreach(Stages stage2 in Stages)
+                                {
+                                    if(stage2.Parts.Contains(part) && (inPos.Contains(j)) == false)
+                                    {
+                                        inPos.Add(j);
+                                    }
+                                }
+                                j++;
+                            }
+                            }
+
+                            if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                            {
+
+                            
+                            if(inStage.Contains(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()))
                             {
                                 int j = 0;
                                 foreach(Stages stage2 in Stages)
