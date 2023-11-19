@@ -218,7 +218,6 @@ public class OnClick : MonoBehaviour
         foreach(GameObject part in parts)
         {
             System.Guid partID = part.GetComponent<RocketPart>()._partID;
-            UnityEngine.Debug.Log(partID);
 
             bool top = topRef.Contains(partID);
             bool bottom = bottomRef.Contains(partID);
