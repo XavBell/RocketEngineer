@@ -147,7 +147,8 @@ public class Rocket : MonoBehaviour
     {
         //Find if there is a decoupled decoupler and its stage pos
         RocketPart rp = new RocketPart();
-        bool found = false;
+        int i = 0;
+        int stagePos = 1000*1000;
         foreach(Stages stage in Stages)
         {
             foreach(RocketPart part in stage.Parts)
@@ -157,38 +158,20 @@ public class Rocket : MonoBehaviour
                     if(part.GetComponent<Decoupler>().activated == true)
                     {
                         rp = part;
-                        found = true;
+                        stagePos = i;
                         part.GetComponent<Decoupler>().activated = false;
                     }
                 }
                 
             }
+            i++;
         }
 
-        if(found == true)
+        if(stagePos != 1000*1000)
         {
             RocketPart previousPartToo = rp._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>();
-            RocketPart current = rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>();
-
             deleteReference(rp, "top");
             rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
-            rp = current;
-
-            int i = 0;
-            int stagePos = 1000*1000;
-            foreach(Stages stage in Stages)
-            {
-                foreach(RocketPart part in stage.Parts)
-                {
-                    if(part == rp.GetComponent<RocketPart>())
-                    {
-                        rp = part;
-                        stagePos = i;
-                    }
-                
-                }
-                i++;
-            }
 
             List<RocketPart> inStage = new List<RocketPart>();
             List<int> inPos = new List<int>();
@@ -213,8 +196,10 @@ public class Rocket : MonoBehaviour
                         {
                             if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                             {
+                                
                                 if(inStage.Contains(part))
                                 {
+                                    UnityEngine.Debug.Log("hi");
                                     int j = 0;
                                     foreach(Stages stage2 in Stages)
                                     {
@@ -224,7 +209,6 @@ public class Rocket : MonoBehaviour
                                             {
                                                 inPos.Add(j);
                                                 inStage.Add(part2);
-                                             
                                             }
                                         }
                                         j++;
