@@ -29,13 +29,20 @@ public class outputInputManager : MonoBehaviour
 
     public float moles = 0;
     public float volume = 0;
+    public float mass = 0;
+
+    public float tankVolume = 0;
+    public float tankHeight = 0;
     public float externalTemperature = 298f;
-    public float pressure;
+    public float externalPressure = 101f;
+    public float internalPressure;
     public float internalTemperature;
     public string substance = "none";
 
-    public float substanceDensity; //g/cm3
+    public float substanceDensity; //kg/m3
     public float substanceLiquidTemperature; //K
+    public float substanceSolidTemperature; //K
+    public float substanceGaseousTemperature; //K
     public float substanceMolarMass; //g/mol
 
     public bool log = false;
@@ -51,6 +58,8 @@ public class outputInputManager : MonoBehaviour
         if(this.GetComponent<buildingType>())
         {
             selfID = this.GetComponent<buildingType>().buildingID;
+            internalTemperature = externalTemperature;
+            internalPressure = externalPressure;
         }
     }
 
@@ -79,14 +88,20 @@ public class outputInputManager : MonoBehaviour
     {
         if(substance == "kerosene")
         {
-            substanceDensity = 0.81f;
-            substanceLiquidTemperature = 298f;
+            substanceDensity = 810f;
+            substanceLiquidTemperature = 226f; //up to 424
+            substanceGaseousTemperature = 424f; //and more
+            substanceSolidTemperature = 226f; //and below
+            substanceMolarMass = 170f;
         }
 
         if(substance == "LOX")
         {
-            substanceDensity = 1.141f;
-            substanceLiquidTemperature = 80f;
+            substanceDensity = 1141f;
+            substanceLiquidTemperature = 56f; //up to 91
+            substanceGaseousTemperature = 91f; //and more
+            substanceSolidTemperature = 56f; //and below
+            substanceMolarMass = 32f;
         }
     }
     
@@ -152,25 +167,39 @@ public class outputInputManager : MonoBehaviour
         float mass = substanceMolarMass * moles;
 
         string state = "none";
-        if((substanceLiquidTemperature-25) < internalTemperature  && internalTemperature < (substanceLiquidTemperature+25))
+        if(substanceSolidTemperature < internalTemperature && internalTemperature < substanceGaseousTemperature)
         {
             state = "liquid";
         }
-        else if((substanceLiquidTemperature + 100) > internalTemperature & internalTemperature > (substanceLiquidTemperature + 100))
+        else if(internalTemperature > substanceGaseousTemperature)
         {
             state = "gas";
+        }
+        else if(internalTemperature < substanceSolidTemperature)
+        {
+            state = "solid";
         }
 
         if(state == "liquid")
         {
+            //Convert moles to mass
+            mass = moles*substanceMolarMass;
+            volume = mass/substanceDensity;
+            float ratio = volume/tankVolume;
+            float heightLiquid = ratio*tankHeight;
+            internalPressure = substanceDensity  * 9.8f * heightLiquid;
 
         }
 
         if(state == "gas")
         {
-            
+            //TODO
         }
 
+        if(state == "solid")
+        {
+            //TODO
+        }
     }
 
     public void InitializeInput()
