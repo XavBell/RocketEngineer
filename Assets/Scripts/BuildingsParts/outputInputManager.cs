@@ -33,6 +33,10 @@ public class outputInputManager : MonoBehaviour
 
     public float tankVolume = 0;
     public float tankHeight = 0;
+    public float tankThickness = 0.1f;
+    public float tankThermalConductivity = 10f;
+    public float tankSurfaceArea = 2000f;
+
     public float externalTemperature = 298f;
     public float externalPressure = 101f;
     public float internalPressure;
@@ -44,6 +48,7 @@ public class outputInputManager : MonoBehaviour
     public float substanceSolidTemperature; //K
     public float substanceGaseousTemperature; //K
     public float substanceMolarMass; //g/mol
+    public float substanceSpecificHeatCapacity; //J/kgK
 
     public bool log = false;
 
@@ -93,6 +98,7 @@ public class outputInputManager : MonoBehaviour
             substanceGaseousTemperature = 424f; //and more
             substanceSolidTemperature = 226f; //and below
             substanceMolarMass = 170f;
+            substanceSpecificHeatCapacity = 2010f;
         }
 
         if(substance == "LOX")
@@ -102,6 +108,7 @@ public class outputInputManager : MonoBehaviour
             substanceGaseousTemperature = 91f; //and more
             substanceSolidTemperature = 56f; //and below
             substanceMolarMass = 32f;
+            substanceSpecificHeatCapacity = 2010f;
         }
     }
     
@@ -189,6 +196,10 @@ public class outputInputManager : MonoBehaviour
             float heightLiquid = ratio*tankHeight;
             internalPressure = substanceDensity  * 9.8f * heightLiquid;
 
+            //Calculate T
+            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (internalTemperature - externalTemperature)) / tankThickness;
+            float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
+            internalTemperature += deltaInternal;
         }
 
         if(state == "gas")
