@@ -36,12 +36,14 @@ public class outputInputManager : MonoBehaviour
     public float tankThickness = 0.1f;
     public float tankThermalConductivity = 10f;
     public float tankSurfaceArea = 2000f;
+    public string tankState = "working";
 
     public float externalTemperature = 298f;
     public float externalPressure = 101f;
-    public float internalPressure;
-    public float internalTemperature;
+    public float internalPressure = 0f;
+    public float internalTemperature = 0f;
     public string substance = "none";
+    public string state = "none";
 
     public float substanceDensity; //kg/m3
     public float substanceLiquidTemperature; //K
@@ -156,6 +158,7 @@ public class outputInputManager : MonoBehaviour
         if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().variation > 0 && moles + inputParent.GetComponent<outputInputManager>().variation < volume)
         {
             moles += inputParent.GetComponent<outputInputManager>().variation;
+            substance = inputParent.GetComponent<outputInputManager>().substance;
 
             if(engines.Count > 0)
             {
@@ -167,13 +170,15 @@ public class outputInputManager : MonoBehaviour
                 }
             }
         }
+        calculateInternalConditions();
+        
     }
 
     void calculateInternalConditions()
     {
+        setProperty(substance);
         float mass = substanceMolarMass * moles;
 
-        string state = "none";
         if(substanceSolidTemperature < internalTemperature && internalTemperature < substanceGaseousTemperature)
         {
             state = "liquid";
@@ -199,12 +204,18 @@ public class outputInputManager : MonoBehaviour
             if(tankVolume < volume)
             {
                 //Pressure is critical, tank should break
+                tankState = "broken";
             }
 
             //Calculate T (might not work if internal is higher than external or reverse)
-            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (internalTemperature - externalTemperature)) / tankThickness;
+            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
             float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
-            internalTemperature += deltaInternal;
+            if(internalTemperature != externalTemperature)
+            {
+                internalTemperature += deltaInternal;
+                
+            }
+            
         }
 
         if(state == "gas")
@@ -213,9 +224,13 @@ public class outputInputManager : MonoBehaviour
             mass = moles*substanceMolarMass;
 
             //Calculate T (might not work if internal is higher than external or reverse)
-            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (internalTemperature - externalTemperature)) / tankThickness;
+            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
             float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
-            internalTemperature += deltaInternal;
+            if(internalTemperature != externalTemperature)
+            {
+                internalTemperature += deltaInternal;
+                
+            }
 
             internalPressure = (moles*8.314f*internalTemperature)/tankVolume; //Not sure about 8.314
         }
@@ -229,13 +244,18 @@ public class outputInputManager : MonoBehaviour
             if(tankVolume < volume)
             {
                 //Pressure is critical, tank should break, set pressure
+                tankState = "broken";
 
             }
 
             //Calculate T (might not work if internal is higher than external or reverse)
-            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (internalTemperature - externalTemperature)) / tankThickness;
+            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
             float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
-            internalTemperature += deltaInternal;
+            UnityEngine.Debug.Log(mass);
+            if(internalTemperature != externalTemperature)
+            {
+                internalTemperature += deltaInternal;
+            }
         }
     }
 

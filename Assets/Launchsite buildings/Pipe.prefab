@@ -446,11 +446,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  selfID: 0
+  connectedAsRocket: 0
   input: {fileID: 4289878972004835255}
   output: {fileID: 3232015971127353902}
   attachedInput: {fileID: 0}
   attachedOutput: {fileID: 0}
+  inputParentID: 0
   inputParent: {fileID: 0}
+  outputParentID: 0
   outputParent: {fileID: 0}
   quantityText: {fileID: 6134712309689725909}
   rateText: {fileID: 6530961660409922820}
@@ -458,6 +462,24 @@ MonoBehaviour:
   rate: 0
   moles: 0
   volume: 0
+  mass: 0
+  tankVolume: 2
+  tankHeight: 0.5
+  tankThickness: 0.1
+  tankThermalConductivity: 10
+  tankSurfaceArea: 1000
+  tankState: working
+  externalTemperature: 298
+  externalPressure: 101
+  internalPressure: 0
+  internalTemperature: 0
+  substance: none
+  substanceDensity: 0
+  substanceLiquidTemperature: 0
+  substanceSolidTemperature: 0
+  substanceGaseousTemperature: 0
+  substanceMolarMass: 0
+  substanceSpecificHeatCapacity: 0
   log: 0
   variation: 0
   engines: []
@@ -475,6 +497,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: pipe
+  buildingID: 0
 --- !u!1 &5806372116356969136
 GameObject:
   m_ObjectHideFlags: 0

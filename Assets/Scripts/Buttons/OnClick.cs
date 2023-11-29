@@ -343,7 +343,10 @@ public class OnClick : MonoBehaviour
 
     public void AddFuel(GameObject tank)
     {
-        tank.GetComponent<outputInputManager>().moles = tank.GetComponent<outputInputManager>().volume;
+        tank.GetComponent<outputInputManager>().substance = "kerosene";
+        tank.GetComponent<outputInputManager>().moles = 50;
+        tank.GetComponent<outputInputManager>().internalTemperature = 298f;
+        tank.GetComponent<outputInputManager>().internalPressure = 100f;
     }
 
     public void OpenValve(GameObject tank)
