@@ -196,7 +196,12 @@ public class outputInputManager : MonoBehaviour
             float heightLiquid = ratio*tankHeight;
             internalPressure = substanceDensity  * 9.8f * heightLiquid;
 
-            //Calculate T
+            if(tankVolume < volume)
+            {
+                //Pressure is critical, tank should break
+            }
+
+            //Calculate T (might not work if internal is higher than external or reverse)
             float Q_cond = (tankThermalConductivity * tankSurfaceArea * (internalTemperature - externalTemperature)) / tankThickness;
             float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
             internalTemperature += deltaInternal;
@@ -204,12 +209,33 @@ public class outputInputManager : MonoBehaviour
 
         if(state == "gas")
         {
-            //TODO
+            //Convert moles to mass
+            mass = moles*substanceMolarMass;
+
+            //Calculate T (might not work if internal is higher than external or reverse)
+            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (internalTemperature - externalTemperature)) / tankThickness;
+            float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
+            internalTemperature += deltaInternal;
+
+            internalPressure = (moles*8.314f*internalTemperature)/tankVolume; //Not sure about 8.314
         }
 
         if(state == "solid")
         {
-            //TODO
+            //Convert moles to mass
+            mass = moles*substanceMolarMass;
+            volume = mass/substanceDensity;
+
+            if(tankVolume < volume)
+            {
+                //Pressure is critical, tank should break, set pressure
+
+            }
+
+            //Calculate T (might not work if internal is higher than external or reverse)
+            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (internalTemperature - externalTemperature)) / tankThickness;
+            float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
+            internalTemperature += deltaInternal;
         }
     }
 
