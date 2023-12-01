@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Rocket : MonoBehaviour
 {
@@ -362,9 +363,16 @@ public class Rocket : MonoBehaviour
                 foreach(int pos in inPos)
                 {
                     rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
-                    this.Stages.RemoveAt(pos);
-                    UnityEngine.Debug.Log("Pos " + pos);
                 }
+
+                List<int> newPositionsCount = inPos;
+                for(i = 0; i < inPos.Count; i++)
+                {
+                    int ToRemove = Mathf.Max(newPositionsCount.ToArray());
+                    this.Stages.RemoveAt(ToRemove);
+                    newPositionsCount.Remove(ToRemove);
+                }
+                
 
                 foreach(RocketPart part in inStage)
                 {
@@ -376,6 +384,7 @@ public class Rocket : MonoBehaviour
 
             if(coreIn == true)
             {
+
                 rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = previousPartToo.gameObject;
                 if(previousPartToo._attachTop != null)
                 {
@@ -570,7 +579,7 @@ public class Rocket : MonoBehaviour
                         }
 
                         newPreviousCount = newCurrentCount;
-                        newCurrentCount = newInPos.Count;
+                        newCurrentCount = inStage.Count;
                     }
 
                 }
@@ -589,23 +598,28 @@ public class Rocket : MonoBehaviour
                 rp.GetComponent<PlanetGravity>().possessed = false;
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+                rp.gameObject.transform.parent = null;
 
                 foreach(int pos in newInPos)
                 {
                     rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
                 }
 
+                List<int> newPositionsCount = newInPos;
+                for(i = 0; i < inPos.Count; i++)
+                {
+                    int ToRemove = Mathf.Max(newPositionsCount.ToArray());
+                    this.Stages.RemoveAt(ToRemove);
+                    newPositionsCount.Remove(ToRemove);
+                }
+
                 foreach(RocketPart part in inStage)
                 {
                     part.gameObject.transform.parent = rp.gameObject.transform;
                 }
-                
-                foreach(int pos in newInPos)
-                {
-                    this.Stages.RemoveAt(pos);
-                }
 
-                rp.gameObject.transform.parent = null;
+
+                
             }
         }
 
