@@ -192,23 +192,32 @@ public class Rocket : MonoBehaviour
                 {
                     foreach(RocketPart part in stage.Parts)
                     {
-                        if(part._partType == "decoupler" && part != rp)
+                        if(part != rp)
                         {
+                            if(part.GetComponent<RocketPart>()._attachTop != null)
+                            {
+
+                            
                             if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                             {
-                                
-                                if(inStage.Contains(part))
+                                if(inStage.Contains(part.GetComponent<RocketPart>()))
                                 {
-                                    UnityEngine.Debug.Log("hi");
                                     int j = 0;
                                     foreach(Stages stage2 in Stages)
                                     {
                                         foreach(RocketPart part2 in stage2.Parts)
                                         {
-                                            if((inPos.Contains(j)) == false && part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                            if(part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                             {
-                                                inPos.Add(j);
-                                                inStage.Add(part2);
+                                                if(inPos.Contains(j) == false)
+                                                {
+                                                    inPos.Add(j);
+                                                }
+                                                
+                                                if(inStage.Contains(part2) == false)
+                                                {
+                                                    inStage.Add(part2);
+                                                }
                                             }
                                         }
                                         j++;
@@ -216,22 +225,93 @@ public class Rocket : MonoBehaviour
                                 }
                             }
 
-                            if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                            }
+
+                            if(part.GetComponent<RocketPart>()._attachBottom != null)
                             {
-                                if(inStage.Contains(part))
+                                if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                                {
+                                    if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                    {
+                                        int j = 0;
+                                        foreach(Stages stage2 in Stages)
+                                        {
+                                            foreach(RocketPart part2 in stage2.Parts)
+                                            {
+                                                if(part2 == part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                {
+                                                    if(inPos.Contains(j) == false)
+                                                    {
+                                                        inPos.Add(j);
+                                                    }
+
+                                                    if(inStage.Contains(part2) == false)
+                                                    {
+                                                        inStage.Add(part2);
+                                                    }
+                                                }
+                                            }
+                                            j++;
+                                        }
+                                    }
+                                }
+                            }
+
+                            if(part.GetComponent<RocketPart>()._attachLeft != null)
+                            {
+                            if(part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                            {
+                                if(inStage.Contains(part.GetComponent<RocketPart>()))
                                 {
                                     int j = 0;
                                     foreach(Stages stage2 in Stages)
                                     {
                                         foreach(RocketPart part2 in stage2.Parts)
                                         {
-                                            if((inPos.Contains(j)) == false && part2 == part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                            if(part2 == part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                             {
-                                                inPos.Add(j);
-                                                inStage.Add(part2);
+                                                if(inPos.Contains(j) == false)
+                                                {
+                                                    inPos.Add(j);
+                                                }
+                                                if(inStage.Contains(part2) == false)
+                                                {
+                                                    inStage.Add(part2);
+                                                }
                                             }
                                         }
                                         j++;
+                                    }
+                                }
+                            }
+                            }
+
+                            if(part.GetComponent<RocketPart>()._attachRight != null)
+                            {
+                                if(part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                                {
+                                    if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                    {
+                                        int j = 0;
+                                        foreach(Stages stage2 in Stages)
+                                        {
+                                            foreach(RocketPart part2 in stage2.Parts)
+                                            {
+                                                if(part2 == part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                {
+                                                    if(inPos.Contains(j) == false)
+                                                    {
+                                                        inPos.Add(j);
+                                                    }
+
+                                                    if(inStage.Contains(part2) == false)
+                                                    {
+                                                        inStage.Add(part2);
+                                                    }
+                                                }
+                                            }
+                                            j++;
+                                        }
                                     }
                                 }
                             }
@@ -241,8 +321,11 @@ public class Rocket : MonoBehaviour
                 }
 
                 previousCount = currentCount;
-                currentCount = inPos.Count;
+                currentCount = inStage.Count;
+                
             }
+
+            UnityEngine.Debug.Log("Num pos" + inPos.Count);
 
             //Check if in other way
             foreach(int pos in inPos)
@@ -254,8 +337,6 @@ public class Rocket : MonoBehaviour
                         coreIn = true;
                     }
                 }
-                UnityEngine.Debug.Log(pos);
-                
             }
 
             
@@ -281,11 +362,13 @@ public class Rocket : MonoBehaviour
                 foreach(int pos in inPos)
                 {
                     rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
-                    foreach(RocketPart part in Stages[pos].Parts)
-                    {
-                        part.gameObject.transform.parent = rp.gameObject.transform;
-                    }
                     this.Stages.RemoveAt(pos);
+                    UnityEngine.Debug.Log("Pos " + pos);
+                }
+
+                foreach(RocketPart part in inStage)
+                {
+                    part.gameObject.transform.parent = rp.gameObject.transform;
                 }
 
                 rp.gameObject.transform.parent = null;
@@ -397,7 +480,6 @@ public class Rocket : MonoBehaviour
                                                     {
                                                         newInPos.Add(j);
                                                         inStage.Add(part2);
-                                                        UnityEngine.Debug.Log(j);
                                                     }
                                                 }
                                                 j++;
