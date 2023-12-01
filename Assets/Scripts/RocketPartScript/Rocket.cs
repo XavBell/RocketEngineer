@@ -198,32 +198,32 @@ public class Rocket : MonoBehaviour
                             {
 
                             
-                            if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
-                            {
-                                if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                                 {
-                                    int j = 0;
-                                    foreach(Stages stage2 in Stages)
+                                    if(inStage.Contains(part.GetComponent<RocketPart>()))
                                     {
-                                        foreach(RocketPart part2 in stage2.Parts)
+                                        int j = 0;
+                                        foreach(Stages stage2 in Stages)
                                         {
-                                            if(part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                            foreach(RocketPart part2 in stage2.Parts)
                                             {
-                                                if(inPos.Contains(j) == false)
+                                                if(part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                 {
-                                                    inPos.Add(j);
-                                                }
-                                                
-                                                if(inStage.Contains(part2) == false)
-                                                {
-                                                    inStage.Add(part2);
+                                                    if(inPos.Contains(j) == false)
+                                                    {
+                                                        inPos.Add(j);
+                                                    }
+
+                                                    if(inStage.Contains(part2) == false)
+                                                    {
+                                                        inStage.Add(part2);
+                                                    }
                                                 }
                                             }
+                                            j++;
                                         }
-                                        j++;
                                     }
-                                }
-                            }
+                                }   
 
                             }
 
@@ -259,31 +259,31 @@ public class Rocket : MonoBehaviour
 
                             if(part.GetComponent<RocketPart>()._attachLeft != null)
                             {
-                            if(part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
-                            {
-                                if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                if(part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
                                 {
-                                    int j = 0;
-                                    foreach(Stages stage2 in Stages)
+                                    if(inStage.Contains(part.GetComponent<RocketPart>()))
                                     {
-                                        foreach(RocketPart part2 in stage2.Parts)
+                                        int j = 0;
+                                        foreach(Stages stage2 in Stages)
                                         {
-                                            if(part2 == part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                            foreach(RocketPart part2 in stage2.Parts)
                                             {
-                                                if(inPos.Contains(j) == false)
+                                                if(part2 == part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                 {
-                                                    inPos.Add(j);
-                                                }
-                                                if(inStage.Contains(part2) == false)
-                                                {
-                                                    inStage.Add(part2);
+                                                    if(inPos.Contains(j) == false)
+                                                    {
+                                                        inPos.Add(j);
+                                                    }
+                                                    if(inStage.Contains(part2) == false)
+                                                    {
+                                                        inStage.Add(part2);
+                                                    }
                                                 }
                                             }
+                                            j++;
                                         }
-                                        j++;
                                     }
                                 }
-                            }
                             }
 
                             if(part.GetComponent<RocketPart>()._attachRight != null)
@@ -443,48 +443,125 @@ public class Rocket : MonoBehaviour
                         {
                             foreach(RocketPart part in stage.Parts)
                             {
-                                if(part._partType == "decoupler" && part != rp)
+                                if(part != rp)
                                 {
-                                    if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+                                    if(part.GetComponent<RocketPart>()._attachTop != null)
                                     {
-                                        if(inStage.Contains(part))
+                                        if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                                         {
-                                            UnityEngine.Debug.Log(part._partID);
-                                            int j = 0;
-                                            foreach(Stages stage2 in Stages)
+                                            if(inStage.Contains(part.GetComponent<RocketPart>()))
                                             {
-                                                foreach(RocketPart part2 in stage2.Parts)
+                                                int j = 0;
+                                                foreach(Stages stage2 in Stages)
                                                 {
-                                                    if((newInPos.Contains(j)) == false && part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                    foreach(RocketPart part2 in stage2.Parts)
                                                     {
-                                                        newInPos.Add(j);
-                                                        inStage.Add(part2);
+                                                        if(part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                        {
+                                                            if(newInPos.Contains(j) == false)
+                                                            {
+                                                                newInPos.Add(j);
+                                                            }
+
+                                                            if(inStage.Contains(part2) == false)
+                                                            {
+                                                                inStage.Add(part2);
+                                                            }
+                                                        }
                                                     }
+                                                    j++;
                                                 }
-                                                j++;
                                             }
-                                            
                                         }
                                     }
 
-                                    if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                                    if(part.GetComponent<RocketPart>()._attachBottom != null)
                                     {
-                                        if(inStage.Contains(part))
+                                        if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                                         {
-                                            int j = 0;
-                                            foreach(Stages stage2 in Stages)
+                                            if(inStage.Contains(part.GetComponent<RocketPart>()))
                                             {
-                                                foreach(RocketPart part2 in stage2.Parts)
+                                                int j = 0;
+                                                foreach(Stages stage2 in Stages)
                                                 {
-                                                    if((newInPos.Contains(j)) == false && part2 == part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                    foreach(RocketPart part2 in stage2.Parts)
                                                     {
-                                                        newInPos.Add(j);
-                                                        inStage.Add(part2);
+                                                        if(part2 == part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                        {
+                                                            if(newInPos.Contains(j) == false)
+                                                            {
+                                                                newInPos.Add(j);
+                                                            }
+
+                                                            if(inStage.Contains(part2) == false)
+                                                            {
+                                                                inStage.Add(part2);
+                                                            }
+                                                        }
                                                     }
+                                                    j++;
                                                 }
-                                                j++;
                                             }
-                                            
+                                        }
+                                    }
+
+                                    if(part.GetComponent<RocketPart>()._attachLeft != null)
+                                    {
+                                        if(part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                                        {
+                                            if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                            {
+                                                int j = 0;
+                                                foreach(Stages stage2 in Stages)
+                                                {
+                                                    foreach(RocketPart part2 in stage2.Parts)
+                                                    {
+                                                        if(part2 == part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                        {
+                                                            if(newInPos.Contains(j) == false)
+                                                            {
+                                                                newInPos.Add(j);
+                                                            }
+
+                                                            if(inStage.Contains(part2) == false)
+                                                            {
+                                                                inStage.Add(part2);
+                                                            }
+                                                        }
+                                                    }
+                                                    j++;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if(part.GetComponent<RocketPart>()._attachRight != null)
+                                    {
+                                        if(part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                                        {
+                                            if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                            {
+                                                int j = 0;
+                                                foreach(Stages stage2 in Stages)
+                                                {
+                                                    foreach(RocketPart part2 in stage2.Parts)
+                                                    {
+                                                        if(part2 == part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                        {
+                                                            if(newInPos.Contains(j) == false)
+                                                            {
+                                                                newInPos.Add(j);
+                                                            }
+
+                                                            if(inStage.Contains(part2) == false)
+                                                            {
+                                                                inStage.Add(part2);
+                                                            }
+                                                        }
+                                                    }
+                                                    j++;
+                                                }
+                                            }
                                         }
                                     }
 
@@ -516,11 +593,11 @@ public class Rocket : MonoBehaviour
                 foreach(int pos in newInPos)
                 {
                     rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
-                    foreach(RocketPart part in Stages[pos].Parts)
-                    {
-                        part.gameObject.transform.parent = rp.gameObject.transform;
-                    }
-                    
+                }
+
+                foreach(RocketPart part in inStage)
+                {
+                    part.gameObject.transform.parent = rp.gameObject.transform;
                 }
                 
                 foreach(int pos in newInPos)
