@@ -1,6 +1,5 @@
 using System.Net.Mime;
 using System.Diagnostics;
-using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,18 +19,9 @@ public class GameManager : MonoBehaviour
 
     private GameObject partToConstruct;
     private GameObject capsule;
-    private GameObject attachPoint;
-    private AttachPointScript[] attachPoints;
     public CustomCursor customCursor;
-    public bool decouplerPresent = false;
     public bool capsuleBuilt = false;
-    public bool tankBuilt = false;
-    public bool engineBuilt = false;
     public TMP_InputField saveName;
-    public Button CapsuleButton;
-    public Button TankButton;
-    public Button EngineButton;
-    public Button DecouplerButton;
     public GameObject scroll;
     public GameObject scrollEngine;
     public GameObject scrollTank;
@@ -39,18 +29,10 @@ public class GameManager : MonoBehaviour
     public string path = "rocket";
     public string savePath = "rocket";
     public string filePath;
-
-    public GameObject enginePrefab;
-    public GameObject tankPrefab;
-
-    public GameObject Capsule;
     public GameObject Tank;
     public GameObject Engine;
-    public GameObject Decoupler;
 
     public GameObject PrefabToConstruct;
-    public GameObject EngineManager;
-
     public GameObject buttonPrefab;
     public GameObject engineButtonPrefab;
     public GameObject tankButtonPrefab;
@@ -58,7 +40,6 @@ public class GameManager : MonoBehaviour
     public savePath savePathRef = new savePath();
     public string partPath;
 
-    public GameObject popUp;
     public GameObject popUpPart;
 
     public GameObject panel;
@@ -67,7 +48,6 @@ public class GameManager : MonoBehaviour
     
     public bool delayStarted = false;
 
-    public string partType;
     public GameObject CursorGameObject;
     public GameObject Rocket;
 
@@ -99,17 +79,17 @@ public class GameManager : MonoBehaviour
             GameObject currentPrefab = null;
             if (partToConstruct.GetComponent<RocketPart>()._partType == "satellite" && capsuleBuilt == false && Cursor.visible == false)
             {
-                UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
+                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                currentPrefab = Instantiate(partToConstruct, position, Quaternion.Euler(customCursor.transform.eulerAngles));
                 UnityEngine.Debug.Log("hi");
-                UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
+                Vector2 prefabPos = new Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
 
             if (partToConstruct.GetComponent<RocketPart>()._partType == "tank" && Cursor.visible == false)
             {
-                UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
                 if (partPath != null)
                 {
@@ -266,11 +246,12 @@ public class GameManager : MonoBehaviour
 
             tank._volume = loadedTank.volume;
             tank._partMass = loadedTank.mass;
-            tank._attachTop.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachTopPos, 0));
-            tank._attachBottom.transform.localPosition = (new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0));
-            tank._attachRight.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0));
-            tank._attachLeft.transform.localPosition = (new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0));
+            tank._attachTop.transform.localPosition = new Vector3(0, loadedTank.attachTopPos, 0);
+            tank._attachBottom.transform.localPosition = new UnityEngine.Vector3(0, loadedTank.attachBottomPos, 0);
+            tank._attachRight.transform.localPosition = new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0);
+            tank._attachLeft.transform.localPosition = new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0);
             tank.tankMaterial = loadedTank.tankMaterial;
+            tank.propellantCategory = loadedTank.propellantCategory;
         }
         filePath = null;
     }

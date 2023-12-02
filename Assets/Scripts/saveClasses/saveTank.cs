@@ -16,4 +16,5 @@ public class saveTank
     public float volume;
     public float mass;
     public string tankMaterial;
+    public string propellantCategory;
 }
