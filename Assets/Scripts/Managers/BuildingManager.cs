@@ -119,41 +119,10 @@ public class BuildingManager : MonoBehaviour
 
     public void Connect(GameObject output, GameObject input)
     {
-        output.GetComponent<outputInputManager>().attachedOutput = input.GetComponent<outputInputManager>().input;
         output.GetComponent<outputInputManager>().outputParentID = input.GetComponent<outputInputManager>().selfID;
-        input.GetComponent<outputInputManager>().attachedInput = output.GetComponent<outputInputManager>().output;
+        output.GetComponent<outputInputManager>().outputParent = input;
         input.GetComponent<outputInputManager>().inputParentID = output.GetComponent<outputInputManager>().selfID;
-        Debug.Log(input.transform.position);
-        Vector2 position = (output.GetComponent<outputInputManager>().output.transform.position + input.GetComponent<outputInputManager>().input.transform.position)/2;
-        GameObject current = Instantiate(pipe, position, Quaternion.identity);
-        float lookAngle = 0;
-        if(input.GetComponent<outputInputManager>().input.transform.position.y > output.GetComponent<outputInputManager>().output.transform.position.y)
-        {
-            lookAngle = Mathf.Asin((input.GetComponent<outputInputManager>().input.transform.position.y - output.GetComponent<outputInputManager>().output.transform.position.y)/Vector2.Distance(input.GetComponent<outputInputManager>().input.transform.position, output.GetComponent<outputInputManager>().output.transform.position))*Mathf.Rad2Deg*-1;
-        }
-
-        if(input.GetComponent<outputInputManager>().input.transform.position.y < output.GetComponent<outputInputManager>().output.transform.position.y)
-        {
-            lookAngle = Mathf.Asin((input.GetComponent<outputInputManager>().input.transform.position.y - output.GetComponent<outputInputManager>().output.transform.position.y)/Vector2.Distance(input.GetComponent<outputInputManager>().input.transform.position, output.GetComponent<outputInputManager>().output.transform.position))*Mathf.Rad2Deg; 
-        }
-
-        if(input.GetComponent<outputInputManager>().input.transform.position.x > output.GetComponent<outputInputManager>().output.transform.position.x && input.GetComponent<outputInputManager>().input.transform.position.y > output.GetComponent<outputInputManager>().output.transform.position.y)
-        {
-            lookAngle = lookAngle*-1;
-        }
-
-        if(input.GetComponent<outputInputManager>().input.transform.position.x < output.GetComponent<outputInputManager>().output.transform.position.x && input.GetComponent<outputInputManager>().input.transform.position.y < output.GetComponent<outputInputManager>().output.transform.position.y)
-        {
-           lookAngle = lookAngle*-1;
-        }
-
-        current.transform.eulerAngles = new Vector3(0, 0, lookAngle);
-        Debug.Log(lookAngle);
-        float distance = Vector2.Distance(input.GetComponent<outputInputManager>().input.transform.position, output.GetComponent<outputInputManager>().output.transform.position);
-        current.GetComponent<SpriteRenderer>().size = new Vector2(distance, current.GetComponent<SpriteRenderer>().size.y);
-        current.GetComponent<outputInputManager>().output.transform.position = (current.transform.right * distance/2) + current.transform.position;
-        current.GetComponent<outputInputManager>().input.transform.position = (current.transform.right*-1 * distance/2) + current.transform.position;
-        current.transform.SetParent(earth.transform);
+        input.GetComponent<outputInputManager>().inputParent = output;
         localMode = "none";
     }
 

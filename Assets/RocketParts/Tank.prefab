@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4626958807566933628}
   - component: {fileID: 6995648078010050905}
   - component: {fileID: 3123057104433079993}
+  - component: {fileID: 5018891370466299334}
   m_Layer: 2
   m_Name: Tank
   m_TagString: Untagged
@@ -109,6 +110,7 @@ MonoBehaviour:
   <_attachRight>k__BackingField: {fileID: 3720249373727873476}
   <_attachLeft>k__BackingField: {fileID: 760482239936326389}
   tankMaterial: 
+  propellantCategory: 
 --- !u!61 &6995648078010050905
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -149,6 +151,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sp: {fileID: 7072131924378807790}
   bx: {fileID: 6995648078010050905}
+--- !u!114 &5018891370466299334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9057782884087415771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selfID: 0
+  connectedAsRocket: 0
+  input: {fileID: 0}
+  output: {fileID: 0}
+  attachedInput: {fileID: 0}
+  attachedOutput: {fileID: 0}
+  inputParentID: 0
+  inputParent: {fileID: 0}
+  outputParentID: 0
+  outputParent: {fileID: 0}
+  quantityText: {fileID: 0}
+  rateText: {fileID: 0}
+  selfRate: 0
+  rate: 0
+  moles: 0
+  volume: 0
+  mass: 0
+  tankVolume: 0
+  tankHeight: 0
+  tankThickness: 0.1
+  tankThermalConductivity: 5
+  tankSurfaceArea: 200
+  tankState: working
+  externalTemperature: 298
+  externalPressure: 101
+  internalPressure: 0
+  internalTemperature: 0
+  substance: none
+  state: none
+  substanceDensity: 0
+  substanceLiquidTemperature: 0
+  substanceSolidTemperature: 0
+  substanceGaseousTemperature: 0
+  substanceMolarMass: 0
+  substanceSpecificHeatCapacity: 0
+  log: 0
+  variation: 0
+  engines: []
+  type: default
 --- !u!1001 &1673430783028012291
 PrefabInstance:
   m_ObjectHideFlags: 0

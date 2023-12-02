@@ -115,23 +115,6 @@ public class WorldSaveManager : MonoBehaviour
                 saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
                 saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
             }
-
-            if(building.GetComponent<buildingType>().type == "pipe")
-            {
-                saveWorld.buildingScaleX.Add(building.GetComponent<SpriteRenderer>().size.x);
-                saveWorld.buildingScaleY.Add(building.GetComponent<SpriteRenderer>().size.y);
-
-                saveWorld.inputLocX.Add(building.GetComponent<outputInputManager>().input.transform.position.x);
-                saveWorld.inputLocY.Add(building.GetComponent<outputInputManager>().input.transform.position.y);
-                saveWorld.inputLocZ.Add(building.GetComponent<outputInputManager>().input.transform.position.z);
-
-                saveWorld.outputLocX.Add(building.GetComponent<outputInputManager>().output.transform.position.x);
-                saveWorld.outputLocY.Add(building.GetComponent<outputInputManager>().output.transform.position.y);
-                saveWorld.outputLocZ.Add(building.GetComponent<outputInputManager>().output.transform.position.z);
-
-                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
-                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
-            }
         }
 
         GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
@@ -309,27 +292,6 @@ public class WorldSaveManager : MonoBehaviour
                 current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
                 current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
             }
-
-            if(buildingType == "pipe")
-            {
-                GameObject current = Instantiate(pipePrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                current.transform.SetParent(earth.transform);
-                current.transform.localPosition = position;
-                current.transform.eulerAngles = rotation;
-                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
-
-                Vector2 size = new Vector2(loadedWorld.buildingScaleX[pipeCount], loadedWorld.buildingScaleY[pipeCount]);
-                current.GetComponent<SpriteRenderer>().size = size;
-
-                Vector3 inputPos = new Vector3(loadedWorld.inputLocX[pipeCount], loadedWorld.inputLocY[pipeCount], loadedWorld.inputLocZ[pipeCount]);
-                Vector3 outputPos = new Vector3(loadedWorld.outputLocX[pipeCount], loadedWorld.outputLocY[pipeCount], loadedWorld.outputLocZ[pipeCount]);
-                current.GetComponent<outputInputManager>().input.transform.position = inputPos;
-                current.GetComponent<outputInputManager>().output.transform.position = outputPos;
-                pipeCount++;
-            }
-
             count++;
         }
 

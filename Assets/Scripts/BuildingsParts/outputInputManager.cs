@@ -8,11 +8,6 @@ public class outputInputManager : MonoBehaviour
     [SerializeField]
     public int selfID = 0;
     public bool connectedAsRocket = false;
-    public GameObject input;
-    public GameObject output;
-
-    public GameObject attachedInput;
-    public GameObject attachedOutput;
     
     public int inputParentID = 0;
     public GameObject inputParent;
@@ -116,16 +111,14 @@ public class outputInputManager : MonoBehaviour
     
     void updateParents()
     {
-        if(!inputParent  && attachedInput)
+        if(inputParent)
         {
-            inputParent = attachedInput.transform.parent.gameObject;
-            substance = attachedInput.GetComponent<outputInputManager>().substance;
+            substance = inputParent.GetComponent<outputInputManager>().substance;
         }
         
-        if(!outputParent && attachedOutput)
+        if(outputParent)
         {
-            outputParent = attachedOutput.transform.parent.gameObject;
-            attachedOutput.GetComponent<outputInputManager>().substance = substance;
+            outputParent.GetComponent<outputInputManager>().substance = substance;
         }
     }
 

@@ -39,7 +39,7 @@ public class DetectClick : MonoBehaviour
                             GameObject current = raycastHit.transform.gameObject;
                             if(output == null)
                             {
-                                if(current.GetComponent<outputInputManager>().attachedOutput == null)
+                                if(current.GetComponent<outputInputManager>().outputParent == null)
                                 {
                                     output = current;
                                 }
@@ -48,7 +48,7 @@ public class DetectClick : MonoBehaviour
 
                             if(output != null)
                             {
-                                if(current.GetComponent<outputInputManager>().attachedInput == null)
+                                if(current.GetComponent<outputInputManager>().inputParent == null)
                                 {
                                     input = current;
                                     buildingManager.Connect(output, input);
