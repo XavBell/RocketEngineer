@@ -130,7 +130,7 @@ public class PlanetGravity : MonoBehaviour
     {
         if (initialized == false)
         {       
-            transform.localScale = new UnityEngine.Vector3(0.5f, 0.5f, 0.5f);
+            //transform.localScale = new UnityEngine.Vector3(0.5f, 0.5f, 0.5f);
             rb = GetComponent<Rigidbody2D>();
             initialized = true;
         }

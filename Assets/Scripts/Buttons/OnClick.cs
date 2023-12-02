@@ -105,7 +105,6 @@ public class OnClick : MonoBehaviour
 
     public void load(string fileTypePath)
     {
-        bool decouplerPresent = false;
         GameObject MasterManagerGO = GameObject.FindGameObjectWithTag("MasterManager");
         MasterManager MasterManager = MasterManagerGO.GetComponent<MasterManager>();
         savecraft saveObject = new savecraft();

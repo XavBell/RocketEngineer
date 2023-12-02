@@ -403,7 +403,7 @@ Transform:
   m_GameObject: {fileID: 3186944469201897407}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0.2, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1598975187580791118}
@@ -526,10 +526,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selfID: 0
   connectedAsRocket: 0
-  input: {fileID: 0}
-  output: {fileID: 0}
-  attachedInput: {fileID: 0}
-  attachedOutput: {fileID: 0}
   inputParentID: 0
   inputParent: {fileID: 0}
   outputParentID: 0
@@ -540,6 +536,25 @@ MonoBehaviour:
   rate: 0
   moles: 0
   volume: 0
+  mass: 0
+  tankVolume: 0
+  tankHeight: 0
+  tankThickness: 0.1
+  tankThermalConductivity: 10
+  tankSurfaceArea: 2000
+  tankState: working
+  externalTemperature: 298
+  externalPressure: 101
+  internalPressure: 0
+  internalTemperature: 0
+  substance: none
+  state: none
+  substanceDensity: 0
+  substanceLiquidTemperature: 0
+  substanceSolidTemperature: 0
+  substanceGaseousTemperature: 0
+  substanceMolarMass: 0
+  substanceSpecificHeatCapacity: 0
   log: 0
   variation: 0
   engines: []
