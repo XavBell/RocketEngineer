@@ -141,14 +141,14 @@ public class outputInputManager : MonoBehaviour
 
         if(outputParent)
         {
-           if(moles - rate * Time.deltaTime >= 0 && outputParent.GetComponent<outputInputManager>().moles + outputParent.GetComponent<outputInputManager>().rate*Time.deltaTime < outputParent.GetComponent<outputInputManager>().volume)
-           {
+            if(moles - rate * Time.deltaTime >= 0)
+            {
                 variation = rate * Time.deltaTime;
                 moles -=  variation;
-           }
+            }
         }
 
-        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().variation > 0 && moles + inputParent.GetComponent<outputInputManager>().variation < volume)
+        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().variation > 0)
         {
             moles += inputParent.GetComponent<outputInputManager>().variation;
             substance = inputParent.GetComponent<outputInputManager>().substance;
