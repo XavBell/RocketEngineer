@@ -36,7 +36,7 @@ public class Rocket : MonoBehaviour
             List<UnityEngine.Vector2> totalThrust = new List<UnityEngine.Vector2>();  
             foreach(Engine engine in engines)
             {
-                totalThrust.Add(engine.gameObject.transform.up.normalized * engine._thrust * throttle);
+                totalThrust.Add(engine.gameObject.transform.up.normalized * engine._thrust * throttle/100);
             }
 
             currentThrust = new UnityEngine.Vector2(0, 0);

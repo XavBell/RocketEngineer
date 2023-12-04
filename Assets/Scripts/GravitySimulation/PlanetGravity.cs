@@ -97,6 +97,7 @@ public class PlanetGravity : MonoBehaviour
         UnityEngine.Vector3 ForceVector = forceDir * (G*((Mass*rb.mass)/ (Dist * Dist)));
         UnityEngine.Vector3 Thrust = new UnityEngine.Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
         UnityEngine.Vector3 ResultVector = (ForceVector + Thrust);
+        Debug.Log(Thrust.magnitude);
         rb.AddForce(ResultVector);
     }
 
