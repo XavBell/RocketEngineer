@@ -1,6 +1,8 @@
+using System.Runtime.InteropServices.ComTypes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Threading.Tasks;
 
 public class CameraControl : MonoBehaviour
 {
@@ -15,6 +17,7 @@ public class CameraControl : MonoBehaviour
     Vector3 position;
     public GameObject sun;
     public GameObject earth;
+    public GameObject moon;
     public GameObject rocket;
     public Vector3 previousPos = new Vector3(0, 0, 0);
 
@@ -43,7 +46,7 @@ public class CameraControl : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         
         ZoomIn();
@@ -59,12 +62,17 @@ public class CameraControl : MonoBehaviour
         {  
             UpdateToRocketPosition();
         }
+
+
+
     }
 
-    void FixedUpdate()
+    void LateUpdate()
     {
-        updateFloatReference();
+        //updateFloatReference();
     }
+
+
 
 
 
@@ -127,29 +135,28 @@ public class CameraControl : MonoBehaviour
             
     }
 
-    void updateFloatReference()
+    public void updateFloatReference()
     {
         if(transform.position.magnitude > threshold){
-            GameObject[] planetsToMove = GameObject.FindGameObjectsWithTag("Planet");
-            GameObject sun = GameObject.FindGameObjectWithTag("Sun");
             GameObject[] rockets = GameObject.FindGameObjectsWithTag("capsule");
-            Vector3 difference = new Vector3(0, 0, transform.position.z) - transform.position;
-            foreach(GameObject go in planetsToMove)
-            {
-                go.transform.position = go.transform.position + difference;
-            }
+            Vector3 difference = Vector3.zero - transform.position;
 
             foreach(GameObject go in rockets)
             {
-                go.transform.position = go.transform.position + difference; 
+                go.transform.position += difference; 
             }
             
-            sun.transform.position = sun.transform.position + difference;
+            sun.transform.position += difference;
+            earth.transform.position += difference;
+            moon.transform.position += difference;
             customCursor.transform.position += difference;
             transform.position += difference;
             Prediction.GetComponent<Prediction>().updated = false;
         }
+
     }
+
+
 
 }
 
