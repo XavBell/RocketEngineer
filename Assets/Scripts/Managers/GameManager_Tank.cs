@@ -130,10 +130,11 @@ public class GameManager_Tank : MonoBehaviour
 
     void calculate()
     {
-        float massDensity = 5.4f; //Assuming aluminium
-        float fuelDensity = 460.0f; //Assuming methane
-        volume = Mathf.PI * tankDiameterFloat/2 * tankDiameterFloat/2 * tankHeightFloat * fuelDensity;
-        mass = (tankHeightFloat * tankDiameterFloat * massDensity);
+        float massDensity = 2710f; //Assuming aluminium
+        float wallThickness = 0.01f; //Assuming 1 cm thickness
+        //float fuelDensity = 460.0f; //Assuming methane
+        volume = Mathf.PI * Mathf.Pow(tankDiameterFloat/2, 2) * tankHeightFloat;
+        mass = (volume -  Mathf.PI * Mathf.Pow(tankDiameterFloat/2 - wallThickness, 2))* massDensity;
         tankMaterial = materialDropdown.options[materialDropdown.value].text.ToString();
     }
 
