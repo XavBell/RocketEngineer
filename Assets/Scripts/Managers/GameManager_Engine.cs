@@ -151,9 +151,9 @@ public class GameManager_Engine : MonoBehaviour
         rate = turbine.rate;
         thrust = pump.thrust;
 
-        float rateChangeNozzle = rate * (1-nozzle.rateModifier);
-        float thrustChangeNozzle = thrust * (1-nozzle.thrustModifier);
-        float thrustChangeTurbine = thrust * (1-turbine.thrustModifier);
+        float rateChangeNozzle = rate * (nozzle.rateModifier-1);
+        float thrustChangeNozzle = thrust * (nozzle.thrustModifier-1);
+        float thrustChangeTurbine = thrust * (turbine.thrustModifier-1);
 
         rate += rateChangeNozzle;
         thrust += thrustChangeNozzle + thrustChangeTurbine;

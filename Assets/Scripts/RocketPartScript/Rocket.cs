@@ -38,12 +38,14 @@ public class Rocket : MonoBehaviour
             {
                 totalThrust.Add(engine.gameObject.transform.up.normalized * engine._thrust * throttle);
             }
+
             currentThrust = new UnityEngine.Vector2(0, 0);
+
             foreach(UnityEngine.Vector2 thrust in totalThrust)
             {
                 currentThrust += thrust;
             }
-            UnityEngine.Debug.Log(currentThrust);
+            //UnityEngine.Debug.Log(currentThrust);
 
         }
         if(!Input.GetKey(KeyCode.Z) && currentThrust != new UnityEngine.Vector2(0, 0))
