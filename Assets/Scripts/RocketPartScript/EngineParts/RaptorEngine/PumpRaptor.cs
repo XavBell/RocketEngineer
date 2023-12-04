@@ -5,6 +5,6 @@ using UnityEngine;
 public class PumpRaptor : MonoBehaviour
 {
     public string pumpName = "Pump Raptor";
-    public float thrust = 10600f;
+    public float thrust = 106000f;
     public float mass = 200f;
 }
