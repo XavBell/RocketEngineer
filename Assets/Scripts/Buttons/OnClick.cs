@@ -168,7 +168,10 @@ public class OnClick : MonoBehaviour
             }
             
  
-
+            core.AddComponent<Rigidbody2D>();
+            core.GetComponent<Rigidbody2D>().angularDrag = 0;
+            core.GetComponent<Rigidbody2D>().freezeRotation = true;
+            core.GetComponent<Rigidbody2D>().gravityScale = 0;
             core.AddComponent<PlanetGravity>();
             core.GetComponent<PlanetGravity>().core = core;
             core.GetComponent<Rocket>().core = core;

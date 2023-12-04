@@ -354,6 +354,8 @@ public class Rocket : MonoBehaviour
                 }
                 rp.GetComponent<Rigidbody2D>().simulated = true;
                 rp.GetComponent<Rigidbody2D>().freezeRotation = true;
+                rp.GetComponent<Rigidbody2D>().angularDrag = 0;
+                rp.GetComponent<Rigidbody2D>().gravityScale = 0;
             
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
@@ -382,6 +384,8 @@ public class Rocket : MonoBehaviour
                 }
 
                 rp.gameObject.transform.parent = null;
+                rp.GetComponent<Rocket>().updateMass();
+                this.updateMass();
             }
 
             if(coreIn == true)
@@ -593,6 +597,8 @@ public class Rocket : MonoBehaviour
                 }
                 rp.GetComponent<Rigidbody2D>().simulated = true;
                 rp.GetComponent<Rigidbody2D>().freezeRotation = true;
+                rp.GetComponent<Rigidbody2D>().angularDrag = 0;
+                rp.GetComponent<Rigidbody2D>().gravityScale = 0;
             
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
@@ -620,8 +626,8 @@ public class Rocket : MonoBehaviour
                     part.gameObject.transform.parent = rp.gameObject.transform;
                 }
 
-
-                
+                rp.GetComponent<Rocket>().updateMass();
+                this.updateMass();   
             }
         }
 
