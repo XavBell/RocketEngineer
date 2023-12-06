@@ -1,4 +1,3 @@
-using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,6 +37,8 @@ public class PlanetGravity : MonoBehaviour
     public GameObject WorldSaveManager;
 
     public bool possessed = false;
+    public bool landed = false;
+    public Vector2 previousVelocity = new Vector2(Mathf.Infinity, Mathf.Infinity);
 
     public GameObject TimeRef;
     public TimeManager TimeManager;
@@ -71,6 +72,12 @@ public class PlanetGravity : MonoBehaviour
         {
 
             initializeRocket();
+            
+
+            if(landed == true)
+            {
+                rb.simulated = false;
+            }
 
             if(possessed == true)
             {
@@ -80,7 +87,11 @@ public class PlanetGravity : MonoBehaviour
                 core.GetComponent<Rocket>().updateRocketStaging();
             }
 
-            simulateGravity();
+            if(landed == false)
+            {
+                simulateGravity();
+            }
+            
         }
 
 

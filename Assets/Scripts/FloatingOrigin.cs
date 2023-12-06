@@ -65,8 +65,6 @@ public class FloatingOrigin : MonoBehaviour
         if(g.GetComponent<DoubleTransform>() == null)
         {
             g.transform.position += difference;
-        }
-        
-        
+        }   
     }
 }

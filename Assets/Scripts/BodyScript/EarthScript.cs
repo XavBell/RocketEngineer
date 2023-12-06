@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,31 +11,41 @@ public class EarthScript : MonoBehaviour
 
     public GameObject blockCollider;
     public GameObject earth;
+    public List<Vector3> Points;
+
+
+    public GameObject cam;
 
     private float G; //Gravitational constant
     public float gSlvl;
     public float earthMass = 0f;
     public float earthRadius;
+    public bool updated = true;
+    public PolygonCollider2D polyCollider;
 
     public SolarSystemManager SolarSystemManager;
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Start()
     {
-        //Vector3 rotateAxis = sun.transform.forward.normalized;
-        //transform.RotateAround(sun.transform.position, rotateAxis, 0.0000000001f * Time.deltaTime);
+        polyCollider = GetComponent<PolygonCollider2D>();
+
     }
+
+
 
     public void InitializeEarth()
     {
         SetEarthMass();
         DrawCircle(5000, earthRadius);
+        DrawMesh(Points, earthRadius, 5000);
         
         TimeManager = TimeRef.GetComponent<TimeManager>();
     }
 
     void DrawCircle(int steps, float radius)
     {
+        radius += 0.5f;
         List<Vector2> edges = new List<Vector2>();
         Vector3 previousPos = new Vector3(0f, 0f, 0f);
         GameObject previous = null;
@@ -79,6 +90,7 @@ public class EarthScript : MonoBehaviour
             previousPos = current.transform.position;
 
             current.transform.SetParent(earth.transform);
+            Points.Add(current.transform.localPosition);
         }
 
     }
@@ -87,6 +99,65 @@ public class EarthScript : MonoBehaviour
     {
         GetValues();
         earthMass = gSlvl*(earthRadius*earthRadius)/G;
+    }
+
+    public void DrawMesh(List<Vector3> verticiesList, float radius, int n)
+    {
+        MeshFilter mf = GetComponent<MeshFilter>();
+        Mesh mesh = new Mesh();
+        mf.mesh = mesh;
+
+        Vector3[] verticies = verticiesList.ToArray();
+
+
+        //triangles
+        List<int> trianglesList = new List<int> {};
+        for(int i = 0; i < (n-2); i++)
+        {
+            trianglesList.Add(0);
+            trianglesList.Add(i+1);
+            trianglesList.Add(i+2);
+        }
+
+        int[] triangles = trianglesList.ToArray();
+
+        //normals
+        List<Vector3> normalsList = new List<Vector3> { };
+        for (int i = 0; i < verticies.Length; i++)
+        {
+            normalsList.Add(-Vector3.forward);
+        }
+        Vector3[] normals = normalsList.ToArray();
+
+        
+
+        //initialise
+        mesh.vertices = verticies;
+        mesh.triangles = triangles;
+        mesh.normals = normals;
+
+
+        int numVerticies = mesh.vertices.Length;
+        Vector2[] uvs = new Vector2[numVerticies];
+        for(int i = 0; i < numVerticies; i++)
+        {
+            float x = Mathf.Cos((i/(float)numVerticies)*Mathf.PI*2.0f)*0.5f+0.5f;
+            float y = Mathf.Sin((i/(float)numVerticies)*Mathf.PI*2.0f)*0.5f+0.5f;
+            uvs[i] = new Vector2(x, y);
+        }
+        mesh.uv = uvs;
+
+        //polyCollider
+        polyCollider.pathCount = 1;
+
+        List<Vector2> pathList = new List<Vector2> { };
+        for (int i = 0; i < n; i++)
+        {
+            pathList.Add(new Vector2(verticies[i].x, verticies[i].y));
+        }
+        Vector2[] path = pathList.ToArray();
+
+        polyCollider.SetPath(0, path);
     }
 
     void GetValues()
