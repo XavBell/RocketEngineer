@@ -356,6 +356,7 @@ public class Rocket : MonoBehaviour
                 rp.GetComponent<Rigidbody2D>().freezeRotation = true;
                 rp.GetComponent<Rigidbody2D>().angularDrag = 0;
                 rp.GetComponent<Rigidbody2D>().gravityScale = 0;
+                rp.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity;
             
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
@@ -599,6 +600,7 @@ public class Rocket : MonoBehaviour
                 rp.GetComponent<Rigidbody2D>().freezeRotation = true;
                 rp.GetComponent<Rigidbody2D>().angularDrag = 0;
                 rp.GetComponent<Rigidbody2D>().gravityScale = 0;
+                rp.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity;
             
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
