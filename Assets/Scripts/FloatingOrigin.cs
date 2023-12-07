@@ -16,6 +16,7 @@ public class FloatingOrigin : MonoBehaviour
     public GameObject customCursor;
     public GameObject Prediction;
     public GameObject Camera;
+    private RocketPart[] rps;
 
     // Start is called before the first frame update
     void Start()
@@ -24,7 +25,7 @@ public class FloatingOrigin : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         updateFloatReference();
     }
@@ -35,16 +36,15 @@ public class FloatingOrigin : MonoBehaviour
     {
         if(Camera.transform.position.magnitude > threshold){
             Vector3 difference = Vector3.zero - Camera.transform.position; 
-            Debug.Log(SceneManager.sceneCount);
+            PauseRockets();
             for(int z = 0; z < SceneManager.sceneCount; z++)
             {
-                Debug.Log(SceneManager.GetSceneAt(z).GetRootGameObjects().Count());
                 foreach (GameObject g in SceneManager.GetSceneAt(z).GetRootGameObjects())
                 {
                    UpdatePosition(g, difference);
                 }
             }
-
+            ActivateRocket();
             
             Prediction.GetComponent<Prediction>().updated = false;
         }
@@ -53,18 +53,36 @@ public class FloatingOrigin : MonoBehaviour
 
     public void UpdatePosition(GameObject g, Vector3 difference)
     {
-        if(g.GetComponent<DoubleTransform>() != null)
+        DoubleTransform dt = g.GetComponent<DoubleTransform>();   
+        if(dt != null)
         {
-            DoubleTransform doubleTransform = g.GetComponent<DoubleTransform>();
-            doubleTransform.x_pos += difference.x;
-            doubleTransform.y_pos += difference.y;
-            doubleTransform.z_pos += difference.z;
+            dt.x_pos += difference.x;
+            dt.y_pos += difference.y;
+            dt.z_pos += difference.z;
 
-            g.transform.position = new Vector3((float)doubleTransform.x_pos, (float)doubleTransform.y_pos, (float)doubleTransform.z_pos);
+            g.transform.position = new Vector3((float)dt.x_pos, (float)dt.y_pos, (float)dt.z_pos);
         }
-        if(g.GetComponent<DoubleTransform>() == null)
+        if(dt == null)
         {
             g.transform.position += difference;
         }   
+    }
+
+    public void PauseRockets()
+    {
+        Rigidbody2D[] rps = GameObject.FindObjectsOfType<Rigidbody2D>();
+        foreach(Rigidbody2D part in rps)
+        {
+            part.simulated = false;
+        }
+    }
+
+    public void ActivateRocket()
+    {
+        Rigidbody2D[] rps = GameObject.FindObjectsOfType<Rigidbody2D>();
+        foreach(Rigidbody2D rp in rps)
+        {
+            rp.simulated = true;
+        }
     }
 }

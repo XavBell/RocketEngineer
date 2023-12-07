@@ -47,6 +47,8 @@ public class PlanetGravity : MonoBehaviour
     public float time = 0;
 
     public SolarSystemManager SolarSystemManager;
+    public DoubleTransform dt;
+    public Camera cam;
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +60,7 @@ public class PlanetGravity : MonoBehaviour
         rb.mass = core.GetComponent<Rocket>().rocketMass;
         if(SceneManager.GetActiveScene().name == "SampleScene")
         {
+            cam = GameObject.FindObjectOfType<Camera>();
             G = SolarSystemManager.G;
         }
         
@@ -68,7 +71,7 @@ public class PlanetGravity : MonoBehaviour
     {
         checkManager();
 
-        if (SceneManager.GetActiveScene().name == "SampleScene" )
+        if (SceneManager.GetActiveScene().name == "SampleScene" && cam != null)
         {
 
             initializeRocket();
@@ -81,16 +84,23 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
+                rb.simulated = true;
                 MasterManager.ActiveRocket = core;
                 core.GetComponent<Rocket>().controlThrust();
                 core.GetComponent<Rocket>()._orientation();
                 core.GetComponent<Rocket>().updateRocketStaging();
             }
 
-            if(landed == false)
+            if((cam.transform.position - this.transform.position).magnitude < 1000)
             {
                 simulateGravity();
             }
+
+            if(possessed == false && this.rb.velocity.magnitude== 0)
+            {
+                rb.simulated = false;
+            }
+            
             
         }
 
@@ -108,8 +118,9 @@ public class PlanetGravity : MonoBehaviour
         UnityEngine.Vector3 ForceVector = forceDir * (G*((Mass*rb.mass)/ (Dist * Dist)));
         UnityEngine.Vector3 Thrust = new UnityEngine.Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
         UnityEngine.Vector3 ResultVector = (ForceVector + Thrust);
-        Debug.Log(Thrust.magnitude);
         rb.AddForce(ResultVector);
+        this.GetComponent<DoubleTransform>().x_pos = rb.position.x;
+        this.GetComponent<DoubleTransform>().y_pos = rb.position.y;
     }
 
     void checkManager()

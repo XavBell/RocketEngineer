@@ -1,7 +1,8 @@
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
 
 public class EarthScript : MonoBehaviour
 {
@@ -38,7 +39,6 @@ public class EarthScript : MonoBehaviour
     {
         SetEarthMass();
         DrawCircle(5000, earthRadius);
-        DrawMesh(Points, earthRadius, 5000);
         
         TimeManager = TimeRef.GetComponent<TimeManager>();
     }
@@ -103,13 +103,28 @@ public class EarthScript : MonoBehaviour
 
     public void DrawMesh(List<Vector3> verticiesList, float radius, int n)
     {
+        Vector3[] verticies = verticiesList.ToArray();
+        //polyCollider
+        polyCollider.pathCount = 1;
+
+        List<Vector2> pathList = new List<Vector2> { };
+        for (int i = 0; i < n; i++)
+        {
+            pathList.Add(new Vector2(verticies[i].x, verticies[i].y));
+        }
+        Vector2[] path = pathList.ToArray();
+
+        polyCollider.SetPath(0, path);
+        //SaveMesh(mesh, "planet", true, false);
+    }
+
+    void test(List<Vector3> verticiesList, float radius, int n)
+    {
         MeshFilter mf = GetComponent<MeshFilter>();
         Mesh mesh = new Mesh();
         mf.mesh = mesh;
-
         Vector3[] verticies = verticiesList.ToArray();
-
-
+        
         //triangles
         List<int> trianglesList = new List<int> {};
         for(int i = 0; i < (n-2); i++)
@@ -146,19 +161,9 @@ public class EarthScript : MonoBehaviour
             uvs[i] = new Vector2(x, y);
         }
         mesh.uv = uvs;
-
-        //polyCollider
-        polyCollider.pathCount = 1;
-
-        List<Vector2> pathList = new List<Vector2> { };
-        for (int i = 0; i < n; i++)
-        {
-            pathList.Add(new Vector2(verticies[i].x, verticies[i].y));
-        }
-        Vector2[] path = pathList.ToArray();
-
-        polyCollider.SetPath(0, path);
     }
+
+    
 
     void GetValues()
     {
