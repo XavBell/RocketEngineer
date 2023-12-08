@@ -175,6 +175,10 @@ public class OnClick : MonoBehaviour
             core.AddComponent<PlanetGravity>();
             core.GetComponent<PlanetGravity>().core = core;
             core.GetComponent<Rocket>().core = core;
+            core.AddComponent<DoubleTransform>();
+            core.AddComponent<RocketStateManager>();
+            core.AddComponent<RocketPath>();
+            
             foreach(Stages stage in rocket.Stages)
             {
                 core.GetComponent<Rocket>().Stages.Add(stage);

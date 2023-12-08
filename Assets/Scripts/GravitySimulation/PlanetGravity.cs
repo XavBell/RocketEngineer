@@ -84,14 +84,15 @@ public class PlanetGravity : MonoBehaviour
 
             if(possessed == true)
             {
-                rb.simulated = true;
+                //rb.simulated = true;
                 MasterManager.ActiveRocket = core;
                 core.GetComponent<Rocket>().controlThrust();
                 core.GetComponent<Rocket>()._orientation();
                 core.GetComponent<Rocket>().updateRocketStaging();
             }
+            updateReferenceBody();
 
-            //simulateGravity();
+            
             
             
         }
@@ -99,10 +100,16 @@ public class PlanetGravity : MonoBehaviour
 
     }
 
-    void simulateGravity()
+    public void simulate()
     {
-        updateReferenceBody();
-        
+        core.GetComponent<Rocket>().controlThrust();
+        core.GetComponent<Rocket>()._orientation();
+        core.GetComponent<Rocket>().updateRocketStaging();
+        simulateGravity();
+    }
+
+    void simulateGravity()
+    {   
         //Gravity
         rb.mass = core.GetComponent<Rocket>().rocketMass;
         float Dist = UnityEngine.Vector2.Distance(rb.transform.position, planet.transform.position);

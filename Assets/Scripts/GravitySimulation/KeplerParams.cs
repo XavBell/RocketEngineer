@@ -12,4 +12,5 @@ public class KeplerParams
     public float inclination;
     public float trueAnomalyAtEpoch;
     public float timeToPeriapsis;
+    public float AP;
 }

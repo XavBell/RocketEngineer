@@ -36,7 +36,6 @@ public class FloatingOrigin : MonoBehaviour
     {
         if(Camera.transform.position.magnitude > threshold){
             Vector3 difference = Vector3.zero - Camera.transform.position; 
-            PauseRockets();
             for(int z = 0; z < SceneManager.sceneCount; z++)
             {
                 foreach (GameObject g in SceneManager.GetSceneAt(z).GetRootGameObjects())
@@ -44,7 +43,6 @@ public class FloatingOrigin : MonoBehaviour
                    UpdatePosition(g, difference);
                 }
             }
-            ActivateRocket();
             
             Prediction.GetComponent<Prediction>().updated = false;
         }
@@ -54,7 +52,7 @@ public class FloatingOrigin : MonoBehaviour
     public void UpdatePosition(GameObject g, Vector3 difference)
     {
         DoubleTransform dt = g.GetComponent<DoubleTransform>();   
-        if(dt != null)
+        if(false == true)
         {
             dt.x_pos += difference.x;
             dt.y_pos += difference.y;
@@ -62,7 +60,7 @@ public class FloatingOrigin : MonoBehaviour
 
             g.transform.position = new Vector3((float)dt.x_pos, (float)dt.y_pos, (float)dt.z_pos);
         }
-        if(dt == null)
+        if(true == true)
         {
             g.transform.position += difference;
         }   

@@ -85,6 +85,7 @@ public class MoonScript : MonoBehaviour
     {
         GetValues();
         moonMass = gSlvl*(moonRadius*moonRadius)/G;
+        SolarSystemManager.moonMass = moonMass;
     }
 
     void GetValues()

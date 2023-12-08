@@ -39,6 +39,8 @@ public class EarthScript : MonoBehaviour
     {
         SetEarthMass();
         DrawCircle(5000, earthRadius);
+        this.GetComponent<DoubleTransform>().x_pos = this.transform.position.x;
+        this.GetComponent<DoubleTransform>().y_pos = this.transform.position.y;
 
         
         TimeManager = TimeRef.GetComponent<TimeManager>();
@@ -102,6 +104,7 @@ public class EarthScript : MonoBehaviour
     {
         GetValues();
         earthMass = gSlvl*(earthRadius*earthRadius)/G;
+        SolarSystemManager.earthMass = earthMass;
     }
 
     public void DrawMesh(List<Vector3> verticiesList, float radius, int n)
