@@ -91,15 +91,7 @@ public class PlanetGravity : MonoBehaviour
                 core.GetComponent<Rocket>().updateRocketStaging();
             }
 
-            if((cam.transform.position - this.transform.position).magnitude < 1000)
-            {
-                simulateGravity();
-            }
-
-            if(possessed == false && this.rb.velocity.magnitude== 0)
-            {
-                rb.simulated = false;
-            }
+            //simulateGravity();
             
             
         }

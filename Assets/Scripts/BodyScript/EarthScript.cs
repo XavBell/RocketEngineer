@@ -39,6 +39,7 @@ public class EarthScript : MonoBehaviour
     {
         SetEarthMass();
         DrawCircle(5000, earthRadius);
+
         
         TimeManager = TimeRef.GetComponent<TimeManager>();
     }
@@ -91,7 +92,9 @@ public class EarthScript : MonoBehaviour
 
             current.transform.SetParent(earth.transform);
             Points.Add(current.transform.localPosition);
+            
         }
+
 
     }
 
@@ -161,6 +164,9 @@ public class EarthScript : MonoBehaviour
             uvs[i] = new Vector2(x, y);
         }
         mesh.uv = uvs;
+        mesh.RecalculateTangents();
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
     }
 
     
