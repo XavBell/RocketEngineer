@@ -28,6 +28,10 @@ public class MoonScript : MonoBehaviour
     {
         SetMoonMass();
         DrawCircle(1000, moonRadius);
+        this.GetComponent<DoubleTransform>().x_pos = this.transform.position.x;
+        this.GetComponent<DoubleTransform>().y_pos = this.transform.position.y;
+        this.GetComponent<PhysicsStats>().x_pos = this.transform.position.x;
+        this.GetComponent<PhysicsStats>().y_pos = this.transform.position.y;
         
     }
 

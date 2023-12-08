@@ -58,10 +58,11 @@ public class CameraControl : MonoBehaviour
             MapView();
         }
 
-        if(MasterManager.GetComponent<MasterManager>().gameState == "Flight")
-        {  
+        if(MasterManager.GetComponent<MasterManager>().ActiveRocket != null)
+        {
             UpdateToRocketPosition();
         }
+        
 
 
 

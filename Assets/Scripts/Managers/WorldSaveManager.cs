@@ -437,6 +437,9 @@ public class WorldSaveManager : MonoBehaviour
             capsuleID++;
             alreadyUsed += childrenNumber;
         }
+        earth.GetComponent<EarthScript>().InitializeEarth();
+        moon.GetComponent<MoonScript>().InitializeMoon();
+        
         loaded = true;
         } else if(loadedWorld.version != version.currentVersion)
         {

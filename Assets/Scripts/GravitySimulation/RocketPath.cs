@@ -383,7 +383,6 @@ public class RocketPath : MonoBehaviour
         float n = Mathf.Sqrt(gravityParam/Mathf.Abs(Mathf.Pow(a, 3)))*Mathf.Sign(angle);
 
         //Plot positions
-        float timeStep = 10f;
         int maxStep = 300;
         UnityEngine.Vector3[] positions = new UnityEngine.Vector3[maxStep];
         float H = Ho;
@@ -391,7 +390,7 @@ public class RocketPath : MonoBehaviour
         for(int ia = 0; ia<maxStep; ia++)
         {
             //Calculate mean anomaly
-            float M = Mo + (((ia)*timeStep-time) + time)*n;
+            float M = Mo + time*n;
 
             //Calculate current hyperbolic anomaly
             H = (float)(H + (M - e*Math.Sinh(H) + H)/(e*Math.Cosh(H)-1));
@@ -401,6 +400,19 @@ public class RocketPath : MonoBehaviour
             //positions[ia] = new UnityEngine.Vector2((float)(a*(e - Math.Cosh(H))), (float)(a*Mathf.Sqrt(Mathf.Pow(e, 2)-1)*Math.Sinh(H)));
             positions[ia] = new UnityEngine.Vector2(rawP.x*Mathf.Cos(i)-rawP.y*Mathf.Sin(i), rawP.x*Mathf.Sin(i)+rawP.y*Mathf.Cos(i)) + planetPosition2D;     
         }
+    }
+
+    public static Vector3 GetOrbitalPositionHyperbolic(float Mo, float time, float Ho, float e, float a, float i, Vector2 planetPosition2D)
+    {
+        //Calculate mean anomaly
+        float M = Mo + time;
+        float H = Ho;
+
+        //Calculate current hyperbolic anomaly
+        H = (float)(H + (M - e*Math.Sinh(H) + H)/(e*Math.Cosh(H)-1));
+
+        Vector2 rawP = new Vector2((float)(a*(e - Math.Cosh(H))), (float)(a*Mathf.Sqrt(Mathf.Pow(e, 2)-1)*Math.Sinh(H)));
+        return new Vector2(rawP.x*Mathf.Cos(i)-rawP.y*Mathf.Sin(i), rawP.x*Mathf.Sin(i)+rawP.y*Mathf.Cos(i));    
     }
 
 }

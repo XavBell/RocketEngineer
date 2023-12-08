@@ -52,7 +52,7 @@ public class FloatingOrigin : MonoBehaviour
     public void UpdatePosition(GameObject g, Vector3 difference)
     {
         DoubleTransform dt = g.GetComponent<DoubleTransform>();   
-        if(false == true)
+        if(dt != null)
         {
             dt.x_pos += difference.x;
             dt.y_pos += difference.y;
@@ -60,7 +60,7 @@ public class FloatingOrigin : MonoBehaviour
 
             g.transform.position = new Vector3((float)dt.x_pos, (float)dt.y_pos, (float)dt.z_pos);
         }
-        if(true == true)
+        if(dt == null)
         {
             g.transform.position += difference;
         }   

@@ -34,8 +34,6 @@ public class BuildingManager : MonoBehaviour
         WorldSaveManager = GWS.GetComponent<WorldSaveManager>();
 
         customCursor.gameObject.SetActive(false);
-        earth.GetComponent<EarthScript>().InitializeEarth();
-        moon.GetComponent<MoonScript>().InitializeMoon();
     }
 
     // Update is called once per frame
