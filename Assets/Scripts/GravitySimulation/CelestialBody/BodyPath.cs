@@ -67,7 +67,7 @@ public class BodyPath : MonoBehaviour
 
         if(start == true)
         {
-            Vector2 transform = GetOrbitPositionKepler(gravityParam, Time.time+1000f, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + OrbitingBody.transform.position;
+            Vector2 transform = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + OrbitingBody.transform.position;
             this.transform.position = transform;
             this.GetComponent<DoubleTransform>().x_pos = transform.x;
             this.GetComponent<DoubleTransform>().y_pos = transform.y;
@@ -93,6 +93,12 @@ public class BodyPath : MonoBehaviour
         }
 
         
+    }
+
+    public Vector3 GetPositionAtTime(float Time)
+    {
+        Vector3 transform = GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + OrbitingBody.transform.position;
+        return transform;
     }
 
     public static Vector3 GetOrbitPositionKepler(float gravityParam, float time, float semiMajorAxis, float eccentricity, float argPeriapsis, float LAN, float inclination, float trueAnomalyAtEpoch)

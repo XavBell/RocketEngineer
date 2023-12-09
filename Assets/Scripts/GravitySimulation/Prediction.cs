@@ -1,18 +1,20 @@
 using System.Threading;
 using System;
-using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
+using UnityEngine.Timeline;
 
 public class Prediction : MonoBehaviour
 {
     public PlanetGravity planetGravity;
     public GameObject WorldSaveManager;
     public MasterManager MasterManager;
+    public GameObject potentialBody;
+    public GameObject orbitMarker;
     public LineRenderer line;
     public Rigidbody2D rb;
     public float G;
@@ -270,7 +272,7 @@ public class Prediction : MonoBehaviour
         KtoCfromC(rocketPosition2D, planetPosition2D,rocketVelocity2D, gravityParam, time, out keplerParams.semiMajorAxis, out keplerParams.eccentricity, out keplerParams.argumentOfPeriapsis, out keplerParams.longitudeOfAscendingNode, out keplerParams.inclination, out keplerParams.timeToPeriapsis, out keplerParams.trueAnomalyAtEpoch);
     }
 
-    public static void CalculatePoints(float time, int numPoints, float gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref float[] times, ref UnityEngine.Vector3[] positions)
+    public void CalculatePoints(float time, int numPoints, float gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref float[] times, ref UnityEngine.Vector3[] positions)
     {
         var period = GetOrbitalPeriod(gravityParam, keplerParams.semiMajorAxis);
         var timeIncrement = period / numPoints;
@@ -283,6 +285,9 @@ public class Prediction : MonoBehaviour
 
             time += timeIncrement;
         }
+
+        DetectIntercept(positions, times, planetPosition2D, potentialBody, orbitMarker);
+
     }
 
     public void CalculateParametersHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam, float time, LineRenderer line)
@@ -339,6 +344,7 @@ public class Prediction : MonoBehaviour
         int maxStep = 300;
         UnityEngine.Vector3[] positions = new UnityEngine.Vector3[maxStep];
         float H = Ho;
+        float[]times = new float[maxStep];
 
         for(int ia = 0; ia<maxStep; ia++)
         {
@@ -353,17 +359,49 @@ public class Prediction : MonoBehaviour
             if((new UnityEngine.Vector2(rawP.x*Mathf.Cos(i)-rawP.y*Mathf.Sin(i), rawP.x*Mathf.Sin(i)+rawP.y*Mathf.Cos(i)) + planetPosition2D).magnitude < 10000000)
             {
                 positions[ia] = new UnityEngine.Vector2(rawP.x*Mathf.Cos(i)-rawP.y*Mathf.Sin(i), rawP.x*Mathf.Sin(i)+rawP.y*Mathf.Cos(i)) + planetPosition2D;
+                times[ia] = (((ia)*timeStep-time) + time);
             }
                  
         }
 
         
- 
+        DetectIntercept(positions, times, planetPosition2D, potentialBody, orbitMarker);
         line.positionCount = maxStep;
         line.SetPositions(positions);
+    }
 
-        //Moon.transform.position = positions[0];
-        //UnityEngine.Debug.Log(e);
+    public void DetectIntercept(Vector3[] points, float[] times, Vector2 orbitingBodyPos, GameObject potentialBody, GameObject orbitMarker)
+    {
+        //Minimum distance from moon is 391100 for gravity switch
+        //That means that distance from planet must be at least 377,700
+        List<Vector3> PotentialPos = new List<Vector3>();
+        List<float> PotentialTimes = new List<float>();
+
+        int i = 0;
+        foreach(Vector3 point in points)
+        {
+            if((point - new Vector3(orbitingBodyPos.x, orbitingBodyPos.y, 0)).magnitude >= 377700)
+            {
+                PotentialPos.Add(point);
+                PotentialTimes.Add(times[i]);
+            }
+            i++;
+        }
+
+        i = 0;
+        foreach(float time in PotentialTimes)
+        {
+            Vector3 potentialPosition = potentialBody.GetComponent<BodyPath>().GetPositionAtTime(time);
+            //Assume minimum of 500m (?)
+            if((potentialPosition - PotentialPos[i]).magnitude < 5000)
+            {
+                Debug.Log("Intercept Found");
+                orbitMarker.transform.position = potentialPosition;
+                return;
+            }
+            i++;
+        }
+
     }
 
 }

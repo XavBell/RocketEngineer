@@ -10,28 +10,30 @@ public class PhysicsStats : MonoBehaviour
     public double y_pos;
     public double x_vel;
     public double y_vel;
-    public double mass;
+    public double mass = 0;
     // Start is called before the first frame update
     void Start()
     {
-        if(body == "moon")
-        {
-            mass = solarSystemManager.moonMass;
-        }
-
-        if(body == "earth")
-        {
-            mass = solarSystemManager.earthMass;
-        }
-
         x_pos = this.transform.position.x;
         y_pos = this.transform.position.y;
+    }
+    void Update()
+    {
+        if(mass == 0)
+        {
+            if(body == "moon")
+            {
+                mass = solarSystemManager.moonMass;
+            }
+
+            if(body == "earth")
+            {
+                mass = solarSystemManager.earthMass;
+            }
+            this.GetComponent<BodyPath>().calculate = true;
+        }
+        
         
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
