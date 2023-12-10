@@ -128,7 +128,7 @@ public class OnClick : MonoBehaviour
                 rocket.Stages.Add(stage);
             }
 
-            UnityEngine.Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y+launchPad.GetComponent<BoxCollider2D>().bounds.max.y/2 + 10);
+            Vector2 position = new Vector2(launchPad.transform.position.x, launchPad.transform.position.y + 10);
 
             List<System.Guid> partsGuid = new List<System.Guid>();
             List<System.Guid> topGuid = new List<System.Guid>();
