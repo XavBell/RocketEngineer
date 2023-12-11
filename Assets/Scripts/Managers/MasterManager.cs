@@ -38,7 +38,9 @@ public class MasterManager : MonoBehaviour
     public GameObject ActiveRocket;
 
     public GameObject MainCanvas;
-    public GameObject ScrollCanvas;
+    public GameObject loadCanvas;
+    public GameObject newWorldCanvas;
+    public List<GameObject> buttons = new List<GameObject>();
 
 
 
@@ -50,23 +52,7 @@ public class MasterManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder);
-        }
-
-        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder);
-        var fileInfo = info.GetDirectories();
-        foreach (var file in fileInfo)
-        {
-            GameObject button = Instantiate(buttonPrefab) as GameObject;
-            GameObject child = button.transform.GetChild(0).gameObject;
-            child = child.transform.GetChild(0).gameObject;
-            child.transform.SetParent(scrollBox.transform, false);
-            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
-            b1text.text = Path.GetFileName(file.ToString());
-        }
-        
+        updateButtons();
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -89,6 +75,34 @@ public class MasterManager : MonoBehaviour
         {
             thrust();
         }
+    }
+
+    void updateButtons()
+    {
+        foreach(GameObject child in buttons)
+        {
+            DestroyImmediate(child);
+        }
+
+        buttons = new List<GameObject>();
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder);
+        var fileInfo = info.GetDirectories();
+        foreach (var file in fileInfo)
+        {
+            GameObject button = Instantiate(buttonPrefab);
+            GameObject child = button.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollBox.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+            buttons.Add(button);
+            buttons.Add(child);
+        } 
     }
 
     public void newGame()
@@ -119,17 +133,47 @@ public class MasterManager : MonoBehaviour
         }
     }
 
+    public void delete()
+    {
+        string folder = savePath.text.ToString();
+        if(FolderName != null)
+        {
+            var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder);
+            var fileInfo = info.GetFiles();
+            foreach(var file in fileInfo)
+            {
+                file.Delete();
+            }
+            Directory.Delete(Application.persistentDataPath + savePathRef.worldsFolder + "/" + FolderName, true);
+        }
+
+        updateButtons();
+    }
+
     public void Quit()
     {
         Application.Quit();
     }
 
-    public void play()
+    public void loadWorld()
     {
         rocketActive = true;
         MainCanvas.SetActive(false);
-        ScrollCanvas.SetActive(true);
-        
+        loadCanvas.SetActive(true);
+    }
+
+    public void newWorld()
+    {
+        rocketActive = true;
+        MainCanvas.SetActive(false);
+        newWorldCanvas.SetActive(true);
+    }
+
+    public void back()
+    {
+        MainCanvas.SetActive(true);
+        newWorldCanvas.SetActive(false);
+        loadCanvas.SetActive(false);
     }
 
     void thrust()
