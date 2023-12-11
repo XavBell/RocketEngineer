@@ -13,14 +13,14 @@ using Newtonsoft.Json;
 public class launchPadManager : MonoBehaviour
 {
     public GameObject buttonPrefab;
-    public GameObject Panel;
-    public GameObject scroll;
     public savePath savePathRef = new savePath();
     public MasterManager MasterManager;
     public bool Spawned = false;
     public GameObject ConnectedRocket;
     public outputInputManager oxidizer;
     public outputInputManager fuel;
+    public string padName;
+    public GameObject button;
 
     // Start is called before the first frame update
     void Start()
@@ -34,7 +34,7 @@ public class launchPadManager : MonoBehaviour
     {
         if(Spawned == false)
         {
-            retrieveRocketSaved();
+            //retrieveRocketSaved();
             Spawned = true;
         }
 
@@ -46,34 +46,6 @@ public class launchPadManager : MonoBehaviour
                 ConnectedRocket = null;
                 this.GetComponent<outputInputManager>().outputParent = null;
             }
-        }
-    }
-
-    public void retrieveRocketSaved()
-    {
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
-            return;
-        }
-
-        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
-        var fileInfo = info.GetFiles();
-        if(fileInfo.Length == 0)
-        {
-            return;
-        }
-        foreach (var file in fileInfo)
-        {
-            GameObject rocket = Instantiate(buttonPrefab) as GameObject;
-            GameObject child = rocket.transform.GetChild(0).gameObject;
-            child = child.transform.GetChild(0).gameObject;
-            child.transform.SetParent(scroll.transform, false);
-            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
-            b1text.text = Path.GetFileName(file.ToString());
-            child.GetComponentInChildren<OnClick>().filePath = savePathRef.rocketFolder;
-            child.GetComponentInChildren<OnClick>().launchPad = this.gameObject;
-
         }
     }
 }

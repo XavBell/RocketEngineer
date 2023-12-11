@@ -88,18 +88,6 @@ public class DetectClick : MonoBehaviour
                      
                         }
 
-                        if(type == "launchPad")
-                        {
-                            Debug.Log("Active");
-                            GameObject panel = current.GetComponent<launchPadManager>().Panel;
-                            if(panel.active == false)
-                            {
-                                panel.SetActive(true);
-
-                            }
-                            current.GetComponent<outputInputManager>().log = true; 
-                        }
-
                         if(type == "GSEtank")
                         {
                             current.GetComponent<outputInputManager>().log = true; 
@@ -143,17 +131,6 @@ public class DetectClick : MonoBehaviour
                                 panel.SetActive(false);
                             }
                             
-                        }
-
-                        if(type == "launchPad")
-                        {
-                            Debug.Log("Active");
-                            GameObject panel = current.GetComponent<launchPadManager>().Panel;
-                            if(panel.active == true)
-                            {
-                                panel.SetActive(false);
-                            }
-                            current.GetComponent<outputInputManager>().log = false; 
                         }
 
                         if(type == "GSEtank")

@@ -6,4 +6,6 @@ public class buildingType : MonoBehaviour
 {
     public string type;
     public int buildingID;
+    public GameObject inputUI;
+    public GameObject outputUI;
 }

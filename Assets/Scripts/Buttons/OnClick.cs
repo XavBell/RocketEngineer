@@ -28,6 +28,15 @@ public class OnClick : MonoBehaviour
     public string path;
     public string filePath;
     public GameObject spawnedRocket;
+    public operationManager op;
+    public GameObject savedLaunchpad;
+
+    public outputInputManager oxidizerInput;
+    public outputInputManager fuelInput;
+    public outputInputManager output;
+    public FuelConnectorManager fcm;
+    public GameObject inputUI;
+    public GameObject outputUI;
 
     // Start is called before the first frame update
     void Start()
@@ -372,5 +381,34 @@ public class OnClick : MonoBehaviour
             tank.GetComponent<outputInputManager>().selfRate = 0;
             return;
         }
+    }
+
+    public void selectLaunchpad()
+    {
+        if(op != null)
+        {
+            op.selectedLaunchPad = savedLaunchpad;
+            op.hidePadButtons();
+        }
+    }
+
+    public void setInput(outputInputManager input)
+    {
+        fcm = FindObjectOfType<FuelConnectorManager>();
+        if(fcm != null)
+        {
+            fcm.input = input;
+        }
+        inputUI.SetActive(false);
+    }
+
+    public void setOutput(outputInputManager output)
+    {
+        fcm = FindObjectOfType<FuelConnectorManager>();
+        if(fcm != null)
+        {
+            fcm.output = output;
+        }
+        outputUI.SetActive(false);
     }
 }

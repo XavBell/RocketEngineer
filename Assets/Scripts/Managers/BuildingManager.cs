@@ -10,11 +10,11 @@ public class BuildingManager : MonoBehaviour
     public GameObject customCursor;
     public GameObject earth;
     public GameObject moon;
-    public GameObject pipe;
     public GameObject menu;
 
     public MasterManager MasterManager;
     public WorldSaveManager WorldSaveManager;
+    public launchsiteManager launchsiteManager;
 
     public float planetRadius = 6371;
 
@@ -43,56 +43,29 @@ public class BuildingManager : MonoBehaviour
         {
             if (partToConstruct != null && Cursor.visible == false && customCursor.GetComponent<CustomCursor>().constructionAllowed == true)
             {
+                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
+                float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+                position = (v.normalized*-(planetRadius + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
+                position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
+                GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
+                current.transform.SetParent(earth.transform);
+                current.GetComponent<buildingType>().buildingID = IDMax+1;
+                IDMax += 1;
+
                 if(partToConstruct.GetComponent<buildingType>().type == "designer")
                 {
-                    Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
-                    float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                    position = (v.normalized*-(planetRadius + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
-                    position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
-                    GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
-                    current.transform.SetParent(earth.transform);
-                    current.GetComponent<buildingType>().buildingID = IDMax+1;
-                    IDMax += 1;
+                    launchsiteManager.designer = current;
                 }
 
-                if(partToConstruct.GetComponent<buildingType>().type == "GSEtank")
+                if(partToConstruct.GetComponent<buildingType>().type == "commandCenter")
                 {
-                    Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
-                    float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                    position = (v.normalized*-(planetRadius + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
-                    position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
-                    GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
-                    current.transform.SetParent(earth.transform);
-                    current.GetComponent<buildingType>().buildingID = IDMax+1;
-                    IDMax += 1;
+                    launchsiteManager.commandCenter = current;
                 }
 
-                if(partToConstruct.GetComponent<buildingType>().type == "launchPad")
-                {
-                    Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
-                    float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                    position = (v.normalized*-(planetRadius + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
-                    position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
-                    GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
-                    current.transform.SetParent(earth.transform);
-                    current.GetComponent<buildingType>().buildingID = IDMax+1;
-                    IDMax += 1;
-                }
-
-                if(partToConstruct.GetComponent<buildingType>().type == "pipe")
-                {
-                    Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                    GameObject current = Instantiate(partToConstruct, position, Quaternion.identity);
-                    current.transform.SetParent(earth.transform);
-                    current.transform.eulerAngles = new Vector3(0, 0, customCursor.GetComponent<CustomCursor>().zRot);
-                    current.GetComponent<buildingType>().buildingID = IDMax+1;
-                    IDMax += 1;
-                }
 
             }
+            launchsiteManager.updateVisibleButtons();
             partToConstruct = null;
             Cursor.visible = true;
             customCursor.gameObject.SetActive(false);
@@ -113,6 +86,22 @@ public class BuildingManager : MonoBehaviour
             Destroy(MasterManager.gameObject);
             SceneManager.LoadScene("Menu");
         }
+    }
+
+    public void EnterEngineDesign()
+    {
+        WorldSaveManager.saveTheWorld();
+        SceneManager.LoadScene("EngineDesign");
+    }
+    public void EnterTankDesign()
+    {
+        WorldSaveManager.saveTheWorld();
+        SceneManager.LoadScene("TankDesign");
+    }
+    public void EnterRocketDesign()
+    {
+        WorldSaveManager.saveTheWorld();
+        SceneManager.LoadScene("Building");
     }
 
     public void Connect(GameObject output, GameObject input)
@@ -150,6 +139,21 @@ public class BuildingManager : MonoBehaviour
         if(menu.activeSelf == false)
         {
             menu.SetActive(true);
+            return;
+        }
+    }
+
+    public void activateDeactivate(GameObject button)
+    {
+        if(button.activeSelf == true)
+        {
+            button.SetActive(false);
+            return;
+        }
+
+        if(button.activeSelf == false)
+        {
+            button.SetActive(true);
             return;
         }
     }

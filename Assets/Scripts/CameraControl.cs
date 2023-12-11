@@ -53,8 +53,8 @@ public class CameraControl : MonoBehaviour
 
         if(MasterManager.GetComponent<MasterManager>().gameState == "Building")
         {  
-            QE();
-            WASD();
+            //QE();
+            //WASD();
             MapView();
         }
 
