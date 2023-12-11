@@ -6,7 +6,6 @@ public class Tank : RocketPart
 {
     public float _volume{get; set;}
     public Vector2 _size{get; set;}
-    public string circuit;
     public string tankMaterial;
     public string propellantCategory;
 }

@@ -29,14 +29,14 @@ public class Rocket : MonoBehaviour
 
     public void controlThrust()
     {
-        updateActiveEngines();
+        //updateActiveEngines();
         if(Input.GetKey(KeyCode.Z))
         {
-            UnityEngine.Debug.Log(Stages.Count);
             List<UnityEngine.Vector2> totalThrust = new List<UnityEngine.Vector2>();  
-            foreach(Engine engine in engines)
+            foreach(Stages stage in Stages)
             {
-                totalThrust.Add(engine.gameObject.transform.up.normalized * engine._thrust * throttle/100);
+                stage.updateThrust(throttle/100);
+                totalThrust.Add(stage.thrust);
             }
 
             currentThrust = new UnityEngine.Vector2(0, 0);
@@ -45,7 +45,6 @@ public class Rocket : MonoBehaviour
             {
                 currentThrust += thrust;
             }
-            //UnityEngine.Debug.Log(currentThrust);
 
         }
         if(!Input.GetKey(KeyCode.Z) && currentThrust != new UnityEngine.Vector2(0, 0))
@@ -59,9 +58,14 @@ public class Rocket : MonoBehaviour
         rocketMass = 0;
         foreach(Stages stage in Stages)
         {
+            
             foreach(RocketPart part in stage.Parts)
             {
                 rocketMass += part._partMass;
+                if(part._partType == "tank")
+                {
+                    rocketMass += part.GetComponent<outputInputManager>().mass;
+                }
             }
         }
     }
@@ -81,6 +85,7 @@ public class Rocket : MonoBehaviour
     public void updateActiveEngines()
     {
         engines.Clear();
+        int i = 0;
         foreach(Stages stage in Stages)
         {
             foreach(RocketPart part in stage.Parts)
@@ -94,6 +99,7 @@ public class Rocket : MonoBehaviour
                 }
                 
             }
+            i++;
         }
     }
 

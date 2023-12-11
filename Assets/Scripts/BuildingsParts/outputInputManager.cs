@@ -86,7 +86,17 @@ public class outputInputManager : MonoBehaviour
             fuelTransfer();
         }
 
+        if(this.GetComponent<Tank>() != null)
+        {
+            InitializeCircuitTank();
+        }
+
         
+    }
+
+    void InitializeCircuitTank()
+    {
+        circuit = this.GetComponent<Tank>().propellantCategory;
     }
 
     void setProperty(string substance)
@@ -173,7 +183,7 @@ public class outputInputManager : MonoBehaviour
                         {
                             if(part._partType == "tank")
                             {
-                                if(part.GetComponent<Tank>().circuit == "oxidizer")
+                                if(part.GetComponent<outputInputManager>().circuit == "oxidizer")
                                 {
                                     tanksOxidizer.Add(part);
                                 }
@@ -212,7 +222,7 @@ public class outputInputManager : MonoBehaviour
 
                     if(tanksFuel.Count != 0 && (moles - rate*Time.fixedDeltaTime) >= 0)
                     {
-                        double molesToGive = rate*Time.fixedDeltaTime/tanksFuel.Count;
+                        double molesToGive = moles/tanksFuel.Count;
                         foreach(RocketPart tank in tanksFuel)
                         {
                             tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
@@ -221,6 +231,8 @@ public class outputInputManager : MonoBehaviour
                         moles -= rate * Time.fixedDeltaTime;
                     }
                 }
+
+                launchPad.ConnectedRocket.GetComponent<Rocket>().updateMass();
             }
         }
 
@@ -231,7 +243,6 @@ public class outputInputManager : MonoBehaviour
     void calculateInternalConditions()
     {
         setProperty(substance);
-        float mass = substanceMolarMass * moles;
 
         if(substanceSolidTemperature < internalTemperature && internalTemperature < substanceGaseousTemperature)
         {
