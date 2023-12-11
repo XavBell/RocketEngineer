@@ -19,6 +19,8 @@ public class launchPadManager : MonoBehaviour
     public MasterManager MasterManager;
     public bool Spawned = false;
     public GameObject ConnectedRocket;
+    public outputInputManager oxidizer;
+    public outputInputManager fuel;
 
     // Start is called before the first frame update
     void Start()

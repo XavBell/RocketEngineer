@@ -10,10 +10,10 @@ public class outputInputManager : MonoBehaviour
     public bool connectedAsRocket = false;
     
     public int inputParentID = 0;
-    public GameObject inputParent;
+    public outputInputManager inputParent;
 
     public int outputParentID = 0;
-    public GameObject outputParent;
+    public outputInputManager outputParent;
 
     public TextMeshProUGUI quantityText;
     public TextMeshProUGUI rateText;
@@ -54,6 +54,7 @@ public class outputInputManager : MonoBehaviour
     public List<GameObject> engines = new List<GameObject>();
 
     public string type = "default";
+    public string circuit = "none";
 
     void Start()
     {
@@ -84,6 +85,8 @@ public class outputInputManager : MonoBehaviour
             setRate();
             fuelTransfer();
         }
+
+        
     }
 
     void setProperty(string substance)
@@ -113,12 +116,12 @@ public class outputInputManager : MonoBehaviour
     {
         if(inputParent)
         {
-            substance = inputParent.GetComponent<outputInputManager>().substance;
+            substance = inputParent.substance;
         }
         
         if(outputParent)
         {
-            outputParent.GetComponent<outputInputManager>().substance = substance;
+            outputParent.substance = substance;
         }
     }
 
@@ -127,7 +130,7 @@ public class outputInputManager : MonoBehaviour
         if(inputParent)
         {
 
-            rate = inputParent.GetComponent<outputInputManager>().rate;
+            rate = inputParent.rate;
         }
 
         if(!inputParent && moles != 0)
@@ -139,30 +142,88 @@ public class outputInputManager : MonoBehaviour
     void fuelTransfer()
     {
 
-        if(outputParent)
+        if(outputParent && this.GetComponent<launchPadManager>() == null)
         {
-            if(moles - rate * Time.deltaTime >= 0)
+            if(moles - rate * Time.fixedDeltaTime >= 0)
             {
-                variation = rate * Time.deltaTime;
+                variation = rate * Time.fixedDeltaTime;
                 moles -=  variation;
             }
         }
 
-        if(inputParent && inputParent.GetComponent<outputInputManager>().moles - inputParent.GetComponent<outputInputManager>().variation > 0)
+        if(inputParent && inputParent.moles - inputParent.variation > 0)
         {
-            moles += inputParent.GetComponent<outputInputManager>().variation;
-            substance = inputParent.GetComponent<outputInputManager>().substance;
+            moles += inputParent.variation;
+            substance = inputParent.substance;
+        }
 
-            if(engines.Count > 0)
+        //Logic for rockets
+        if(circuit != "none" && this.GetComponent<launchPadManager>() != null)
+        {
+            launchPadManager launchPad = this.GetComponent<launchPadManager>();
+            if(launchPad.ConnectedRocket != null)
             {
-                float newVolume = moles/engines.Count;
-                foreach(GameObject en in engines)
+                Rocket rocket = launchPad.ConnectedRocket.GetComponent<Rocket>();
+                if(circuit == "oxidizer")
                 {
-                    en.GetComponent<Part>().fuel = newVolume;
-                    this.GetComponent<PlanetGravity>().rocketMass += inputParent.GetComponent<outputInputManager>().variation;
+                    List<RocketPart> tanksOxidizer = new List<RocketPart>();
+                    foreach(Stages stage in rocket.Stages)
+                    {
+                        foreach(RocketPart part in stage.Parts)
+                        {
+                            if(part._partType == "tank")
+                            {
+                                if(part.GetComponent<Tank>().circuit == "oxidizer")
+                                {
+                                    tanksOxidizer.Add(part);
+                                }
+                            }
+                        }
+                    }
+
+                    if(moles - rate * Time.fixedDeltaTime >= 0 && tanksOxidizer.Count != 0)
+                    {
+                        double molesToGive = (moles - rate*Time.fixedDeltaTime)/tanksOxidizer.Count;
+                        foreach(RocketPart tank in tanksOxidizer)
+                        {
+                            tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
+                        }
+                    }
+
+                    
+                }
+
+                if(circuit == "fuel")
+                {
+                    List<RocketPart> tanksFuel = new List<RocketPart>();
+                    foreach(Stages stage in rocket.Stages)
+                    {
+                        foreach(RocketPart part in stage.Parts)
+                        {
+                            if(part._partType == "tank")
+                            {
+                                if(part.GetComponent<outputInputManager>().circuit == "fuel")
+                                {
+                                    tanksFuel.Add(part);
+                                }
+                            }
+                        }
+                    }
+
+                    if(tanksFuel.Count != 0 && (moles - rate*Time.fixedDeltaTime) >= 0)
+                    {
+                        double molesToGive = rate*Time.fixedDeltaTime/tanksFuel.Count;
+                        foreach(RocketPart tank in tanksFuel)
+                        {
+                            tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
+                            tank.GetComponent<outputInputManager>().substance = substance;
+                        }
+                        moles -= rate * Time.fixedDeltaTime;
+                    }
                 }
             }
         }
+
         calculateInternalConditions();
         
     }
@@ -260,13 +321,7 @@ public class outputInputManager : MonoBehaviour
         {
             if(input.GetComponent<buildingType>().buildingID == inputParentID)
             {
-                inputParent = input;
-
-                if(connectedAsRocket)
-                {
-                    input.GetComponent<launchPadManager>().ConnectedRocket = this.gameObject;
-                    input.GetComponent<outputInputManager>().outputParent = this.gameObject; 
-                }
+                //inputParent = input;
             }
         }
     }
@@ -279,16 +334,8 @@ public class outputInputManager : MonoBehaviour
         {
             if(output.GetComponent<buildingType>().buildingID == outputParentID)
             {
-                outputParent = output;
+                //outputParent = output;
             }
-        }
-    }
-
-    void DebugLog()
-    {
-        if(log == true)
-        {
-            //Debug.Log(moles);
         }
     }
 }

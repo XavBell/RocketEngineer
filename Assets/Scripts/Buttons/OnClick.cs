@@ -27,6 +27,7 @@ public class OnClick : MonoBehaviour
     public savePath savePathRef = new savePath();
     public string path;
     public string filePath;
+    public GameObject spawnedRocket;
 
     // Start is called before the first frame update
     void Start()
@@ -81,7 +82,6 @@ public class OnClick : MonoBehaviour
             {
                 GameManager.GetComponent<GameManager>().partPath = filePath;
                 GameManager.GetComponent<GameManager>().PrefabToConstruct = GameManager.GetComponent<GameManager>().Tank;
-                UnityEngine.Debug.Log(GameManager.GetComponent<GameManager>().PrefabToConstruct.GetComponent<Tank>()._partType);
                 b1.interactable = false;
             }
 
@@ -97,6 +97,10 @@ public class OnClick : MonoBehaviour
         {
             path = "/"+b1.GetComponentInChildren<TextMeshProUGUI>().text;
             load(filePath);
+            if(spawnedRocket != null)
+            {
+                launchPad.GetComponent<launchPadManager>().ConnectedRocket = spawnedRocket;
+            }
             b1.interactable = false;
 
         }   
@@ -140,7 +144,7 @@ public class OnClick : MonoBehaviour
             //Put parts in stages
             for(int i = 0; i < maxSteps; i++)
             {
-                UnityEngine.Vector3 rotation = new UnityEngine.Vector3(0, 0, loadedRocket.z_rot[i]);
+                Vector3 rotation = new Vector3(0, 0, loadedRocket.z_rot[i]);
                 GameObject currentPart = SpawnPart(position, rotation, loadedRocket.partType[i]);
                 RocketPart part = currentPart.GetComponent<RocketPart>();
 
@@ -183,7 +187,6 @@ public class OnClick : MonoBehaviour
             {
                 core.GetComponent<Rocket>().Stages.Add(stage);
             }
-            //UnityEngine.Debug.Log(topGuid.Count + bottomGuid.Count);
 
             linkParts(rocketPart, loadedRocket.attachedTop,loadedRocket.attachedBottom,loadedRocket.attachedRight, loadedRocket.attachedLeft);
 
@@ -215,6 +218,7 @@ public class OnClick : MonoBehaviour
             }
             
         }
+        spawnedRocket = core;
         filePath = null;
     }
 
