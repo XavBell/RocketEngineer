@@ -42,7 +42,7 @@ public class FuelTankMonitor : MonoBehaviour
         outputInputManager.externalTemperature = target.value;
     }
 
-    void openValve()
+    public void openValve()
     {
         outputInputManager.selfRate = 0.001f;
     }
