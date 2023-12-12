@@ -83,19 +83,22 @@ public class PlanetGravity : MonoBehaviour
             {
                 rb.simulated = false;
             }
-
-            if(possessed == true)
-            {
-                //rb.simulated = true;
-                MasterManager.ActiveRocket = core;
-                core.GetComponent<Rocket>().controlThrust();
-                core.GetComponent<Rocket>()._orientation();
-                core.GetComponent<Rocket>().updateRocketStaging();
-            }
             updateReferenceBody();  
         }
 
 
+    }
+
+    void Update()
+    {
+        if(possessed == true)
+        {
+            //rb.simulated = true;
+            MasterManager.ActiveRocket = core;
+            core.GetComponent<Rocket>().controlThrust();
+            core.GetComponent<Rocket>()._orientation();
+            core.GetComponent<Rocket>().updateRocketStaging();
+        }
     }
 
     public void simulate()

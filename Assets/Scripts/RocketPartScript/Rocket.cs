@@ -333,8 +333,6 @@ public class Rocket : MonoBehaviour
                 
             }
 
-            UnityEngine.Debug.Log("Num pos" + inPos.Count);
-
             //Check if in other way
             foreach(int pos in inPos)
             {
@@ -811,7 +809,6 @@ public class Rocket : MonoBehaviour
 
             if(_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
             {
-                UnityEngine.Debug.Log(null);
                 Stages Stage = new Stages();
                 Stage.Parts.Add(_decoupler);
                 Stages.Add(Stage);
@@ -835,11 +832,9 @@ public class Rocket : MonoBehaviour
         int StageNumber = 0;
         foreach(Stages Stage in Stages)
         {
-            UnityEngine.Debug.Log("Stage " + StageNumber + " infos: " + "Number of parts: " + Stage.Parts.Count);
             int PartNumber = 0;
             foreach (RocketPart RP in Stage.Parts)
             {
-                UnityEngine.Debug.Log("Stage " + StageNumber + " part " + PartNumber + " Guid: " + RP._partID + " Type: " + RP._partType);
                 PartNumber++;
             }
             StageNumber++;
