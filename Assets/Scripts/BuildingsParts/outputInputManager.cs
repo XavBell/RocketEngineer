@@ -97,6 +97,7 @@ public class outputInputManager : MonoBehaviour
     void InitializeCircuitTank()
     {
         circuit = this.GetComponent<Tank>().propellantCategory;
+        tankVolume = this.GetComponent<Tank>()._volume;
     }
 
     void setProperty(string substance)

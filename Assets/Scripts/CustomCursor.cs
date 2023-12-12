@@ -63,7 +63,6 @@ public class CustomCursor : MonoBehaviour
         {
            
             sp.color = Color.red;
-            //constructionAllowed = false;
         }
     }
 
@@ -82,7 +81,6 @@ public class CustomCursor : MonoBehaviour
         {
            
             sp.color = defaultColor;
-            //constructionAllowed = true;
         }
     }
 }

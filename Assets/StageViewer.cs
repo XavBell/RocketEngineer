@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class StageViewer : MonoBehaviour
 {
@@ -23,25 +24,50 @@ public class StageViewer : MonoBehaviour
         
     }
 
-    public void updateStagesView()
+    public void fullReset(bool forcedCall)
+    {
+        stageDropdown.value = 0;
+        updateStagesView(true);
+        updateInfoPerStage(true);
+    }
+    public void updateStagesView(bool forcedCall)
     {
         if(rocket != null)
         {
             List<string> options = new List<string>();
+            foreach(Transform child in Panel.transform)
+            {
+                if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
+                {
+                    DestroyImmediate(child.gameObject);
+                }
+
+            }
+            stageDropdown.ClearOptions();
             int i = 0;
             foreach(Stages stage in rocket.GetComponent<Rocket>().Stages)
             {
                 options.Add($"Stage {i}");
                 i++;
             }
+            stageDropdown.value = 0;
             stageDropdown.AddOptions(options);
-            updateInfoPerStage();
         }
     }
 
-    public void updateInfoPerStage()
+    public void updateInfoPerStage(bool forcedCall)
     {
-        int value = stageDropdown.value;
+        int value = 0;
+        if(forcedCall == false)
+        {
+            value = stageDropdown.value;
+        }
+
+        if(forcedCall == true)
+        {
+            value = 0;
+            stageDropdown.value = 0;
+        }
         foreach(RocketPart part in rocket.GetComponent<Rocket>().Stages[value].Parts)
         {
             if(part._partType == "engine")

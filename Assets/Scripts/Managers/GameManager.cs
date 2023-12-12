@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject CursorGameObject;
     public GameObject Rocket;
+    public TMP_Dropdown propellantLine;
 
     public List<GameObject> DebugList = new List<GameObject>();
 
@@ -110,13 +111,13 @@ public class GameManager : MonoBehaviour
 
             if (partToConstruct.GetComponent<RocketPart>()._partType.ToString() == "engine" && Cursor.visible == false)
             {
-                UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
                 if (partPath != null)
                 {
                     load(partPath, currentPrefab);
                 }
-                UnityEngine.Vector2 enginePosition = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
+                Vector2 enginePosition = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(enginePosition, currentPrefab);
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
@@ -251,7 +252,16 @@ public class GameManager : MonoBehaviour
             tank._attachRight.transform.localPosition = new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0);
             tank._attachLeft.transform.localPosition = new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0);
             tank.tankMaterial = loadedTank.tankMaterial;
-            tank.propellantCategory = loadedTank.propellantCategory;
+            int value = propellantLine.value;
+            if(value == 0)
+            {
+                tank.propellantCategory = "oxidizer";
+            }
+
+            if(value == 1)
+            {
+                tank.propellantCategory = "fuel";
+            }
         }
         filePath = null;
     }
@@ -624,6 +634,9 @@ public class GameManager : MonoBehaviour
                     {
                         saveRocket.x_scale.Add(part.GetComponent<BoxCollider2D>().size.x);
                         saveRocket.y_scale.Add(part.GetComponent<BoxCollider2D>().size.y);
+                        saveRocket.volume.Add(part.GetComponent<Tank>()._volume);
+                        saveRocket.propellantType.Add(part.GetComponent<Tank>().propellantCategory);
+                        saveRocket.tankMaterial.Add(part.GetComponent<Tank>().tankMaterial);
                     }
                     
                     //Set Engine

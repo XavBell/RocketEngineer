@@ -91,7 +91,7 @@ public class operationManager : MonoBehaviour
             onclick.load("/rockets");
             stageViewer.gameObject.SetActive(true);
             stageViewer.rocket = onclick.spawnedRocket;
-            stageViewer.updateStagesView();
+            stageViewer.updateStagesView(false);
         }
     }
 

@@ -162,7 +162,6 @@ public class GameManager_Tank : MonoBehaviour
             saveObject.volume = volume;
             saveObject.mass = mass;
             saveObject.tankMaterial = tankMaterial;
-            saveObject.propellantCategory = propellantCategory;
 
             var jsonString = JsonConvert.SerializeObject(saveObject);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json", jsonString);

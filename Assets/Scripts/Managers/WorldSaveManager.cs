@@ -19,9 +19,10 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject decouplerPrefab;
 
     public GameObject designerPrefab;
-    public GameObject pipePrefab;
     public GameObject fuelTankPrefab;
     public GameObject launchPadPrefab;
+    public GameObject VABPrefab;
+    public GameObject commandCenterPrefab;
 
     public savePath savePathRef = new savePath();
 
@@ -34,6 +35,7 @@ public class WorldSaveManager : MonoBehaviour
 
     public GameObject MasterManager;
     public GameObject BuildingManager;
+    public launchsiteManager launchsiteManager;
 
     // Start is called before the first frame update
     void Start()
@@ -251,8 +253,6 @@ public class WorldSaveManager : MonoBehaviour
             worldCamera.transform.eulerAngles = new Vector3(loadedWorld.cameraRotX, loadedWorld.cameraRotY, loadedWorld.cameraRotZ);
             moon.transform.localPosition = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
         }
-
-        int pipeCount = 0;
         int count = 0;
 
         BuildingManager.GetComponent<BuildingManager>().IDMax = loadedWorld.IDMax;
@@ -269,6 +269,7 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                launchsiteManager.designer = current;
             }
 
             if(buildingType == "GSEtank")
@@ -292,8 +293,29 @@ public class WorldSaveManager : MonoBehaviour
                 current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
                 current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
             }
+
+            if(buildingType == "VAB")
+            {
+                GameObject current = Instantiate(VABPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                current.transform.SetParent(earth.transform);
+                current.transform.localPosition = position;
+                current.transform.eulerAngles = rotation;
+                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+            }
+
+            if(buildingType == "commandCenter")
+            {
+                GameObject current = Instantiate(commandCenterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                current.transform.SetParent(earth.transform);
+                current.transform.localPosition = position;
+                current.transform.eulerAngles = rotation;
+                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                launchsiteManager.commandCenter = current;
+            }
             count++;
         }
+
+        launchsiteManager.updateVisibleButtons();
 
         
 

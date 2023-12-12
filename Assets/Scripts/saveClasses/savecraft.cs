@@ -27,6 +27,9 @@ public class savecraft
     //Tank variables
     public List<float> x_scale = new List<float>();
     public List<float> y_scale = new List<float>();
+    public List<string> propellantType = new List<string>();
+    public List<string> tankMaterial = new List<string>();
+    public List<float> volume = new List<float>();
 
     //Engine variables
     public List<float> thrust = new List<float>();

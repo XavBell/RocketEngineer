@@ -78,15 +78,6 @@ public class DetectClick : MonoBehaviour
                         
                         GameObject current = raycastHit.transform.gameObject;
                         string type = current.GetComponent<buildingType>().type;
-                        if(type == "designer")
-                        {
-                            GameObject panel = current.GetComponent<designerManager>().Panel;
-                            if(panel.active == false)
-                            {
-                                panel.SetActive(true);
-                            }
-                     
-                        }
 
                         if(type == "GSEtank")
                         {
@@ -123,15 +114,6 @@ public class DetectClick : MonoBehaviour
                         
                         GameObject current = raycastHit.transform.gameObject;
                         string type = current.GetComponent<buildingType>().type;
-                        if(type == "designer")
-                        {
-                            GameObject panel = current.GetComponent<designerManager>().Panel;
-                            if(panel.active == true)
-                            {
-                                panel.SetActive(false);
-                            }
-                            
-                        }
 
                         if(type == "GSEtank")
                         {

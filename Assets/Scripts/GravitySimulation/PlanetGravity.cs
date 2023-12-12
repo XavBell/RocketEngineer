@@ -5,6 +5,7 @@ using TMPro;
 using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEngine.UI;
 
 
 public class PlanetGravity : MonoBehaviour
@@ -43,6 +44,7 @@ public class PlanetGravity : MonoBehaviour
     public GameObject TimeRef;
     public TimeManager TimeManager;
     public MasterManager MasterManager;
+    public StageViewer stageViewer;
 
     public float time = 0;
 
@@ -90,11 +92,7 @@ public class PlanetGravity : MonoBehaviour
                 core.GetComponent<Rocket>()._orientation();
                 core.GetComponent<Rocket>().updateRocketStaging();
             }
-            updateReferenceBody();
-
-            
-            
-            
+            updateReferenceBody();  
         }
 
 
@@ -102,9 +100,6 @@ public class PlanetGravity : MonoBehaviour
 
     public void simulate()
     {
-        core.GetComponent<Rocket>().controlThrust();
-        core.GetComponent<Rocket>()._orientation();
-        core.GetComponent<Rocket>().updateRocketStaging();
         simulateGravity();
     }
 
@@ -146,6 +141,17 @@ public class PlanetGravity : MonoBehaviour
         {
             WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         }
+
+        if(stageViewer == null)
+        {
+            stageViewer = GameObject.FindObjectOfType<StageViewer>();
+        }
+    }
+
+    public void stageViewerForceCall()
+    {
+        StageViewer stageViewer1 = GameObject.FindObjectOfType<StageViewer>();
+        stageViewer1.fullReset(true);
     }
 
     void initializeRocket()
