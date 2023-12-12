@@ -192,9 +192,9 @@ public class outputInputManager : MonoBehaviour
                         }
                     }
 
-                    if(moles - rate * Time.fixedDeltaTime >= 0 && tanksOxidizer.Count != 0)
+                    if(moles - (rate*Time.fixedDeltaTime) >= 0 && tanksOxidizer.Count != 0)
                     {
-                        double molesToGive = (moles - rate*Time.fixedDeltaTime)/tanksOxidizer.Count;
+                        double molesToGive = rate*Time.fixedDeltaTime/tanksOxidizer.Count;
                         foreach(RocketPart tank in tanksOxidizer)
                         {
                             tank.GetComponent<outputInputManager>().internalTemperature = internalTemperature;
@@ -202,6 +202,7 @@ public class outputInputManager : MonoBehaviour
                             tank.GetComponent<outputInputManager>().substance = substance;
                             tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
                         }
+                        moles -= rate * Time.fixedDeltaTime;
                     }
 
                     
@@ -224,9 +225,9 @@ public class outputInputManager : MonoBehaviour
                         }
                     }
 
-                    if(tanksFuel.Count != 0 && (moles - rate*Time.fixedDeltaTime)/tanksFuel.Count >= 0)
+                    if(tanksFuel.Count != 0 && moles - (rate*Time.fixedDeltaTime) >= 0)
                     {
-                        double molesToGive = moles/tanksFuel.Count;
+                        double molesToGive = rate*Time.fixedDeltaTime/tanksFuel.Count;
                         foreach(RocketPart tank in tanksFuel)
                         {
                             tank.GetComponent<outputInputManager>().internalTemperature = internalTemperature;

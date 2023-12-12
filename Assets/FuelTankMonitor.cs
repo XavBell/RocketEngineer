@@ -44,7 +44,7 @@ public class FuelTankMonitor : MonoBehaviour
 
     public void openValve()
     {
-        outputInputManager.selfRate = 0.001f;
+        outputInputManager.selfRate = 0.05f;
     }
     
 }
