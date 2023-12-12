@@ -37,6 +37,7 @@ public class OnClick : MonoBehaviour
     public FuelConnectorManager fcm;
     public GameObject inputUI;
     public GameObject outputUI;
+    public GameObject selectUI;
 
     // Start is called before the first frame update
     void Start()
@@ -213,6 +214,9 @@ public class OnClick : MonoBehaviour
                     if(part.GetComponent<RocketPart>()._partType == "tank")
                     {
                         part.transform.localScale = new UnityEngine.Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
+                        part.GetComponent<Tank>()._volume = loadedRocket.volume[tankID];
+                        part.GetComponent<Tank>().tankMaterial = loadedRocket.tankMaterial[tankID];
+                        part.GetComponent<Tank>().propellantCategory = loadedRocket.propellantType[tankID];
                         tankID++;
                     }
 
@@ -395,6 +399,24 @@ public class OnClick : MonoBehaviour
 
     public void setInput(outputInputManager input)
     {
+        outputInputManager[] potentialInputsOutputs = FindObjectsOfType<outputInputManager>();
+        List<GameObject> actualOutputInput = new List<GameObject>();
+        foreach(outputInputManager outputInput in potentialInputsOutputs)
+        {
+            if(outputInput.gameObject.GetComponent<buildingType>() != null)
+            {
+                actualOutputInput.Add(outputInput.gameObject);
+            }
+        }
+
+        foreach(GameObject building in actualOutputInput)
+        {
+            if(building.GetComponent<buildingType>().type == "GSEtank")
+            {
+                building.GetComponent<buildingType>().outputUI.SetActive(false);
+            }
+        }
+
         fcm = FindObjectOfType<FuelConnectorManager>();
         if(fcm != null)
         {
@@ -405,11 +427,47 @@ public class OnClick : MonoBehaviour
 
     public void setOutput(outputInputManager output)
     {
+        outputInputManager[] potentialInputsOutputs = FindObjectsOfType<outputInputManager>();
+        List<GameObject> actualOutputInput = new List<GameObject>();
+        foreach(outputInputManager outputInput in potentialInputsOutputs)
+        {
+            if(outputInput.gameObject.GetComponent<buildingType>() != null)
+            {
+                actualOutputInput.Add(outputInput.gameObject);
+            }
+        }
+
+        foreach(GameObject building in actualOutputInput)
+        {
+            if(building.GetComponent<buildingType>().type == "launchPad")
+            {
+                building.GetComponent<buildingType>().inputUI.SetActive(false);
+            }
+        }
+        
         fcm = FindObjectOfType<FuelConnectorManager>();
         if(fcm != null)
         {
             fcm.output = output;
         }
         outputUI.SetActive(false);
+    }
+
+    public void setDestination(GameObject tank)
+    {
+        FuelOrderManager fom = FindObjectOfType<FuelOrderManager>();
+        if(fom != null)
+        {
+            fom.selectedDestination = tank;
+        }
+
+        buildingType[] tanks = FindObjectsOfType<buildingType>();
+        foreach(buildingType gse in tanks)
+        {
+            if(gse.type == "GSEtank")
+            {
+                gse.selectUI.SetActive(false);
+            }
+        }
     }
 }

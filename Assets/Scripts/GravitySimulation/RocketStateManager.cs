@@ -33,7 +33,7 @@ public class RocketStateManager : MonoBehaviour
 
     void StateUpdater()
     {
-        if((curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && planetGravity.rb.velocity.magnitude < 1 && previousState == "simulate") || ((planetGravity.cam.transform.position - transform.position).magnitude > 100 && previousState == "simulate"))
+        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && planetGravity.rb.velocity.magnitude < 1 && previousState == "simulate" && (planetGravity.cam.transform.position - transform.position).magnitude > 100)
         {
             state = "landed";
             if(previousState != state)
@@ -93,6 +93,7 @@ public class RocketStateManager : MonoBehaviour
             curr_Y = transform.y;
             Vector2 velocity = new Vector2((curr_X-previous_X)/Time.deltaTime, (curr_Y-previous_Y)/Time.deltaTime);
             planetGravity.rb.velocity = velocity;
+            return;
         }
     }
 }

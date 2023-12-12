@@ -13,6 +13,7 @@ public class launchsiteManager : MonoBehaviour
     [SerializeField]private GameObject operationBtn;
     [SerializeField]private GameObject designBtn;
     [SerializeField]private GameObject connectBtn;
+    [SerializeField]private GameObject fuelOrderBtn;
     [SerializeField]private List<GameObject> commonButton;
     // Start is called before the first frame update
     void Start()
@@ -33,6 +34,7 @@ public class launchsiteManager : MonoBehaviour
             commandCenterBtn.SetActive(false);
             operationBtn.SetActive(true);
             connectBtn.SetActive(true);
+            fuelOrderBtn.SetActive(true);
             foreach(GameObject button in commonButton)
             {
                 button.SetActive(true);
@@ -41,6 +43,7 @@ public class launchsiteManager : MonoBehaviour
         {
             commandCenterBtn.SetActive(true);
             operationBtn.SetActive(false);
+            fuelOrderBtn.SetActive(false);
             connectBtn.SetActive(false);
             foreach(GameObject button in commonButton)
             {

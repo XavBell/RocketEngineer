@@ -8,4 +8,5 @@ public class buildingType : MonoBehaviour
     public int buildingID;
     public GameObject inputUI;
     public GameObject outputUI;
+    public GameObject selectUI;
 }

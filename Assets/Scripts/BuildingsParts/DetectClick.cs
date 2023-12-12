@@ -86,16 +86,6 @@ public class DetectClick : MonoBehaviour
                             
                     }
 
-                    if(raycastHit.transform.gameObject.GetComponent<PlanetGravity>())
-                    {
-                        
-                        GameObject current = raycastHit.transform.gameObject;
-                        current.GetComponent<PlanetGravity>().possessed = true;
-                        MasterManager.gameState = "Flight";
-                        MasterManager.ActiveRocket = current;
-                            
-                    }
-
                       
                 }
             }

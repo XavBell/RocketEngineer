@@ -92,6 +92,8 @@ public class operationManager : MonoBehaviour
             stageViewer.gameObject.SetActive(true);
             stageViewer.rocket = onclick.spawnedRocket;
             stageViewer.updateStagesView(false);
+            stageViewer.updateInfoPerStage(false);
+            selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
         }
     }
 

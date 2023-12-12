@@ -10,6 +10,7 @@ public class StageViewer : MonoBehaviour
     public TMP_Dropdown stageDropdown;
     public GameObject EngineUI;
     public GameObject DecouplerUI;
+    public GameObject TankUI;
     public GameObject Panel;
 
     // Start is called before the first frame update
@@ -37,7 +38,7 @@ public class StageViewer : MonoBehaviour
             List<string> options = new List<string>();
             foreach(Transform child in Panel.transform)
             {
-                if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
+                if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<TankUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
                 {
                     DestroyImmediate(child.gameObject);
                 }
@@ -59,7 +60,7 @@ public class StageViewer : MonoBehaviour
     {
         foreach(Transform child in Panel.transform)
         {
-            if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
+            if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
             {
                 DestroyImmediate(child.gameObject);
             }
@@ -90,6 +91,31 @@ public class StageViewer : MonoBehaviour
                 GameObject decouplerUI = Instantiate(DecouplerUI, Panel.transform);
                 decouplerUI.GetComponent<DecouplerUIModule>().decoupler = part.GetComponent<Decoupler>();
             }
+
+            if(part._partType == "tank")
+            {
+                GameObject tankUI = Instantiate(TankUI, Panel.transform);
+                tankUI.GetComponent<TankUIModule>().tank = part.GetComponent<outputInputManager>();
+            }
         }
+    }
+
+    public void launch()
+    {
+        rocket.GetComponent<PlanetGravity>().possessed = true;
+        MasterManager masterManager = FindObjectOfType<MasterManager>();
+        masterManager.gameState = "Flight";
+        masterManager.ActiveRocket = rocket;
+    }
+
+    public void Stop()
+    {
+        rocket.GetComponent<PlanetGravity>().possessed = false;
+        MasterManager masterManager = FindObjectOfType<MasterManager>();
+        masterManager.gameState = "Building";
+        CameraControl camera = FindObjectOfType<CameraControl>();
+        launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
+        camera.transform.position = launchsiteManager.commandCenter.transform.position;
+        masterManager.ActiveRocket = null;
     }
 }

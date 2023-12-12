@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class BuildingManager : MonoBehaviour
     public string localMode = "none";
 
     public int IDMax = 0;
+    public GameObject PauseUI;
 
     public List<GameObject> DynamicParts = new List<GameObject>();    
     
@@ -71,22 +73,30 @@ public class BuildingManager : MonoBehaviour
             customCursor.gameObject.SetActive(false);
         }
 
-        if(Input.GetKey(KeyCode.C))
-        {
-            if(localMode == "none")
-            {
-                localMode = "connect";
-                return;
-            }
-        }
-
         if(Input.GetKey(KeyCode.Escape))
         {
-            WorldSaveManager.saveTheWorld();
-            Destroy(MasterManager.gameObject);
-            SceneManager.LoadScene("Menu");
+            if(PauseUI.active == false)
+            {
+                PauseUI.SetActive(true);
+            }
         }
     }
+
+    public void Close()
+    {
+        PauseUI.SetActive(false);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
+
+    public void ReturnToMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
+
 
     public void EnterEngineDesign()
     {

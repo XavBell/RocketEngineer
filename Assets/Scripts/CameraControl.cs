@@ -89,11 +89,11 @@ public class CameraControl : MonoBehaviour
         if(targetZoom - scrollData * zoomFactor * cam.orthographicSize > 1)
         {
             targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.fixedDeltaTime*zoomLerp);
         }if(targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
         {
             targetZoom = 1;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.fixedDeltaTime*zoomLerp);
         }
         
     }
@@ -105,7 +105,7 @@ public class CameraControl : MonoBehaviour
         float yAxisValue = Input.GetAxis("Vertical") * cam.orthographicSize * moveFactor;
         if(cam != null)
         {
-            if((cam.transform.position + new Vector3(xAxisValue, yAxisValue, 0) - launchsiteManager.commandCenter.transform.position).magnitude < 50)
+            if((cam.transform.position + new Vector3(xAxisValue, yAxisValue, 0) - launchsiteManager.commandCenter.transform.position).magnitude < 500)
             {
                 cam.transform.Translate(new Vector2(xAxisValue, yAxisValue));   
             }

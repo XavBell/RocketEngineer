@@ -11,6 +11,7 @@ public class Stages
 
     public void updateThrust(float thrustCoefficient)
     {
+        Debug.Log("hi");
         thrust = Vector2.zero;
         float oxidizerQty = GetQty("oxidizer");
         float fuelQty = GetQty("fuel");
