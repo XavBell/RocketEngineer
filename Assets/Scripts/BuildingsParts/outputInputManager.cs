@@ -322,7 +322,6 @@ public class outputInputManager : MonoBehaviour
             //Calculate T (might not work if internal is higher than external or reverse)
             float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
             float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
-            UnityEngine.Debug.Log(mass);
             if(internalTemperature != externalTemperature)
             {
                 internalTemperature += deltaInternal;

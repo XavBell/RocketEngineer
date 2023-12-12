@@ -34,6 +34,10 @@ public class FuelTankMonitor : MonoBehaviour
         quantity.text = outputInputManager.mass.ToString();
         substance.text = outputInputManager.substance.ToString();
         state.text = outputInputManager.state.ToString();
+    }
+
+    public void updateTemp()
+    {
         targetTemperature.text = target.value.ToString();
         outputInputManager.externalTemperature = target.value;
     }
