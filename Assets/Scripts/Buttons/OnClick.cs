@@ -71,7 +71,6 @@ public class OnClick : MonoBehaviour
     {
         GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
         GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
-        Debug.Log("Clicked");
         if (GameManager != null)
         {
             GameManager.GetComponent<GameManager>().path = "/"+ b1.GetComponentInChildren<TextMeshProUGUI>().text;

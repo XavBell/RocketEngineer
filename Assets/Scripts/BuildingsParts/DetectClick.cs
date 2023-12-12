@@ -70,7 +70,6 @@ public class DetectClick : MonoBehaviour
                 Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
                 raycastHit = Physics2D.Raycast(ray, Vector2.zero);
-                Debug.Log(ray);
                 if (raycastHit.transform != null)
                 {
                     if(raycastHit.transform.gameObject.GetComponent<buildingType>())

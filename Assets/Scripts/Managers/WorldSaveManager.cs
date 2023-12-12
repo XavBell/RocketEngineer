@@ -135,7 +135,6 @@ public class WorldSaveManager : MonoBehaviour
 
         var jsonString = JsonConvert.SerializeObject(saveWorld);
         System.IO.File.WriteAllText(MasterManager.GetComponent<MasterManager>().worldPath, jsonString);
-        UnityEngine.Debug.Log(MasterManager.GetComponent<MasterManager>().worldPath);
     }
 
     public void loadWorld()
