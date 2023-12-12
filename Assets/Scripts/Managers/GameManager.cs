@@ -52,8 +52,6 @@ public class GameManager : MonoBehaviour
     public GameObject Rocket;
     public TMP_Dropdown propellantLine;
 
-    public List<GameObject> DebugList = new List<GameObject>();
-
     // Start is called before the first frame update
     void Start()
     {
@@ -75,14 +73,12 @@ public class GameManager : MonoBehaviour
         updateSaveName();
         if(Input.GetMouseButtonDown(0) && partToConstruct != null)
         {
-            UnityEngine.Debug.Log(partToConstruct);
             ResetCursorGameObject();
             GameObject currentPrefab = null;
             if (partToConstruct.GetComponent<RocketPart>()._partType == "satellite" && capsuleBuilt == false && Cursor.visible == false)
             {
                 Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 currentPrefab = Instantiate(partToConstruct, position, Quaternion.Euler(customCursor.transform.eulerAngles));
-                UnityEngine.Debug.Log("hi");
                 Vector2 prefabPos = new Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
@@ -474,7 +470,6 @@ public class GameManager : MonoBehaviour
     public GameObject findClosestAttach(UnityEngine.Vector2 position, GameObject currentPart)
     {
         List<GameObject> availableAttachs = findAvailableAttachPoint(currentPart);
-        DebugList = availableAttachs;
         GameObject bestAttach = null;
         float bestDistance = Mathf.Infinity;
         foreach (GameObject attach in availableAttachs)
@@ -656,7 +651,7 @@ public class GameManager : MonoBehaviour
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json", jsonString);
 
         }else{
-            UnityEngine.Debug.Log("File exist");
+            //cry
         }
     }
 

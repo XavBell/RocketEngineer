@@ -37,4 +37,10 @@ public class FuelTankMonitor : MonoBehaviour
         targetTemperature.text = target.value.ToString();
         outputInputManager.externalTemperature = target.value;
     }
+
+    void openValve()
+    {
+        outputInputManager.selfRate = 0.001f;
+    }
+    
 }
