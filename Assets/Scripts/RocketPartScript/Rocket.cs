@@ -44,8 +44,9 @@ public class Rocket : MonoBehaviour
             {
                 currentThrust += thrust;
             }
-
+            updateMass();
         }
+
         if(!Input.GetKey(KeyCode.Z) && currentThrust != new UnityEngine.Vector2(0, 0))
         {
             currentThrust = new UnityEngine.Vector2(0,0);
@@ -67,6 +68,7 @@ public class Rocket : MonoBehaviour
                 }
             }
         }
+        this.GetComponent<PlanetGravity>().rb.mass = rocketMass;
     }
 
     public void _orientation()
