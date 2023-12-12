@@ -32,6 +32,7 @@ public class CameraControl : MonoBehaviour
     public GameObject MoonSprite;
     public GameObject EarthSprite;
     public GameObject Prediction;
+    public launchsiteManager launchsiteManager;
     
 
     public float threshold = 5000;
@@ -54,7 +55,10 @@ public class CameraControl : MonoBehaviour
         if(MasterManager.GetComponent<MasterManager>().gameState == "Building")
         {  
             //QE();
-            //WASD();
+            if(launchsiteManager.commandCenter != null)
+            {
+                WASD();
+            }
             MapView();
         }
 
@@ -101,8 +105,10 @@ public class CameraControl : MonoBehaviour
         float yAxisValue = Input.GetAxis("Vertical") * cam.orthographicSize * moveFactor;
         if(cam != null)
         {
-
-            cam.transform.Translate(new Vector2(xAxisValue, yAxisValue));
+            if((cam.transform.position + new Vector3(xAxisValue, yAxisValue, 0) - launchsiteManager.commandCenter.transform.position).magnitude < 50)
+            {
+                cam.transform.Translate(new Vector2(xAxisValue, yAxisValue));   
+            }
             
         }
     }

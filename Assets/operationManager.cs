@@ -12,6 +12,7 @@ public class operationManager : MonoBehaviour
     [SerializeField] GameObject selectButton;
     [SerializeField]private TMP_Dropdown vehicleDropdown;
     [SerializeField]private TMP_Dropdown operationDropdown;
+    [SerializeField]private StageViewer stageViewer;
     public GameObject selectedLaunchPad;
     public OnClick onclick;
     public TMP_Text launchpadName;
@@ -88,8 +89,9 @@ public class operationManager : MonoBehaviour
             onclick.path = "/"+vehicleDropdown.options[value].text.ToString();
             onclick.launchPad = selectedLaunchPad;
             onclick.load("/rockets");
-            
-            Debug.Log(value);
+            stageViewer.gameObject.SetActive(true);
+            stageViewer.rocket = onclick.spawnedRocket;
+            stageViewer.updateStagesView();
         }
     }
 
