@@ -4,7 +4,6 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Data;
 using System.Net.Mail;
 using System.Globalization;
-using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -105,7 +104,7 @@ public class Rocket : MonoBehaviour
 
     void deleteReference(RocketPart rp, string reference)
     {
-        RocketPart partAttached = new RocketPart();
+        RocketPart partAttached = null;
 
         //Find decoupler reference in part
         if(reference == "top")
@@ -155,7 +154,7 @@ public class Rocket : MonoBehaviour
     public void updateRocketStaging()
     {
         //Find if there is a decoupled decoupler and its stage pos
-        RocketPart rp = new RocketPart();
+        RocketPart rp = null;
         int i = 0;
         int stagePos = 1000*1000;
         foreach(Stages stage in Stages)
@@ -348,9 +347,6 @@ public class Rocket : MonoBehaviour
                 }
             }
 
-            
-            UnityEngine.Debug.Log(coreIn);
-
             if(coreIn == false)
             {
                 rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
@@ -370,6 +366,7 @@ public class Rocket : MonoBehaviour
                 rp.GetComponent<PlanetGravity>().possessed = false;
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+                rp.gameObject.AddComponent<RocketStateManager>();
 
                 foreach(int pos in inPos)
                 {
@@ -393,6 +390,7 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.transform.parent = null;
                 rp.GetComponent<Rocket>().updateMass();
                 this.updateMass();
+                rp.gameObject.GetComponent<PlanetGravity>().stageViewerForceCall();
             }
 
             if(coreIn == true)
@@ -432,6 +430,7 @@ public class Rocket : MonoBehaviour
                 }
 
                 rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
+
                 rp = previousPartToo;
 
                 //Find stage pos
@@ -614,6 +613,8 @@ public class Rocket : MonoBehaviour
                 rp.GetComponent<PlanetGravity>().possessed = false;
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+                rp.gameObject.AddComponent<RocketStateManager>();
+                
                 rp.gameObject.transform.parent = null;
 
                 foreach(int pos in newInPos)
@@ -622,10 +623,10 @@ public class Rocket : MonoBehaviour
                 }
 
                 List<int> newPositionsCount = newInPos;
-                for(i = 0; i < inPos.Count; i++)
+                for(i = 0; i < newInPos.Count; i++)
                 {
                     int ToRemove = Mathf.Max(newPositionsCount.ToArray());
-                    this.Stages.RemoveAt(ToRemove);
+                    Stages.RemoveAt(ToRemove);
                     newPositionsCount.Remove(ToRemove);
                 }
 
@@ -635,7 +636,8 @@ public class Rocket : MonoBehaviour
                 }
 
                 rp.GetComponent<Rocket>().updateMass();
-                this.updateMass();   
+                this.updateMass();
+                rp.gameObject.GetComponent<PlanetGravity>().stageViewerForceCall();
             }
         }
 

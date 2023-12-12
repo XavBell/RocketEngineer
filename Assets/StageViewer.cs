@@ -57,6 +57,14 @@ public class StageViewer : MonoBehaviour
 
     public void updateInfoPerStage(bool forcedCall)
     {
+        foreach(Transform child in Panel.transform)
+        {
+            if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
+            {
+                DestroyImmediate(child.gameObject);
+            }
+
+        }
         int value = 0;
         if(forcedCall == false)
         {
@@ -68,6 +76,7 @@ public class StageViewer : MonoBehaviour
             value = 0;
             stageDropdown.value = 0;
         }
+
         foreach(RocketPart part in rocket.GetComponent<Rocket>().Stages[value].Parts)
         {
             if(part._partType == "engine")

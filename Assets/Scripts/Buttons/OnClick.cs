@@ -129,8 +129,8 @@ public class OnClick : MonoBehaviour
             var jsonString = JsonConvert.SerializeObject(saveObject);
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
-
-            Rocket rocket = new Rocket();
+            GameObject temp = new GameObject();
+            Rocket rocket = temp.AddComponent<Rocket>();
             int maxSteps = loadedRocket.PartsID.Count;
             int maxStage = Mathf.Max(loadedRocket.StageNumber.ToArray());
 
@@ -225,6 +225,7 @@ public class OnClick : MonoBehaviour
                 }
                 j++;
             }
+            DestroyImmediate(temp);
             
         }
         spawnedRocket = core;
