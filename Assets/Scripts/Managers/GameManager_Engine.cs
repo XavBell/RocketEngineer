@@ -100,6 +100,16 @@ public class GameManager_Engine : MonoBehaviour
             nozzle.thrustModifier = nozzleRaptor.thrustModifier;
             nozzle.rateModifier = nozzleRaptor.rateModifier;
         }
+
+        if(selectedNozzle == "NozzleRaptor")
+        {
+            NozzleRaptor nozzleRaptor = new NozzleRaptor();
+
+            nozzle.nozzleName = nozzleRaptor.nozzleName;
+            nozzle.mass = nozzleRaptor.mass;
+            nozzle.thrustModifier = nozzleRaptor.thrustModifier;
+            nozzle.rateModifier = nozzleRaptor.rateModifier;
+        }
     }
 
     public void setTurbine(string selectedTurbine, Turbine turbine)
