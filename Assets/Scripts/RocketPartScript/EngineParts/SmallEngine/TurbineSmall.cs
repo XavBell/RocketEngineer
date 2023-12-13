@@ -6,6 +6,6 @@ public class TurbineSmall : MonoBehaviour
 {
     public string turbineName = "Turbine Small";
     public float thrustModifier = 1.5f;
-    public float rate = 50f;
+    public float rate = 10f;
     public float mass = 500f;
 }
