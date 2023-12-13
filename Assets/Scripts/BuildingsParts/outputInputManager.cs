@@ -55,15 +55,19 @@ public class outputInputManager : MonoBehaviour
 
     public string type = "default";
     public string circuit = "none";
+    public GameObject TimeManager;
+    public TimeManager MyTime;
 
     void Start()
     {
+        initialize();;
         if(this.GetComponent<buildingType>())
         {
             selfID = this.GetComponent<buildingType>().buildingID;
             internalTemperature = externalTemperature;
             internalPressure = externalPressure;
         }
+
     }
 
     // Update is called once per frame
@@ -79,7 +83,7 @@ public class outputInputManager : MonoBehaviour
             InitializeOutput();
         }
 
-        if(type == "default")
+        if(type == "default" && TimeManager != null)
         {
             updateParents();
             setRate();
@@ -94,6 +98,15 @@ public class outputInputManager : MonoBehaviour
         
     }
 
+    void initialize()
+    {
+        if(TimeManager == null)
+        {
+            MyTime= FindObjectOfType<TimeManager>();
+            TimeManager = MyTime.gameObject;
+        }
+    }
+
     void InitializeCircuitTank()
     {
         circuit = this.GetComponent<Tank>().propellantCategory;
@@ -104,7 +117,7 @@ public class outputInputManager : MonoBehaviour
     {
         if(substance == "kerosene")
         {
-            substanceDensity = 810f;
+            substanceDensity = 800f;
             substanceLiquidTemperature = 226f; //up to 424
             substanceGaseousTemperature = 424f; //and more
             substanceSolidTemperature = 226f; //and below
@@ -155,9 +168,9 @@ public class outputInputManager : MonoBehaviour
         float molarRate = rate/substanceMolarMass;
         if(outputParent && this.GetComponent<launchPadManager>() == null)
         {
-            if(moles -  molarRate * Time.fixedDeltaTime >= 0)
+            if(moles -  molarRate * MyTime.deltaTime >= 0)
             {
-                variation = molarRate * Time.fixedDeltaTime;
+                variation = molarRate * MyTime.deltaTime;
                 moles -=  variation;
             }
         }
@@ -200,9 +213,9 @@ public class outputInputManager : MonoBehaviour
                     
                     
 
-                    if(moles - (molarRate*Time.fixedDeltaTime) >= 0 && tanksOxidizer.Count != 0)
+                    if(moles - (molarRate*MyTime.deltaTime) >= 0 && tanksOxidizer.Count != 0)
                     {
-                        double molesToGive = molarRate*Time.fixedDeltaTime/tanksOxidizer.Count;
+                        double molesToGive = molarRate*MyTime.deltaTime/tanksOxidizer.Count;
                         foreach(RocketPart tank in tanksOxidizer)
                         {
                             tank.GetComponent<outputInputManager>().internalTemperature = inputParent.internalTemperature;
@@ -210,7 +223,7 @@ public class outputInputManager : MonoBehaviour
                             tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
                             tank.GetComponent<outputInputManager>().substance = substance;
                         }
-                        moles -= molarRate * Time.fixedDeltaTime;
+                        moles -= molarRate * MyTime.deltaTime;
                     }
 
                     
@@ -233,9 +246,9 @@ public class outputInputManager : MonoBehaviour
                         }
                     }
 
-                    if(tanksFuel.Count != 0 && moles - (molarRate*Time.fixedDeltaTime) >= 0)
+                    if(tanksFuel.Count != 0 && moles - (molarRate*MyTime.deltaTime) >= 0)
                     {
-                        double molesToGive = molarRate*Time.fixedDeltaTime/tanksFuel.Count;
+                        double molesToGive = molarRate*MyTime.deltaTime/tanksFuel.Count;
                         foreach(RocketPart tank in tanksFuel)
                         {
                             tank.GetComponent<outputInputManager>().internalTemperature = inputParent.internalTemperature;
@@ -243,7 +256,7 @@ public class outputInputManager : MonoBehaviour
                             tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
                             tank.GetComponent<outputInputManager>().substance = substance;
                         }
-                        moles -= molarRate * Time.fixedDeltaTime;
+                        moles -= molarRate * MyTime.deltaTime;
                     }
                 }
 
@@ -276,6 +289,8 @@ public class outputInputManager : MonoBehaviour
         {
             //Convert moles to mass
             mass = moles*substanceMolarMass;
+            //Convert g to kg
+            mass /= 1000;
             volume = mass/substanceDensity;
             float ratio = volume/tankVolume;
             float heightLiquid = ratio*tankHeight;
@@ -307,7 +322,8 @@ public class outputInputManager : MonoBehaviour
         {
             //Convert moles to mass
             mass = moles*substanceMolarMass;
-
+            //Convert g to kg
+            mass /= 1000;
             //Calculate T (might not work if internal is higher than external or reverse)
             float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
             float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
@@ -324,6 +340,8 @@ public class outputInputManager : MonoBehaviour
         {
             //Convert moles to mass
             mass = moles*substanceMolarMass;
+            //Convert g to kg
+            mass /= 1000;
             volume = mass/substanceDensity;
 
             if(tankVolume < volume)

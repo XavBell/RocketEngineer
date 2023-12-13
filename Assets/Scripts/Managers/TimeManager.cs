@@ -6,37 +6,34 @@ using UnityEngine;
 public class TimeManager : MonoBehaviour
 {
     //TimeScale
-    float initialTimeScale;
-    float initialTimeFixedScale;
 
     public float scaler = 1;
+    public float time = 0;
+    public float deltaTime = 0;
 
     // Start is called before the first frame update
     void Start()
     {
-        initialTimeScale = Time.timeScale;
-        initialTimeFixedScale = Time.fixedDeltaTime;
+        calculateDeltaTime();
+        time = Time.time;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        timeScale(initialTimeScale);
+        calculateDeltaTime();
+        time += deltaTime;
     }
 
-    void timeScale(float initial)
+    void calculateDeltaTime()
     {
-        if (Input.GetKey(KeyCode.P))
-        {
-            //scaler = 100;
-        }
-        if (Input.GetKey(KeyCode.O))
-        {
-            Time.timeScale = 10;
-        }
-        if (Input.GetKey(KeyCode.I))
-        {
-            Time.timeScale = 1;
-        }
+        deltaTime = Time.fixedDeltaTime * scaler;
     }
+
+    public void setScaler(float desiredScaler)
+    {
+        scaler = desiredScaler;
+    }
+
+
 }

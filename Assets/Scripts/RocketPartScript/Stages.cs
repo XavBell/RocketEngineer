@@ -51,22 +51,22 @@ public class Stages
                 {
                     if(tank.GetComponent<outputInputManager>().circuit == "oxidizer")
                     {
-                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer/tank.GetComponent<outputInputManager>().substanceMolarMass < 0)
+                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer*1000f/tank.GetComponent<outputInputManager>().substanceMolarMass < 0)
                         {
                             tank.GetComponent<outputInputManager>().moles = 0;
                         }else{
-                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer/tank.GetComponent<outputInputManager>().substanceMolarMass;
+                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer*1000f/tank.GetComponent<outputInputManager>().substanceMolarMass;
                         }
                         
                     }
 
                     if(tank.GetComponent<outputInputManager>().circuit == "fuel")
                     {
-                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel/tank.GetComponent<outputInputManager>().substanceMolarMass < 0)
+                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel*1000f/tank.GetComponent<outputInputManager>().substanceMolarMass < 0)
                         {
                             tank.GetComponent<outputInputManager>().moles = 0;
                         }else{
-                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel/tank.GetComponent<outputInputManager>().substanceMolarMass;
+                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel*1000f/tank.GetComponent<outputInputManager>().substanceMolarMass;
                         }
                         
                     }
