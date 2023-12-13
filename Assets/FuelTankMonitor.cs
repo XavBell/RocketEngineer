@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class FuelTankMonitor : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class FuelTankMonitor : MonoBehaviour
     [SerializeField]private TMP_Text state;
     [SerializeField]private TMP_Text targetTemperature;
 
-    [SerializeField]private Slider target;
+    [SerializeField]private TMP_InputField target;
     [SerializeField]private outputInputManager outputInputManager;
     // Start is called before the first frame update
     void Start()
@@ -38,13 +39,18 @@ public class FuelTankMonitor : MonoBehaviour
 
     public void updateTemp()
     {
-        targetTemperature.text = target.value.ToString();
-        outputInputManager.externalTemperature = target.value;
+        targetTemperature.text = target.text.ToString();
+        outputInputManager.externalTemperature = Convert.ToSingle(target.text.ToString());
     }
 
-    public void openValve()
+    public void openValve(float rate)
     {
-        outputInputManager.selfRate = 0.05f;
+        outputInputManager.selfRate = rate;
+    }
+
+    public void closeValve()
+    {
+        outputInputManager.selfRate = 0;
     }
     
 }

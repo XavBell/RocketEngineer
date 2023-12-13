@@ -51,12 +51,24 @@ public class Stages
                 {
                     if(tank.GetComponent<outputInputManager>().circuit == "oxidizer")
                     {
-                        tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/oxidizerQty/tank.GetComponent<outputInputManager>().substanceMolarMass;
+                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer/tank.GetComponent<outputInputManager>().substanceMolarMass < 0)
+                        {
+                            tank.GetComponent<outputInputManager>().moles = 0;
+                        }else{
+                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer/tank.GetComponent<outputInputManager>().substanceMolarMass;
+                        }
+                        
                     }
 
                     if(tank.GetComponent<outputInputManager>().circuit == "fuel")
                     {
-                        tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/fuelQty/tank.GetComponent<outputInputManager>().substanceMolarMass;
+                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel/tank.GetComponent<outputInputManager>().substanceMolarMass < 0)
+                        {
+                            tank.GetComponent<outputInputManager>().moles = 0;
+                        }else{
+                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel/tank.GetComponent<outputInputManager>().substanceMolarMass;
+                        }
+                        
                     }
                 }
             }

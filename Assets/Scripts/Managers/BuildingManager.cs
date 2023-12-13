@@ -94,6 +94,7 @@ public class BuildingManager : MonoBehaviour
 
     public void ReturnToMenu()
     {
+        Destroy(MasterManager.gameObject);
         SceneManager.LoadScene("Menu");
     }
 

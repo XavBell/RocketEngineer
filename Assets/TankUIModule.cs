@@ -8,6 +8,7 @@ public class TankUIModule : MonoBehaviour
 {
     [SerializeField]TMP_Text internalPressure;
     [SerializeField]TMP_Text internalTemperature;
+    [SerializeField]TMP_Text quantity;
     public outputInputManager tank;
     // Start is called before the first frame update
     void Start()
@@ -25,5 +26,6 @@ public class TankUIModule : MonoBehaviour
     {
         internalPressure.text = tank.internalPressure.ToString();
         internalTemperature.text = tank.internalTemperature.ToString();
+        quantity.text = tank.mass.ToString();
     }
 }

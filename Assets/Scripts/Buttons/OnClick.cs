@@ -414,6 +414,11 @@ public class OnClick : MonoBehaviour
             {
                 building.GetComponent<buildingType>().outputUI.SetActive(false);
             }
+
+            if(building.GetComponent<buildingType>().type == "launchPad")
+            {
+                building.GetComponent<buildingType>().inputUI.SetActive(false);
+            }
         }
 
         fcm = FindObjectOfType<FuelConnectorManager>();
@@ -441,6 +446,11 @@ public class OnClick : MonoBehaviour
             if(building.GetComponent<buildingType>().type == "launchPad")
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(false);
+            }
+
+            if(building.GetComponent<buildingType>().type == "GSEtank")
+            {
+                building.GetComponent<buildingType>().outputUI.SetActive(false);
             }
         }
         
