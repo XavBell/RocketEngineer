@@ -101,14 +101,14 @@ public class GameManager_Engine : MonoBehaviour
             nozzle.rateModifier = nozzleRaptor.rateModifier;
         }
 
-        if(selectedNozzle == "NozzleRaptor")
+        if(selectedNozzle == "NozzleSmall")
         {
-            NozzleRaptor nozzleRaptor = new NozzleRaptor();
+            NozzleSmall nozzleSmall = new NozzleSmall();
 
-            nozzle.nozzleName = nozzleRaptor.nozzleName;
-            nozzle.mass = nozzleRaptor.mass;
-            nozzle.thrustModifier = nozzleRaptor.thrustModifier;
-            nozzle.rateModifier = nozzleRaptor.rateModifier;
+            nozzle.nozzleName = nozzleSmall.nozzleName;
+            nozzle.mass = nozzleSmall.mass;
+            nozzle.thrustModifier = nozzleSmall.thrustModifier;
+            nozzle.rateModifier = nozzleSmall.rateModifier;
         }
     }
 
