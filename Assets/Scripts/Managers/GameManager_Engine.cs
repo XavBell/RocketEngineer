@@ -123,6 +123,16 @@ public class GameManager_Engine : MonoBehaviour
             turbine.rate = turbineRaptor.rate;
             turbine.thrustModifier = turbineRaptor.thrustModifier;
         }
+
+        if(selectedTurbine == "TurbineSmall")
+        {
+            TurbineSmall turbineSmall = new TurbineSmall();
+
+            turbine.turbineName = turbineSmall.turbineName;
+            turbine.mass = turbineSmall.mass;
+            turbine.rate = turbineSmall.rate;
+            turbine.thrustModifier = turbineSmall.thrustModifier;
+        }
     }
 
     public void setPump(string selectedPump, Pump pump)
@@ -134,6 +144,15 @@ public class GameManager_Engine : MonoBehaviour
             pump.pumpName = pumpRaptor.pumpName;
             pump.mass = pumpRaptor.mass;
             pump.thrust = pumpRaptor.thrust;
+        }
+
+        if(selectedPump == "PumpSmall")
+        {
+            PumpSmall pumpSmall = new PumpSmall();
+
+            pump.pumpName = pumpSmall.pumpName;
+            pump.mass = pumpSmall.mass;
+            pump.thrust = pumpSmall.thrust;
         }
     }
 
@@ -147,6 +166,16 @@ public class GameManager_Engine : MonoBehaviour
             tvc.mass = tvcRaptor.mass;
             tvc.maxAngle = tvcRaptor.maxAngle;
             tvc.speed = tvcRaptor.speed; 
+        }
+
+        if(selectedTVC == "TVCSmall")
+        {
+            TVCSmall tvcSmall = new TVCSmall();
+
+            tvc.TVCName = tvcSmall.TVCName;
+            tvc.mass = tvcSmall.mass;
+            tvc.maxAngle = tvcSmall.maxAngle;
+            tvc.speed = tvcSmall.speed; 
         }
     }
 
