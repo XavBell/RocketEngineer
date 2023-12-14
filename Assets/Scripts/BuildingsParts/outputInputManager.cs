@@ -55,7 +55,6 @@ public class outputInputManager : MonoBehaviour
 
     public string type = "default";
     public string circuit = "none";
-    public GameObject TimeManager;
     public TimeManager MyTime;
 
     void Start()
@@ -83,7 +82,7 @@ public class outputInputManager : MonoBehaviour
             InitializeOutput();
         }
 
-        if(type == "default" && TimeManager != null)
+        if(type == "default" && MyTime != null)
         {
             updateParents();
             setRate();
@@ -100,10 +99,9 @@ public class outputInputManager : MonoBehaviour
 
     void initialize()
     {
-        if(TimeManager == null)
+        if(MyTime == null)
         {
             MyTime= FindObjectOfType<TimeManager>();
-            TimeManager = MyTime.gameObject;
         }
     }
 

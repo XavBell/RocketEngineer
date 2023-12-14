@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 
 
 public class EarthScript : MonoBehaviour
@@ -112,7 +112,7 @@ public class EarthScript : MonoBehaviour
         {
             var savePath = "Assets/" + "EarthMeshHighRes" + ".asset";
             Debug.Log("Saved Mesh to:" + savePath);
-            AssetDatabase.CreateAsset(mf.mesh, savePath);
+            //AssetDatabase.CreateAsset(mf.mesh, savePath);
         }
     
     }

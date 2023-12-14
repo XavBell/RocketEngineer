@@ -19,11 +19,16 @@ public class RocketPath : MonoBehaviour
 
     public KeplerParams KeplerParams =  new KeplerParams();
     public bool updated;
+    public TimeManager MyTime;
     
     // Start is called before the first frame update
     void Start()
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
+        if(MyTime == null)
+        {
+            MyTime = FindObjectOfType<TimeManager>();
+        }
     }
 
     // Update is called once per frame
@@ -65,8 +70,20 @@ public class RocketPath : MonoBehaviour
 
     public Vector2 updatePosition()
     {
-        Vector2 transform = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + planetGravity.planet.transform.position;
-        return transform;
+        if(MyTime != null)
+        {
+            Vector2 transformV = GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + planetGravity.planet.transform.position;
+            return transformV;
+        }
+
+        if(MyTime == null)
+        {
+            Vector2 transformV = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + planetGravity.planet.transform.position;
+            return transformV;
+        }
+
+        return Vector2.zero;
+
     }
 
     public Vector2 updateVelocity()
@@ -108,7 +125,7 @@ public class RocketPath : MonoBehaviour
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
         // M = n (t)
-        float meanAngularMotion = Mathf.Sqrt(gravityParam / Mathf.Pow(semiMajorAxis, 3)); // TODO (Mean Angular Motion can be computed at build/run time once)
+        float meanAngularMotion = Mathf.Sqrt(gravityParam / Mathf.Pow(semiMajorAxis, 3));
         float timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
         float MA = timeWithOffset * meanAngularMotion;
         
@@ -146,7 +163,7 @@ public class RocketPath : MonoBehaviour
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
         // M = n (t)
-        float meanAngularMotion = Mathf.Sqrt(gravityParam / Mathf.Pow(semiMajorAxis, 3)); // TODO (Mean Angular Motion can be computed at build/run time once)
+        float meanAngularMotion = Mathf.Sqrt(gravityParam / Mathf.Pow(semiMajorAxis, 3)); 
         float timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
         float MA = timeWithOffset * meanAngularMotion;
         

@@ -14,6 +14,7 @@ public class CameraControl : MonoBehaviour
     private float zoomFactor = 0.5f;
     private float zoomLerp = 10f;
     private float moveFactor = 0.01f;
+    private float lineFactor = 0.01f;
     Vector3 position;
     public GameObject sun;
     public GameObject earth;
@@ -90,10 +91,12 @@ public class CameraControl : MonoBehaviour
         {
             targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.fixedDeltaTime*zoomLerp);
+            Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize * lineFactor;
         }if(targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
         {
             targetZoom = 1;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.fixedDeltaTime*zoomLerp);
+            Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize*lineFactor;
         }
         
     }

@@ -23,6 +23,8 @@ public class BodyPath : MonoBehaviour
     public bool calculate  = false;
     public bool start  = false;
 
+    public TimeManager MyTime;
+
 
 
 
@@ -32,6 +34,10 @@ public class BodyPath : MonoBehaviour
     void Start()
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
+        if(MyTime == null)
+        {
+            MyTime = FindObjectOfType<TimeManager>();
+        }
     }
 
     // Update is called once per frame
@@ -53,9 +59,9 @@ public class BodyPath : MonoBehaviour
 
         }
 
-        if(calculate == true)
+        if(calculate == true && MyTime != null)
         {
-            float time = Time.time;
+            float time = MyTime.time;
             Vector2 bodyPosition2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_pos, (float)this.GetComponent<PhysicsStats>().y_pos);
             Vector2 bodyVelocity2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_vel, (float)this.GetComponent<PhysicsStats>().y_vel);
             PhysicsStats phyStats = OrbitingBody.GetComponent<PhysicsStats>();

@@ -11,6 +11,8 @@ public class TimeManager : MonoBehaviour
     public float time = 0;
     public float deltaTime = 0;
 
+    public StageViewer stage;
+
     // Start is called before the first frame update
     void Start()
     {
