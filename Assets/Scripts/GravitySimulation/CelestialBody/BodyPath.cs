@@ -61,8 +61,8 @@ public class BodyPath : MonoBehaviour
             PhysicsStats phyStats = OrbitingBody.GetComponent<PhysicsStats>();
             Vector2 orbitingBodyPosition2D = new Vector2((float)phyStats.x_pos, (float)phyStats.y_pos);
             DrawLine(time, line, KeplerParams, bodyPosition2D, bodyVelocity2D, orbitingBodyPosition2D, gravityParam);
-            //calculate = false;
-            //start = true;
+            calculate = false;
+            start = true;
         }
 
         if(start == true)

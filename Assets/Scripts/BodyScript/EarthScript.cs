@@ -43,7 +43,7 @@ public class EarthScript : MonoBehaviour
         this.GetComponent<DoubleTransform>().y_pos = this.transform.position.y;
         this.GetComponent<PhysicsStats>().x_pos = this.transform.position.x;
         this.GetComponent<PhysicsStats>().y_pos = this.transform.position.y;
-        //DrawCircle(5000, 63710);
+        //DrawCircle(100000, 63710);
         
         TimeManager = TimeRef.GetComponent<TimeManager>();
     }
@@ -70,7 +70,7 @@ public class EarthScript : MonoBehaviour
             Vector3 currentPosition = new Vector3(x, y, 0) + earth.transform.position;
             edges.Add(currentPosition);
             
-            GameObject current = Instantiate(blockCollider, currentPosition - new Vector3(0f, .5f, 0f), Quaternion.Euler(0f, 0f, 0f));
+            GameObject current = Instantiate(blockCollider, currentPosition - new Vector3(0f, 0.5f, 0f), Quaternion.Euler(0f, 0f, 0f));
 
             if(currentStep == 0)
             {
@@ -99,7 +99,7 @@ public class EarthScript : MonoBehaviour
             
         }
 
-        DrawMesh(Points, 63710, 5000);
+        DrawMesh(Points, 63710, 100000);
         List<Vector3> Points2 = new List<Vector3>();
         foreach(Vector2 point in polyCollider.points)
         {
@@ -110,7 +110,7 @@ public class EarthScript : MonoBehaviour
         var mf = GetComponent<MeshFilter>();
         if (mf)
         {
-            var savePath = "Assets/" + "MeshEarth100" + ".asset";
+            var savePath = "Assets/" + "EarthMeshHighRes" + ".asset";
             Debug.Log("Saved Mesh to:" + savePath);
             AssetDatabase.CreateAsset(mf.mesh, savePath);
         }
