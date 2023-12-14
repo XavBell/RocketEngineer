@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2821159826925204335}
   - component: {fileID: 2873788820980888798}
   - component: {fileID: -4501993937823853355}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: VAB
   m_TagString: building
   m_Icon: {fileID: 0}
@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 4919702563059865179}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -99,7 +99,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -113,7 +113,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 4}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &8762847560676954741
 MonoBehaviour:
@@ -145,6 +145,7 @@ MonoBehaviour:
   buildingID: 0
   inputUI: {fileID: 0}
   outputUI: {fileID: 0}
+  selectUI: {fileID: 0}
 --- !u!114 &2873788820980888798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,7 +172,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4919702563059865179}
   m_BodyType: 1
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1

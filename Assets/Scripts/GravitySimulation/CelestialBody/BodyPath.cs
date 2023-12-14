@@ -61,8 +61,8 @@ public class BodyPath : MonoBehaviour
             PhysicsStats phyStats = OrbitingBody.GetComponent<PhysicsStats>();
             Vector2 orbitingBodyPosition2D = new Vector2((float)phyStats.x_pos, (float)phyStats.y_pos);
             DrawLine(time, line, KeplerParams, bodyPosition2D, bodyVelocity2D, orbitingBodyPosition2D, gravityParam);
-            calculate = false;
-            start = true;
+            //calculate = false;
+            //start = true;
         }
 
         if(start == true)
@@ -150,12 +150,12 @@ public class BodyPath : MonoBehaviour
         return (x % m + m) % m;
     }
 
-    public static float GetOrbitalPeriod(float gravityParam, float semiMajorAxis)
+    public static double GetOrbitalPeriod(float gravityParam, float semiMajorAxis)
     {
-        return (Mathf.Sqrt(4 * Mathf.Pow(Mathf.PI, 2) * Mathf.Pow(semiMajorAxis, 3) / gravityParam));
+        return Math.Sqrt(4 * Math.Pow(Math.PI, 2) * Math.Pow(semiMajorAxis, 3) / gravityParam);
     }
 
-    public static float GetTrueAnomalyFromTimeOffset(float timeOffset, float gravityParam, float semiMajorAxis, float eccentricity)
+    public static float GetTrueAnomalyFromTimeOffset(double timeOffset, float gravityParam, float semiMajorAxis, float eccentricity)
     {
         if (timeOffset < 0)
         {
@@ -163,7 +163,7 @@ public class BodyPath : MonoBehaviour
         }
 
         float meanAngularMotion = Mathf.Sqrt(gravityParam / Mathf.Pow(semiMajorAxis, 3));
-        float MA = timeOffset * meanAngularMotion;
+        float MA = (float)timeOffset * meanAngularMotion;
 
         float EA = MA;
 
@@ -288,7 +288,7 @@ public class BodyPath : MonoBehaviour
             times[count] = time;
             positions[count] = pos;
 
-            time += timeIncrement;
+            time += (float)timeIncrement;
         }
     }
 

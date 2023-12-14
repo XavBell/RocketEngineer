@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5205108621473731503}
   - component: {fileID: 6791764187396280936}
   - component: {fileID: 4845223086358556392}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +180,7 @@ GameObject:
   - component: {fileID: 8584954968846410108}
   - component: {fileID: 2284764498030263527}
   - component: {fileID: 1096521978057251816}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: OxidizerInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2448478873747606607}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Oxidizer/FuelBtns
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -384,7 +384,7 @@ GameObject:
   - component: {fileID: 2542165224259550593}
   - component: {fileID: 5906584683850466963}
   - component: {fileID: 2584368232058933177}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -487,7 +487,7 @@ GameObject:
   - component: {fileID: 6572039175417325210}
   - component: {fileID: 8443213377781254425}
   - component: {fileID: 7999852447401299438}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: FuelInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -652,7 +652,7 @@ GameObject:
   - component: {fileID: 7411371355070514617}
   - component: {fileID: 8327900718099516522}
   - component: {fileID: 5670705226673235513}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -794,7 +794,7 @@ GameObject:
   - component: {fileID: 7394985772004179922}
   - component: {fileID: -8382298268041422409}
   - component: {fileID: 8208019030907920418}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: launchPad
   m_TagString: building
   m_Icon: {fileID: 0}
@@ -863,7 +863,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
-  m_Size: {x: 4, y: 5}
+  m_Size: {x: 3, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -887,13 +887,13 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 4, y: 5}
+    newSize: {x: 3, y: 4}
     adaptiveTilingThreshold: 0.5
     drawMode: 1
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4, y: 5}
+  m_Size: {x: 3, y: 4}
   m_EdgeRadius: 0
 --- !u!114 &5645022881832171447
 MonoBehaviour:
@@ -957,6 +957,8 @@ MonoBehaviour:
   engines: []
   type: default
   circuit: oxidizer
+  TimeManager: {fileID: 0}
+  MyTime: {fileID: 0}
 --- !u!114 &6114230335073138526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1020,7 +1022,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4590421016071702574}
   m_BodyType: 1
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -1080,6 +1082,8 @@ MonoBehaviour:
   engines: []
   type: default
   circuit: fuel
+  TimeManager: {fileID: 0}
+  MyTime: {fileID: 0}
 --- !u!1 &4924626698158955348
 GameObject:
   m_ObjectHideFlags: 0
@@ -1091,7 +1095,7 @@ GameObject:
   - component: {fileID: 6071035608437660563}
   - component: {fileID: 2399954418906056530}
   - component: {fileID: 5305899573945646376}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1227,7 +1231,7 @@ GameObject:
   - component: {fileID: 4334167862789349664}
   - component: {fileID: 4523542950867888628}
   - component: {fileID: 5956210525829386162}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

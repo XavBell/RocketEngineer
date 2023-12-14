@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1755046333727408079}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: DesignerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: -3751249016971175429}
   - component: {fileID: -7431263293613641143}
   - component: {fileID: -6035179970927394703}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Designer
   m_TagString: building
   m_Icon: {fileID: 0}
@@ -131,7 +131,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -177,6 +177,7 @@ MonoBehaviour:
   buildingID: 0
   inputUI: {fileID: 0}
   outputUI: {fileID: 0}
+  selectUI: {fileID: 0}
 --- !u!114 &-7431263293613641143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,7 +204,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4919702563059865179}
   m_BodyType: 1
-  m_Simulated: 1
+  m_Simulated: 0
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1

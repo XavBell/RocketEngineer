@@ -17,7 +17,7 @@ public class BuildingManager : MonoBehaviour
     public WorldSaveManager WorldSaveManager;
     public launchsiteManager launchsiteManager;
 
-    public float planetRadius = 6371;
+    public float planetRadius = 63710;
 
     public string localMode = "none";
 

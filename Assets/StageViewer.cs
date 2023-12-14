@@ -12,6 +12,7 @@ public class StageViewer : MonoBehaviour
     public GameObject DecouplerUI;
     public GameObject TankUI;
     public GameObject Panel;
+    public TMP_Text altitude;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,10 @@ public class StageViewer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(rocket != null)
+        {
+            altitude.text = (Vector2.Distance(rocket.GetComponent<PlanetGravity>().planet.transform.position, rocket.transform.position)-63710f).ToString();
+        }
     }
 
     public void fullReset(bool forcedCall)

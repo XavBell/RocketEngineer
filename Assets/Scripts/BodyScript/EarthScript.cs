@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 
 public class EarthScript : MonoBehaviour
@@ -42,7 +43,7 @@ public class EarthScript : MonoBehaviour
         this.GetComponent<DoubleTransform>().y_pos = this.transform.position.y;
         this.GetComponent<PhysicsStats>().x_pos = this.transform.position.x;
         this.GetComponent<PhysicsStats>().y_pos = this.transform.position.y;
-
+        //DrawCircle(5000, 63710);
         
         TimeManager = TimeRef.GetComponent<TimeManager>();
     }
@@ -98,7 +99,22 @@ public class EarthScript : MonoBehaviour
             
         }
 
+        DrawMesh(Points, 63710, 5000);
+        List<Vector3> Points2 = new List<Vector3>();
+        foreach(Vector2 point in polyCollider.points)
+        {
+            Points2.Add(point);
+        }
 
+        test(Points2, 63710, Points2.Count);
+        var mf = GetComponent<MeshFilter>();
+        if (mf)
+        {
+            var savePath = "Assets/" + "MeshEarth100" + ".asset";
+            Debug.Log("Saved Mesh to:" + savePath);
+            AssetDatabase.CreateAsset(mf.mesh, savePath);
+        }
+    
     }
 
     void SetEarthMass()
@@ -130,6 +146,7 @@ public class EarthScript : MonoBehaviour
         MeshFilter mf = GetComponent<MeshFilter>();
         Mesh mesh = new Mesh();
         mf.mesh = mesh;
+        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         Vector3[] verticies = verticiesList.ToArray();
         
         //triangles

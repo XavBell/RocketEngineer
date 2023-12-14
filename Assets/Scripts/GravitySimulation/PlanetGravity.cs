@@ -116,14 +116,14 @@ public class PlanetGravity : MonoBehaviour
     {   
         //Gravity
         rb.mass = core.GetComponent<Rocket>().rocketMass;
-        float Dist = UnityEngine.Vector2.Distance(rb.transform.position, planet.transform.position);
-        UnityEngine.Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
-        UnityEngine.Vector3 ForceVector = forceDir * (G*((Mass*rb.mass)/ (Dist * Dist)));
-        UnityEngine.Vector3 Thrust = new UnityEngine.Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
-        UnityEngine.Vector3 ResultVector = (ForceVector + Thrust);
+        double Dist = Vector2.Distance(rb.transform.position, planet.transform.position);
+        Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
+        Vector3 ForceVector = forceDir * (G*(Mass*rb.mass)/(float)(Dist * Dist));
+        Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
+        Vector3 ResultVector = ForceVector + Thrust;
         rb.AddForce(ResultVector);
-        this.GetComponent<DoubleTransform>().x_pos = rb.position.x;
-        this.GetComponent<DoubleTransform>().y_pos = rb.position.y;
+        GetComponent<DoubleTransform>().x_pos = rb.position.x;
+        GetComponent<DoubleTransform>().y_pos = rb.position.y;
     }
 
     void checkManager()
