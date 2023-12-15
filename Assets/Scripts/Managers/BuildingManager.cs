@@ -37,7 +37,8 @@ public class BuildingManager : MonoBehaviour
         WorldSaveManager = GWS.GetComponent<WorldSaveManager>();
 
         customCursor.gameObject.SetActive(false);
-
+        
+        solarSystemManager = FindObjectOfType<SolarSystemManager>();
         planetRadius = solarSystemManager.earthRadius;
     }
 

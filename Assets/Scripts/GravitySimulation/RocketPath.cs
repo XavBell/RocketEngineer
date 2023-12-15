@@ -65,7 +65,7 @@ public class RocketPath : MonoBehaviour
 
     public void CalculateParameters()
     {
-        SetKeplerParams(KeplerParams, rb.position, planetGravity.planet.transform.position, rb.velocity, gravityParam, Time.time);
+        SetKeplerParams(KeplerParams, rb.position, planetGravity.planet.transform.position, rb.velocity, gravityParam, MyTime.time);
     }
 
     public Vector2 updatePosition()

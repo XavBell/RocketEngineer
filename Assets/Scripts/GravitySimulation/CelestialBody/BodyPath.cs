@@ -73,7 +73,7 @@ public class BodyPath : MonoBehaviour
 
         if(start == true)
         {
-            Vector2 transform = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + OrbitingBody.transform.position;
+            Vector2 transform = GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + OrbitingBody.transform.position;
             this.transform.position = transform;
             this.GetComponent<DoubleTransform>().x_pos = transform.x;
             this.GetComponent<DoubleTransform>().y_pos = transform.y;
