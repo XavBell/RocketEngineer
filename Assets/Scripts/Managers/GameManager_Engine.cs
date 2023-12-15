@@ -228,6 +228,9 @@ public class GameManager_Engine : MonoBehaviour
             saveObject.turbineName_s = selectedTurbine;
             saveObject.pumpName_s = selectedPump;
 
+            saveObject.reliability = 0f;
+            saveObject.maxTime = 1f;
+
 
             var jsonString = JsonConvert.SerializeObject(saveObject);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json", jsonString);

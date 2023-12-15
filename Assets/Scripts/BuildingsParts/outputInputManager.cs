@@ -160,13 +160,63 @@ public class outputInputManager : MonoBehaviour
         }
 
         //Logic for rockets
-        if(circuit != "none" && this.GetComponent<launchPadManager>() != null)
+        if(circuit != "none" && GetComponent<launchPadManager>() != null)
         {
             CalculateRocketTankVariation(molarRate);
         }
 
+        //Logic for engines static fire
+        if(circuit != "none" && GetComponent<staticFireStandManager>() != null)
+        {
+            staticFireStandManager sFSM = GetComponent<staticFireStandManager>();
+            CalculateFlowStaticFireEngine(sFSM.ConnectedEngine.GetComponent<Engine>()._rate, sFSM.started, sFSM.ratio, sFSM);
+        }
+
         calculateInternalConditions();
         
+    }
+
+    private void CalculateFlowStaticFireEngine(float massFlowRateEngine, bool started, float ratio, staticFireStandManager sFSM)
+    {
+        //Ratio is always oxidizer/fuel
+        if(started == true)
+        {
+            if(circuit == "oxidizer")
+            {
+                float percentageOxidizer = ratio/(ratio + 1);
+                float rate = percentageOxidizer * massFlowRateEngine;
+                //Static fire will be able to be ran at timewarp
+                float consumedOxidizer = rate * MyTime.deltaTime;
+                if(mass - consumedOxidizer >= 0)
+                {
+                    sFSM.oxidizerSufficient = true;
+                    float consumedMoles = consumedOxidizer/substanceMolarMass;
+                    moles -= consumedMoles;
+                    return;
+                }else{
+                    sFSM.oxidizerSufficient = false;
+                    return;
+                }
+            }
+
+            if(circuit == "fuel")
+            {
+                float percentageFuel = 1f/(ratio + 1);
+                float rate = percentageFuel * massFlowRateEngine;
+                //Static fire will be able to be ran at timewarp
+                float consumedFuel = rate * MyTime.deltaTime;
+                if(mass - consumedFuel >= 0)
+                {
+                    sFSM.fuelSufficient = true;
+                    float consumedMoles = consumedFuel/substanceMolarMass;
+                    moles -= consumedMoles;
+                    return;
+                }else{
+                    sFSM.fuelSufficient = false;
+                    return;
+                }
+            }
+        }
     }
 
     private void CalculateRocketTankVariation(float molarRate)

@@ -36,6 +36,7 @@ public class Stages
             }
         }
 
+        //Shouldn't need to use the MyTime because it's only ran in simulate mode
         float consumedFuel = Time.fixedDeltaTime * massFlowRate * percentageFuel;
         float consumedOxidizer = Time.fixedDeltaTime * massFlowRate * percentageOxidizer;
         if(fuelQty - consumedFuel >= 0 && oxidizerQty - consumedOxidizer >= 0 && consumedFuel != 0 && consumedOxidizer != 0)

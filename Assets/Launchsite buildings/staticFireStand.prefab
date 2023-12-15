@@ -790,12 +790,12 @@ GameObject:
   - component: {fileID: 5645022881832171447}
   - component: {fileID: 75406555262869139}
   - component: {fileID: 6114230335073138526}
-  - component: {fileID: 5381789719691407045}
   - component: {fileID: 7394985772004179922}
   - component: {fileID: -8382298268041422409}
   - component: {fileID: 8208019030907920418}
+  - component: {fileID: -5414461606620557144}
   m_Layer: 7
-  m_Name: launchPad
+  m_Name: staticFireStand
   m_TagString: building
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -859,7 +859,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 48e93eef0688c4a259cb0eddcd8661f7, type: 3}
-  m_Color: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
+  m_Color: {r: 0.3018868, g: 0.3018868, b: 0.3018868, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 1
@@ -970,31 +970,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6dd300add53a7642afd993a8d7783ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: launchPad
+  type: staticFireStand
   buildingID: 0
   inputUI: {fileID: 3104724332749097704}
   outputUI: {fileID: 0}
   selectUI: {fileID: 0}
---- !u!114 &5381789719691407045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4590421016071702574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 911e908842ef8db4996105a28eac0934, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonPrefab: {fileID: 4939193850173480501, guid: 6cd6fc681df88e84a9bfcf832ed4a136, type: 3}
-  MasterManager: {fileID: 0}
-  Spawned: 0
-  ConnectedRocket: {fileID: 0}
-  oxidizer: {fileID: 75406555262869139}
-  fuel: {fileID: 8208019030907920418}
-  padName: 
-  button: {fileID: 680552191032890808}
 --- !u!114 &7394985772004179922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1082,6 +1062,26 @@ MonoBehaviour:
   type: default
   circuit: fuel
   MyTime: {fileID: 0}
+--- !u!114 &-5414461606620557144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d7c8317bf27e4281b64579e39430211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonPrefab: {fileID: 4939193850173480501, guid: 6cd6fc681df88e84a9bfcf832ed4a136, type: 3}
+  MasterManager: {fileID: 0}
+  Spawned: 0
+  ConnectedEngine: {fileID: 0}
+  oxidizer: {fileID: 75406555262869139}
+  fuel: {fileID: 8208019030907920418}
+  standName: staticfirestand
+  button: {fileID: 4939193850173480501, guid: 6cd6fc681df88e84a9bfcf832ed4a136, type: 3}
 --- !u!1 &4924626698158955348
 GameObject:
   m_ObjectHideFlags: 0
