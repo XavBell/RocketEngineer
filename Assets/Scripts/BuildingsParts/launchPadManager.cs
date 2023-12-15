@@ -34,7 +34,6 @@ public class launchPadManager : MonoBehaviour
     {
         if(Spawned == false)
         {
-            //retrieveRocketSaved();
             Spawned = true;
         }
 
@@ -44,7 +43,7 @@ public class launchPadManager : MonoBehaviour
             {
                 ConnectedRocket.GetComponent<outputInputManager>().inputParent = null;
                 ConnectedRocket = null;
-                this.GetComponent<outputInputManager>().outputParent = null;
+                GetComponent<outputInputManager>().outputParent = null;
             }
         }
     }

@@ -16,8 +16,9 @@ public class BuildingManager : MonoBehaviour
     public MasterManager MasterManager;
     public WorldSaveManager WorldSaveManager;
     public launchsiteManager launchsiteManager;
+    public SolarSystemManager solarSystemManager = new SolarSystemManager();
 
-    public float planetRadius = 63710;
+    public float planetRadius;
 
     public string localMode = "none";
 
@@ -36,6 +37,8 @@ public class BuildingManager : MonoBehaviour
         WorldSaveManager = GWS.GetComponent<WorldSaveManager>();
 
         customCursor.gameObject.SetActive(false);
+
+        planetRadius = solarSystemManager.earthRadius;
     }
 
     // Update is called once per frame

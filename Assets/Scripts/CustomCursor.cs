@@ -8,8 +8,9 @@ public class CustomCursor : MonoBehaviour
     private SpriteRenderer sp;
     private BoxCollider2D box;
     public GameObject earth;
-    public float planetRadius = 6371;
+    public float planetRadius;
     public bool constructionAllowed = true;
+    public SolarSystemManager solarSystemManager = new SolarSystemManager();
 
     public float zRot;
     public string type;
@@ -21,6 +22,7 @@ public class CustomCursor : MonoBehaviour
         sp = this.GetComponent<SpriteRenderer>();
         box = this.GetComponent<BoxCollider2D>();
         defaultColor = sp.color;
+        planetRadius = solarSystemManager.earthRadius;
     }
 
     // Update is called once per frame

@@ -7,22 +7,14 @@ using UnityEngine;
 
 public class EarthScript : MonoBehaviour
 {
-    public GameObject sun;
-    public GameObject TimeRef;
-    public TimeManager TimeManager;
-
     public GameObject blockCollider;
     public GameObject earth;
     public List<Vector3> Points;
-
-
-    public GameObject cam;
 
     private float G; //Gravitational constant
     public float gSlvl;
     public float earthMass = 0f;
     public float earthRadius;
-    public bool updated = true;
     public PolygonCollider2D polyCollider;
 
     public SolarSystemManager SolarSystemManager;
@@ -34,18 +26,20 @@ public class EarthScript : MonoBehaviour
 
     }
 
-
-
     public void InitializeEarth()
     {
         SetEarthMass();
-        this.GetComponent<DoubleTransform>().x_pos = this.transform.position.x;
-        this.GetComponent<DoubleTransform>().y_pos = this.transform.position.y;
-        this.GetComponent<PhysicsStats>().x_pos = this.transform.position.x;
-        this.GetComponent<PhysicsStats>().y_pos = this.transform.position.y;
+        SetDoubleTransform();
         //DrawCircle(100000, 63710);
-        
-        TimeManager = TimeRef.GetComponent<TimeManager>();
+
+    }
+
+    void SetDoubleTransform()
+    {
+        GetComponent<DoubleTransform>().x_pos = this.transform.position.x;
+        GetComponent<DoubleTransform>().y_pos = this.transform.position.y;
+        GetComponent<PhysicsStats>().x_pos = this.transform.position.x;
+        GetComponent<PhysicsStats>().y_pos = this.transform.position.y;
     }
 
     void DrawCircle(int steps, float radius)

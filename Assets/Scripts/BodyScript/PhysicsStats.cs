@@ -31,9 +31,9 @@ public class PhysicsStats : MonoBehaviour
                 mass = solarSystemManager.earthMass;
             }
 
-            if(this.GetComponent<BodyPath>() != null)
+            if(GetComponent<BodyPath>() != null)
             {
-                this.GetComponent<BodyPath>().calculate = true;
+                GetComponent<BodyPath>().calculate = true;
             }
         }
         

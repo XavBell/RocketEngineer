@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class outputInputManager : MonoBehaviour
 {
     [SerializeField]
+    substanceProperty substanceProperty = new substanceProperty();
     public int selfID = 0;
     public bool connectedAsRocket = false;
     
     public int inputParentID = 0;
     public outputInputManager inputParent;
+    
 
     public int outputParentID = 0;
     public outputInputManager outputParent;
@@ -59,14 +62,7 @@ public class outputInputManager : MonoBehaviour
 
     void Start()
     {
-        initialize();;
-        if(this.GetComponent<buildingType>())
-        {
-            selfID = this.GetComponent<buildingType>().buildingID;
-            internalTemperature = externalTemperature;
-            internalPressure = externalPressure;
-        }
-
+        Initialize();;
     }
 
     // Update is called once per frame
@@ -89,7 +85,7 @@ public class outputInputManager : MonoBehaviour
             fuelTransfer();
         }
 
-        if(this.GetComponent<Tank>() != null)
+        if(GetComponent<Tank>() != null)
         {
             InitializeCircuitTank();
         }
@@ -97,41 +93,25 @@ public class outputInputManager : MonoBehaviour
         
     }
 
-    void initialize()
+    void Initialize()
     {
         if(MyTime == null)
         {
             MyTime= FindObjectOfType<TimeManager>();
         }
+
+        if(GetComponent<buildingType>())
+        {
+            selfID = GetComponent<buildingType>().buildingID;
+            internalTemperature = externalTemperature;
+            internalPressure = externalPressure;
+        }
     }
 
     void InitializeCircuitTank()
     {
-        circuit = this.GetComponent<Tank>().propellantCategory;
-        tankVolume = this.GetComponent<Tank>()._volume;
-    }
-
-    void setProperty(string substance)
-    {
-        if(substance == "kerosene")
-        {
-            substanceDensity = 800f;
-            substanceLiquidTemperature = 226f; //up to 424
-            substanceGaseousTemperature = 424f; //and more
-            substanceSolidTemperature = 226f; //and below
-            substanceMolarMass = 170f;
-            substanceSpecificHeatCapacity = 2010f;
-        }
-
-        if(substance == "LOX")
-        {
-            substanceDensity = 1141f;
-            substanceLiquidTemperature = 56f; //up to 91
-            substanceGaseousTemperature = 91f; //and more
-            substanceSolidTemperature = 56f; //and below
-            substanceMolarMass = 32f;
-            substanceSpecificHeatCapacity = 2010f;
-        }
+        circuit = GetComponent<Tank>().propellantCategory;
+        tankVolume = GetComponent<Tank>()._volume;
     }
     
     void updateParents()
@@ -182,180 +162,157 @@ public class outputInputManager : MonoBehaviour
         //Logic for rockets
         if(circuit != "none" && this.GetComponent<launchPadManager>() != null)
         {
-            launchPadManager launchPad = this.GetComponent<launchPadManager>();
-
-            if(launchPad.ConnectedRocket != null)
-            {
-                Rocket rocket = launchPad.ConnectedRocket.GetComponent<Rocket>();
-                //Rate is in kg/s, we want to get the rate in mol/s
-                //m = nM
-                
-                if(circuit == "oxidizer")
-                {
-                    List<RocketPart> tanksOxidizer = new List<RocketPart>();
-                    foreach(Stages stage in rocket.Stages)
-                    {
-                        foreach(RocketPart part in stage.Parts)
-                        {
-                            if(part._partType == "tank")
-                            {
-                                if(part.GetComponent<outputInputManager>().circuit == "oxidizer")
-                                {
-                                    tanksOxidizer.Add(part);
-                                }
-                            }
-                        }
-                    }
-
-                    
-                    
-                    
-
-                    if(moles - (molarRate*MyTime.deltaTime) >= 0 && tanksOxidizer.Count != 0)
-                    {
-                        double molesToGive = molarRate*MyTime.deltaTime/tanksOxidizer.Count;
-                        foreach(RocketPart tank in tanksOxidizer)
-                        {
-                            tank.GetComponent<outputInputManager>().internalTemperature = inputParent.internalTemperature;
-                            tank.GetComponent<outputInputManager>().externalTemperature = inputParent.externalTemperature;
-                            tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
-                            tank.GetComponent<outputInputManager>().substance = substance;
-                        }
-                        moles -= molarRate * MyTime.deltaTime;
-                    }
-
-                    
-                }
-
-                if(circuit == "fuel")
-                {
-                    List<RocketPart> tanksFuel = new List<RocketPart>();
-                    foreach(Stages stage in rocket.Stages)
-                    {
-                        foreach(RocketPart part in stage.Parts)
-                        {
-                            if(part._partType == "tank")
-                            {
-                                if(part.GetComponent<outputInputManager>().circuit == "fuel")
-                                {
-                                    tanksFuel.Add(part);
-                                }
-                            }
-                        }
-                    }
-
-                    if(tanksFuel.Count != 0 && moles - (molarRate*MyTime.deltaTime) >= 0)
-                    {
-                        double molesToGive = molarRate*MyTime.deltaTime/tanksFuel.Count;
-                        foreach(RocketPart tank in tanksFuel)
-                        {
-                            tank.GetComponent<outputInputManager>().internalTemperature = inputParent.internalTemperature;
-                            tank.GetComponent<outputInputManager>().externalTemperature = inputParent.externalTemperature;
-                            tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
-                            tank.GetComponent<outputInputManager>().substance = substance;
-                        }
-                        moles -= molarRate * MyTime.deltaTime;
-                    }
-                }
-
-                launchPad.ConnectedRocket.GetComponent<Rocket>().updateMass();
-            }
+            CalculateRocketTankVariation(molarRate);
         }
 
         calculateInternalConditions();
         
     }
 
+    private void CalculateRocketTankVariation(float molarRate)
+    {
+        launchPadManager launchPad = this.GetComponent<launchPadManager>();
+
+        if (launchPad.ConnectedRocket != null)
+        {
+            Rocket rocket = launchPad.ConnectedRocket.GetComponent<Rocket>();
+            //Rate is in kg/s, we want to get the rate in mol/s
+            //m = nM
+            List<RocketPart> tanks = new List<RocketPart>();
+            GetFuelTanksPerLine(rocket, tanks, circuit);
+            DivideFuel(molarRate, tanks);
+
+            launchPad.ConnectedRocket.GetComponent<Rocket>().updateMass();
+        }
+    }
+
+    private void DivideFuel(float molarRate, List<RocketPart> tanks)
+    {
+        if (tanks.Count != 0 && moles - (molarRate * MyTime.deltaTime) >= 0)
+        {
+            double molesToGive = molarRate * MyTime.deltaTime / tanks.Count;
+            foreach (RocketPart tank in tanks)
+            {
+                SetTankConditions(molesToGive, tank);
+            }
+            moles -= molarRate * MyTime.deltaTime;
+        }
+    }
+
+    private static void GetFuelTanksPerLine(Rocket rocket, List<RocketPart> tanksFuel, string fuelType)
+    {
+        foreach (Stages stage in rocket.Stages)
+        {
+            foreach (RocketPart part in stage.Parts)
+            {
+                if (part._partType == "tank")
+                {
+                    if (part.GetComponent<outputInputManager>().circuit == fuelType)
+                    {
+                        tanksFuel.Add(part);
+                    }
+                }
+            }
+        }
+    }
+
+    private void SetTankConditions(double molesToGive, RocketPart tank)
+    {
+        tank.GetComponent<outputInputManager>().internalTemperature = inputParent.internalTemperature;
+        tank.GetComponent<outputInputManager>().externalTemperature = inputParent.externalTemperature;
+        tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
+        tank.GetComponent<outputInputManager>().substance = substance;
+    }
+
     void calculateInternalConditions()
     {
-        setProperty(substance);
+        substanceProperty.AssignProperty(substance, out substanceDensity, out substanceLiquidTemperature, out substanceGaseousTemperature, out substanceSolidTemperature, out substanceMolarMass, out substanceSpecificHeatCapacity);
+        SetState();
+        CalculateConditionsFromState();
+    }
 
-        if(substanceSolidTemperature < internalTemperature && internalTemperature < substanceGaseousTemperature)
+    private void CalculateConditionsFromState()
+    {
+        if (state == "liquid")
         {
-            state = "liquid";
-        }
-        else if(internalTemperature > substanceGaseousTemperature)
-        {
-            state = "gas";
-        }
-        else if(internalTemperature < substanceSolidTemperature)
-        {
-            state = "solid";
-        }
+            ConvertMass();
+            volume = mass / substanceDensity;
+            float ratio = volume / tankVolume;
+            float heightLiquid = ratio * tankHeight;
+            internalPressure = substanceDensity * 9.8f * heightLiquid;
 
-        if(state == "liquid")
-        {
-            //Convert moles to mass
-            mass = moles*substanceMolarMass;
-            //Convert g to kg
-            mass /= 1000;
-            volume = mass/substanceDensity;
-            float ratio = volume/tankVolume;
-            float heightLiquid = ratio*tankHeight;
-            internalPressure = substanceDensity  * 9.8f * heightLiquid;
-
-            if(internalPressure == float.NaN)
+            if (internalPressure == float.NaN)
             {
                 internalPressure = 0;
             }
 
-            if(tankVolume < volume)
+            if (tankVolume < volume)
             {
                 //Pressure is critical, tank should break
                 tankState = "broken";
             }
 
-            //Calculate T (might not work if internal is higher than external or reverse)
-            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
-            float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
-            if(internalTemperature != externalTemperature)
-            {
-                internalTemperature += deltaInternal;
-                
-            }
-            
+            CalculateTemperature();
+
         }
 
-        if(state == "gas")
+        if (state == "gas")
         {
-            //Convert moles to mass
-            mass = moles*substanceMolarMass;
-            //Convert g to kg
-            mass /= 1000;
-            //Calculate T (might not work if internal is higher than external or reverse)
-            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
-            float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
-            if(internalTemperature != externalTemperature)
-            {
-                internalTemperature += deltaInternal;
-                
-            }
+            ConvertMass();
+            CalculateTemperature();
 
-            internalPressure = (moles*8.314f*internalTemperature)/tankVolume; //Not sure about 8.314
+            internalPressure = (moles * 8.314f * internalTemperature) / tankVolume; //Not sure about 8.314
         }
 
-        if(state == "solid")
+        if (state == "solid")
         {
-            //Convert moles to mass
-            mass = moles*substanceMolarMass;
-            //Convert g to kg
-            mass /= 1000;
-            volume = mass/substanceDensity;
+            ConvertMass();
 
-            if(tankVolume < volume)
+            volume = mass / substanceDensity;
+
+            if (tankVolume < volume)
             {
                 //Pressure is critical, tank should break, set pressure
                 tankState = "broken";
-
             }
 
-            //Calculate T (might not work if internal is higher than external or reverse)
-            float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
-            float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
-            if(internalTemperature != externalTemperature)
-            {
-                internalTemperature += deltaInternal;
-            }
+            CalculateTemperature();
+        }
+
+    }
+
+    void CalculateTemperature()
+    {
+        //Calculate T (might not work if internal is higher than external or reverse)
+        float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
+        float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
+        if (internalTemperature != externalTemperature)
+        {
+            internalTemperature += deltaInternal;
+        }
+    }
+
+    void ConvertMass()
+    {
+        //Convert moles to mass
+        mass = moles * substanceMolarMass;
+        //Convert g to kg
+        mass /= 1000;
+    }
+
+    private void SetState()
+    {
+        if (substanceSolidTemperature < internalTemperature && internalTemperature < substanceGaseousTemperature)
+        {
+            state = "liquid";
+        }
+        else if (internalTemperature > substanceGaseousTemperature)
+        {
+            state = "gas";
+        }
+        else if (internalTemperature < substanceSolidTemperature)
+        {
+            state = "solid";
         }
     }
 
