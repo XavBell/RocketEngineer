@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,6 +45,10 @@ public class saveWorld
     public List<int> outputIDs = new List<int>();
     public List<int> inputIDs = new List<int>();
 
+    public List<Guid> selfGuid = new List<Guid>();
+    public List<Guid> InputGuid = new List<Guid>();
+    public List<Guid> OutputGuid = new List<Guid>();
+
     public List<float> inputLocX = new List<float>();
     public List<float> inputLocY = new List<float>();
     public List<float> inputLocZ = new List<float>();
@@ -59,5 +64,7 @@ public class saveWorld
 
     public List<int> childrenNumber = new List<int>();
     public List<string> types = new List<string>();
+
+    public List<saveWorldRocket> rockets = new List<saveWorldRocket>();
 }
 

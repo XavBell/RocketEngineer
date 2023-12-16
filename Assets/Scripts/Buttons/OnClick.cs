@@ -160,6 +160,7 @@ public class OnClick : MonoBehaviour
                 part._partID = loadedRocket.PartsID[i];
                 part._partMass = loadedRocket.mass[i];
                 
+                
                 //Add part to stage
                 rocket.Stages[loadedRocket.StageNumber[i]].Parts.Add(part);
                 rocket.Stages[loadedRocket.StageNumber[i]].PartsID.Add(part._partID);

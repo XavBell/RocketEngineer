@@ -10,6 +10,7 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using Unity.VisualScripting;
 
 public class WorldSaveManager : MonoBehaviour
 {
@@ -131,8 +132,30 @@ public class WorldSaveManager : MonoBehaviour
                 saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
                 saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
             }
+
+            if(building.GetComponent<buildingType>().type == "staticFireStand")
+            {
+                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
+                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
+            }
+
+            if(building.GetComponent<buildingType>().type == "standTank")
+            {
+                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
+                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
+            }
         }
 
+        outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
+        foreach(outputInputManager outputInputManager in outputInputManagers)
+        {
+            saveWorld.selfGuid.Add(outputInputManager.guid);
+            saveWorld.InputGuid.Add(outputInputManager.inputGuid);
+            saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
+        }
+
+        //Rocket[] Rockets = FindObjectsOfType<Rocket>();
+        
        
 
         var jsonString = JsonConvert.SerializeObject(saveWorld);
@@ -188,8 +211,8 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
+                //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
             }
 
             if(buildingType == "launchPad")
@@ -199,8 +222,8 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
+                //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
             }
 
             if(buildingType == "VAB")
@@ -229,6 +252,8 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
                 launchsiteManager.commandCenter = current;
             }
 
@@ -239,9 +264,39 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
                 launchsiteManager.commandCenter = current;
             }
             count++;
+        }
+        
+        outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
+        int x = 0;
+        foreach(outputInputManager outputInputManager in outputInputManagers)
+        {
+            outputInputManager.guid = loadedWorld.selfGuid[x];
+            outputInputManager.inputGuid = loadedWorld.InputGuid[x];
+            outputInputManager.outputGuid = loadedWorld.OutputGuid[x];
+            x++;
+        }
+
+        foreach(outputInputManager outputInputManager1 in outputInputManagers)
+        {
+            foreach(outputInputManager outputInputManager2 in outputInputManagers)
+            {
+                if(outputInputManager1.guid == outputInputManager2.outputGuid)
+                {
+                    outputInputManager2.outputParent = outputInputManager1;
+                    outputInputManager1.inputParent = outputInputManager2;
+                }
+
+                if(outputInputManager2.guid == outputInputManager1.outputGuid)
+                {
+                    outputInputManager1.outputParent = outputInputManager2;
+                    outputInputManager2.inputParent = outputInputManager1;
+                }
+            }
         }
 
         launchsiteManager.updateVisibleButtons();
@@ -256,6 +311,98 @@ public class WorldSaveManager : MonoBehaviour
         } else if(loadedWorld.version != version.currentVersion)
         {
            UnityEngine.Debug.Log("File version not compatible");
+        }
+
+
+    }
+
+    public void saveRocket(Rocket rocket, saveWorld save)
+    {
+        saveWorldRocket saveWorldRocket = new saveWorldRocket();
+        saveWorldRocket.x_pos.Add(rocket.GetComponent<DoubleTransform>().x_pos);
+        saveWorldRocket.y_pos.Add(rocket.GetComponent<DoubleTransform>().y_pos);
+        saveWorldRocket.v_x.Add(rocket.GetComponent<Rigidbody2D>().velocity.x);
+        saveWorldRocket.v_y.Add(rocket.GetComponent<Rigidbody2D>().velocity.y);
+        foreach(Stages stage in rocket.Stages)
+        {
+            saveStage saveStage = new saveStage();
+            foreach(RocketPart part in stage.Parts)
+            {
+                savePart savePart = new savePart();
+                savePart.type = part._partType;
+                savePart.name = part._partName;
+                savePart.path = part._path;
+                savePart.guid = part._partID;
+                savePart.mass = part._partMass;
+                savePart.posX = part.transform.position.x;
+                savePart.posY = part.transform.position.y;
+                saveStage.Parts.Add(savePart);
+            }
+            saveWorldRocket.stages.Add(saveStage);
+        }
+        save.rockets.Add(saveWorldRocket);
+    }
+
+    public void loadRocket(saveWorld load)
+    {
+        foreach(saveWorldRocket saveRocket in load.rockets)
+        {
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+//TO DELETE
+    public void save(Rocket Rocket)
+    {
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder);
+        }
+
+        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder + Rocket.name + ".json"))
+        {
+            savecraft saveRocket = new savecraft();
+            int i = 0;
+            saveRocket.coreID = Rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
+            foreach(Stages stage in Rocket.GetComponent<Rocket>().Stages)
+            {
+                foreach(RocketPart part in stage.Parts)
+                {
+                    
+                    //Set tank
+                    if(part._partType == "tank")
+                    {
+                        saveRocket.x_scale.Add(part.GetComponent<BoxCollider2D>().size.x);
+                        saveRocket.y_scale.Add(part.GetComponent<BoxCollider2D>().size.y);
+                        saveRocket.volume.Add(part.GetComponent<Tank>()._volume);
+                        saveRocket.propellantType.Add(part.GetComponent<Tank>().propellantCategory);
+                        saveRocket.tankMaterial.Add(part.GetComponent<Tank>().tankMaterial);
+                    }
+                    
+                    //Set Engine
+                    if(part._partType == "engine")
+                    {
+                        saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
+                        saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
+                    }
+                }
+
+                i++;
+            }
+
+            var jsonString = JsonConvert.SerializeObject(saveRocket);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder + Rocket.name + ".json", jsonString);
+
+        }else{
+            //cry
         }
     }
 

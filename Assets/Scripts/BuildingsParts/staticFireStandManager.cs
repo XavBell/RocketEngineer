@@ -22,8 +22,8 @@ public class staticFireStandManager : MonoBehaviour
     public GameObject button;
     public float ratio;
     public bool started;
-    public bool fuelSufficient = false;
-    public bool oxidizerSufficient = false;
+    public bool fuelSufficient = true;
+    public bool oxidizerSufficient = true;
     public TimeManager MyTime;
     public EngineStaticFireTracker engineStaticFireTracker;
     public bool failed;
@@ -49,6 +49,7 @@ public class staticFireStandManager : MonoBehaviour
             if(oxidizerType == "LOX" && fuelType == "kerosene")
             {
                 ratio = 2.56f;
+
             }
 
             if(started == true)
@@ -141,6 +142,8 @@ public class staticFireStandManager : MonoBehaviour
                     
                     failed = false;
                     engineStaticFireTracker = null;
+                    oxidizerSufficient = true;
+                    fuelSufficient = true;
                 }
             }
         }

@@ -69,6 +69,8 @@ public class FuelConnectorManager : MonoBehaviour
     public void Connect()
     {
         input.inputParent = output;
+        input.inputGuid = output.guid;
         output.outputParent = input;
+        output.outputGuid = input.guid;
     }
 }

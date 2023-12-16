@@ -8,6 +8,9 @@ public class outputInputManager : MonoBehaviour
 {
     [SerializeField]
     substanceProperty substanceProperty = new substanceProperty();
+    public Guid guid;
+    public Guid inputGuid;
+    public Guid outputGuid;
     public int selfID = 0;
     public bool connectedAsRocket = false;
     
@@ -62,7 +65,7 @@ public class outputInputManager : MonoBehaviour
 
     void Start()
     {
-        Initialize();;
+        Initialize();
     }
 
     // Update is called once per frame
@@ -70,12 +73,12 @@ public class outputInputManager : MonoBehaviour
     {
         if(inputParentID > 0 && inputParent == null)
         {
-            InitializeInput();
+            //InitializeInput();
         }
 
         if(outputParentID > 0 && outputParent == null)
         {
-            InitializeOutput();
+            //InitializeOutput();
         }
 
         if(type == "default" && MyTime != null)
@@ -95,6 +98,8 @@ public class outputInputManager : MonoBehaviour
 
     void Initialize()
     {
+        guid = Guid.NewGuid();
+
         if(MyTime == null)
         {
             MyTime= FindObjectOfType<TimeManager>();

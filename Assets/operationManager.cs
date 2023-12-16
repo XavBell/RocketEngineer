@@ -17,6 +17,7 @@ public class operationManager : MonoBehaviour
     [SerializeField]private TMP_Dropdown tankDropdown;
     [SerializeField]private TMP_Dropdown operationDropdown;
     [SerializeField]private StageViewer stageViewer;
+    [SerializeField]private StaticFireViewer staticFireViewer;
     public GameObject selectedLaunchPad;
     public OnClick onclick;
     public TMP_Text launchpadName;
@@ -266,10 +267,8 @@ public class operationManager : MonoBehaviour
             onclick.path = "/"+engineDropdown.options[value].text.ToString();
             onclick.launchPad = selectedLaunchPad;
             onclick.load("/engines");
-            //stageViewer.gameObject.SetActive(true);
-            //stageViewer.rocket = onclick.spawnedRocket;
-            //stageViewer.updateStagesView(false);
-            //stageViewer.updateInfoPerStage(false);
+            staticFireViewer.gameObject.SetActive(true);
+            staticFireViewer.staticFireStand = selectedLaunchPad;
             selectedLaunchPad.GetComponent<staticFireStandManager>().ConnectedEngine = onclick.spawnedRocket;
         }
 
@@ -289,6 +288,7 @@ public class operationManager : MonoBehaviour
             onclick.launchPad = selectedLaunchPad;
             onclick.load("/rockets");
             selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
+            selectedLaunchPad.GetComponent<launchPadManager>().operation = "WDR";
         }
 
         if(operationDropdown.value == 4) //Rocket SF test
@@ -298,6 +298,7 @@ public class operationManager : MonoBehaviour
             onclick.launchPad = selectedLaunchPad;
             onclick.load("/rockets");
             selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
+            selectedLaunchPad.GetComponent<launchPadManager>().operation = "staticFire";
         }
     }
 
