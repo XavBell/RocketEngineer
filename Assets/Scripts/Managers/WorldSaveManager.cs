@@ -21,6 +21,8 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject designerPrefab;
     public GameObject fuelTankPrefab;
     public GameObject launchPadPrefab;
+    public GameObject standTankPrefab;
+    public GameObject staticFireStandPrefab;
     public GameObject VABPrefab;
     public GameObject commandCenterPrefab;
 
@@ -213,6 +215,26 @@ public class WorldSaveManager : MonoBehaviour
             if(buildingType == "commandCenter")
             {
                 GameObject current = Instantiate(commandCenterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                current.transform.SetParent(earth.transform);
+                current.transform.localPosition = position;
+                current.transform.eulerAngles = rotation;
+                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                launchsiteManager.commandCenter = current;
+            }
+
+            if(buildingType == "standTank")
+            {
+                GameObject current = Instantiate(standTankPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                current.transform.SetParent(earth.transform);
+                current.transform.localPosition = position;
+                current.transform.eulerAngles = rotation;
+                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                launchsiteManager.commandCenter = current;
+            }
+
+            if(buildingType == "staticFireStand")
+            {
+                GameObject current = Instantiate(staticFireStandPrefab, new Vector3(0, 0, 0), Quaternion.identity);
                 current.transform.SetParent(earth.transform);
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;

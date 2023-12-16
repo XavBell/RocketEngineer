@@ -159,7 +159,7 @@ MonoBehaviour:
   filePath: 
   spawnedRocket: {fileID: 0}
   op: {fileID: 0}
-  savedLaunchpad: {fileID: 0}
+  savedLaunchpad: {fileID: 4590421016071702574}
   oxidizerInput: {fileID: 0}
   fuelInput: {fileID: 0}
   output: {fileID: 0}
@@ -1081,7 +1081,16 @@ MonoBehaviour:
   oxidizer: {fileID: 75406555262869139}
   fuel: {fileID: 8208019030907920418}
   standName: staticfirestand
-  button: {fileID: 4939193850173480501, guid: 6cd6fc681df88e84a9bfcf832ed4a136, type: 3}
+  button: {fileID: 680552191032890808}
+  ratio: 0
+  started: 0
+  fuelSufficient: 0
+  oxidizerSufficient: 0
+  MyTime: {fileID: 0}
+  failed: 0
+  startTime: 0
+  minThrust: 0
+  maxThrust: 0
 --- !u!1 &4924626698158955348
 GameObject:
   m_ObjectHideFlags: 0

@@ -57,23 +57,21 @@ public class staticFireStandManager : MonoBehaviour
                 {
                     engineStaticFireTracker = new EngineStaticFireTracker();
                     startTime = MyTime.time;
-                    Engine engine = ConnectedEngine.GetComponent<Engine>();
-                    minThrust = engine._thrust * 0.7f;
-                    maxThrust = engine._thrust * 1.3f;
+                    ConnectedEngine.GetComponent<Engine>().InitializeFail();
                 }
 
                 if(failed == false && (fuelSufficient == true && oxidizerSufficient == true) && engineStaticFireTracker != null)
                 {
                     Engine engine = ConnectedEngine.GetComponent<Engine>();
-                    bool withinThrustRange;
-                    float outThrust = engine.CalculateOutputThrust(out withinThrustRange) * MyTime.deltaTime;
+                    bool fail;
+                    float outThrust = engine.CalculateOutputThrust(MyTime.time-startTime, out fail) * MyTime.deltaTime;
 
                     engineStaticFireTracker.thrusts.Add(outThrust);
                     engineStaticFireTracker.times.Add(MyTime.time - startTime);
                     engineStaticFireTracker.fuelQty.Add(fuel.mass);
                     engineStaticFireTracker.oxidizerQty.Add(oxidizer.mass);
 
-                    if(withinThrustRange == false)
+                    if(fail == true)
                     {
                         failed = true;
                     }
@@ -84,7 +82,7 @@ public class staticFireStandManager : MonoBehaviour
                     //Save results to file and null tracker and save new reliabili
                     started = false;
                     Engine engine = ConnectedEngine.GetComponent<Engine>();
-                    float reliabilityToAdd = (MyTime.time - startTime)/engine.maxTime * 0.01f;
+                    float reliabilityToAdd = (MyTime.time - startTime)/engine.maxTime * 0.001f;
                     if((MyTime.time-startTime) > engine.maxTime)
                     {
                         engine.maxTime = MyTime.time - startTime;
@@ -96,34 +94,34 @@ public class staticFireStandManager : MonoBehaviour
                     }
 
                     //Save test to file
-                    if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests"))
+                    if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests"))
                     {
-                        Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests");
+                        Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests");
                     }
 
-                    if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests/" + "StaticFireEngine"))
+                    if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests/" + "StaticFireEngine"))
                     {
-                        Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests/" + "StaticFireEngine");
+                        Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests/" + "StaticFireEngine");
                     }
 
-                    string saveName = "/"+ ConnectedEngine.GetComponent<Part>().partName + MyTime.time.ToString() + ".json";
+                    string saveName = "/"+ ConnectedEngine.GetComponent<Engine>()._partName + MyTime.time.ToString() + ".json";
 
-                    if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests/" + "StaticFireEngine" + saveName))
+                    if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests/" + "StaticFireEngine" + saveName))
                     {
                         var jsonString = JsonConvert.SerializeObject(engineStaticFireTracker);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests/" + "StaticFireEngine" + saveName, jsonString);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests/" + "StaticFireEngine" + saveName, jsonString);
                     }
 
                     //Save new engine reliability and maxTime
-                    if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Part>().partName + ".json"))
+                    if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName + ".json"))
                     {
                         saveEngine saveObject = new saveEngine();
-                        Part part = ConnectedEngine.GetComponent<Part>();
+                        RocketPart part = ConnectedEngine.GetComponent<RocketPart>();
                         //Save previous unchanged value
                         saveObject.path = savePathRef.engineFolder;
-                        saveObject.engineName = part.partName;
+                        saveObject.engineName = engine._partName;
                         saveObject.thrust_s = engine._thrust;
-                        saveObject.mass_s = part.mass;
+                        saveObject.mass_s = engine._partMass;
                         saveObject.rate_s = engine._rate;
                         saveObject.tvcSpeed_s = engine._tvcSpeed;
                         saveObject.tvcMaxAngle_s = engine._maxAngle;
@@ -138,7 +136,7 @@ public class staticFireStandManager : MonoBehaviour
                         saveObject.maxTime = engine.maxTime;
 
                         var jsonString = JsonConvert.SerializeObject(saveObject);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json", jsonString);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json", jsonString);
                     }
                     
                     failed = false;

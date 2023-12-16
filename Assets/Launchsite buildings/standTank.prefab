@@ -969,7 +969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6dd300add53a7642afd993a8d7783ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: stand
+  type: standTank
   buildingID: 0
   inputUI: {fileID: 3104724332749097704}
   outputUI: {fileID: 0}
@@ -1027,15 +1027,13 @@ MonoBehaviour:
   buttonPrefab: {fileID: 680552191032890808}
   MasterManager: {fileID: 0}
   Spawned: 0
-  ConnectedEngine: {fileID: 0}
-  oxidizer: {fileID: 75406555262869139}
-  fuel: {fileID: 75406555262869139}
+  ConnectedTank: {fileID: 0}
+  output: {fileID: 0}
   standName: stand
   button: {fileID: 680552191032890808}
   ratio: 0
   started: 0
   fuelSufficient: 0
-  oxidizerSufficient: 0
   MyTime: {fileID: 0}
   failed: 0
   startTime: 0

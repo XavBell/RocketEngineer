@@ -6099,8 +6099,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 211.513, y: -258.84164}
-  m_SizeDelta: {x: 423.026, y: 95.477615}
+  m_AnchoredPosition: {x: 211.513, y: -163.6322}
+  m_SizeDelta: {x: 423.026, y: 62.522045}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &508797262
 MonoBehaviour:
@@ -6149,7 +6149,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 52.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8040,8 +8040,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 231.513, y: -401.50925}
-  m_SizeDelta: {x: 423.026, y: 326.72806}
+  m_AnchoredPosition: {x: 231.513, y: -476.5836}
+  m_SizeDelta: {x: 423.026, y: 202.22029}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &660311450
 MonoBehaviour:
@@ -8601,8 +8601,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 211.513, y: -47.738808}
-  m_SizeDelta: {x: 423.026, y: 95.477615}
+  m_AnchoredPosition: {x: 211.513, y: -31.261023}
+  m_SizeDelta: {x: 423.026, y: 62.522045}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &681443082
 MonoBehaviour:
@@ -8651,7 +8651,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 52.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -15696,7 +15696,7 @@ MonoBehaviour:
       m_Image: {fileID: 0}
     - m_Text: Static Fire (Engine)
       m_Image: {fileID: 0}
-    - m_Text: Pressure test (Tank)
+    - m_Text: Pressure Test (Tank)
       m_Image: {fileID: 0}
     - m_Text: Wet Dress Rehearsal
       m_Image: {fileID: 0}
@@ -15704,7 +15704,19 @@ MonoBehaviour:
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1453584364}
+        m_TargetAssemblyTypeName: operationManager, Assembly-CSharp
+        m_MethodName: updatePanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_AlphaFadeSpeed: 0.15
 --- !u!114 &1366876918
 MonoBehaviour:
@@ -17240,12 +17252,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectButton: {fileID: 3785555916945954321, guid: 0ccc97858d3b14e5b9adb3d4443dc25a, type: 3}
-  vehicleDropdown: {fileID: 1041009554}
+  vehicleLaunchDropdown: {fileID: 1041009554}
+  vehicleWDRDropdown: {fileID: 871451386}
+  vehicleStaticFireDropdown: {fileID: 1543675878}
+  engineDropdown: {fileID: 1984760478}
+  tankDropdown: {fileID: 173587883}
   operationDropdown: {fileID: 1366876917}
   stageViewer: {fileID: 1106656739}
   selectedLaunchPad: {fileID: 0}
   onclick: {fileID: 1453584365}
   launchpadName: {fileID: 1296526659}
+  staticFireStandName: {fileID: 508797262}
+  launchPanel: {fileID: 1198768461}
+  staticFireEnginePanel: {fileID: 660311448}
+  staticFireRocketPanel: {fileID: 1483033777}
+  tankPressurePanel: {fileID: 1150965029}
+  WDRPanel: {fileID: 1651352713}
 --- !u!114 &1453584365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18221,6 +18243,8 @@ MonoBehaviour:
   designerPrefab: {fileID: 4919702563059865179, guid: 3c30423e28a42ea4e8eabf1c37a1fd68, type: 3}
   fuelTankPrefab: {fileID: 4590421016071702574, guid: 168f652b690edcd41936f0b9b34a7b26, type: 3}
   launchPadPrefab: {fileID: 4590421016071702574, guid: 6326f86a1fbc85048842ac836ef22a78, type: 3}
+  standTankPrefab: {fileID: 4590421016071702574, guid: 7dd34acd124b84355a45ca4686217e89, type: 3}
+  staticFireStandPrefab: {fileID: 4590421016071702574, guid: dce6c29d898d442d5ae1840e592b4820, type: 3}
   VABPrefab: {fileID: 4919702563059865179, guid: 3329763d5c8fab54db0b7da23df633b2, type: 3}
   commandCenterPrefab: {fileID: 4919702563059865179, guid: 21e16416e8ecbc04fbe148727c3f19e9, type: 3}
   earth: {fileID: 2121345929}
@@ -24562,8 +24586,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 211.513, y: -105.55142}
-  m_SizeDelta: {x: 423.026, y: 20.147614}
+  m_AnchoredPosition: {x: 211.513, y: -66.18559}
+  m_SizeDelta: {x: 423.026, y: 7.3270884}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1984760478
 MonoBehaviour:
@@ -25559,8 +25583,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 211.513, y: -316.65424}
-  m_SizeDelta: {x: 423.026, y: 20.147614}
+  m_AnchoredPosition: {x: 211.513, y: -198.55678}
+  m_SizeDelta: {x: 423.026, y: 7.3270884}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2070143066
 MonoBehaviour:
@@ -25608,7 +25632,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1453584364}
         m_TargetAssemblyTypeName: operationManager, Assembly-CSharp
-        m_MethodName: selectLaunchpad
+        m_MethodName: selectStaticFireStand
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -26979,8 +27003,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 211.513, y: -163.36404}
-  m_SizeDelta: {x: 423.026, y: 95.477615}
+  m_AnchoredPosition: {x: 211.513, y: -101.11016}
+  m_SizeDelta: {x: 423.026, y: 62.522045}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2146875209
 MonoBehaviour:
@@ -27029,7 +27053,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 52.75
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

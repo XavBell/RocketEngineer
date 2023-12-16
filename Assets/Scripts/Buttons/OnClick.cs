@@ -228,11 +228,37 @@ public class OnClick : MonoBehaviour
                 }
                 j++;
             }
+            spawnedRocket = core;
+            filePath = null;
             DestroyImmediate(temp);
             
         }
-        spawnedRocket = core;
-        filePath = null;
+
+        if (fileTypePath == savePathRef.engineFolder)
+        {
+            saveEngine saveEngine = new saveEngine();
+            var jsonString = JsonConvert.SerializeObject(saveEngine);
+            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
+            saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+
+            spawnedRocket = Instantiate(Engine, launchPad.transform);
+
+            //Engine engine = spawnedRocket.GetComponent<Engine>();
+            spawnedRocket.GetComponent<Engine>()._path = loadedEngine.path;
+            spawnedRocket.GetComponent<Engine>()._partName = loadedEngine.engineName;
+            spawnedRocket.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
+            spawnedRocket.GetComponent<Engine>()._partMass = loadedEngine.mass_s;
+            spawnedRocket.GetComponent<Engine>()._rate = loadedEngine.rate_s;
+            spawnedRocket.GetComponent<Engine>()._tvcSpeed = loadedEngine.tvcSpeed_s;
+            spawnedRocket.GetComponent<Engine>()._maxAngle = loadedEngine.tvcMaxAngle_s;
+            spawnedRocket.GetComponent<Engine>()._tvcName = loadedEngine.tvcName_s;
+            spawnedRocket.GetComponent<Engine>()._nozzleName = loadedEngine.nozzleName_s;
+            spawnedRocket.GetComponent<Engine>()._turbineName = loadedEngine.turbineName_s;
+            spawnedRocket.GetComponent<Engine>()._pumpName = loadedEngine.pumpName_s;
+            spawnedRocket.GetComponent<Engine>().reliability = loadedEngine.reliability;
+            spawnedRocket.GetComponent<Engine>().maxTime = loadedEngine.maxTime;
+
+        }
     }
 
     public void linkParts(List<GameObject> parts, List<System.Guid> topRef, List<System.Guid> bottomRef, List<System.Guid> rightRef, List<System.Guid> leftRef)

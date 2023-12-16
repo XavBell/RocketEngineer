@@ -44,7 +44,7 @@ public class Stages
             foreach(RocketPart engine in engines)
             {
                 bool withinThrustRange;
-                float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(out withinThrustRange);
+                float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(Time.time, out withinThrustRange);
                 if(withinThrustRange == true && engine.GetComponent<Engine>().operational == true)
                 {
                     thrust += thrustCoefficient * new Vector2(engine.gameObject.transform.up.x, engine.gameObject.transform.up.y) * rawThrust;

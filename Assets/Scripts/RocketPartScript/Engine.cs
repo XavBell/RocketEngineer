@@ -21,22 +21,38 @@ public class Engine : RocketPart
     public bool active = false;
     public bool operational = true;
 
+    public bool willFail = false;
+    public float timeOfFail;
+
     public void activate()
     {
         active = true;
     }
 
-    public float CalculateOutputThrust(out bool withinRange)
+    public void InitializeFail()
     {
         float percentageOfThrust = Random.Range(reliability, 2-reliability);
         float outThrust = _thrust * percentageOfThrust;
-        float minThrust = _thrust * 0.7f;
-        float maxThrust = _thrust * 1.3f;
+        float minThrust = _thrust * 0.8f;
+        float maxThrust = _thrust * 1.2f;
         if(outThrust < minThrust || outThrust > maxThrust)
         {
-            withinRange = false;
+            willFail = true;
+            timeOfFail = maxTime * percentageOfThrust;
         }else{
-            withinRange = true;
+            willFail = false;
+        }
+    }
+
+    public float CalculateOutputThrust(float time, out bool fail)
+    {
+        float percentageOfThrust = Random.Range(reliability, 2-reliability);
+        float outThrust = _thrust * percentageOfThrust;
+        if(willFail == true && timeOfFail <= time)
+        {
+            fail = true;
+        }else{
+            fail = false;
         }
         return outThrust;
     }
