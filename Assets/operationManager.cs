@@ -22,6 +22,8 @@ public class operationManager : MonoBehaviour
     public TMP_Text launchpadName;
     public TMP_Text staticFireStandName;
     public TMP_Text standName;
+    public TMP_Text launchPadWDR;
+    public TMP_Text launchPadSF;
     public GameObject launchPanel;
     public GameObject staticFireEnginePanel;
     public GameObject staticFireRocketPanel;
@@ -227,6 +229,8 @@ public class operationManager : MonoBehaviour
             if(selectedLaunchPad.GetComponent<launchPadManager>())
             {
                 launchpadName.text = "launchpad";
+                launchPadSF.text = "launchpad";
+                launchPadWDR.text = "launchpad";
             }
 
             if(selectedLaunchPad.GetComponent<staticFireStandManager>())
@@ -276,6 +280,24 @@ public class operationManager : MonoBehaviour
             onclick.launchPad = selectedLaunchPad;
             onclick.load("/tanks");
             selectedLaunchPad.GetComponent<standManager>().ConnectedTank = onclick.spawnedRocket;
+        }
+
+        if(operationDropdown.value == 3) //WDR test
+        {
+            int value = vehicleWDRDropdown.value;
+            onclick.path = "/"+vehicleWDRDropdown.options[value].text.ToString();
+            onclick.launchPad = selectedLaunchPad;
+            onclick.load("/rockets");
+            selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
+        }
+
+        if(operationDropdown.value == 4) //Rocket SF test
+        {
+            int value = vehicleStaticFireDropdown.value;
+            onclick.path = "/"+vehicleStaticFireDropdown.options[value].text.ToString();
+            onclick.launchPad = selectedLaunchPad;
+            onclick.load("/rockets");
+            selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
         }
     }
 

@@ -269,10 +269,13 @@ public class outputInputManager : MonoBehaviour
 
     private void SetTankConditions(double molesToGive, RocketPart tank)
     {
-        tank.GetComponent<outputInputManager>().internalTemperature = inputParent.internalTemperature;
-        tank.GetComponent<outputInputManager>().externalTemperature = inputParent.externalTemperature;
-        tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
-        tank.GetComponent<outputInputManager>().substance = substance;
+        if(inputParent != null)
+        {
+            tank.GetComponent<outputInputManager>().internalTemperature = inputParent.internalTemperature;
+            tank.GetComponent<outputInputManager>().externalTemperature = inputParent.externalTemperature;
+            tank.GetComponent<outputInputManager>().moles += (float)molesToGive;
+            tank.GetComponent<outputInputManager>().substance = substance;
+        }
     }
 
     void calculateInternalConditions()
