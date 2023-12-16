@@ -166,7 +166,7 @@ public class outputInputManager : MonoBehaviour
         }
 
         //Logic for engines static fire
-        if(circuit != "none" && GetComponent<staticFireStandManager>() != null)
+        if(circuit != "none" && GetComponent<staticFireStandManager>() != null && GetComponent<staticFireStandManager>().ConnectedEngine != null)
         {
             staticFireStandManager sFSM = GetComponent<staticFireStandManager>();
             CalculateFlowStaticFireEngine(sFSM.ConnectedEngine.GetComponent<Engine>()._rate, sFSM.started, sFSM.ratio, sFSM);

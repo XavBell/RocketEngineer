@@ -43,7 +43,17 @@ public class Stages
         {
             foreach(RocketPart engine in engines)
             {
-                thrust += engine.GetComponent<Engine>()._rate/massFlowRate * thrustCoefficient * new Vector2(engine.gameObject.transform.up.x, engine.gameObject.transform.up.y) * engine.GetComponent<Engine>()._thrust;
+                bool withinThrustRange;
+                float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(out withinThrustRange);
+                if(withinThrustRange == true && engine.GetComponent<Engine>().operational == true)
+                {
+                    thrust += thrustCoefficient * new Vector2(engine.gameObject.transform.up.x, engine.gameObject.transform.up.y) * rawThrust;
+                }
+
+                if(withinThrustRange == false)
+                {
+                    engine.GetComponent<Engine>().operational = false;
+                }
             }
 
             foreach(RocketPart tank in Parts)

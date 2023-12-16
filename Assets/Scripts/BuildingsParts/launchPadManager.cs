@@ -21,6 +21,7 @@ public class launchPadManager : MonoBehaviour
     public outputInputManager fuel;
     public string padName;
     public GameObject button;
+    public string operation = "none";
 
     // Start is called before the first frame update
     void Start()
@@ -45,6 +46,21 @@ public class launchPadManager : MonoBehaviour
                 ConnectedRocket = null;
                 GetComponent<outputInputManager>().outputParent = null;
             }
+        }
+
+        if(operation == "launch")
+        {
+
+        }
+
+        if(operation == "staticFire")
+        {
+            
+        }
+
+        if(operation == "WDR")
+        {
+            
         }
     }
 }

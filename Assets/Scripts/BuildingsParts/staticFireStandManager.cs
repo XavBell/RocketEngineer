@@ -65,15 +65,15 @@ public class staticFireStandManager : MonoBehaviour
                 if(failed == false && (fuelSufficient == true && oxidizerSufficient == true) && engineStaticFireTracker != null)
                 {
                     Engine engine = ConnectedEngine.GetComponent<Engine>();
-                    float percentageOfThrust = Random.Range(engine.reliability, 2-engine.reliability);
-                    float outThrust = engine._thrust * percentageOfThrust;
+                    bool withinThrustRange;
+                    float outThrust = engine.CalculateOutputThrust(out withinThrustRange) * MyTime.deltaTime;
 
                     engineStaticFireTracker.thrusts.Add(outThrust);
                     engineStaticFireTracker.times.Add(MyTime.time - startTime);
                     engineStaticFireTracker.fuelQty.Add(fuel.mass);
                     engineStaticFireTracker.oxidizerQty.Add(oxidizer.mass);
 
-                    if(outThrust > maxThrust || outThrust < minThrust)
+                    if(withinThrustRange == false)
                     {
                         failed = true;
                     }
