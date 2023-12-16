@@ -5,7 +5,8 @@ using UnityEngine;
 public class Tank : RocketPart
 {
     public float _volume{get; set;}
-    public Vector2 _size{get; set;}
+    public float x_scale;
+    public float y_scale;
     public string tankMaterial;
     public string propellantCategory;
 }

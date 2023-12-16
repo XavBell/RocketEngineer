@@ -21,6 +21,7 @@ public class operationManager : MonoBehaviour
     public OnClick onclick;
     public TMP_Text launchpadName;
     public TMP_Text staticFireStandName;
+    public TMP_Text standName;
     public GameObject launchPanel;
     public GameObject staticFireEnginePanel;
     public GameObject staticFireRocketPanel;
@@ -187,6 +188,17 @@ public class operationManager : MonoBehaviour
         }
     }
 
+    public void selectPressureStand()
+    {
+        standManager[] stands = FindObjectsOfType<standManager>();
+        foreach(standManager stand in stands)
+        {
+            stand.button.SetActive(true);
+            stand.button.GetComponent<OnClick>().op = this;
+            stand.button.GetComponent<OnClick>().savedLaunchpad = stand.gameObject;
+        }
+    }
+
     public void hidePadButtons()
     {
         launchPadManager[] launchPads = FindObjectsOfType<launchPadManager>();
@@ -203,6 +215,13 @@ public class operationManager : MonoBehaviour
             //stand.button.GetComponent<OnClick>().op = null;
         }
 
+        standManager[] stands1 = FindObjectsOfType<standManager>();
+        foreach(standManager stand in stands1)
+        {
+            stand.button.SetActive(false);
+            //stand.button.GetComponent<OnClick>().op = null;
+        }
+
         if(selectedLaunchPad != null)
         {
             if(selectedLaunchPad.GetComponent<launchPadManager>())
@@ -212,7 +231,12 @@ public class operationManager : MonoBehaviour
 
             if(selectedLaunchPad.GetComponent<staticFireStandManager>())
             {
-                staticFireStandName.text = "static fire stand";
+                staticFireStandName.text = "staticFireStand";
+            }
+
+            if(selectedLaunchPad.GetComponent<standManager>())
+            {
+                standName.text = "pressureStand";
             }
         }
     }
@@ -243,6 +267,15 @@ public class operationManager : MonoBehaviour
             //stageViewer.updateStagesView(false);
             //stageViewer.updateInfoPerStage(false);
             selectedLaunchPad.GetComponent<staticFireStandManager>().ConnectedEngine = onclick.spawnedRocket;
+        }
+
+        if(operationDropdown.value == 2) //Tank test
+        {
+            int value = tankDropdown.value;
+            onclick.path = "/"+tankDropdown.options[value].text.ToString();
+            onclick.launchPad = selectedLaunchPad;
+            onclick.load("/tanks");
+            selectedLaunchPad.GetComponent<standManager>().ConnectedTank = onclick.spawnedRocket;
         }
     }
 

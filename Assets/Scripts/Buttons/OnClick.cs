@@ -259,6 +259,27 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<Engine>().maxTime = loadedEngine.maxTime;
 
         }
+
+        if (fileTypePath == savePathRef.tankFolder)
+        {
+            saveTank saveTank = new saveTank();
+            var jsonString = JsonConvert.SerializeObject(saveTank);
+            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
+            saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
+
+            spawnedRocket = Instantiate(Tank, launchPad.transform);
+            spawnedRocket.GetComponent<DoubleTransform>().x_pos = launchPad.transform.position.x;
+            spawnedRocket.GetComponent<DoubleTransform>().y_pos = launchPad.transform.position.y;
+
+            //Engine engine = spawnedRocket.GetComponent<Engine>();
+            spawnedRocket.GetComponent<Tank>()._path = loadedTank.path;
+            spawnedRocket.GetComponent<Tank>()._partName = loadedTank.tankName;
+            spawnedRocket.GetComponent<Tank>()._partMass = loadedTank.mass;
+            spawnedRocket.GetComponent<Tank>().x_scale = loadedTank.tankSizeX;
+            spawnedRocket.GetComponent<Tank>().y_scale = loadedTank.tankSizeY;
+            spawnedRocket.GetComponent<Tank>()._volume = loadedTank.volume;
+            spawnedRocket.GetComponent<Tank>().tankMaterial = loadedTank.tankMaterial;
+        }
     }
 
     public void linkParts(List<GameObject> parts, List<System.Guid> topRef, List<System.Guid> bottomRef, List<System.Guid> rightRef, List<System.Guid> leftRef)

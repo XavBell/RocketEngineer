@@ -190,7 +190,8 @@ public class outputInputManager : MonoBehaviour
                 if(mass - consumedOxidizer >= 0)
                 {
                     sFSM.oxidizerSufficient = true;
-                    float consumedMoles = consumedOxidizer/substanceMolarMass;
+                    //Multiply by 1000 bcs engine rate is kg
+                    float consumedMoles = consumedOxidizer*1000/substanceMolarMass;
                     moles -= consumedMoles;
                     return;
                 }else{
@@ -208,7 +209,7 @@ public class outputInputManager : MonoBehaviour
                 if(mass - consumedFuel >= 0)
                 {
                     sFSM.fuelSufficient = true;
-                    float consumedMoles = consumedFuel/substanceMolarMass;
+                    float consumedMoles = consumedFuel*1000/substanceMolarMass;
                     moles -= consumedMoles;
                     return;
                 }else{

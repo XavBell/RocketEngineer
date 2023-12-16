@@ -39,7 +39,7 @@ public class standManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(ConnectedTank != null)
+        if(ConnectedTank != null && output != null)
         {
             string substanceType = output.substance;
             output.outputParent = ConnectedTank.GetComponent<outputInputManager>();
@@ -78,14 +78,14 @@ public class standManager : MonoBehaviour
                     Tank tank = ConnectedTank.GetComponent<Tank>();
 
                     //Save test to file
-                    if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests"))
+                    if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests"))
                     {
-                        Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests");
+                        Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests");
                     }
 
-                    if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests/" + "TankPressureTests"))
+                    if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests/" + "TankPressureTests"))
                     {
-                        Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests/" + "TankPressureTests");
+                        Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests/" + "TankPressureTests");
                     }
 
                     string saveName = "/"+ ConnectedTank.GetComponent<Part>().partName + MyTime.time.ToString() + ".json";
@@ -100,6 +100,7 @@ public class standManager : MonoBehaviour
                     if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedTank.GetComponent<Part>().partName + ".json"))
                     {
                         //Probably no data to update here
+                        //Indeed
                     }
                     
                     failed = false;

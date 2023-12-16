@@ -31,7 +31,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9057782884087415771}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 450, y: 401.94116, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -111,6 +111,8 @@ MonoBehaviour:
   <_attachBottom>k__BackingField: {fileID: 1457844105156421105}
   <_attachRight>k__BackingField: {fileID: 3720249373727873476}
   <_attachLeft>k__BackingField: {fileID: 760482239936326389}
+  x_scale: 0
+  y_scale: 0
   tankMaterial: 
   propellantCategory: fuel
 --- !u!61 &6995648078010050905
@@ -201,6 +203,7 @@ MonoBehaviour:
   engines: []
   type: default
   circuit: none
+  MyTime: {fileID: 0}
 --- !u!61 &-7832482632494684835
 BoxCollider2D:
   m_ObjectHideFlags: 0
