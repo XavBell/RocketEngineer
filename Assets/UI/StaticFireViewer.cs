@@ -6,7 +6,6 @@ using UnityEngine;
 public class StaticFireViewer : MonoBehaviour
 {
     public GameObject staticFireStand;
-    public GameObject Panel;
     public TMP_Text status;
     public bool previouslyRan = false;
     // Start is called before the first frame update

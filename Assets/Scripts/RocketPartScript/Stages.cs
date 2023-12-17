@@ -9,8 +9,18 @@ public class Stages
 
     public Vector2 thrust;
 
+    public bool engineStarted = false;
+    public float startTime = 0;
+    public TimeManager MyTime;
+    
+
     public void updateThrust(float thrustCoefficient)
     {
+        if(engineStarted == false)
+        {
+            startTime = Time.time;
+        }
+
         thrust = Vector2.zero;
         float oxidizerQty = GetQty("oxidizer");
         float fuelQty = GetQty("fuel");
@@ -44,13 +54,13 @@ public class Stages
             foreach(RocketPart engine in engines)
             {
                 bool withinThrustRange;
-                float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(Time.time, out withinThrustRange);
-                if(withinThrustRange == true && engine.GetComponent<Engine>().operational == true)
+                float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(Time.time - startTime, out withinThrustRange);
+                if(withinThrustRange == false && engine.GetComponent<Engine>().operational == true)
                 {
                     thrust += thrustCoefficient * new Vector2(engine.gameObject.transform.up.x, engine.gameObject.transform.up.y) * rawThrust;
                 }
 
-                if(withinThrustRange == false)
+                if(withinThrustRange == true)
                 {
                     engine.GetComponent<Engine>().operational = false;
                 }
@@ -83,7 +93,8 @@ public class Stages
                     }
                 }
             }
-        }  
+        }
+        engineStarted = true;  
     }
 
     string GetPropellant(string oxidizer, string fuel)

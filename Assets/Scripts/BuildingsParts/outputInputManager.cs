@@ -117,6 +117,7 @@ public class outputInputManager : MonoBehaviour
     {
         circuit = GetComponent<Tank>().propellantCategory;
         tankVolume = GetComponent<Tank>()._volume;
+        tankSurfaceArea = (GetComponent<Tank>().x_scale/2)*Mathf.PI*2*GetComponent<Tank>().y_scale;
     }
     
     void updateParents()
@@ -149,11 +150,7 @@ public class outputInputManager : MonoBehaviour
     void fuelTransfer()
     {
         float molarRate = rate/substanceMolarMass;
-        if(GetComponent<standManager>() != null)
-        {
-            selfRate = rate;
-        }
-        
+
         if(outputParent && this.GetComponent<launchPadManager>() == null)
         {
             if(moles -  molarRate * MyTime.deltaTime >= 0)
