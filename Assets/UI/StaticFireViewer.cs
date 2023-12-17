@@ -36,7 +36,7 @@ public class StaticFireViewer : MonoBehaviour
             status.text = "running";
         }
 
-        if(staticFireStand.GetComponent<staticFireStandManager>() == true && previouslyRan == true)
+        if(staticFireStand.GetComponent<staticFireStandManager>().failed == true && previouslyRan == true)
         {
             status.text = "stopped";
         }

@@ -18,6 +18,7 @@ public class operationManager : MonoBehaviour
     [SerializeField]private TMP_Dropdown operationDropdown;
     [SerializeField]private StageViewer stageViewer;
     [SerializeField]private StaticFireViewer staticFireViewer;
+    [SerializeField]private PressureTestViewer pressureTestViewer;
     public GameObject selectedLaunchPad;
     public OnClick onclick;
     public TMP_Text launchpadName;
@@ -278,6 +279,8 @@ public class operationManager : MonoBehaviour
             onclick.path = "/"+tankDropdown.options[value].text.ToString();
             onclick.launchPad = selectedLaunchPad;
             onclick.load("/tanks");
+            pressureTestViewer.gameObject.SetActive(true);
+            pressureTestViewer.Stand = selectedLaunchPad;
             selectedLaunchPad.GetComponent<standManager>().ConnectedTank = onclick.spawnedRocket;
         }
 
@@ -310,7 +313,4 @@ public class operationManager : MonoBehaviour
             MasterManager = GMM.GetComponent<MasterManager>();
         }
     }
-
-
-    
 }

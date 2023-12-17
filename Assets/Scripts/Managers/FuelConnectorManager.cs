@@ -42,6 +42,11 @@ public class FuelConnectorManager : MonoBehaviour
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
             }
+
+            if(building.GetComponent<buildingType>().type == "standTank")
+            {
+                building.GetComponent<buildingType>().inputUI.SetActive(true);
+            }
         }
     }
 

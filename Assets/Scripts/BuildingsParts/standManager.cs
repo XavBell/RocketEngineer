@@ -37,13 +37,13 @@ public class standManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if(ConnectedTank != null && output != null)
+        if(ConnectedTank != null)
         {
             string substanceType = output.substance;
-            output.outputParent = ConnectedTank.GetComponent<outputInputManager>();
-            ConnectedTank.GetComponent<outputInputManager>().inputParent = output;
+            ConnectedTank.GetComponent<outputInputManager>().inputParent = output.inputParent;
+            output.inputParent.outputParent = ConnectedTank.GetComponent<outputInputManager>();
 
             if(started == true)
             {
@@ -88,16 +88,16 @@ public class standManager : MonoBehaviour
                         Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests/" + "TankPressureTests");
                     }
 
-                    string saveName = "/"+ ConnectedTank.GetComponent<Part>().partName + MyTime.time.ToString() + ".json";
+                    string saveName = "/"+ ConnectedTank.GetComponent<RocketPart>()._partName + MyTime.time.ToString() + ".json";
 
-                    if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests/" + "StaticFireEngine" + saveName))
+                    if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests/" + "TankPressureTests" + saveName))
                     {
                         var jsonString = JsonConvert.SerializeObject(tankStatusTracker);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + "Tests/" + "Tanks" + saveName, jsonString);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests/" + "TankPressureTests" + saveName, jsonString);
                     }
 
                     //Save new engine reliability and maxTime
-                    if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedTank.GetComponent<Part>().partName + ".json"))
+                    if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<RocketPart>().name + ".json"))
                     {
                         //Probably no data to update here
                         //Indeed

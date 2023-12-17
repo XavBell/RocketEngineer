@@ -149,6 +149,11 @@ public class outputInputManager : MonoBehaviour
     void fuelTransfer()
     {
         float molarRate = rate/substanceMolarMass;
+        if(GetComponent<standManager>() != null)
+        {
+            selfRate = rate;
+        }
+        
         if(outputParent && this.GetComponent<launchPadManager>() == null)
         {
             if(moles -  molarRate * MyTime.deltaTime >= 0)
