@@ -51,6 +51,10 @@ public class Engine : RocketPart
         if(willFail == true && timeOfFail <= time)
         {
             fail = true;
+        }else if(willFail == false){
+            fail = false;
+        }else if(willFail == true && timeOfFail >= time){
+            fail = false;
         }else{
             fail = false;
         }

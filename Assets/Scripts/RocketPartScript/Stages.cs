@@ -53,14 +53,16 @@ public class Stages
         {
             foreach(RocketPart engine in engines)
             {
-                bool withinThrustRange;
-                float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(Time.time - startTime, out withinThrustRange);
-                if(withinThrustRange == false && engine.GetComponent<Engine>().operational == true)
+
+                //Fix to have the right start time
+                bool fail;
+                float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(Time.time - startTime, out fail);
+                if(fail == false && engine.GetComponent<Engine>().operational == true)
                 {
                     thrust += thrustCoefficient * new Vector2(engine.gameObject.transform.up.x, engine.gameObject.transform.up.y) * rawThrust;
                 }
 
-                if(withinThrustRange == true)
+                if(fail == true)
                 {
                     engine.GetComponent<Engine>().operational = false;
                 }
