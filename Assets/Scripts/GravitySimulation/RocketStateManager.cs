@@ -61,6 +61,7 @@ public class RocketStateManager : MonoBehaviour
             if(previousState != state)
             {
                 planetGravity.rb.simulated = false;
+                prediction.startTime = prediction.MyTime.time;
                 prediction.CalculateParameters();
             }
             previousState = state;
@@ -91,7 +92,7 @@ public class RocketStateManager : MonoBehaviour
             previous_Y = curr_Y;
             curr_X = transform.x;
             curr_Y = transform.y;
-            Vector2 velocity = new Vector2((curr_X-previous_X)/Time.deltaTime, (curr_Y-previous_Y)/Time.deltaTime);
+            Vector2 velocity = new Vector2((curr_X-previous_X)/0.02f, (curr_Y-previous_Y)/0.02f);
             planetGravity.rb.velocity = velocity;
             return;
         }
