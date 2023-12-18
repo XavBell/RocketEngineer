@@ -54,7 +54,7 @@ public class Prediction : MonoBehaviour
             rb = planetGravity.rb;
             G = planetGravity.G;
             rocketMass = planetGravity.rb.mass;
-            gravityParam = G*(planetGravity.Mass);
+            gravityParam = G*(planetGravity.Mass + rocketMass);
 
         }
 

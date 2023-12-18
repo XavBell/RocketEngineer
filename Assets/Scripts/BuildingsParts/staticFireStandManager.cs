@@ -57,7 +57,7 @@ public class staticFireStandManager : MonoBehaviour
                 if(engineStaticFireTracker == null)
                 {
                     engineStaticFireTracker = new EngineStaticFireTracker();
-                    startTime = MyTime.time;
+                    startTime = (float)MyTime.time;
                     ConnectedEngine.GetComponent<Engine>().InitializeFail();
                 }
 
@@ -65,10 +65,10 @@ public class staticFireStandManager : MonoBehaviour
                 {
                     Engine engine = ConnectedEngine.GetComponent<Engine>();
                     bool fail;
-                    float outThrust = engine.CalculateOutputThrust(MyTime.time-startTime, out fail) * MyTime.deltaTime;
+                    float outThrust = engine.CalculateOutputThrust((float)(MyTime.time-startTime), out fail) * MyTime.deltaTime;
 
                     engineStaticFireTracker.thrusts.Add(outThrust);
-                    engineStaticFireTracker.times.Add(MyTime.time - startTime);
+                    engineStaticFireTracker.times.Add((float)(MyTime.time - startTime));
                     engineStaticFireTracker.fuelQty.Add(fuel.mass);
                     engineStaticFireTracker.oxidizerQty.Add(oxidizer.mass);
 
@@ -83,10 +83,10 @@ public class staticFireStandManager : MonoBehaviour
                     //Save results to file and null tracker and save new reliabili
                     started = false;
                     Engine engine = ConnectedEngine.GetComponent<Engine>();
-                    float reliabilityToAdd = (MyTime.time - startTime)/engine.maxTime * 0.001f;
+                    float reliabilityToAdd = ((float)(MyTime.time - startTime))/engine.maxTime * 0.001f;
                     if((MyTime.time-startTime) > engine.maxTime)
                     {
-                        engine.maxTime = MyTime.time - startTime;
+                        engine.maxTime = (float)(MyTime.time - startTime);
                     }
 
                     if((engine.reliability + reliabilityToAdd) <= 1f)

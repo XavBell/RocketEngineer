@@ -61,7 +61,7 @@ public class RocketStateManager : MonoBehaviour
             if(previousState != state)
             {
                 planetGravity.rb.simulated = false;
-                prediction.startTime = prediction.MyTime.time;
+                prediction.startTime = (float)prediction.MyTime.time;
                 prediction.CalculateParameters();
             }
             previousState = state;

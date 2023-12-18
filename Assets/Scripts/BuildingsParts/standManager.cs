@@ -50,7 +50,7 @@ public class standManager : MonoBehaviour
                 if(tankStatusTracker == null)
                 {
                     tankStatusTracker = new TankStatusTracker();
-                    startTime = MyTime.time;
+                    startTime = (float)MyTime.time;
                     Tank tank = ConnectedTank.GetComponent<Tank>();
                 }
                 
@@ -59,7 +59,7 @@ public class standManager : MonoBehaviour
                 {
                     Tank tank = ConnectedTank.GetComponent<Tank>();
 
-                    tankStatusTracker.times.Add(MyTime.time - startTime);
+                    tankStatusTracker.times.Add((float)(MyTime.time - startTime));
                     tankStatusTracker.Quantity.Add(tank.GetComponent<outputInputManager>().mass);
                     tankStatusTracker.Pressure.Add(tank.GetComponent<outputInputManager>().internalPressure);
                     tankStatusTracker.Volume.Add(tank.GetComponent<outputInputManager>().volume);

@@ -25,7 +25,7 @@ public class FloatingOrigin : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         updateFloatReference();
     }

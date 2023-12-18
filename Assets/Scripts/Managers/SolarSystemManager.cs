@@ -16,6 +16,7 @@ public class SolarSystemManager : MonoBehaviour
     public float moongSlvl = 16.0f;
     public float moonRadius = 17000.0f;
     public float moonMass = 0f;
+    public float moonSOI = 371805f;
 
     //Sun Values
     public float sunMass = 0f;

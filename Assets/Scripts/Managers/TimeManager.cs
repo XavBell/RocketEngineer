@@ -8,7 +8,7 @@ public class TimeManager : MonoBehaviour
     //TimeScale
 
     public float scaler = 1;
-    public float time = 0;
+    public double time = 0;
     public float deltaTime = 0;
 
     public StageViewer stage;
