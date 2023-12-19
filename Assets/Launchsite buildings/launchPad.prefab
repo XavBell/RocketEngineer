@@ -792,8 +792,8 @@ GameObject:
   - component: {fileID: 6114230335073138526}
   - component: {fileID: 5381789719691407045}
   - component: {fileID: 7394985772004179922}
-  - component: {fileID: -8382298268041422409}
   - component: {fileID: 8208019030907920418}
+  - component: {fileID: -4488605434850809749}
   m_Layer: 7
   m_Name: launchPad
   m_TagString: building
@@ -995,6 +995,9 @@ MonoBehaviour:
   fuel: {fileID: 8208019030907920418}
   padName: 
   button: {fileID: 680552191032890808}
+  operation: none
+  started: 0
+  failed: 0
 --- !u!114 &7394985772004179922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1012,27 +1015,6 @@ MonoBehaviour:
   z_pos: 0
   previousPos: {x: 0, y: 0, z: 0}
   currentPos: {x: 0, y: 0, z: 0}
---- !u!50 &-8382298268041422409
-Rigidbody2D:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4590421016071702574}
-  m_BodyType: 1
-  m_Simulated: 1
-  m_UseFullKinematicContacts: 0
-  m_UseAutoMass: 0
-  m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
-  m_GravityScale: 1
-  m_Material: {fileID: 0}
-  m_Interpolate: 0
-  m_SleepingMode: 1
-  m_CollisionDetection: 0
-  m_Constraints: 0
 --- !u!114 &8208019030907920418
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1082,6 +1064,27 @@ MonoBehaviour:
   type: default
   circuit: fuel
   MyTime: {fileID: 0}
+--- !u!50 &-4488605434850809749
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 2
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 0
 --- !u!1 &4924626698158955348
 GameObject:
   m_ObjectHideFlags: 0

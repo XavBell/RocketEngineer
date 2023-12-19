@@ -192,6 +192,7 @@ public class OnClick : MonoBehaviour
             core.AddComponent<DoubleTransform>();
             core.AddComponent<RocketStateManager>();
             core.AddComponent<RocketPath>();
+            core.AddComponent<BodySwitcher>();
             
             foreach(Stages stage in rocket.Stages)
             {

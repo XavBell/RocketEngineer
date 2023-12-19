@@ -116,12 +116,17 @@ public class PlanetGravity : MonoBehaviour
     {   
         //Gravity
         rb.mass = core.GetComponent<Rocket>().rocketMass;
-        double Dist = Vector2.Distance(rb.transform.position, planet.transform.position);
+        double Dist = Vector2.Distance(rb.transform.position, new Vector2((float)planet.GetComponent<DoubleTransform>().x_pos, (float)planet.GetComponent<DoubleTransform>().y_pos));
         Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
         Vector3 ForceVector = forceDir * (G*(Mass*rb.mass)/(float)(Dist * Dist));
         Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
-        Vector3 ResultVector = ForceVector + Thrust;
-        rb.AddForce(ResultVector);
+        Vector3 ResultVector = ((ForceVector + Thrust));
+        Vector3 Velocity = ResultVector * Time.fixedDeltaTime;
+        Vector2 Pos = ResultVector * Time.fixedDeltaTime;
+        if(Dist > 0.01)
+        {
+            rb.AddForce(ResultVector);
+        }
         GetComponent<DoubleTransform>().x_pos = rb.position.x;
         GetComponent<DoubleTransform>().y_pos = rb.position.y;
     }
@@ -213,7 +218,7 @@ public class PlanetGravity : MonoBehaviour
             planet = bestPlanet;
         }
 
-        if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 67000)
+        if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 371805)
         {
             Mass = bestPlanet.GetComponent<MoonScript>().moonMass;
             atmoAlt = 0.0f;

@@ -11,6 +11,7 @@ public class RocketStateManager : MonoBehaviour
     public PlanetGravity planetGravity;
     public RocketPath prediction;
     public DoubleTransform doublePos;
+    public BodySwitcher bodySwitcher;
     public float curr_X = 0f;
     public float curr_Y = 0f;
     public float previous_X = 0f;
@@ -22,6 +23,7 @@ public class RocketStateManager : MonoBehaviour
         planetGravity = this.GetComponent<PlanetGravity>();
         prediction = this.GetComponent<RocketPath>();
         doublePos = this.GetComponent<DoubleTransform>();
+        bodySwitcher = this.GetComponent<BodySwitcher>();
     }
 
     // Update is called once per frame
@@ -73,6 +75,7 @@ public class RocketStateManager : MonoBehaviour
     {
         if(state == "simulate")
         {
+            //bodySwitcher.updateReferenceBody();
             planetGravity.simulate();
             curr_X = this.transform.position.x;
             curr_Y = this.transform.position.y;
@@ -83,7 +86,7 @@ public class RocketStateManager : MonoBehaviour
 
         if(state == "rail")
         {
-            //prediction.CalculateParameters();
+            //bodySwitcher.updateReferenceBody();
             Vector2 transform = prediction.updatePosition();
             this.transform.position = transform;
             doublePos.x_pos = transform.x;
@@ -96,5 +99,7 @@ public class RocketStateManager : MonoBehaviour
             planetGravity.rb.velocity = velocity;
             return;
         }
+
+
     }
 }

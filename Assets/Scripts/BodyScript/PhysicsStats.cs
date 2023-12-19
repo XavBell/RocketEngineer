@@ -31,6 +31,11 @@ public class PhysicsStats : MonoBehaviour
                 mass = solarSystemManager.earthMass;
             }
 
+            if(body == "sun")
+            {
+                mass = solarSystemManager.sunMass;
+            }
+
             if(GetComponent<BodyPath>() != null)
             {
                 GetComponent<BodyPath>().calculate = true;

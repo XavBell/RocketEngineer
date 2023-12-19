@@ -63,7 +63,7 @@ public class RocketPath : MonoBehaviour
 
         if(planetGravity != null)
         {
-            float time = (float)MyTime.time;
+            double time = MyTime.time;
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
             UnityEngine.Vector2 planetPosition2D = planetGravity.planet.transform.position;
@@ -73,7 +73,7 @@ public class RocketPath : MonoBehaviour
 
     public void CalculateParameters()
     {
-        SetKeplerParams(KeplerParams, rb.position, planetGravity.planet.transform.position, rb.velocity, gravityParam, (float)MyTime.time);
+        SetKeplerParams(KeplerParams, rb.position, planetGravity.planet.transform.position, rb.velocity, gravityParam, MyTime.time);
         CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.planet.transform.position, gravityParam, startTime);
     }
 
@@ -128,17 +128,17 @@ public class RocketPath : MonoBehaviour
 
     public Vector2 updateVelocity()
     {
-        float X = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).x;
-        float Y = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).z;
-        float Z = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).y;
-        Vector2 transform = GetOrbitVelocityKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, KeplerParams.AP, X, Y, Z);
-        return transform;
+        //float X = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).x;
+        //float Y = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).z;
+        //float Z = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).y;
+        //Vector2 transform = GetOrbitVelocityKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, KeplerParams.AP, X, Y, Z);
+        return Vector2.zero;
     }
 
     void DrawLine(float time, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)
     {
         int numPoints = 1000;
-        float[] times = new float[numPoints];
+        double[] times = new double[numPoints];
         UnityEngine.Vector3[] positions = new UnityEngine.Vector3[numPoints];
 
         if(Input.GetKey("z") || updated == false)
@@ -160,81 +160,81 @@ public class RocketPath : MonoBehaviour
         
     }
 
-    public static Vector3 GetOrbitPositionKepler(float gravityParam, float time, float semiMajorAxis, float eccentricity, float argPeriapsis, float LAN, float inclination, float trueAnomalyAtEpoch)
+    public static Vector3 GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch)
     {
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
         // M = n (t)
-        float meanAngularMotion = Mathf.Sqrt(gravityParam / Mathf.Pow(semiMajorAxis, 3));
-        float timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
-        float MA = timeWithOffset * meanAngularMotion;
+        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3));
+        double timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
+        double MA = timeWithOffset * meanAngularMotion;
         
 
         // Compute EA (Eccentric Anomaly)
-        float EA = MA;
+        double EA = MA;
         
 
         for (int count = 0; count < 3; count++)
         {
-            float dE = (EA - eccentricity * Mathf.Sin(EA) - MA) / (1 - eccentricity * Mathf.Cos(EA));
+            double dE = (EA - eccentricity * Math.Sin(EA) - MA) / (1 - eccentricity * Math.Cos(EA));
             EA -= dE;
-            if (Mathf.Abs(dE) < 1e-6)
+            if (Math.Abs(dE) < 1e-6)
             {
                 break;
             } 
         }
 
         // Compute TA (True Anomaly)
-        float TA = 2 * Mathf.Atan(Mathf.Sqrt((1 + eccentricity) / (1 - eccentricity)) * Mathf.Tan(EA / 2));
+        double TA = 2 * Math.Atan(Math.Sqrt((1 + eccentricity) / (1 - eccentricity)) * Math.Tan(EA / 2));
 
         // Compute r (radius)
-        float r = semiMajorAxis * (1 - eccentricity * Mathf.Cos(EA));
+        double r = semiMajorAxis * (1 - eccentricity * Math.Cos(EA));
         
 
         // Compute XYZ positions
-        float X = r * (Mathf.Cos(LAN) * Mathf.Cos(argPeriapsis + TA) - Mathf.Sin(LAN) * Mathf.Sin(argPeriapsis + TA) * Mathf.Cos(inclination));
-        float Y = r * (Mathf.Sin(LAN) * Mathf.Cos(argPeriapsis + TA) + Mathf.Cos(LAN) * Mathf.Sin(argPeriapsis + TA) * Mathf.Cos(inclination));
-        float Z = r * (Mathf.Sin(inclination) * Mathf.Sin(argPeriapsis + TA));
+        double X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
+        double Y = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
+        double Z = r * (Math.Sin(inclination) * Math.Sin(argPeriapsis + TA));
 
-        return new(X, Z, 0); // FLIP Y-Z FOR UNITY
+        return new((float)X, (float)Z, 0); // FLIP Y-Z FOR UNITY
     }
-    public static Vector3 GetOrbitVelocityKepler(float gravityParam, float time, float semiMajorAxis, float eccentricity, float argPeriapsis, float LAN, float inclination, float trueAnomalyAtEpoch, float AP, float X, float Y, float Z)
+    public static Vector3 GetOrbitVelocityKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, double AP, double X, double Y, double Z)
     {
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
         // M = n (t)
-        float meanAngularMotion = Mathf.Sqrt(gravityParam / Mathf.Pow(semiMajorAxis, 3)); 
-        float timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
-        float MA = timeWithOffset * meanAngularMotion;
+        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); 
+        double timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
+        double MA = timeWithOffset * meanAngularMotion;
         
 
         // Compute EA (Eccentric Anomaly)
-        float EA = MA;
+        double EA = MA;
         
 
         for (int count = 0; count < 3; count++)
         {
-            float dE = (EA - eccentricity * Mathf.Sin(EA) - MA) / (1 - eccentricity * Mathf.Cos(EA));
+            double dE = (EA - eccentricity * Math.Sin(EA) - MA) / (1 - eccentricity * Math.Cos(EA));
             EA -= dE;
-            if (Mathf.Abs(dE) < 1e-6)
+            if (Math.Abs(dE) < 1e-6)
             {
                 break;
             } 
         }
 
         // Compute TA (True Anomaly)
-        float TA = 2 * Mathf.Atan(Mathf.Sqrt((1 + eccentricity) / (1 - eccentricity)) * Mathf.Tan(EA / 2));
+        double TA = 2 * Math.Atan(Math.Sqrt((1 + eccentricity) / (1 - eccentricity)) * Math.Tan(EA / 2));
 
         // Compute r (radius)
-        float r = semiMajorAxis * (1 - eccentricity * Mathf.Cos(EA));
+        double r = semiMajorAxis * (1 - eccentricity * Math.Cos(EA));
         
 
-        float velocityMagnitude = Mathf.Sqrt(gravityParam * (2 / r - 1 / semiMajorAxis));
+        double velocityMagnitude = Math.Sqrt(gravityParam * (2 / r - 1 / semiMajorAxis));
 
-        float vX = -velocityMagnitude * Mathf.Sin(EA);
-        float vY = velocityMagnitude * (Mathf.Sqrt(1 - Mathf.Pow(eccentricity, 2)) * Mathf.Cos(EA));
+        double vX = -velocityMagnitude * Math.Sin(EA);
+        double vY = velocityMagnitude * (Math.Sqrt(1 - Math.Pow(eccentricity, 2)) * Math.Cos(EA));
 
-        return new(vX, vY, 0); // FLIP Y-Z FOR UNITY
+        return new((float)vX, (float)vY, 0); // FLIP Y-Z FOR UNITY
     }
 
     public static float Modulo(float x, float m)
@@ -247,35 +247,35 @@ public class RocketPath : MonoBehaviour
         return (x % m + m) % m;
     }
 
-    public static float GetOrbitalPeriod(float gravityParam, float semiMajorAxis)
+    public static double GetOrbitalPeriod(double gravityParam, double semiMajorAxis)
     {
-        return (Mathf.Sqrt(4 * Mathf.Pow(Mathf.PI, 2) * Mathf.Pow(semiMajorAxis, 3) / gravityParam));
+        return (Math.Sqrt(4 * Math.Pow(Mathf.PI, 2) * Math.Pow(semiMajorAxis, 3) / gravityParam));
     }
 
-    public static float GetTrueAnomalyFromTimeOffset(float timeOffset, float gravityParam, float semiMajorAxis, float eccentricity)
+    public static double GetTrueAnomalyFromTimeOffset(double timeOffset, double gravityParam, double semiMajorAxis, double eccentricity)
     {
         if (timeOffset < 0)
         {
             timeOffset += GetOrbitalPeriod(gravityParam, semiMajorAxis);
         }
 
-        float meanAngularMotion = Mathf.Sqrt(gravityParam / Mathf.Pow(semiMajorAxis, 3));
-        float MA = timeOffset * meanAngularMotion;
+        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3));
+        double MA = timeOffset * meanAngularMotion;
 
-        float EA = MA;
+        double EA = MA;
 
         for (int count = 0; count < 10; count++)
         {
-            float dE = (EA - eccentricity * Mathf.Sin(EA) - MA) / (1 - eccentricity * Mathf.Cos(EA));
+            double dE = (EA - eccentricity * Math.Sin(EA) - MA) / (1 - eccentricity * Math.Cos(EA));
             EA -= dE;
-            if (Mathf.Abs(dE) < 1e-12)
+            if (Math.Abs(dE) < 1e-12)
             {
                 break;
             } 
         }
 
         // Compute TA (True Anomaly)
-        float TA = 2 * Mathf.Atan(Mathf.Sqrt((1 + eccentricity) / (1 - eccentricity)) * Mathf.Tan(EA / 2));
+        double TA = 2 * Math.Atan(Math.Sqrt((1 + eccentricity) / (1 - eccentricity)) * Math.Tan(EA / 2));
 
         //Some corrections
         if (timeOffset > 0)
@@ -288,24 +288,24 @@ public class RocketPath : MonoBehaviour
         return TA;
     }
 
-    public static float GetTimeOffsetFromTrueAnomaly(float trueAnomaly, float meanAngularMotion, float eccentricity)
+    public static double GetTimeOffsetFromTrueAnomaly(double trueAnomaly, double meanAngularMotion, double eccentricity)
         {
         // Offset by Mathf.Pi so 0 TA lines up with default start position from GetOrbitPositionKepler.
         // Wrap into -pi to +pi range.
-        float TA_Clean = Modulo((trueAnomaly + Mathf.PI), (Mathf.PI * 2)) - Mathf.PI;
-        float EA = Mathf.Acos((eccentricity + Mathf.Cos(TA_Clean)) / (1 + eccentricity * Mathf.Cos(TA_Clean)));
+        double TA_Clean = Modulo((trueAnomaly + Math.PI), (Math.PI * 2)) - Math.PI;
+        double EA = Math.Acos((eccentricity + Math.Cos(TA_Clean)) / (1 + eccentricity * Math.Cos(TA_Clean)));
         if (TA_Clean < 0)
         {
             EA *= -1;
         }
-        float MA = EA - eccentricity * Mathf.Sin(EA);
-        float t = MA / meanAngularMotion;
+        double MA = EA - eccentricity * Math.Sin(EA);
+        double t = MA / meanAngularMotion;
         
 
         return t;
     }
 
-    public static void KtoCfromC(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, float gravityParam, float time, out float semiMajorAxis, out float eccentricity, out float argPeriapsis, out float LAN, out float inclination, out float timeToPeriapsis, out float trueAnomalyAtEpoch, out float AP)
+    public static void KtoCfromC(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time, out double semiMajorAxis, out double eccentricity, out double argPeriapsis, out double LAN, out double inclination, out double timeToPeriapsis, out double trueAnomalyAtEpoch, out double AP)
     {   
         //Calculate rocket position in 3D and transform it for Kepler
         UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, 0, rocketPosition2D.y); //FLIP for Unity
@@ -317,47 +317,47 @@ public class RocketPath : MonoBehaviour
         UnityEngine.Vector3 rocketVelocity3D = new UnityEngine.Vector3(rocketVelocity2D.x, 0, rocketVelocity2D.y); //FLIP for Unity
 
         //Find position and velocity magnitude
-        float r = rocketPosition3D.magnitude;
-        float v = rocketVelocity3D.magnitude;
+        double r = rocketPosition3D.magnitude;
+        double v = rocketVelocity3D.magnitude;
 
         //Calculate specific angular momentum
         UnityEngine.Vector3 h_bar = UnityEngine.Vector3.Cross(rocketPosition3D, rocketVelocity3D);
 
-        float h = h_bar.magnitude;
+        double h = h_bar.magnitude;
 
         //Compute specific energy
-        float E = (0.5f * Mathf.Pow(v, 2)) - gravityParam/r;
+        double E = (0.5f * Math.Pow(v, 2)) - gravityParam/r;
 
         //Compute semi-major axis
-        float a = -gravityParam/(2*E);
+        double a = -gravityParam/(2*E);
 
         //Compute eccentricity
-        float e = Mathf.Sqrt(1 - Mathf.Pow(h,2)/(a*gravityParam));
+        double e = Math.Sqrt(1 - Math.Pow(h,2)/(a*gravityParam));
       
         //Compute inclination
-        float i = Mathf.Acos(h_bar.z/h);
+        double i = Math.Acos(h_bar.z/h);
 
         //Compute right ascension of ascending node
-        float omega_LAN = Mathf.Atan2(h_bar.x, -h_bar.y);
+        double omega_LAN = Math.Atan2(h_bar.x, -h_bar.y);
 
         //Compute argument of latitude v+w
-        float lat = Mathf.Atan2((rocketPosition3D[2]/Mathf.Sin(i)), (rocketPosition3D[0]*Mathf.Cos(omega_LAN) + rocketPosition3D[1] * Mathf.Sin(omega_LAN)));
+        double lat = Math.Atan2((rocketPosition3D[2]/Math.Sin(i)), (rocketPosition3D[0]*Math.Cos(omega_LAN) + rocketPosition3D[1] * Math.Sin(omega_LAN)));
 
         // Compute true anomaly, v, (not actual true anomaly)
-        float p = a * (1 - Mathf.Pow(e, 2));
-        float nu = Mathf.Atan2(Mathf.Sqrt(p / gravityParam) * UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D), p - r);
+        double p = a * (1 - Math.Pow(e, 2));
+        double nu = Math.Atan2(Math.Sqrt(p / gravityParam) * UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D), p - r);
 
         // Compute argument of periapse, w (not actual argperi)
-        float omega_AP = lat - nu;
+        double omega_AP = lat - nu;
 
         // Compute eccentric anomaly, EA
-        float EA = 2 * Mathf.Atan(Mathf.Sqrt((1 - e) / (1 + e)) * Mathf.Tan(nu / 2));
+        double EA = 2 * Math.Atan(Math.Sqrt((1 - e) / (1 + e)) * Math.Tan(nu / 2));
 
         // Compute the time of periapse passage, T
-        float n = Mathf.Sqrt(gravityParam / Mathf.Pow(a, 3));
-        float T = time - (1 / n) * (EA - e * Mathf.Sin(EA));
+        double n = Math.Sqrt(gravityParam / Math.Pow(a, 3));
+        double T = time - (1 / n) * (EA - e * Math.Sin(EA));
 
-        float TA = GetTrueAnomalyFromTimeOffset(T, gravityParam, a, e);
+        double TA = GetTrueAnomalyFromTimeOffset(T, gravityParam, a, e);
         
 
         semiMajorAxis = a;
@@ -370,12 +370,12 @@ public class RocketPath : MonoBehaviour
         AP = omega_AP;
     }
 
-    public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, float gravityParam, float time)
+    public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time)
     {
         KtoCfromC(rocketPosition2D, planetPosition2D,rocketVelocity2D, gravityParam, time, out keplerParams.semiMajorAxis, out keplerParams.eccentricity, out keplerParams.argumentOfPeriapsis, out keplerParams.longitudeOfAscendingNode, out keplerParams.inclination, out keplerParams.timeToPeriapsis, out keplerParams.trueAnomalyAtEpoch, out keplerParams.AP);
     }
 
-    public static void CalculatePoints(float time, int numPoints, float gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref float[] times, ref UnityEngine.Vector3[] positions)
+    public static void CalculatePoints(double time, int numPoints, double gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref double[] times, ref UnityEngine.Vector3[] positions)
     {
         var period = GetOrbitalPeriod(gravityParam, keplerParams.semiMajorAxis);
         var timeIncrement = period / numPoints;

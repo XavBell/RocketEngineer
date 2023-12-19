@@ -30,7 +30,7 @@ public class EarthScript : MonoBehaviour
     {
         SetEarthMass();
         SetDoubleTransform();
-        //DrawCircle(100000, 63710);
+        //DrawCircle(18000, 63710);
 
     }
 
@@ -93,7 +93,7 @@ public class EarthScript : MonoBehaviour
             
         }
 
-        DrawMesh(Points, 63710, 100000);
+        DrawMesh(Points, 63710, 18000);
         List<Vector3> Points2 = new List<Vector3>();
         foreach(Vector2 point in polyCollider.points)
         {
@@ -104,7 +104,7 @@ public class EarthScript : MonoBehaviour
         var mf = GetComponent<MeshFilter>();
         if (mf)
         {
-            var savePath = "Assets/" + "EarthMeshHighRes" + ".asset";
+            var savePath = "Assets/" + "EarthMeshOptiRes" + ".asset";
             Debug.Log("Saved Mesh to:" + savePath);
             //AssetDatabase.CreateAsset(mf.mesh, savePath);
         }
@@ -122,7 +122,7 @@ public class EarthScript : MonoBehaviour
     {
         Vector3[] verticies = verticiesList.ToArray();
         //polyCollider
-        polyCollider.pathCount = 1;
+        polyCollider.pathCount = n;
 
         List<Vector2> pathList = new List<Vector2> { };
         for (int i = 0; i < n; i++)

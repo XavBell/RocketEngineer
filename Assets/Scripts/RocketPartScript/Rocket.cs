@@ -367,6 +367,7 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
                 rp.gameObject.AddComponent<RocketStateManager>();
+                rp.gameObject.AddComponent<BodySwitcher>();
 
                 foreach(int pos in inPos)
                 {
@@ -614,6 +615,7 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
                 rp.gameObject.AddComponent<RocketStateManager>();
+                rp.gameObject.AddComponent<BodySwitcher>();
                 
                 rp.gameObject.transform.parent = null;
 
