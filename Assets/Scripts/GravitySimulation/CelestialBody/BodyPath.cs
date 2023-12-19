@@ -78,6 +78,11 @@ public class BodyPath : MonoBehaviour
 
     }
 
+    public void Update()
+    {
+
+    }
+
     public void UpdatePos()
     {
         if(start == true)
@@ -92,8 +97,8 @@ public class BodyPath : MonoBehaviour
             }
             Vector3 transform = GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
             Vector3 difference = (transform - this.transform.position)/MyTime.deltaTime;
-
-            rb.MovePosition(transform);
+            //Physics.SyncTransforms();
+            rb.MovePosition(Vector3.Slerp(this.transform.position, transform, MyTime.deltaTime));
             foreach(Rigidbody2D rb in rockets)
             {
                 rb.GetComponent<PlanetGravity>().simulate();

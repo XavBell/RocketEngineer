@@ -9472,6 +9472,7 @@ MonoBehaviour:
   calculate: 0
   start: 0
   MyTime: {fileID: 0}
+  rockets: []
   rb: {fileID: 0}
 --- !u!114 &680244252
 MonoBehaviour:
@@ -23582,7 +23583,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scaler: 1
   time: 0
+  normalTime: 0
   deltaTime: 0
+  normalDeltaTime: 0
   stage: {fileID: 0}
 --- !u!4 &1757857674
 Transform:
@@ -31026,11 +31029,11 @@ PrefabInstance:
       objectReference: {fileID: 6200000, guid: c73c67ed64a464fb1ba15bb455d95baa, type: 2}
     - target: {fileID: 4430842427479895365, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_Interpolate
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4430842427479895365, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_CollisionDetection
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6830099693871160873, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: moon
@@ -31421,6 +31424,7 @@ MonoBehaviour:
   calculate: 0
   start: 0
   MyTime: {fileID: 0}
+  rockets: []
   rb: {fileID: 0}
 --- !u!1001 &6067550310254388866
 PrefabInstance:

@@ -229,6 +229,7 @@ public class PlanetGravity : MonoBehaviour
             aeroCoefficient = 0.0f;
             planetRadius = bestPlanet.GetComponent<MoonScript>().moonRadius;
             planet = bestPlanet;
+            planet.GetComponent<BodyPath>().rockets.Add(rb);
         }else if(Earth != null) {
             bestPlanet = Earth;
             Mass = bestPlanet.GetComponent<EarthScript>().earthMass;
