@@ -24,9 +24,13 @@ public class BodyPath : MonoBehaviour
     public bool start  = false;
 
     public TimeManager MyTime;
+    public List<Rigidbody2D> rockets = new List<Rigidbody2D>();
 
 
     public Rigidbody2D rb;
+
+    bool udated = false;
+    float time = 0;
 
 
     
@@ -72,14 +76,36 @@ public class BodyPath : MonoBehaviour
             start = true;
         }
 
+    }
+
+    public void UpdatePos()
+    {
         if(start == true)
         {
-            Vector2 transform = GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
+            if(updated == false)
+            {
+                Vector3 transform2 = GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
+                this.transform.position = transform2;
+                this.GetComponent<DoubleTransform>().x_pos = transform2.x;
+                this.GetComponent<DoubleTransform>().y_pos = transform2.y;
+                updated = true;
+            }
+            Vector3 transform = GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
+            Vector3 difference = (transform - this.transform.position)/MyTime.deltaTime;
+
             rb.MovePosition(transform);
+            foreach(Rigidbody2D rb in rockets)
+            {
+                rb.GetComponent<PlanetGravity>().simulate();
+            }
+            rockets.Clear();
             this.GetComponent<DoubleTransform>().x_pos = transform.x;
             this.GetComponent<DoubleTransform>().y_pos = transform.y;
-        }
 
+            Physics.SyncTransforms();
+            
+            
+        }
     }
 
     void DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)

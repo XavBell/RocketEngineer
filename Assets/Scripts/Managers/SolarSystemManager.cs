@@ -22,4 +22,32 @@ public class SolarSystemManager : MonoBehaviour
     public float sunSlvl = 274.4f;
     public float sunRadius = 6957.0E6f;
     public float sunMass = 0f;
+    public bool needUpdate = false;
+
+    void LateUpdate()
+    {
+        
+
+        //Physics.SyncTransforms();
+
+    }
+
+    void FixedUpdate()
+    {
+        TypeScript[] Planets = FindObjectsOfType<TypeScript>();
+        foreach(TypeScript planet in Planets)
+        {
+            if(planet.GetComponent<BodyPath>() != null)
+            {
+                planet.GetComponent<BodyPath>().UpdatePos();
+            }
+        }
+
+        RocketStateManager[] Rockets = FindObjectsOfType<RocketStateManager>();
+        foreach(RocketStateManager rocket in Rockets)
+        {
+            //rocket.UpdatePosition();
+        }
+        //Physics.SyncTransforms();
+    }
 }

@@ -46,6 +46,7 @@ public class FloatingOrigin : MonoBehaviour
             
             Prediction.GetComponent<Prediction>().updated = false;
         }
+        Physics.SyncTransforms();
 
     }
 

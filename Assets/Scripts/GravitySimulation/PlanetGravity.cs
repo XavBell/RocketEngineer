@@ -123,12 +123,15 @@ public class PlanetGravity : MonoBehaviour
         Vector3 ResultVector = ((ForceVector + Thrust));
         Vector3 Velocity = ResultVector * Time.fixedDeltaTime;
         Vector2 Pos = ResultVector * Time.fixedDeltaTime;
-        if(Dist > 0.01)
+        rb.AddForce(ResultVector);
+        if(Thrust.magnitude > 0)
         {
-            rb.AddForce(ResultVector);
+            //Physics.SyncTransforms();
         }
         GetComponent<DoubleTransform>().x_pos = rb.position.x;
         GetComponent<DoubleTransform>().y_pos = rb.position.y;
+        //Physics.SyncTransforms();
+        //Physics.
     }
 
     void checkManager()
@@ -216,6 +219,7 @@ public class PlanetGravity : MonoBehaviour
             aeroCoefficient = 0.0f;
             planetRadius = bestPlanet.GetComponent<EarthScript>().earthRadius;
             planet = bestPlanet;
+            planet.GetComponent<BodyPath>().rockets.Add(rb);
         }
 
         if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 371805)
