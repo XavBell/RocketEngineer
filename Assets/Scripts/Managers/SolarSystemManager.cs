@@ -34,20 +34,7 @@ public class SolarSystemManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        TypeScript[] Planets = FindObjectsOfType<TypeScript>();
-        foreach(TypeScript planet in Planets)
-        {
-            if(planet.GetComponent<BodyPath>() != null)
-            {
-                planet.GetComponent<BodyPath>().UpdatePos();
-            }
-        }
-
-        RocketStateManager[] Rockets = FindObjectsOfType<RocketStateManager>();
-        foreach(RocketStateManager rocket in Rockets)
-        {
-            //rocket.UpdatePosition();
-        }
-        //Physics.SyncTransforms();
+        
+        
     }
 }

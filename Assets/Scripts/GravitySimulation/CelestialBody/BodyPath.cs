@@ -24,9 +24,6 @@ public class BodyPath : MonoBehaviour
     public bool start  = false;
 
     public TimeManager MyTime;
-    public List<Rigidbody2D> rockets = new List<Rigidbody2D>();
-
-
     public Rigidbody2D rb;
 
     bool udated = false;
@@ -95,19 +92,6 @@ public class BodyPath : MonoBehaviour
                 this.GetComponent<DoubleTransform>().y_pos = transform2.y;
                 updated = true;
             }
-            Vector3 transform = GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
-            Vector3 difference = (transform - this.transform.position)/MyTime.deltaTime;
-            //Physics.SyncTransforms();
-            rb.MovePosition(Vector3.Slerp(this.transform.position, transform, MyTime.deltaTime));
-            foreach(Rigidbody2D rb in rockets)
-            {
-                rb.GetComponent<PlanetGravity>().simulate();
-            }
-            rockets.Clear();
-            this.GetComponent<DoubleTransform>().x_pos = transform.x;
-            this.GetComponent<DoubleTransform>().y_pos = transform.y;
-
-            Physics.SyncTransforms();
             
             
         }
@@ -133,9 +117,14 @@ public class BodyPath : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// Gives the position at time of the body in reference to the body it orbits
+    /// </summary>
+    /// <param name="Time"></param>
+    /// <returns>Position of body at time</returns>
     public Vector3 GetPositionAtTime(float Time)
     {
-        Vector3 transform = GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + OrbitingBody.transform.position;
+        Vector3 transform = GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch);
         return transform;
     }
 

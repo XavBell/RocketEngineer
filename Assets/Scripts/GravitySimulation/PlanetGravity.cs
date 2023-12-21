@@ -120,18 +120,8 @@ public class PlanetGravity : MonoBehaviour
         Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
         Vector3 ForceVector = forceDir * (G*(Mass*rb.mass)/(float)(Dist * Dist));
         Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
-        Vector3 ResultVector = ((ForceVector + Thrust));
-        Vector3 Velocity = ResultVector * Time.fixedDeltaTime;
-        Vector2 Pos = ResultVector * Time.fixedDeltaTime;
+        Vector3 ResultVector = (ForceVector + Thrust);
         rb.AddForce(ResultVector);
-        if(Thrust.magnitude > 0)
-        {
-            //Physics.SyncTransforms();
-        }
-        GetComponent<DoubleTransform>().x_pos = rb.position.x;
-        GetComponent<DoubleTransform>().y_pos = rb.position.y;
-        //Physics.SyncTransforms();
-        //Physics.
     }
 
     void checkManager()
@@ -219,7 +209,6 @@ public class PlanetGravity : MonoBehaviour
             aeroCoefficient = 0.0f;
             planetRadius = bestPlanet.GetComponent<EarthScript>().earthRadius;
             planet = bestPlanet;
-            planet.GetComponent<BodyPath>().rockets.Add(rb);
         }
 
         if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 371805)
@@ -229,7 +218,6 @@ public class PlanetGravity : MonoBehaviour
             aeroCoefficient = 0.0f;
             planetRadius = bestPlanet.GetComponent<MoonScript>().moonRadius;
             planet = bestPlanet;
-            planet.GetComponent<BodyPath>().rockets.Add(rb);
         }else if(Earth != null) {
             bestPlanet = Earth;
             Mass = bestPlanet.GetComponent<EarthScript>().earthMass;

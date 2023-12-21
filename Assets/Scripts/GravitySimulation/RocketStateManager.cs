@@ -30,7 +30,7 @@ public class RocketStateManager : MonoBehaviour
     void FixedUpdate()
     {
         StateUpdater();
-        //UpdatePosition();
+        UpdatePosition();
     }
 
 
@@ -78,7 +78,7 @@ public class RocketStateManager : MonoBehaviour
         if(state == "simulate")
         {
             
-            //planetGravity.simulate();
+            planetGravity.simulate();
             curr_X = this.transform.position.x;
             curr_Y = this.transform.position.y;
             previous_X = curr_X;

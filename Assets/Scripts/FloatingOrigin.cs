@@ -17,15 +17,24 @@ public class FloatingOrigin : MonoBehaviour
     public GameObject Prediction;
     public GameObject Camera;
     private RocketPart[] rps;
+    public List<GameObject> planets = new List<GameObject>();
+    public TimeManager MyTime;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        planets.Add(sun);
+        planets.Add(earth);
+        planets.Add(moon);
+    }
+
+    void FixedUpdate()
+    {
+        UpdateReferenceBody();
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         updateFloatReference();
     }
@@ -82,6 +91,46 @@ public class FloatingOrigin : MonoBehaviour
         foreach(Rigidbody2D rp in rps)
         {
             rp.simulated = true;
+        }
+    }
+
+    public void UpdateReferenceBody()
+    {
+        double bestDistance = Mathf.Infinity;
+        GameObject closestPlanet = null;
+        foreach(GameObject planet in planets)
+        {
+            float potentialDistance = Vector2.Distance(Camera.transform.position, planet.transform.position);
+            if(potentialDistance < bestDistance)
+            {
+                bestDistance = potentialDistance;
+                closestPlanet = planet;
+            }
+        }
+
+        if(closestPlanet.GetComponent<TypeScript>().type == "earth")
+        {
+            Vector2 positionAtTime = closestPlanet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time);
+            Vector2 actualPos = closestPlanet.transform.position;
+            Vector2 toAdd = actualPos - positionAtTime;
+
+            sun.transform.position = toAdd;
+            moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y) + positionAtTime + toAdd;
+        }
+
+        if(closestPlanet.GetComponent<TypeScript>().type == "moon")
+        {
+            Vector2 positionAtTime = closestPlanet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time) + earth.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time);
+            Vector2 actualPos = closestPlanet.transform.position;
+            Vector2 toAdd = actualPos - positionAtTime;
+
+            sun.transform.position = toAdd;
+            earth.transform.position = new Vector2(earth.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x, earth.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y) + toAdd;
+        }
+
+        if(closestPlanet.GetComponent<TypeScript>().type == "sun")
+        {
+            
         }
     }
 }
