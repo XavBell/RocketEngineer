@@ -189,7 +189,7 @@ public class OnClick : MonoBehaviour
             core.AddComponent<PlanetGravity>();
             core.GetComponent<PlanetGravity>().core = core;
             core.GetComponent<Rocket>().core = core;
-            core.AddComponent<DoubleTransform>();
+            //core.AddComponent<DoubleTransform>();
             core.AddComponent<RocketStateManager>();
             core.AddComponent<RocketPath>();
             core.AddComponent<BodySwitcher>();

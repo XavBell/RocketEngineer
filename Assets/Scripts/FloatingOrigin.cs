@@ -30,13 +30,14 @@ public class FloatingOrigin : MonoBehaviour
 
     void FixedUpdate()
     {
+        updateFloatReference();
         UpdateReferenceBody();
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        updateFloatReference();
+        //updateFloatReference();
     }
 
 
@@ -55,7 +56,7 @@ public class FloatingOrigin : MonoBehaviour
             
             Prediction.GetComponent<Prediction>().updated = false;
         }
-        Physics.SyncTransforms();
+        //Physics.SyncTransforms();
 
     }
 

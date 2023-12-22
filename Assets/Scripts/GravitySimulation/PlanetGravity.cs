@@ -122,6 +122,8 @@ public class PlanetGravity : MonoBehaviour
         Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
         Vector3 ResultVector = (ForceVector + Thrust);
         rb.AddForce(ResultVector);
+        GetComponent<DoubleTransform>().x_pos = rb.position.x;
+        GetComponent<DoubleTransform>().y_pos = rb.position.y;
     }
 
     void checkManager()
