@@ -2240,78 +2240,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 459125748}
   m_CullTransparentMesh: 1
---- !u!1 &516084787
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 516084789}
-  - component: {fileID: 516084788}
-  m_Layer: 0
-  m_Name: TankManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &516084788
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516084787}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 71efa6c9a6969a940b45b4a35a415830, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tankHeight: {fileID: 0}
-  tankDiameter: {fileID: 0}
-  savePath: {fileID: 0}
-  materialDropdown: {fileID: 0}
-  saveName: 
-  Tank: {fileID: 0}
-  tankSP: {fileID: 0}
-  attachTopObj: {fileID: 0}
-  attachBottomObj: {fileID: 0}
-  attachRightObj: {fileID: 0}
-  attachLeftObj: {fileID: 0}
-  tankHeightFloat: 0
-  tankDiameterFloat: 0
-  propellantCategory: 
-  volume: 0
-  mass: 0
-  currentD: 0
-  currentH: 0
-  panel: {fileID: 0}
-  popUpPart: {fileID: 0}
-  elapsedFrames: 0
-  startingScaleD: {x: 0, y: 0, z: 0}
-  startingScaleH: {x: 0, y: 0, z: 0}
-  tankMaterial: 
-  MasterManager: {fileID: 0}
-  MainPanel: {fileID: 0}
-  CreatorPanel: {fileID: 0}
-  DataPanel: {fileID: 0}
---- !u!4 &516084789
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 516084787}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 261.01178, y: 368.46057, z: -1.0398359}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &558671143
 GameObject:
   m_ObjectHideFlags: 0
@@ -4231,9 +4159,9 @@ MonoBehaviour:
   CursorGameObject: {fileID: 0}
   Rocket: {fileID: 561314761}
   propellantLine: {fileID: 459125750}
-  MainPanel: {fileID: 0}
-  CreatorPanel: {fileID: 0}
-  DataPanel: {fileID: 0}
+  MainPanel: {fileID: 1863671412}
+  CreatorPanel: {fileID: 1002608894}
+  DataPanel: {fileID: 2133802808}
 --- !u!224 &1055678837
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4250,7 +4178,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 126.2, y: 104.2}
+  m_AnchoredPosition: {x: -53, y: -131}
   m_SizeDelta: {x: 148.4503, y: 37.8155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!23 &1055678839
@@ -7939,80 +7867,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963976730}
   m_CullTransparentMesh: 1
---- !u!1 &1992725475
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1992725477}
-  - component: {fileID: 1992725476}
-  m_Layer: 0
-  m_Name: EngineManager
-  m_TagString: EngineManager
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1992725476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1992725475}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f79ccf7ecf2997243a7d5c7b2a951ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mass: 0
-  thrust: 0
-  rate: 0
-  maxAngle: 0
-  speed: 0
-  pumpName: 
-  turbineName: 
-  nozzleName: 
-  TVCName: 
-  savePath: {fileID: 0}
-  saveName: 
-  pumpDropdown: {fileID: 0}
-  turbineDropdown: {fileID: 0}
-  nozzleDropdown: {fileID: 0}
-  tvcDropdown: {fileID: 0}
-  engineDropdown: {fileID: 0}
-  MasterManager: {fileID: 0}
-  MainPanel: {fileID: 0}
-  CreatorPanel: {fileID: 0}
-  DataPanel: {fileID: 0}
-  engineName: {fileID: 0}
-  engineExpectedThrust: {fileID: 0}
-  engineMaximumRunTime: {fileID: 0}
-  engineEstimatedReliability: {fileID: 0}
-  engineMassFlowRate: {fileID: 0}
-  engineMass: {fileID: 0}
-  engineMass_C: {fileID: 0}
-  engineThurst_C: {fileID: 0}
-  engineFlowRate_C: {fileID: 0}
-  engineReliability_C: {fileID: 0}
---- !u!4 &1992725477
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1992725475}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 224.76717, y: 181.99362, z: 0.13220724}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2094987986
 GameObject:
   m_ObjectHideFlags: 0
@@ -8232,6 +8086,4 @@ SceneRoots:
   - {fileID: 1055678837}
   - {fileID: 1064236002}
   - {fileID: 1655616453}
-  - {fileID: 1992725477}
-  - {fileID: 516084789}
   - {fileID: 561314762}

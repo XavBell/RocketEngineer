@@ -13,7 +13,7 @@ public class CameraControl : MonoBehaviour
     Vector3 dragOrigin;
     private float zoomFactor = 0.5f;
     private float zoomLerp = 10f;
-    private float moveFactor = 0.01f;
+    private float moveFactor = 0.2f;
     private float lineFactor = 0.01f;
     Vector3 position;
     public GameObject sun;
@@ -55,7 +55,6 @@ public class CameraControl : MonoBehaviour
 
         if(MasterManager.GetComponent<MasterManager>().gameState == "Building")
         {  
-            //QE();
             if(launchsiteManager.commandCenter != null)
             {
                 WASD();
@@ -72,14 +71,6 @@ public class CameraControl : MonoBehaviour
 
 
     }
-
-    void LateUpdate()
-    {
-        //updateFloatReference();
-    }
-
-
-
 
 
     public void ZoomIn()
@@ -103,9 +94,28 @@ public class CameraControl : MonoBehaviour
 
     public void WASD()
     {
-        Vector2 dist = this.transform.position;
-        float xAxisValue = Input.GetAxis("Horizontal") * cam.orthographicSize * moveFactor;
-        float yAxisValue = Input.GetAxis("Vertical") * cam.orthographicSize * moveFactor;
+        float xAxisValue = 0;
+        float yAxisValue = 0;
+        if(Input.GetKey(KeyCode.D))
+        {
+            xAxisValue = 1 * cam.orthographicSize * moveFactor * Time.fixedDeltaTime;
+        }
+
+        if(Input.GetKey(KeyCode.A))
+        {
+            xAxisValue = -1 * cam.orthographicSize * moveFactor * Time.fixedDeltaTime;
+        }
+
+        if(Input.GetKey(KeyCode.S))
+        {
+            yAxisValue = -1 * cam.orthographicSize * moveFactor * Time.fixedDeltaTime;
+        }
+
+        if(Input.GetKey(KeyCode.W))
+        {
+            yAxisValue = 1 * cam.orthographicSize * moveFactor * Time.fixedDeltaTime;
+        }
+
         if(cam != null)
         {
             if((cam.transform.position + new Vector3(xAxisValue, yAxisValue, 0) - launchsiteManager.commandCenter.transform.position).magnitude < 500)

@@ -29,6 +29,11 @@ public class Engine : RocketPart
         active = true;
     }
 
+    void Start()
+    {
+        //InitializeFail();
+    }
+
     public void InitializeFail()
     {
         float percentageOfThrust = Random.Range(reliability, 2-reliability);

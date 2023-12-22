@@ -34,4 +34,6 @@ public class savecraft
     //Engine variables
     public List<float> thrust = new List<float>();
     public List<float> flowRate = new List<float>();
+    public List<float> maxTime = new List<float>();
+    public List<float> reliability = new List<float>();
 }

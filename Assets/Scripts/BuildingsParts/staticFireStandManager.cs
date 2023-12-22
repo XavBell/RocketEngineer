@@ -58,7 +58,7 @@ public class staticFireStandManager : MonoBehaviour
                 {
                     engineStaticFireTracker = new EngineStaticFireTracker();
                     startTime = (float)MyTime.time;
-                    ConnectedEngine.GetComponent<Engine>().InitializeFail();
+                    //ConnectedEngine.GetComponent<Engine>().InitializeFail();
                 }
 
                 if(failed == false && (fuelSufficient == true && oxidizerSufficient == true) && engineStaticFireTracker != null)
@@ -83,7 +83,7 @@ public class staticFireStandManager : MonoBehaviour
                     //Save results to file and null tracker and save new reliabili
                     started = false;
                     Engine engine = ConnectedEngine.GetComponent<Engine>();
-                    float reliabilityToAdd = ((float)(MyTime.time - startTime))/engine.maxTime * 0.001f;
+                    float reliabilityToAdd = ((float)(MyTime.time - startTime))/engine.maxTime * 0.05f;
                     if((MyTime.time-startTime) > engine.maxTime)
                     {
                         engine.maxTime = (float)(MyTime.time - startTime);

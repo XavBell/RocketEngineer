@@ -40,7 +40,8 @@ public class outputInputManager : MonoBehaviour
     public string tankState = "working";
 
     public float externalTemperature = 298f;
-    public float externalPressure = 101f;
+    //In pascals
+    public float externalPressure = 101000f;
     public float internalPressure = 0f;
     public float internalTemperature = 0f;
     public string substance = "none";
@@ -116,7 +117,8 @@ public class outputInputManager : MonoBehaviour
     void InitializeCircuitTank()
     {
         circuit = GetComponent<Tank>().propellantCategory;
-        tankVolume = GetComponent<Tank>()._volume;
+        //Assume tank volume is in m3, convert to liters
+        tankVolume = GetComponent<Tank>()._volume * 1000;
         tankSurfaceArea = (GetComponent<Tank>().x_scale/2)*Mathf.PI*2*GetComponent<Tank>().y_scale;
     }
     

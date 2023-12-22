@@ -34,6 +34,7 @@ public class GameManager_Tank : MonoBehaviour
     public float tankDiameterFloat;
     public string propellantCategory;
 
+    //Volume in m3
     public float volume;
     public float mass;
 

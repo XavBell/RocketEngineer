@@ -11,7 +11,7 @@ public class StageViewer : MonoBehaviour
     public GameObject EngineUI;
     public GameObject DecouplerUI;
     public GameObject TankUI;
-    public GameObject Panel;
+    public GameObject Content;
     public TMP_Text altitude;
 
     // Start is called before the first frame update
@@ -40,7 +40,7 @@ public class StageViewer : MonoBehaviour
         if(rocket != null)
         {
             List<string> options = new List<string>();
-            foreach(Transform child in Panel.transform)
+            foreach(Transform child in Content.transform)
             {
                 if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<TankUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
                 {
@@ -62,7 +62,7 @@ public class StageViewer : MonoBehaviour
 
     public void updateInfoPerStage(bool forcedCall)
     {
-        foreach(Transform child in Panel.transform)
+        foreach(Transform child in Content.transform)
         {
             if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
             {
@@ -86,19 +86,19 @@ public class StageViewer : MonoBehaviour
         {
             if(part._partType == "engine")
             {
-                GameObject engineUI = Instantiate(EngineUI, Panel.transform);
+                GameObject engineUI = Instantiate(EngineUI, Content.transform);
                 engineUI.GetComponent<EngineUIModule>().engine = part.GetComponent<Engine>();
             }
 
             if(part._partType == "decoupler")
             {
-                GameObject decouplerUI = Instantiate(DecouplerUI, Panel.transform);
+                GameObject decouplerUI = Instantiate(DecouplerUI, Content.transform);
                 decouplerUI.GetComponent<DecouplerUIModule>().decoupler = part.GetComponent<Decoupler>();
             }
 
             if(part._partType == "tank")
             {
-                GameObject tankUI = Instantiate(TankUI, Panel.transform);
+                GameObject tankUI = Instantiate(TankUI, Content.transform);
                 tankUI.GetComponent<TankUIModule>().tank = part.GetComponent<outputInputManager>();
             }
         }
@@ -120,6 +120,19 @@ public class StageViewer : MonoBehaviour
         CameraControl camera = FindObjectOfType<CameraControl>();
         launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
         camera.transform.position = launchsiteManager.commandCenter.transform.position;
+        masterManager.ActiveRocket = null;
+    }
+
+    public void Terminate()
+    {
+        rocket.GetComponent<PlanetGravity>().possessed = false;
+        MasterManager masterManager = FindObjectOfType<MasterManager>();
+        masterManager.gameState = "Building";
+        CameraControl camera = FindObjectOfType<CameraControl>();
+        launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
+        camera.transform.position = launchsiteManager.commandCenter.transform.position;
+        Destroy(masterManager.ActiveRocket);
+        this.gameObject.SetActive(false);
         masterManager.ActiveRocket = null;
     }
 }

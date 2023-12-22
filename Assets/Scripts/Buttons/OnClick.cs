@@ -218,6 +218,8 @@ public class OnClick : MonoBehaviour
                         part.GetComponent<Tank>()._volume = loadedRocket.volume[tankID];
                         part.GetComponent<Tank>().tankMaterial = loadedRocket.tankMaterial[tankID];
                         part.GetComponent<Tank>().propellantCategory = loadedRocket.propellantType[tankID];
+                        part.GetComponent<Tank>().x_scale = loadedRocket.x_scale[tankID];
+                        part.GetComponent<Tank>().y_scale = loadedRocket.y_scale[tankID];
                         tankID++;
                     }
 
@@ -225,6 +227,9 @@ public class OnClick : MonoBehaviour
                     {
                         part.GetComponent<Engine>()._thrust = loadedRocket.thrust[engineID];
                         part.GetComponent<Engine>()._rate = loadedRocket.flowRate[engineID];
+                        part.GetComponent<Engine>().reliability = loadedRocket.reliability[engineID];
+                        part.GetComponent<Engine>().maxTime = loadedRocket.maxTime[engineID];
+                        part.GetComponent<Engine>().InitializeFail();
                         engineID++;
                     }
                 }
@@ -259,6 +264,7 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<Engine>()._pumpName = loadedEngine.pumpName_s;
             spawnedRocket.GetComponent<Engine>().reliability = loadedEngine.reliability;
             spawnedRocket.GetComponent<Engine>().maxTime = loadedEngine.maxTime;
+            spawnedRocket.GetComponent<Engine>().InitializeFail();
 
         }
 

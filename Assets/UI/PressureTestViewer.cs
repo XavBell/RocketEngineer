@@ -25,12 +25,12 @@ public class PressureTestViewer : MonoBehaviour
 
     void updateStatus()
     {
-        if(Stand.GetComponent<standManager>().started == false && Stand.GetComponent<staticFireStandManager>().failed == false && previouslyRan == false)
+        if(Stand.GetComponent<standManager>().started == false && Stand.GetComponent<standManager>().failed == false && previouslyRan == false)
         {
             status.text = "waiting";
         }
 
-        if(Stand.GetComponent<standManager>().started == true && Stand.GetComponent<staticFireStandManager>().failed == false && previouslyRan == true)
+        if(Stand.GetComponent<standManager>().started == true && Stand.GetComponent<standManager>().failed == false && previouslyRan == true)
         {
             status.text = "running";
         }
@@ -50,5 +50,12 @@ public class PressureTestViewer : MonoBehaviour
     public void stopTest()
     {
         Stand.GetComponent<standManager>().failed = true;
+    }
+
+    public void Terminate()
+    {
+        Stand.GetComponent<standManager>().failed = true;
+        Destroy(Stand.GetComponent<standManager>().ConnectedTank);
+        this.gameObject.SetActive(false);
     }
 }

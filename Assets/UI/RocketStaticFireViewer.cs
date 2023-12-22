@@ -51,4 +51,11 @@ public class RocketStaticFireViewer : MonoBehaviour
     {
         launchpad.GetComponent<launchPadManager>().failed = true;
     }
+
+    public void Terminate()
+    {
+        launchpad.GetComponent<launchPadManager>().failed = true;
+        Destroy(launchpad.GetComponent<launchPadManager>().ConnectedRocket);
+        this.gameObject.SetActive(false);
+    }
 }

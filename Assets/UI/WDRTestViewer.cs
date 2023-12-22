@@ -52,4 +52,11 @@ public class WDRTestViewer : MonoBehaviour
     {
         launchPad.GetComponent<launchPadManager>().failed = true;
     }
+
+    public void Terminate()
+    {
+        launchPad.GetComponent<launchPadManager>().failed = true;
+        Destroy(launchPad.GetComponent<launchPadManager>().ConnectedRocket);
+        this.gameObject.SetActive(false);
+    }
 }

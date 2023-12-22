@@ -229,6 +229,8 @@ public class GameManager : MonoBehaviour
             engine._nozzleName = loadedEngine.nozzleName_s;
             engine._pumpName = loadedEngine.pumpName_s;
             engine._turbineName = loadedEngine.turbineName_s;
+            engine.reliability = loadedEngine.reliability;
+            engine.maxTime = loadedEngine.maxTime;
             
         }
 
@@ -252,6 +254,8 @@ public class GameManager : MonoBehaviour
             tank._attachRight.transform.localPosition = new UnityEngine.Vector3(loadedTank.attachRightPos, 0, 0);
             tank._attachLeft.transform.localPosition = new UnityEngine.Vector3(loadedTank.attachLeftPos, 0, 0);
             tank.tankMaterial = loadedTank.tankMaterial;
+            tank.x_scale = loadedTank.tankSizeX;
+            tank.y_scale = loadedTank.tankSizeY;
             int value = propellantLine.value;
             if(value == 0)
             {
@@ -643,6 +647,8 @@ public class GameManager : MonoBehaviour
                     {
                         saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
                         saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
+                        saveRocket.maxTime.Add(part.GetComponent<Engine>().maxTime);
+                        saveRocket.reliability.Add(part.GetComponent<Engine>().reliability);
                     }
                 }
 

@@ -39,6 +39,11 @@ public class StaticFireViewer : MonoBehaviour
         {
             status.text = "stopped";
         }
+
+        if(staticFireStand.GetComponent<staticFireStandManager>().failed == true)
+        {
+            status.text = "stopped";
+        }
     }
 
     public void startTest()
@@ -50,5 +55,12 @@ public class StaticFireViewer : MonoBehaviour
     public void stopTest()
     {
         staticFireStand.GetComponent<staticFireStandManager>().failed = true;
+    }
+
+    public void Terminate()
+    {
+        staticFireStand.GetComponent<staticFireStandManager>().failed = true;
+        Destroy(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine);
+        this.gameObject.SetActive(false);
     }
 }

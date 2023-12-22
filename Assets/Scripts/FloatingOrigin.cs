@@ -114,9 +114,12 @@ public class FloatingOrigin : MonoBehaviour
             Vector2 positionAtTime = closestPlanet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time);
             Vector2 actualPos = closestPlanet.transform.position;
             Vector2 toAdd = actualPos - positionAtTime;
-
-            sun.transform.position = toAdd;
-            moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y) + positionAtTime + toAdd;
+            if(!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.x))
+            {
+                sun.transform.position = toAdd;
+                moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y) + positionAtTime + toAdd;
+            }
+            
         }
 
         if(closestPlanet.GetComponent<TypeScript>().type == "moon")
@@ -124,9 +127,11 @@ public class FloatingOrigin : MonoBehaviour
             Vector2 positionAtTime = closestPlanet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time) + earth.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time);
             Vector2 actualPos = closestPlanet.transform.position;
             Vector2 toAdd = actualPos - positionAtTime;
-
-            sun.transform.position = toAdd;
-            earth.transform.position = new Vector2(earth.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x, earth.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y) + toAdd;
+            if(!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.x))
+            {
+                sun.transform.position = new Vector2(toAdd.x , toAdd.y);
+                earth.transform.position = new Vector2(earth.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x, earth.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y) + toAdd;
+            }
         }
 
         if(closestPlanet.GetComponent<TypeScript>().type == "sun")

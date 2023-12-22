@@ -344,7 +344,7 @@ public class GameManager_Engine : MonoBehaviour
         jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + engineDropdown.options[engineDropdown.value].text.ToString());
         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
         engineName.text = loadedEngine.engineName;
-        engineExpectedThrust.text = (loadedEngine.reliability * loadedEngine.thrust_s).ToString() + "-" + ((2-loadedEngine.reliability)*loadedEngine.reliability).ToString();
+        engineExpectedThrust.text = (loadedEngine.reliability * loadedEngine.thrust_s).ToString() + "-" + ((2-loadedEngine.reliability)*loadedEngine.thrust_s).ToString();
         engineMaximumRunTime.text = loadedEngine.maxTime.ToString();
         engineEstimatedReliability.text = loadedEngine.reliability.ToString();
         engineMassFlowRate.text = loadedEngine.rate_s.ToString();
