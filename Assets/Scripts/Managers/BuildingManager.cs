@@ -18,6 +18,7 @@ public class BuildingManager : MonoBehaviour
     public launchsiteManager launchsiteManager;
     public SolarSystemManager solarSystemManager = new SolarSystemManager();
 
+
     public float planetRadius;
 
     public string localMode = "none";

@@ -179,11 +179,11 @@ public class WorldSaveManager : MonoBehaviour
 
         if(loadedWorld.previouslyLoaded == true)
         {
-            earth.transform.localPosition = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
-            worldCamera.transform.localPosition = new Vector3(loadedWorld.cameraLocX, loadedWorld.cameraLocY, loadedWorld.cameraLocZ);
-            earth.transform.eulerAngles = new Vector3(loadedWorld.earthRotX, loadedWorld.earthRotY, loadedWorld.earthRotZ);
-            worldCamera.transform.eulerAngles = new Vector3(loadedWorld.cameraRotX, loadedWorld.cameraRotY, loadedWorld.cameraRotZ);
-            moon.transform.localPosition = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+            //earth.transform.localPosition = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
+            //worldCamera.transform.localPosition = new Vector3(loadedWorld.cameraLocX, loadedWorld.cameraLocY, loadedWorld.cameraLocZ);
+            //earth.transform.eulerAngles = new Vector3(loadedWorld.earthRotX, loadedWorld.earthRotY, loadedWorld.earthRotZ);
+            //worldCamera.transform.eulerAngles = new Vector3(loadedWorld.cameraRotX, loadedWorld.cameraRotY, loadedWorld.cameraRotZ);
+            //moon.transform.localPosition = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
         }
         int count = 0;
 
@@ -271,33 +271,33 @@ public class WorldSaveManager : MonoBehaviour
             count++;
         }
         
-        outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
-        int x = 0;
-        foreach(outputInputManager outputInputManager in outputInputManagers)
-        {
-            outputInputManager.guid = loadedWorld.selfGuid[x];
-            outputInputManager.inputGuid = loadedWorld.InputGuid[x];
-            outputInputManager.outputGuid = loadedWorld.OutputGuid[x];
-            x++;
-        }
+        //outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
+        //int x = 0;
+        //foreach(outputInputManager outputInputManager in outputInputManagers)
+        //{
+        //    outputInputManager.guid = loadedWorld.selfGuid[x];
+        //    outputInputManager.inputGuid = loadedWorld.InputGuid[x];
+        //    outputInputManager.outputGuid = loadedWorld.OutputGuid[x];
+        //    x++;
+        //}
 
-        foreach(outputInputManager outputInputManager1 in outputInputManagers)
-        {
-            foreach(outputInputManager outputInputManager2 in outputInputManagers)
-            {
-                if(outputInputManager1.guid == outputInputManager2.outputGuid)
-                {
-                    outputInputManager2.outputParent = outputInputManager1;
-                    outputInputManager1.inputParent = outputInputManager2;
-                }
-
-                if(outputInputManager2.guid == outputInputManager1.outputGuid)
-                {
-                    outputInputManager1.outputParent = outputInputManager2;
-                    outputInputManager2.inputParent = outputInputManager1;
-                }
-            }
-        }
+        //foreach(outputInputManager outputInputManager1 in outputInputManagers)
+        //{
+        //    foreach(outputInputManager outputInputManager2 in outputInputManagers)
+        //    {
+        //        if(outputInputManager1.guid == outputInputManager2.outputGuid)
+        //        {
+        //            outputInputManager2.outputParent = outputInputManager1;
+        //            outputInputManager1.inputParent = outputInputManager2;
+        //        }
+        //
+        //        if(outputInputManager2.guid == outputInputManager1.outputGuid)
+        //        {
+        //            outputInputManager1.outputParent = outputInputManager2;
+        //            outputInputManager2.inputParent = outputInputManager1;
+        //        }
+        //    }
+        //}
 
         launchsiteManager.updateVisibleButtons();
 
@@ -312,8 +312,6 @@ public class WorldSaveManager : MonoBehaviour
         {
            UnityEngine.Debug.Log("File version not compatible");
         }
-
-
     }
 
     public void saveRocket(Rocket rocket, saveWorld save)

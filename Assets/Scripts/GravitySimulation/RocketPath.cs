@@ -73,8 +73,12 @@ public class RocketPath : MonoBehaviour
 
     public void CalculateParameters()
     {
+        startTime = (float)MyTime.time;
         SetKeplerParams(KeplerParams, rb.position, planetGravity.planet.transform.position, rb.velocity, gravityParam, MyTime.time);
-        CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.planet.transform.position, gravityParam, startTime);
+        if(KeplerParams.eccentricity > 1)
+        {
+            CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.planet.transform.position, gravityParam, (float)MyTime.time);
+        }
     }
 
     public Vector2 updatePosition()
@@ -128,10 +132,6 @@ public class RocketPath : MonoBehaviour
 
     public Vector2 updateVelocity()
     {
-        //float X = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).x;
-        //float Y = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).z;
-        //float Z = GetOrbitPositionKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch).y;
-        //Vector2 transform = GetOrbitVelocityKepler(gravityParam, Time.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, KeplerParams.AP, X, Y, Z);
         return Vector2.zero;
     }
 

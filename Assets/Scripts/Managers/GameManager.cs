@@ -66,7 +66,7 @@ public class GameManager : MonoBehaviour
 
             retrieveEngineSaved();
             retrieveTankSaved();
-            retrieveRocketSaved();
+            //retrieveRocketSaved();
         }
     }
 

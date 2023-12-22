@@ -16,6 +16,7 @@ public class RocketStateManager : MonoBehaviour
     public float curr_Y = 0f;
     public float previous_X = 0f;
     public float previous_Y = 0f;
+    public TimeManager MyTime;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +25,7 @@ public class RocketStateManager : MonoBehaviour
         prediction = this.GetComponent<RocketPath>();
         doublePos = this.GetComponent<DoubleTransform>();
         bodySwitcher = this.GetComponent<BodySwitcher>();
+        MyTime = FindObjectOfType<TimeManager>();
     }
 
     // Update is called once per frame
@@ -53,6 +55,8 @@ public class RocketStateManager : MonoBehaviour
             if(previousState != state)
             {
                 planetGravity.rb.simulated = true;
+                //Vector2 velocity = new Vector2((curr_X-previous_X)/MyTime.deltaTime, (curr_Y-previous_Y)/MyTime.deltaTime);
+                //planetGravity.rb.velocity = velocity;
             }
             previousState = state;
             return;
@@ -77,7 +81,6 @@ public class RocketStateManager : MonoBehaviour
 
         if(state == "simulate")
         {
-            
             planetGravity.simulate();
             curr_X = this.transform.position.x;
             curr_Y = this.transform.position.y;
@@ -88,7 +91,6 @@ public class RocketStateManager : MonoBehaviour
 
         if(state == "rail")
         {
-            //bodySwitcher.updateReferenceBody();
             Vector2 transform = prediction.updatePosition();
             this.transform.position = transform;
             doublePos.x_pos = transform.x;
@@ -97,7 +99,7 @@ public class RocketStateManager : MonoBehaviour
             previous_Y = curr_Y;
             curr_X = transform.x;
             curr_Y = transform.y;
-            Vector2 velocity = new Vector2((curr_X-previous_X)/0.02f, (curr_Y-previous_Y)/0.02f);
+            Vector2 velocity = new Vector2((curr_X-previous_X)/MyTime.deltaTime, (curr_Y-previous_Y)/MyTime.deltaTime);
             planetGravity.rb.velocity = velocity;
             return;
         }

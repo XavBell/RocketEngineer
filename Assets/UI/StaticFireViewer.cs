@@ -7,6 +7,8 @@ public class StaticFireViewer : MonoBehaviour
 {
     public GameObject staticFireStand;
     public TMP_Text status;
+    public TMP_Text oxidizerQty;
+    public TMP_Text fuelQty;
     public bool previouslyRan = false;
     // Start is called before the first frame update
     void Start()
@@ -44,6 +46,12 @@ public class StaticFireViewer : MonoBehaviour
         {
             status.text = "stopped";
         }
+    }
+
+    void updateQuantity()
+    {
+        oxidizerQty.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.mass.ToString();
+        fuelQty.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.mass.ToString();
     }
 
     public void startTest()
