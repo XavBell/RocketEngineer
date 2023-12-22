@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NozzleRaptor : MonoBehaviour
+public class NozzleRaptor
 {
     public string nozzleName = "Nozzle Raptor";
     public float thrustModifier = 1.4f;

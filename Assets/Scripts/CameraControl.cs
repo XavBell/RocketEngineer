@@ -13,8 +13,8 @@ public class CameraControl : MonoBehaviour
     Vector3 dragOrigin;
     private float zoomFactor = 0.5f;
     private float zoomLerp = 10f;
-    private float moveFactor = 0.2f;
-    private float lineFactor = 0.01f;
+    private float moveFactor = 5f;
+    private float lineFactor = 0.1f;
     Vector3 position;
     public GameObject sun;
     public GameObject earth;
@@ -81,12 +81,12 @@ public class CameraControl : MonoBehaviour
         if(targetZoom - scrollData * zoomFactor * cam.orthographicSize > 1)
         {
             targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.fixedDeltaTime*zoomLerp);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
             Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize * lineFactor;
         }if(targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
         {
             targetZoom = 1;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.fixedDeltaTime*zoomLerp);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
             Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize*lineFactor;
         }
         
@@ -98,29 +98,29 @@ public class CameraControl : MonoBehaviour
         float yAxisValue = 0;
         if(Input.GetKey(KeyCode.D))
         {
-            xAxisValue = 1 * cam.orthographicSize * moveFactor * Time.fixedDeltaTime;
+            xAxisValue = 1 * cam.orthographicSize * moveFactor;
         }
 
         if(Input.GetKey(KeyCode.A))
         {
-            xAxisValue = -1 * cam.orthographicSize * moveFactor * Time.fixedDeltaTime;
+            xAxisValue = -1 * cam.orthographicSize * moveFactor;
         }
 
         if(Input.GetKey(KeyCode.S))
         {
-            yAxisValue = -1 * cam.orthographicSize * moveFactor * Time.fixedDeltaTime;
+            yAxisValue = -1 * cam.orthographicSize * moveFactor;
         }
 
         if(Input.GetKey(KeyCode.W))
         {
-            yAxisValue = 1 * cam.orthographicSize * moveFactor * Time.fixedDeltaTime;
+            yAxisValue = 1 * cam.orthographicSize * moveFactor;
         }
 
         if(cam != null)
         {
-            if((cam.transform.position + new Vector3(xAxisValue, yAxisValue, 0) - launchsiteManager.commandCenter.transform.position).magnitude < 500)
+            if((cam.transform.position + new Vector3(xAxisValue*Time.deltaTime, yAxisValue*Time.deltaTime, 0) - launchsiteManager.commandCenter.transform.position).magnitude < 500)
             {
-                cam.transform.Translate(new Vector2(xAxisValue, yAxisValue));   
+                cam.transform.position += new Vector3(xAxisValue*Time.deltaTime, yAxisValue*Time.deltaTime, 0);   
             }
             
         }

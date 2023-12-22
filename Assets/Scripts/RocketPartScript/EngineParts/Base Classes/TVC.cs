@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TVC : MonoBehaviour
+public class TVC 
 {
     public string TVCName = "default";
     public float maxAngle = 0.0f;

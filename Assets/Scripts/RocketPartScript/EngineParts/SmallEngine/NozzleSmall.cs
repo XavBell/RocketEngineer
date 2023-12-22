@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NozzleSmall : MonoBehaviour
+public class NozzleSmall
 {
     public string nozzleName = "Nozzle Small";
-    public float thrustModifier = 1.4f;
-    public float rateModifier = 1.2f;
-    public float mass = 200f;
+    public float thrustModifier = 0.9f;
+    public float rateModifier = 0.6f;
+    public float mass = 150f;
 }

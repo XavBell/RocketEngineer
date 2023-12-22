@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Pump : MonoBehaviour
+public class Pump 
 {
     public string pumpName = "default";
     public float thrust = 0f;
