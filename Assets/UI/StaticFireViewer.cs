@@ -22,6 +22,7 @@ public class StaticFireViewer : MonoBehaviour
         if(staticFireStand != null)
         {
             updateStatus();
+            updateQuantity();
         }
     }
 
@@ -37,15 +38,11 @@ public class StaticFireViewer : MonoBehaviour
             status.text = "running";
         }
 
-        if(staticFireStand.GetComponent<staticFireStandManager>().failed == true && previouslyRan == true)
+        if(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().active == false && previouslyRan == true)
         {
             status.text = "stopped";
         }
 
-        if(staticFireStand.GetComponent<staticFireStandManager>().failed == true)
-        {
-            status.text = "stopped";
-        }
     }
 
     void updateQuantity()
