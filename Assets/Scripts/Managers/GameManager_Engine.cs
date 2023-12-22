@@ -34,6 +34,8 @@ public class GameManager_Engine : MonoBehaviour
 
     public TMP_Dropdown tvcDropdown;
 
+    public TMP_Dropdown engineDropdown;
+
     public savePath savePathRef = new savePath();
 
     public MasterManager MasterManager = new MasterManager();
@@ -41,6 +43,22 @@ public class GameManager_Engine : MonoBehaviour
     public GameObject MainPanel;
     public GameObject CreatorPanel;
     public GameObject DataPanel;
+
+    //Text field for Data Viewer
+    public TMP_Text engineName;
+    public TMP_Text engineExpectedThrust;
+    public TMP_Text engineMaximumRunTime;
+    public TMP_Text engineEstimatedReliability;
+    public TMP_Text engineMassFlowRate;
+    public TMP_Text engineMass;
+
+    //Text field for Creator
+    public TMP_Text engineMass_C;
+    public TMP_Text engineThurst_C;
+    public TMP_Text engineFlowRate_C;
+    public TMP_Text engineReliability_C;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -48,6 +66,7 @@ public class GameManager_Engine : MonoBehaviour
         {
             GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
             MasterManager = GMM.GetComponent<MasterManager>();
+            initializeEngineInFolder();
         }
         
     }
@@ -58,10 +77,11 @@ public class GameManager_Engine : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name.ToString() == "EngineDesign")
         {
-            
+            UpdateValues();
         }
 
     }
+
 
     public void backToBuild()
     {
@@ -89,6 +109,25 @@ public class GameManager_Engine : MonoBehaviour
         DataPanel.SetActive(true);
     }
 
+    public void UpdateValues()
+    {
+        Nozzle nozzle = new Nozzle();
+        Pump pump = new Pump();
+        Turbine turbine = new Turbine();
+        TVC tvc = new TVC();
+
+        string selectedTurbine = turbineDropdown.options[turbineDropdown.value].text.ToString();
+        string selectedPump = pumpDropdown.options[pumpDropdown.value].text.ToString();
+        string selectedNozzle = nozzleDropdown.options[nozzleDropdown.value].text.ToString();
+        string selectedTVC = tvcDropdown.options[tvcDropdown.value].text.ToString();
+
+        setTurbine(selectedTurbine, turbine);
+        setPump(selectedPump, pump);
+        setNozzle(selectedNozzle, nozzle);
+        setTVC(selectedTVC, tvc);
+        setValues(tvc, nozzle, turbine, pump);
+    }
+
     public void Create()
     {
         Nozzle nozzle = new Nozzle();
@@ -105,7 +144,6 @@ public class GameManager_Engine : MonoBehaviour
         setPump(selectedPump, pump);
         setNozzle(selectedNozzle, nozzle);
         setTVC(selectedTVC, tvc);
-
         setValues(tvc, nozzle, turbine, pump);
 
         if(savePath.text != null)
@@ -226,6 +264,8 @@ public class GameManager_Engine : MonoBehaviour
         speed = tvc.speed;
 
         mass = turbine.mass + tvc.mass + nozzle.mass + pump.mass;
+
+        updateCreatorData(mass.ToString(), rate.ToString(), thrust, 0.05f);
     }
 
     public void save(string selectedTVC, string selectedNozzle, string selectedPump, string selectedTurbine)
@@ -253,7 +293,7 @@ public class GameManager_Engine : MonoBehaviour
             saveObject.turbineName_s = selectedTurbine;
             saveObject.pumpName_s = selectedPump;
 
-            saveObject.reliability = 0f;
+            saveObject.reliability = 0.05f;
             saveObject.maxTime = 1f;
 
 
@@ -273,6 +313,50 @@ public class GameManager_Engine : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void initializeEngineInFolder()
+    {
+        List<string> options = new List<string>();
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder);
+            return;
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder);
+        var fileInfo = info.GetFiles();
+        if(fileInfo.Length == 0)
+        {
+            return;
+        }
+        foreach (var file in fileInfo)
+        {
+            options.Add(Path.GetFileName(file.ToString()));
+        }
+        engineDropdown.AddOptions(options);
+    }
+
+    public void loadData()
+    {
+        saveEngine saveEngine = new saveEngine();
+        var jsonString = JsonConvert.SerializeObject(saveEngine);
+        jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + engineDropdown.options[engineDropdown.value].text.ToString());
+        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+        engineName.text = loadedEngine.engineName;
+        engineExpectedThrust.text = (loadedEngine.reliability * loadedEngine.thrust_s).ToString() + "-" + ((2-loadedEngine.reliability)*loadedEngine.reliability).ToString();
+        engineMaximumRunTime.text = loadedEngine.maxTime.ToString();
+        engineEstimatedReliability.text = loadedEngine.reliability.ToString();
+        engineMassFlowRate.text = loadedEngine.rate_s.ToString();
+        engineMass.text = loadedEngine.mass_s.ToString();
+    }
+
+    public void updateCreatorData(string mass, string flowRate, float thrust, float reliability)
+    {
+        engineThurst_C.text = (thrust*reliability).ToString() + "-" + ((2-reliability)*thrust).ToString();
+        engineMass_C.text = mass;
+        engineFlowRate_C.text = flowRate;
+        engineReliability_C.text = reliability.ToString();
     }
 
 }

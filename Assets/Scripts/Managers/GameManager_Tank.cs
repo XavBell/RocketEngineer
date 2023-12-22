@@ -49,8 +49,11 @@ public class GameManager_Tank : MonoBehaviour
     public UnityEngine.Vector3 startingScaleD;
     public UnityEngine.Vector3 startingScaleH;
     public string tankMaterial;
-
     public MasterManager MasterManager = new MasterManager();
+
+    public GameObject MainPanel;
+    public GameObject CreatorPanel;
+    public GameObject DataPanel;
     // Start is called before the first frame update
     void Start()
     {
@@ -198,6 +201,27 @@ public class GameManager_Tank : MonoBehaviour
     public void backToBuild()
     {
         SceneManager.LoadScene("SampleScene");
+    }
+
+    public void BackToMain()
+    {
+        MainPanel.SetActive(true);
+        CreatorPanel.SetActive(false);
+        DataPanel.SetActive(false);
+    }
+
+    public void EnterCreator()
+    {
+        MainPanel.SetActive(false);
+        CreatorPanel.SetActive(true);
+        DataPanel.SetActive(false);
+    }
+
+    public void EnterData()
+    {
+        MainPanel.SetActive(false);
+        CreatorPanel.SetActive(false);
+        DataPanel.SetActive(true);
     }
 
 }
