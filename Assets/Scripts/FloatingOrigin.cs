@@ -30,14 +30,14 @@ public class FloatingOrigin : MonoBehaviour
 
     void FixedUpdate()
     {
-        updateFloatReference();
+        //updateFloatReference();
         UpdateReferenceBody();
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        //updateFloatReference();
+        updateFloatReference();
     }
 
 
@@ -70,6 +70,10 @@ public class FloatingOrigin : MonoBehaviour
             dt.z_pos += difference.z;
 
             g.transform.position = new Vector3((float)dt.x_pos, (float)dt.y_pos, (float)dt.z_pos);
+            if(g.GetComponent<RocketPath>())
+            {
+                g.GetComponent<RocketPath>().CalculateParameters();
+            }
         }
         if(dt == null)
         {

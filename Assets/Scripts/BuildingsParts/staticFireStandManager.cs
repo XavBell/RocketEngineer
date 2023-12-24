@@ -74,6 +74,7 @@ public class staticFireStandManager : MonoBehaviour
 
                     if(fail == true)
                     {
+                        engine.active = false;
                         failed = true;
                     }
                 }
