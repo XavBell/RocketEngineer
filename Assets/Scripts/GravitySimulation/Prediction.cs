@@ -17,6 +17,8 @@ public class Prediction : MonoBehaviour
     public GameObject orbitMarker;
     public LineRenderer line;
     public Rigidbody2D rb;
+    public GameObject Moon;
+    public GameObject Earth;
     public float G;
     public float rocketMass;
     public float gravityParam = 0;
@@ -293,7 +295,7 @@ public class Prediction : MonoBehaviour
             time += timeIncrement;
         }
 
-        DetectIntercept(positions, times, planetPosition2D, potentialBody, orbitMarker);
+        DetectIntercept(positions, times, Earth, potentialBody, orbitMarker);
 
     }
 
@@ -372,12 +374,12 @@ public class Prediction : MonoBehaviour
         }
 
         
-        DetectIntercept(positions, times, planetPosition2D, potentialBody, orbitMarker);
+        DetectIntercept(positions, times, Earth, potentialBody, orbitMarker);
         line.positionCount = maxStep;
         line.SetPositions(positions);
     }
 
-    public void DetectIntercept(Vector3[] points, double[] times, Vector2 orbitingBodyPos, GameObject potentialBody, GameObject orbitMarker)
+    public void DetectIntercept(Vector3[] points, double[] times, GameObject orbitingBodyPos, GameObject potentialBody, GameObject orbitMarker)
     {
         //Minimum distance from moon is 391100 for gravity switch
         //That means that distance from planet must be at least 377,700
@@ -385,12 +387,12 @@ public class Prediction : MonoBehaviour
         List<double> PotentialTimes = new List<double>();
 
         int i = 0;
-        foreach(Vector3 point in points)
+        foreach(double time in PotentialTimes)
         {
-            if((point - new Vector3(orbitingBodyPos.x, orbitingBodyPos.y, 0)).magnitude >= 377700)
+            if((points[i] - Moon.GetComponent<BodyPath>().GetPositionAtTime((float)time)).magnitude >= 371800)
             {
-                PotentialPos.Add(point);
-                PotentialTimes.Add(times[i]);
+                PotentialPos.Add(points[i]);
+                PotentialTimes.Add(time);
             }
             i++;
         }
@@ -400,12 +402,12 @@ public class Prediction : MonoBehaviour
         {
             Vector3 potentialPosition = potentialBody.GetComponent<BodyPath>().GetPositionAtTime(time);
             //Assume minimum of 500m (?)
-            if((potentialPosition - PotentialPos[i]).magnitude < 5000)
-            {
+            //if((potentialPosition - PotentialPos[i]).magnitude < 5000)
+            //{
                 Debug.Log("Intercept Found");
                 orbitMarker.transform.position = potentialPosition;
                 return;
-            }
+            //}
             i++;
         }
 
