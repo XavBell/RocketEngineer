@@ -402,12 +402,12 @@ public class Prediction : MonoBehaviour
         {
             Vector3 potentialPosition = potentialBody.GetComponent<BodyPath>().GetPositionAtTime(time);
             //Assume minimum of 500m (?)
-            //if((potentialPosition - PotentialPos[i]).magnitude < 5000)
-            //{
+            if((potentialPosition - PotentialPos[i]).magnitude < 5000)
+            {
                 Debug.Log("Intercept Found");
                 orbitMarker.transform.position = potentialPosition;
                 return;
-            //}
+            }
             i++;
         }
 
