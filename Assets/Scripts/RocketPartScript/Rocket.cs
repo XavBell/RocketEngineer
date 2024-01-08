@@ -824,10 +824,10 @@ public class Rocket : MonoBehaviour
     {
         for(int i = 0; i < Stages.Count; i++)
         {
-            if(Stages[i].Parts.Count == 1 && Stages[i].Parts[0]._partType == "decoupler")
-            {
-                Stages.Remove(Stages[i]);
-            }
+            //if(Stages[i].Parts.Count == 1 && Stages[i].Parts[0]._partType == "decoupler")
+            //{
+            //    Stages.Remove(Stages[i]);
+            //}
         }
     }
 

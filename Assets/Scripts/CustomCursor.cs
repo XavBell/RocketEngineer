@@ -22,7 +22,10 @@ public class CustomCursor : MonoBehaviour
         sp = this.GetComponent<SpriteRenderer>();
         box = this.GetComponent<BoxCollider2D>();
         defaultColor = sp.color;
-        planetRadius = solarSystemManager.earthRadius;
+        if(solarSystemManager != null)
+        {
+            planetRadius = solarSystemManager.earthRadius;
+        }
     }
 
     // Update is called once per frame
