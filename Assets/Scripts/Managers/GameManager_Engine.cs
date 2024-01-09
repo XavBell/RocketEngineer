@@ -58,6 +58,8 @@ public class GameManager_Engine : MonoBehaviour
     public TMP_Text engineFlowRate_C;
     public TMP_Text engineReliability_C;
 
+    public GameObject[] panels;
+
 
     // Start is called before the first frame update
     void Start()
@@ -357,6 +359,33 @@ public class GameManager_Engine : MonoBehaviour
         engineMass_C.text = mass;
         engineFlowRate_C.text = flowRate;
         engineReliability_C.text = reliability.ToString();
+    }
+
+    public void activateDeactivate(GameObject button)
+    {
+        hidePanels(button);
+        if(button.activeSelf == true)
+        {
+            button.SetActive(false);
+            return;
+        }
+
+        if(button.activeSelf == false)
+        {
+            button.SetActive(true);
+            return;
+        }
+    }
+
+    public void hidePanels(GameObject excludedPanel)
+    {
+        foreach(GameObject panel in panels)
+        {
+            if(panel != excludedPanel)
+            {
+                panel.SetActive(false);
+            }
+        }
     }
 
 }

@@ -6,6 +6,8 @@ public class FuelConnectorManager : MonoBehaviour
 {
     public outputInputManager input;
     public outputInputManager output;
+    public GameObject Legend;
+    public bool started = false;
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +18,29 @@ public class FuelConnectorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(started == true)
+        {
+            if(output != null && input == null)
+            {
+                selectInput();
+            }
+
+            if(output != null && input != null)
+            {
+                Connect();
+                Legend.SetActive(false);
+                started = false;
+                input = null;
+                output = null;
+            }
+        }
+    }
+
+    public void StartConnect()
+    {
+        started = true;
+        Legend.SetActive(true);
+        selectOutput();
     }
 
     public void selectInput()

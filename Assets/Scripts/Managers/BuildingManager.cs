@@ -16,6 +16,7 @@ public class BuildingManager : MonoBehaviour
     public WorldSaveManager WorldSaveManager;
     public launchsiteManager launchsiteManager;
     public SolarSystemManager solarSystemManager = new SolarSystemManager();
+    public GameObject[] panels;
 
 
     public float planetRadius;
@@ -160,6 +161,7 @@ public class BuildingManager : MonoBehaviour
 
     public void activateDeactivate(GameObject button)
     {
+        hidePanels(button);
         if(button.activeSelf == true)
         {
             button.SetActive(false);
@@ -170,6 +172,17 @@ public class BuildingManager : MonoBehaviour
         {
             button.SetActive(true);
             return;
+        }
+    }
+
+    public void hidePanels(GameObject excludedPanel)
+    {
+        foreach(GameObject panel in panels)
+        {
+            if(panel != excludedPanel)
+            {
+                panel.SetActive(false);
+            }
         }
     }
 }

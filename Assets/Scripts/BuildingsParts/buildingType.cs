@@ -9,4 +9,5 @@ public class buildingType : MonoBehaviour
     public GameObject inputUI;
     public GameObject outputUI;
     public GameObject selectUI;
+    public GameObject UI;
 }

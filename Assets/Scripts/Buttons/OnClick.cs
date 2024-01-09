@@ -474,6 +474,16 @@ public class OnClick : MonoBehaviour
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(false);
             }
+
+            if(building.GetComponent<buildingType>().type == "standTank")
+            {
+                building.GetComponent<buildingType>().inputUI.SetActive(false);
+            }
+
+            if(building.GetComponent<buildingType>().type == "staticFireStand")
+            {
+                building.GetComponent<buildingType>().inputUI.SetActive(false);
+            }
         }
 
         fcm = FindObjectOfType<FuelConnectorManager>();
@@ -500,7 +510,17 @@ public class OnClick : MonoBehaviour
         {
             if(building.GetComponent<buildingType>().type == "launchPad")
             {
-                building.GetComponent<buildingType>().inputUI.SetActive(false);
+                building.GetComponent<buildingType>().inputUI.SetActive(true);
+            }
+
+            if(building.GetComponent<buildingType>().type == "staticFireStand")
+            {
+                building.GetComponent<buildingType>().inputUI.SetActive(true);
+            }
+
+            if(building.GetComponent<buildingType>().type == "standTank")
+            {
+                building.GetComponent<buildingType>().inputUI.SetActive(true);
             }
 
             if(building.GetComponent<buildingType>().type == "GSEtank")
@@ -510,11 +530,12 @@ public class OnClick : MonoBehaviour
         }
         
         fcm = FindObjectOfType<FuelConnectorManager>();
+        FuelConnectorManager[] fcms  = FindObjectsOfType<FuelConnectorManager>();
         if(fcm != null)
         {
             fcm.output = output;
+            outputUI.SetActive(false);
         }
-        outputUI.SetActive(false);
     }
 
     public void setDestination(GameObject tank)
@@ -523,6 +544,8 @@ public class OnClick : MonoBehaviour
         if(fom != null)
         {
             fom.selectedDestination = tank;
+            fom.addFuel();
+            fom.selectedDestination = null;
         }
 
         buildingType[] tanks = FindObjectsOfType<buildingType>();

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System.Linq;
 
 public class FuelOrderManager : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class FuelOrderManager : MonoBehaviour
 
     public string quantity;
     public string substance;
+    public bool started;
 
     // Start is called before the first frame update
     void Start()
@@ -34,8 +36,7 @@ public class FuelOrderManager : MonoBehaviour
             {
                 tank.selectUI.SetActive(true);
             }
-        }
-
+        } 
     }
 
     public void addFuel()
@@ -62,5 +63,6 @@ public class FuelOrderManager : MonoBehaviour
                 selectedDestination.GetComponent<outputInputManager>().internalTemperature = selectedDestination.GetComponent<outputInputManager>().externalTemperature;
             }
         }
+        selectedDestination = null;
     }
 }
