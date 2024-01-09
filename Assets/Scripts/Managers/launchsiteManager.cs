@@ -34,7 +34,7 @@ public class launchsiteManager : MonoBehaviour
             commandCenterBtn.SetActive(false);
             operationBtn.SetActive(true);
             connectBtn.SetActive(true);
-            fuelOrderBtn.SetActive(true);
+            //fuelOrderBtn.SetActive(true);
             foreach(GameObject button in commonButton)
             {
                 button.SetActive(true);
@@ -43,7 +43,7 @@ public class launchsiteManager : MonoBehaviour
         {
             commandCenterBtn.SetActive(true);
             operationBtn.SetActive(false);
-            fuelOrderBtn.SetActive(false);
+            //fuelOrderBtn.SetActive(false);
             connectBtn.SetActive(false);
             foreach(GameObject button in commonButton)
             {
