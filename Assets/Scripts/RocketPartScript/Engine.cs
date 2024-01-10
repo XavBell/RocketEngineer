@@ -23,6 +23,7 @@ public class Engine : RocketPart
 
     public bool willFail = false;
     public float timeOfFail;
+    public float outReadThrust;
 
     public void activate()
     {
@@ -31,7 +32,7 @@ public class Engine : RocketPart
 
     void Start()
     {
-        //InitializeFail();
+        InitializeFail();
     }
 
     public void InitializeFail()
@@ -63,6 +64,7 @@ public class Engine : RocketPart
         }else{
             fail = false;
         }
+        outReadThrust = outThrust;
         return outThrust;
     }
 }

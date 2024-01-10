@@ -62,13 +62,13 @@ public class StageViewer : MonoBehaviour
 
     public void updateInfoPerStage(bool forcedCall)
     {
-        foreach(Transform child in Content.transform)
+        int maxCount = Content.transform.childCount;
+        if(maxCount != 0)
         {
-            if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
+            for(int i = maxCount-1; i >= 0; i--)
             {
-                DestroyImmediate(child.gameObject);
+                Destroy(Content.transform.GetChild(i).gameObject);
             }
-
         }
         int value = 0;
         if(forcedCall == false)

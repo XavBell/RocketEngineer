@@ -58,7 +58,7 @@ public class staticFireStandManager : MonoBehaviour
                 {
                     engineStaticFireTracker = new EngineStaticFireTracker();
                     startTime = (float)MyTime.time;
-                    //ConnectedEngine.GetComponent<Engine>().InitializeFail();
+                    ConnectedEngine.GetComponent<Engine>().activate();
                 }
 
                 if(failed == false && (fuelSufficient == true && oxidizerSufficient == true) && engineStaticFireTracker != null)

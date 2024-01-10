@@ -8,6 +8,7 @@ public class PressureTestViewer : MonoBehaviour
     // Start is called before the first frame update
     public GameObject Stand;
     public TMP_Text status;
+    public TMP_Text quantity;
     public bool previouslyRan;
     void Start()
     {
@@ -20,25 +21,31 @@ public class PressureTestViewer : MonoBehaviour
         if(Stand != null)
         {
             updateStatus();
+            updateQuantity();
         }
     }
 
     void updateStatus()
     {
-        if(Stand.GetComponent<standManager>().started == false && Stand.GetComponent<standManager>().failed == false && previouslyRan == false)
+        if(Stand.GetComponent<standManager>().started == false)
         {
             status.text = "waiting";
         }
 
-        if(Stand.GetComponent<standManager>().started == true && Stand.GetComponent<standManager>().failed == false && previouslyRan == true)
+        if(Stand.GetComponent<standManager>().started == true)
         {
             status.text = "running";
         }
 
-        if(Stand.GetComponent<standManager>().failed == true && previouslyRan == true)
+        if(Stand.GetComponent<standManager>().failed == true)
         {
             status.text = "stopped";
         }
+    }
+
+    void updateQuantity()
+    {
+        quantity.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<outputInputManager>().mass.ToString();
     }
 
     public void startTest()

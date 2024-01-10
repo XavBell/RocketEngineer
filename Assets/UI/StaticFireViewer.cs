@@ -9,6 +9,7 @@ public class StaticFireViewer : MonoBehaviour
     public TMP_Text status;
     public TMP_Text oxidizerQty;
     public TMP_Text fuelQty;
+    public TMP_Text thrust;
     public bool previouslyRan = false;
     // Start is called before the first frame update
     void Start()
@@ -23,17 +24,18 @@ public class StaticFireViewer : MonoBehaviour
         {
             updateStatus();
             updateQuantity();
+            updateThrust();
         }
     }
 
     void updateStatus()
     {
-        if(staticFireStand.GetComponent<staticFireStandManager>().started == false && staticFireStand.GetComponent<staticFireStandManager>().failed == false && previouslyRan == false)
+        if(staticFireStand.GetComponent<staticFireStandManager>().started == false && previouslyRan == false)
         {
             status.text = "waiting";
         }
 
-        if(staticFireStand.GetComponent<staticFireStandManager>().started == true && staticFireStand.GetComponent<staticFireStandManager>().failed == false && previouslyRan == true)
+        if(staticFireStand.GetComponent<staticFireStandManager>().started == true)
         {
             status.text = "running";
         }
@@ -49,6 +51,14 @@ public class StaticFireViewer : MonoBehaviour
     {
         oxidizerQty.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.mass.ToString();
         fuelQty.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.mass.ToString();
+    }
+
+    void updateThrust()
+    {
+        if(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().outReadThrust != float.NaN)
+        {
+            thrust.text = staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().outReadThrust.ToString();
+        }
     }
 
     public void startTest()
