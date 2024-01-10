@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using UnityEngine.Rendering;
 
 public class GameManager_Tank : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class GameManager_Tank : MonoBehaviour
 
     public TMP_InputField savePath;
     public TMP_Dropdown materialDropdown;
+    public TMP_Dropdown tankDropdown;
     public string saveName;
 
     public GameObject Tank;
@@ -37,6 +39,8 @@ public class GameManager_Tank : MonoBehaviour
     //Volume in m3
     public float volume;
     public float mass;
+    public float thermalConductivity;
+    public float maxPressure;
 
     public savePath savePathRef = new savePath();
     public float currentD;
@@ -55,6 +59,18 @@ public class GameManager_Tank : MonoBehaviour
     public GameObject MainPanel;
     public GameObject CreatorPanel;
     public GameObject DataPanel;
+
+    public TMP_Text mass_c;
+    public TMP_Text maxPressure_c;
+    public TMP_Text maxVolume_c;
+    public TMP_Text thermalConductivity_c;
+
+    public TMP_Text tankName;
+    public TMP_Text massViz;
+    public TMP_Text maxRecPressure;
+    public TMP_Text thermalConductivityViz;
+    public TMP_Text volumeViz;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,6 +91,7 @@ public class GameManager_Tank : MonoBehaviour
 
             GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
             MasterManager = GMM.GetComponent<MasterManager>();
+            initializeTanksnFolder();
         }
         
     }
@@ -88,6 +105,7 @@ public class GameManager_Tank : MonoBehaviour
             updateSize();
             updateAttachPosition();
             calculate();
+            updateValues();
         }
 
     }
@@ -140,6 +158,19 @@ public class GameManager_Tank : MonoBehaviour
         volume = Mathf.PI * Mathf.Pow(tankDiameterFloat/2, 2) * tankHeightFloat;
         mass = (volume -  Mathf.PI * Mathf.Pow(tankDiameterFloat/2 - wallThickness, 2)*tankHeightFloat) * massDensity;
         tankMaterial = materialDropdown.options[materialDropdown.value].text.ToString();
+        if(tankMaterial == "StainlessSteel")
+        {
+            maxPressure = 200000f;
+            thermalConductivity = 0.09f;
+        }
+    }
+
+    void updateValues()
+    {
+        mass_c.text = mass.ToString();
+        maxVolume_c.text = volume.ToString();
+        thermalConductivity_c.text = thermalConductivity.ToString();
+        maxPressure_c.text = maxPressure.ToString();
     }
 
 
@@ -165,6 +196,8 @@ public class GameManager_Tank : MonoBehaviour
             saveObject.attachLeftPos = attachLeftObj.transform.position.x - tankSP.bounds.center.x;
             saveObject.volume = volume;
             saveObject.mass = mass;
+            saveObject.thermalConductivity = thermalConductivity;
+            saveObject.maxPressure = maxPressure;
             saveObject.tankMaterial = tankMaterial;
 
             var jsonString = JsonConvert.SerializeObject(saveObject);
@@ -223,6 +256,41 @@ public class GameManager_Tank : MonoBehaviour
         MainPanel.SetActive(false);
         CreatorPanel.SetActive(false);
         DataPanel.SetActive(true);
+    }
+
+    public void initializeTanksnFolder()
+    {
+        List<string> options = new List<string>();
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder);
+            return;
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder);
+        var fileInfo = info.GetFiles();
+        if(fileInfo.Length == 0)
+        {
+            return;
+        }
+        foreach (var file in fileInfo)
+        {
+            options.Add(Path.GetFileName(file.ToString()));
+        }
+        tankDropdown.AddOptions(options);
+    }
+
+    public void loadData()
+    {
+        saveTank saveTank = new saveTank();
+        var jsonString = JsonConvert.SerializeObject(saveTank);
+        jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + tankDropdown.options[tankDropdown.value].text.ToString());
+        saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
+        tankName.text = loadedTank.tankName;
+        massViz.text = loadedTank.mass.ToString();
+        volumeViz.text = loadedTank.volume.ToString();
+        thermalConductivityViz.text = loadedTank.thermalConductivity.ToString();
+        maxRecPressure.text = loadedTank.maxRecPressure.ToString();
     }
 
 }

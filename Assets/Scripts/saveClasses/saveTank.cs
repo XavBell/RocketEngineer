@@ -15,6 +15,9 @@ public class saveTank
     public float usedNum;
     public float volume;
     public float mass;
+    public float thermalConductivity;
+    public float maxPressure;
     public string tankMaterial;
+    public float maxRecPressure;
     public string propellantCategory;
 }

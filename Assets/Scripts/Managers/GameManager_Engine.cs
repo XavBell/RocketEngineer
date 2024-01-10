@@ -60,6 +60,11 @@ public class GameManager_Engine : MonoBehaviour
 
     public GameObject[] panels;
 
+    public string selectedTurbine;
+    public string selectedPump;
+    public string selectedNozzle;
+    public string selectedTVC;
+
 
     // Start is called before the first frame update
     void Start()
@@ -79,7 +84,10 @@ public class GameManager_Engine : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name.ToString() == "EngineDesign")
         {
-            UpdateValues();
+            if(selectedNozzle != null && selectedPump != null && selectedTurbine != null && selectedTVC != null)
+            {
+                UpdateValues();
+            }
         }
 
     }
@@ -118,16 +126,31 @@ public class GameManager_Engine : MonoBehaviour
         Turbine turbine = new Turbine();
         TVC tvc = new TVC();
 
-        string selectedTurbine = turbineDropdown.options[turbineDropdown.value].text.ToString();
-        string selectedPump = pumpDropdown.options[pumpDropdown.value].text.ToString();
-        string selectedNozzle = nozzleDropdown.options[nozzleDropdown.value].text.ToString();
-        string selectedTVC = tvcDropdown.options[tvcDropdown.value].text.ToString();
-
         setTurbine(selectedTurbine, turbine);
         setPump(selectedPump, pump);
         setNozzle(selectedNozzle, nozzle);
         setTVC(selectedTVC, tvc);
         setValues(tvc, nozzle, turbine, pump);
+    }
+
+    public void setTurbine(TMP_Text button)
+    {
+        selectedTurbine = button.text.ToString();
+    }
+
+    public void setPump(TMP_Text button)
+    {
+        selectedPump = button.text.ToString();
+    }
+
+    public void setNozzle(TMP_Text button)
+    {
+        selectedNozzle = button.text.ToString();
+    }
+
+    public void setTVC(TMP_Text button)
+    {
+        selectedTVC = button.text.ToString();
     }
 
     public void Create()
