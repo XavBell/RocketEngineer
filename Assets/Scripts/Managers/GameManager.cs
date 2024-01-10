@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
     public GameObject Rocket;
     public TMP_Dropdown propellantLine;
 
+    public GameObject[] panels;
+    public TMP_Dropdown rocketDropdown;
+
     public GameObject MainPanel;
     public GameObject CreatorPanel;
     public GameObject DataPanel;
@@ -663,6 +666,55 @@ public class GameManager : MonoBehaviour
         }else{
             //cry
         }
+    }
+
+    public void activateDeactivate(GameObject button)
+    {
+        hidePanels(button);
+        if(button.activeSelf == true)
+        {
+            button.SetActive(false);
+            return;
+        }
+
+        if(button.activeSelf == false)
+        {
+            button.SetActive(true);
+            return;
+        }
+    }
+
+    public void hidePanels(GameObject excludedPanel)
+    {
+        foreach(GameObject panel in panels)
+        {
+            if(panel != excludedPanel)
+            {
+                panel.SetActive(false);
+            }
+        }
+    }
+
+    public void initializeRocketInFolder()
+    {
+        List<string> options = new List<string>();
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
+            return;
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
+        var fileInfo = info.GetFiles();
+        if(fileInfo.Length == 0)
+        {
+            return;
+        }
+        foreach (var file in fileInfo)
+        {
+            options.Add(Path.GetFileName(file.ToString()));
+        }
+        rocketDropdown.AddOptions(options);
     }
 
     public void BackToMain()
