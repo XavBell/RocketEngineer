@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEditor.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class Rocket : MonoBehaviour
 
     void Update()
     {
-
+        //numberOfStages = Stages.Count;
         
     }
 
@@ -68,7 +69,10 @@ public class Rocket : MonoBehaviour
                 }
             }
         }
-        this.GetComponent<PlanetGravity>().rb.mass = rocketMass;
+        if(this.GetComponent<PlanetGravity>().rb != null)
+        {
+            this.GetComponent<PlanetGravity>().rb.mass = rocketMass;
+        }
     }
 
     public void _orientation()

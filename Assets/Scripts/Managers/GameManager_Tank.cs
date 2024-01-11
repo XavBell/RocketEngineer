@@ -190,10 +190,10 @@ public class GameManager_Tank : MonoBehaviour
             saveObject.tankName = saveName;
             saveObject.tankSizeX = tankSP.size.x;
             saveObject.tankSizeY = tankSP.size.y;
-            saveObject.attachTopPos = attachTopObj.transform.position.y - tankSP.bounds.center.y;
-            saveObject.attachBottomPos = tankSP.bounds.center.y - attachTopObj.transform.position.y;
-            saveObject.attachRightPos = attachRightObj.transform.position.x - tankSP.bounds.center.x;
-            saveObject.attachLeftPos = attachLeftObj.transform.position.x - tankSP.bounds.center.x;
+            saveObject.attachTopPos = attachTopObj.transform.localPosition.y;
+            saveObject.attachBottomPos = attachBottomObj.transform.localPosition.y;
+            saveObject.attachRightPos = attachRightObj.transform.localPosition.x;
+            saveObject.attachLeftPos = attachLeftObj.transform.localPosition.x;
             saveObject.volume = volume;
             saveObject.mass = mass;
             saveObject.thermalConductivity = thermalConductivity;

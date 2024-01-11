@@ -120,6 +120,12 @@ public class BuildingManager : MonoBehaviour
         SceneManager.LoadScene("Building");
     }
 
+    public void EnterResearch()
+    {
+        WorldSaveManager.saveTheWorld();
+        SceneManager.LoadScene("Building");
+    }
+
     public void Connect(GameObject output, GameObject input)
     {
         output.GetComponent<outputInputManager>().outputParentID = input.GetComponent<outputInputManager>().selfID;

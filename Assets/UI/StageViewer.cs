@@ -13,6 +13,7 @@ public class StageViewer : MonoBehaviour
     public GameObject TankUI;
     public GameObject Content;
     public TMP_Text altitude;
+    private int nStages = -1;
 
     // Start is called before the first frame update
     void Start()
@@ -25,15 +26,20 @@ public class StageViewer : MonoBehaviour
     {
         if(rocket != null)
         {
-            altitude.text = (Vector2.Distance(rocket.GetComponent<PlanetGravity>().planet.transform.position, rocket.transform.position)-63710f).ToString();
+            if(nStages != rocket.GetComponent<Rocket>().Stages.Count)
+            {
+                fullReset(false);
+                nStages = rocket.GetComponent<Rocket>().Stages.Count;
+            }
+            //altitude.text = (Vector2.Distance(rocket.GetComponent<PlanetGravity>().planet.transform.position, rocket.transform.position)-63710f).ToString();
         }
     }
 
     public void fullReset(bool forcedCall)
     {
+        updateStagesView(forcedCall);
         stageDropdown.value = 0;
-        updateStagesView(true);
-        updateInfoPerStage(true);
+        updateInfoPerStage(forcedCall);
     }
     public void updateStagesView(bool forcedCall)
     {
@@ -58,6 +64,20 @@ public class StageViewer : MonoBehaviour
             stageDropdown.value = 0;
             stageDropdown.AddOptions(options);
         }
+    }
+
+    public void resetDropdown()
+    {
+        List<string> options = new List<string>();
+        stageDropdown.ClearOptions();
+        int i = 0;
+        foreach (Stages stage in rocket.GetComponent<Rocket>().Stages)
+        {
+            options.Add($"Stage {i}");
+            i++;
+        }
+        stageDropdown.AddOptions(options);
+        stageDropdown.value = 0;
     }
 
     public void updateInfoPerStage(bool forcedCall)

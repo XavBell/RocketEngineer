@@ -205,6 +205,34 @@ public class operationManager : MonoBehaviour
         }
     }
 
+    public void selectDestination()
+    {
+        if(operationDropdown.value == 0)
+        {
+            selectLaunchpad();
+        }
+
+        if(operationDropdown.value == 1)
+        {
+            selectStaticFireStand();
+        }
+
+        if(operationDropdown.value == 2)
+        {
+            selectPressureStand();
+        }
+
+        if(operationDropdown.value == 3)
+        {
+            selectLaunchpad();
+        }
+
+        if(operationDropdown.value == 4)
+        {
+            selectLaunchpad();
+        }
+    }
+
     public void hidePadButtons()
     {
         launchPadManager[] launchPads = FindObjectsOfType<launchPadManager>();
@@ -232,19 +260,19 @@ public class operationManager : MonoBehaviour
         {
             if(selectedLaunchPad.GetComponent<launchPadManager>())
             {
-                launchpadName.text = "launchpad";
-                launchPadSF.text = "launchpad";
-                launchPadWDR.text = "launchpad";
+                //launchpadName.text = "launchpad";
+                //launchPadSF.text = "launchpad";
+                //launchPadWDR.text = "launchpad";
             }
 
             if(selectedLaunchPad.GetComponent<staticFireStandManager>())
             {
-                staticFireStandName.text = "staticFireStand";
+                //staticFireStandName.text = "staticFireStand";
             }
 
             if(selectedLaunchPad.GetComponent<standManager>())
             {
-                standName.text = "pressureStand";
+                //standName.text = "pressureStand";
             }
         }
     }

@@ -160,10 +160,10 @@ public class GameManager_Engine : MonoBehaviour
         Turbine turbine = new Turbine();
         TVC tvc = new TVC();
 
-        string selectedTurbine = turbineDropdown.options[turbineDropdown.value].text.ToString();
-        string selectedPump = pumpDropdown.options[pumpDropdown.value].text.ToString();
-        string selectedNozzle = nozzleDropdown.options[nozzleDropdown.value].text.ToString();
-        string selectedTVC = tvcDropdown.options[tvcDropdown.value].text.ToString();
+        //string selectedTurbine = turbineDropdown.options[turbineDropdown.value].text.ToString();
+        //string selectedPump = pumpDropdown.options[pumpDropdown.value].text.ToString();
+        //string selectedNozzle = nozzleDropdown.options[nozzleDropdown.value].text.ToString();
+        //string selectedTVC = tvcDropdown.options[tvcDropdown.value].text.ToString();
 
         setTurbine(selectedTurbine, turbine);
         setPump(selectedPump, pump);

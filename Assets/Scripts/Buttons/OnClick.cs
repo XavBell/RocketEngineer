@@ -448,6 +448,7 @@ public class OnClick : MonoBehaviour
         {
             op.selectedLaunchPad = savedLaunchpad;
             op.hidePadButtons();
+            op.run();
         }
     }
 
