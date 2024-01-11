@@ -3246,9 +3246,9 @@ RectTransform:
   m_Father: {fileID: 300218205}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100.5, y: -100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 161, y: 161}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &122589462
@@ -6097,7 +6097,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &300218205
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6117,7 +6117,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: -16, y: 20}
-  m_SizeDelta: {x: 201, y: 200}
+  m_SizeDelta: {x: 0, y: 200}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &300218206
 MonoBehaviour:
@@ -7230,9 +7230,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 492879240}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
-        m_MethodName: ConstructPart
+      - m_Target: {fileID: 1457994447}
+        m_TargetAssemblyTypeName: DevPointBarManager, Assembly-CSharp
+        m_MethodName: placeBuilding
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 4590421016071702574, guid: 7dd34acd124b84355a45ca4686217e89, type: 3}
@@ -8525,6 +8525,11 @@ MonoBehaviour:
   - {fileID: 647580533}
   - {fileID: 1453584362}
   - {fileID: 1871578653}
+  mainBar:
+  - {fileID: 1188206418}
+  - {fileID: 300218204}
+  flightUI:
+  - {fileID: 1269784186}
   planetRadius: 63710
   localMode: none
   IDMax: 0
@@ -10097,7 +10102,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 312}
+  m_AnchoredPosition: {x: 310, y: 0}
   m_SizeDelta: {x: 65, y: 56}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &559795189
@@ -19696,9 +19701,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 492879240}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
-        m_MethodName: ConstructPart
+      - m_Target: {fileID: 1457994447}
+        m_TargetAssemblyTypeName: DevPointBarManager, Assembly-CSharp
+        m_MethodName: placeBuilding
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 4919702563059865179, guid: 3329763d5c8fab54db0b7da23df633b2, type: 3}
@@ -22249,6 +22254,7 @@ GameObject:
   - component: {fileID: 1269784187}
   - component: {fileID: 1269784189}
   - component: {fileID: 1269784188}
+  - component: {fileID: 1269784190}
   m_Layer: 5
   m_Name: FlightUI
   m_TagString: Untagged
@@ -22319,6 +22325,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1269784186}
   m_CullTransparentMesh: 1
+--- !u!114 &1269784190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269784186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 294f0b49730484afb96b9e473764507c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageViewer: {fileID: 1106656739}
+  masterManager: {fileID: 0}
+  rocketUI: {fileID: 1127240874}
+  progradeUI: {fileID: 1335914952}
+  velocity: {fileID: 161551978}
+  altitude: {fileID: 500579745}
 --- !u!1 &1275790077
 GameObject:
   m_ObjectHideFlags: 0
@@ -25601,6 +25625,7 @@ GameObject:
   - component: {fileID: 1457994444}
   - component: {fileID: 1457994446}
   - component: {fileID: 1457994445}
+  - component: {fileID: 1457994447}
   m_Layer: 5
   m_Name: DevPointBar
   m_TagString: Untagged
@@ -25668,6 +25693,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1457994443}
   m_CullTransparentMesh: 1
+--- !u!114 &1457994447
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457994443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c96ff7b615854f5897c2fec5577878d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointManager: {fileID: 0}
+  nPoint: {fileID: 1517324604}
+  buildingManager: {fileID: 492879240}
 --- !u!1 &1468253980
 GameObject:
   m_ObjectHideFlags: 0
@@ -25887,9 +25927,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 492879240}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
-        m_MethodName: ConstructPart
+      - m_Target: {fileID: 1457994447}
+        m_TargetAssemblyTypeName: DevPointBarManager, Assembly-CSharp
+        m_MethodName: placeBuilding
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 4919702563059865179, guid: 3c30423e28a42ea4e8eabf1c37a1fd68, type: 3}
@@ -30302,7 +30342,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -312}
+  m_AnchoredPosition: {x: -310, y: 0}
   m_SizeDelta: {x: 46, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1770179543
@@ -30515,7 +30555,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50.25
+  m_fontSize: 18
   m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -30726,9 +30766,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 492879240}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
-        m_MethodName: ConstructPart
+      - m_Target: {fileID: 1457994447}
+        m_TargetAssemblyTypeName: DevPointBarManager, Assembly-CSharp
+        m_MethodName: placeBuilding
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 4590421016071702574, guid: 168f652b690edcd41936f0b9b34a7b26, type: 3}
@@ -34769,9 +34809,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 492879240}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
-        m_MethodName: ConstructPart
+      - m_Target: {fileID: 1457994447}
+        m_TargetAssemblyTypeName: DevPointBarManager, Assembly-CSharp
+        m_MethodName: placeBuilding
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 4590421016071702574, guid: 6326f86a1fbc85048842ac836ef22a78, type: 3}
@@ -35039,9 +35079,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 492879240}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
-        m_MethodName: ConstructPart
+      - m_Target: {fileID: 1457994447}
+        m_TargetAssemblyTypeName: DevPointBarManager, Assembly-CSharp
+        m_MethodName: placeBuilding
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 4590421016071702574, guid: dce6c29d898d442d5ae1840e592b4820, type: 3}
@@ -37040,9 +37080,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 492879240}
-        m_TargetAssemblyTypeName: BuildingManager, Assembly-CSharp
-        m_MethodName: ConstructPart
+      - m_Target: {fileID: 1457994447}
+        m_TargetAssemblyTypeName: DevPointBarManager, Assembly-CSharp
+        m_MethodName: placeBuilding
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 4919702563059865179, guid: 21e16416e8ecbc04fbe148727c3f19e9, type: 3}

@@ -52,6 +52,8 @@ public class PressureTestViewer : MonoBehaviour
     {
         Stand.GetComponent<standManager>().started = true;
         previouslyRan = true;
+        MasterManager masterManager = FindObjectOfType<MasterManager>();
+        masterManager.GetComponent<pointManager>().nPoints += 2f;
     }
 
     public void stopTest()

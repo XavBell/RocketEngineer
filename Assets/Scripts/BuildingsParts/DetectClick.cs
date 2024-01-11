@@ -47,6 +47,17 @@ public class DetectClick : MonoBehaviour
                         }
                     }
 
+                    if (type == "VAB")
+                    {
+                        if (current.GetComponent<buildingType>().UI.active == false)
+                        {
+                            current.GetComponent<buildingType>().UI.SetActive(true);
+                            return;
+                        }else{
+                            current.GetComponent<buildingType>().UI.SetActive(false);
+                        }
+                    }
+
                 }
 
             }

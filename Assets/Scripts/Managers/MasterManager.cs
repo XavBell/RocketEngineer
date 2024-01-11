@@ -42,11 +42,14 @@ public class MasterManager : MonoBehaviour
     public GameObject newWorldCanvas;
     public List<GameObject> buttons = new List<GameObject>();
 
-
-
     public float MenuThrust = 200;
     public GameObject MenuRocket;
     public bool rocketActive = false;
+
+    public List<string> partType = new List<string>();
+    public List<string> partName = new List<string>();
+    public List<int> count = new List<int>();
+    
    
 
     // Start is called before the first frame update

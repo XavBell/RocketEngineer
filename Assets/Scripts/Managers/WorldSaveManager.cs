@@ -85,6 +85,11 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.moonLocY = moon.transform.localPosition.y;
         saveWorld.moonLocZ = moon.transform.localPosition.z;
 
+        saveWorld.nPoints = MasterManager.GetComponent<pointManager>().nPoints;
+        saveWorld.partName = MasterManager.GetComponent<MasterManager>().partName;
+        saveWorld.count = MasterManager.GetComponent<MasterManager>().count;
+        saveWorld.partType = MasterManager.GetComponent<MasterManager>().partType;
+
         saveWorld.IDMax = BuildingManager.GetComponent<BuildingManager>().IDMax;
 
         saveWorld.previouslyLoaded = true;
@@ -183,8 +188,17 @@ public class WorldSaveManager : MonoBehaviour
             //earth.transform.eulerAngles = new Vector3(loadedWorld.earthRotX, loadedWorld.earthRotY, loadedWorld.earthRotZ);
             //worldCamera.transform.eulerAngles = new Vector3(loadedWorld.cameraRotX, loadedWorld.cameraRotY, loadedWorld.cameraRotZ);
             //moon.transform.localPosition = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+
+            MasterManager.GetComponent<pointManager>().nPoints = loadedWorld.nPoints;
+            MasterManager.GetComponent<MasterManager>().partName = loadedWorld.partName;
+            MasterManager.GetComponent<MasterManager>().partType = loadedWorld.partType;
+            MasterManager.GetComponent<MasterManager>().count = loadedWorld.count;
         }
+
+        
+
         int count = 0;
+
 
         BuildingManager.GetComponent<BuildingManager>().IDMax = loadedWorld.IDMax;
 
@@ -387,6 +401,7 @@ public class WorldSaveManager : MonoBehaviour
                     //Set Engine
                     if(part._partType == "engine")
                     {
+                        saveRocket.engineName.Add(part.GetComponent<Engine>()._partName);
                         saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
                         saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
                     }

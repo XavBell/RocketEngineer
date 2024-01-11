@@ -2024,6 +2024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 606323632}
   - component: {fileID: 606323631}
+  - component: {fileID: 606323633}
   m_Layer: 0
   m_Name: MasterManager
   m_TagString: MasterManager
@@ -2060,6 +2061,9 @@ MonoBehaviour:
   MenuThrust: 10
   MenuRocket: {fileID: 585405802}
   rocketActive: 0
+  partType: []
+  partName: []
+  count: 
 --- !u!4 &606323632
 Transform:
   m_ObjectHideFlags: 0
@@ -2075,6 +2079,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &606323633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 606323630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30026c5051ba747248346938fc40bf2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nPoints: 100
 --- !u!1 &612856811
 GameObject:
   m_ObjectHideFlags: 0

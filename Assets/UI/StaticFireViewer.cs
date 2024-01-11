@@ -65,6 +65,8 @@ public class StaticFireViewer : MonoBehaviour
     {
         staticFireStand.GetComponent<staticFireStandManager>().started = true;
         previouslyRan = true;
+        MasterManager masterManager = FindObjectOfType<MasterManager>();
+        masterManager.GetComponent<pointManager>().nPoints += 2f;
     }
 
     public void stopTest()

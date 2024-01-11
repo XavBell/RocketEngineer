@@ -20,6 +20,7 @@ public class GameManager_Engine : MonoBehaviour
     public float rate;
     public float maxAngle;
     public float speed;
+    public float cost;
     public string pumpName;
     public string turbineName;
     public string nozzleName;
@@ -57,6 +58,7 @@ public class GameManager_Engine : MonoBehaviour
     public TMP_Text engineThurst_C;
     public TMP_Text engineFlowRate_C;
     public TMP_Text engineReliability_C;
+    public TMP_Text engineCost;
 
     public GameObject[] panels;
 
@@ -312,6 +314,7 @@ public class GameManager_Engine : MonoBehaviour
             saveObject.rate_s = rate;
             saveObject.tvcSpeed_s = speed;
             saveObject.tvcMaxAngle_s = maxAngle;
+            saveObject.cost = Convert.ToSingle(engineCost.text);
 
             saveObject.tvcName_s = selectedTVC;
             saveObject.nozzleName_s = selectedNozzle;

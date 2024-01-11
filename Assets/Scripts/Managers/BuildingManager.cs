@@ -17,6 +17,8 @@ public class BuildingManager : MonoBehaviour
     public launchsiteManager launchsiteManager;
     public SolarSystemManager solarSystemManager = new SolarSystemManager();
     public GameObject[] panels;
+    public GameObject[] mainBar;
+    public GameObject[] flightUI;
 
 
     public float planetRadius;
@@ -69,6 +71,8 @@ public class BuildingManager : MonoBehaviour
                 {
                     launchsiteManager.commandCenter = current;
                 }
+
+                MasterManager.GetComponent<pointManager>().nPoints -= partToConstruct.GetComponent<buildingType>().cost;
 
 
             }
@@ -190,5 +194,43 @@ public class BuildingManager : MonoBehaviour
                 panel.SetActive(false);
             }
         }
+    }
+
+    public void enterFlightMode()
+    {
+        foreach(GameObject panel in panels)
+        {
+            panel.SetActive(false);   
+        }
+
+        foreach(GameObject panel in mainBar)
+        {
+            panel.SetActive(false);   
+        }
+
+        foreach(GameObject panel in flightUI)
+        {
+            panel.SetActive(true);   
+        }
+
+    }
+
+    public void exitFlightMode()
+    {
+        foreach(GameObject panel in panels)
+        {
+            panel.SetActive(true);   
+        }
+
+        foreach(GameObject panel in mainBar)
+        {
+            panel.SetActive(true);   
+        }
+
+        foreach(GameObject panel in flightUI)
+        {
+            panel.SetActive(false);   
+        }
+
     }
 }

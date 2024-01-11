@@ -17,6 +17,7 @@ public class saveEngine
     public float rate_s;
     public float tvcSpeed_s;
     public float tvcMaxAngle_s;
+    public float cost;
 
     public float maxTime;
     public float reliability;

@@ -46,6 +46,8 @@ public class WDRTestViewer : MonoBehaviour
     {
         launchPad.GetComponent<launchPadManager>().started = true;
         previouslyRan = true;
+        MasterManager masterManager = FindObjectOfType<MasterManager>();
+        masterManager.GetComponent<pointManager>().nPoints += 2f;
     }
 
     public void stopTest()

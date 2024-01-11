@@ -19,5 +19,6 @@ public class saveTank
     public float maxPressure;
     public string tankMaterial;
     public float maxRecPressure;
+    public float cost;
     public string propellantCategory;
 }

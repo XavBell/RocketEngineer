@@ -214,21 +214,25 @@ public class OnClick : MonoBehaviour
 
                     if(part.GetComponent<RocketPart>()._partType == "tank")
                     {
+                        part.GetComponent<Tank>()._partName = loadedRocket.tankName[tankID];
                         part.transform.localScale = new UnityEngine.Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
                         part.GetComponent<Tank>()._volume = loadedRocket.volume[tankID];
                         part.GetComponent<Tank>().tankMaterial = loadedRocket.tankMaterial[tankID];
                         part.GetComponent<Tank>().propellantCategory = loadedRocket.propellantType[tankID];
                         part.GetComponent<Tank>().x_scale = loadedRocket.x_scale[tankID];
                         part.GetComponent<Tank>().y_scale = loadedRocket.y_scale[tankID];
+                        part.GetComponent<Tank>()._partCost = loadedRocket.tankCost[tankID];
                         tankID++;
                     }
 
                     if(part.GetComponent<RocketPart>()._partType == "engine")
                     {
+                        part.GetComponent<Engine>()._partName = loadedRocket.engineName[engineID];
                         part.GetComponent<Engine>()._thrust = loadedRocket.thrust[engineID];
                         part.GetComponent<Engine>()._rate = loadedRocket.flowRate[engineID];
                         part.GetComponent<Engine>().reliability = loadedRocket.reliability[engineID];
                         part.GetComponent<Engine>().maxTime = loadedRocket.maxTime[engineID];
+                        part.GetComponent<Engine>()._partCost = loadedRocket.engineCost[engineID];
                         //part.GetComponent<Engine>().InitializeFail();
                         engineID++;
                     }
@@ -264,6 +268,7 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<Engine>()._pumpName = loadedEngine.pumpName_s;
             spawnedRocket.GetComponent<Engine>().reliability = loadedEngine.reliability;
             spawnedRocket.GetComponent<Engine>().maxTime = loadedEngine.maxTime;
+            spawnedRocket.GetComponent<Engine>()._partCost = loadedEngine.cost;
             //spawnedRocket.GetComponent<Engine>().InitializeFail();
 
         }
@@ -287,6 +292,7 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<Tank>().y_scale = loadedTank.tankSizeY;
             spawnedRocket.GetComponent<Tank>()._volume = loadedTank.volume;
             spawnedRocket.GetComponent<Tank>().tankMaterial = loadedTank.tankMaterial;
+            spawnedRocket.GetComponent<Tank>()._partCost = loadedTank.cost;
         }
     }
 

@@ -10,4 +10,5 @@ public class buildingType : MonoBehaviour
     public GameObject outputUI;
     public GameObject selectUI;
     public GameObject UI;
+    public float cost;
 }

@@ -129,7 +129,10 @@ public class StageViewer : MonoBehaviour
         rocket.GetComponent<PlanetGravity>().possessed = true;
         MasterManager masterManager = FindObjectOfType<MasterManager>();
         masterManager.gameState = "Flight";
+        BuildingManager buildingManager = FindObjectOfType<BuildingManager>();
+        buildingManager.enterFlightMode();
         masterManager.ActiveRocket = rocket;
+        masterManager.GetComponent<pointManager>().nPoints += 2f;
     }
 
     public void Stop()

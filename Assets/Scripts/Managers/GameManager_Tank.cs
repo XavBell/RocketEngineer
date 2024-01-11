@@ -64,6 +64,7 @@ public class GameManager_Tank : MonoBehaviour
     public TMP_Text maxPressure_c;
     public TMP_Text maxVolume_c;
     public TMP_Text thermalConductivity_c;
+    public TMP_Text cost;
 
     public TMP_Text tankName;
     public TMP_Text massViz;
@@ -199,6 +200,7 @@ public class GameManager_Tank : MonoBehaviour
             saveObject.thermalConductivity = thermalConductivity;
             saveObject.maxPressure = maxPressure;
             saveObject.tankMaterial = tankMaterial;
+            saveObject.cost = Convert.ToSingle(cost.text);
 
             var jsonString = JsonConvert.SerializeObject(saveObject);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json", jsonString);

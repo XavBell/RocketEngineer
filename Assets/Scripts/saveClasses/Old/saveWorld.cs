@@ -18,6 +18,12 @@ public class saveWorld
     public float cameraRotY;
     public float cameraRotZ;
 
+    public List<string> partType = new List<string>();
+    public List<string> partName = new List<string>();
+    public List<int> count = new List<int>();
+
+    public float nPoints;
+
     //SolarSystem
     //Earth
     public float earthLocX;

@@ -10,6 +10,7 @@ public class RocketPart : MonoBehaviour
     [field: SerializeField] public string _partType;
 
     public string _partName{get; set;}
+    public float _partCost{get; set;}
 
     public Guid _partID{get; set;}
 

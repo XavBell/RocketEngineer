@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
     public GameObject CreatorPanel;
     public GameObject DataPanel;
 
+    public TMP_Text costTxt;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -137,12 +139,12 @@ public class GameManager : MonoBehaviour
             customCursor.GetComponent<SpriteRenderer>().sprite = null;
             Cursor.visible = true;
             Rocket.GetComponent<Rocket>().scanRocket();
+            updateCost();
         }
 
         if (Input.GetKey(KeyCode.Escape))
         {
             Application.Quit();
- 
         }
     }
 
@@ -150,6 +152,23 @@ public class GameManager : MonoBehaviour
     {
         
         SceneManager.LoadScene("SampleScene");
+    }
+
+    void updateCost()
+    {
+        float cost = 0;
+        foreach(Stages stage in Rocket.GetComponent<Rocket>().Stages)
+        {
+            foreach(RocketPart part in stage.Parts)
+            {
+                if(cost != float.NaN)
+                {
+                    cost += part._partCost;
+                }
+            }
+        }
+
+        costTxt.text = cost.ToString();
     }
 
     public void Clear()
@@ -234,6 +253,7 @@ public class GameManager : MonoBehaviour
             engine._turbineName = loadedEngine.turbineName_s;
             engine.reliability = loadedEngine.reliability;
             engine.maxTime = loadedEngine.maxTime;
+            engine._partCost = loadedEngine.cost;
             
         }
 
@@ -259,6 +279,7 @@ public class GameManager : MonoBehaviour
             tank.tankMaterial = loadedTank.tankMaterial;
             tank.x_scale = loadedTank.tankSizeX;
             tank.y_scale = loadedTank.tankSizeY;
+            tank._partCost = loadedTank.cost;
             int value = propellantLine.value;
             if(value == 0)
             {
@@ -638,6 +659,8 @@ public class GameManager : MonoBehaviour
                     //Set tank
                     if(part._partType == "tank")
                     {
+                        saveRocket.tankName.Add(part.GetComponent<Tank>()._partName);
+                        saveRocket.tankCost.Add(part.GetComponent<Tank>()._partCost);
                         saveRocket.x_scale.Add(part.GetComponent<BoxCollider2D>().size.x);
                         saveRocket.y_scale.Add(part.GetComponent<BoxCollider2D>().size.y);
                         saveRocket.volume.Add(part.GetComponent<Tank>()._volume);
@@ -648,6 +671,8 @@ public class GameManager : MonoBehaviour
                     //Set Engine
                     if(part._partType == "engine")
                     {
+                        saveRocket.engineName.Add(part.GetComponent<Engine>()._partName);
+                        saveRocket.engineCost.Add(part.GetComponent<Engine>()._partCost);
                         saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
                         saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
                         saveRocket.maxTime.Add(part.GetComponent<Engine>().maxTime);
