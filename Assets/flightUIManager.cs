@@ -13,6 +13,7 @@ public class flightUIManager : MonoBehaviour
 
     public TMP_Text velocity;
     public TMP_Text altitude;
+    public RectTransform throttleBar;
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +45,8 @@ public class flightUIManager : MonoBehaviour
             }
             progradeUI.transform.rotation = Quaternion.Euler(0, 0, angle);
         }
+
+        throttleBar.sizeDelta = new Vector2(stageViewer.rocket.GetComponent<Rocket>().throttle*3, throttleBar.sizeDelta.y);
         
     }
 }

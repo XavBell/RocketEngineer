@@ -17,9 +17,10 @@ public class Rocket : MonoBehaviour
     public int numberOfStages;
 
     public float rocketMass;
-    public float throttle = 100f;
+    public float throttle = 0f;
     public List<Engine> engines = new List<Engine>();
     public UnityEngine.Vector2 currentThrust;
+    public float factor = 8;
 
     void Update()
     {
@@ -32,26 +33,49 @@ public class Rocket : MonoBehaviour
         //updateActiveEngines();
         if(Input.GetKey(KeyCode.Z))
         {
-            List<UnityEngine.Vector2> totalThrust = new List<UnityEngine.Vector2>();  
-            foreach(Stages stage in Stages)
-            {
-                stage.updateThrust(throttle/100);
-                totalThrust.Add(stage.thrust);
-            }
-
-            currentThrust = new UnityEngine.Vector2(0, 0);
-
-            foreach(UnityEngine.Vector2 thrust in totalThrust)
-            {
-                currentThrust += thrust;
-            }
-            updateMass();
+            throttle = 100;
         }
 
-        if(!Input.GetKey(KeyCode.Z) && currentThrust != new UnityEngine.Vector2(0, 0))
+        if(Input.GetKey(KeyCode.LeftControl))
         {
-            currentThrust = new UnityEngine.Vector2(0,0);
+            if(throttle - Time.fixedDeltaTime * factor > 0)
+            {
+                throttle -= Time.fixedDeltaTime * factor;
+            }else{
+                throttle = 0;
+            }
         }
+
+        if(Input.GetKey(KeyCode.LeftShift))
+        {
+            if(throttle + Time.fixedDeltaTime * factor < 100)
+            {
+                throttle += Time.fixedDeltaTime * factor;
+            }else{
+                throttle = 100;
+            }
+        }
+
+        if(Input.GetKey(KeyCode.X))
+        {
+            throttle = 0;
+        }
+
+        List<UnityEngine.Vector2> totalThrust = new List<UnityEngine.Vector2>();
+        foreach (Stages stage in Stages)
+        {
+            stage.updateThrust(throttle / 100);
+            totalThrust.Add(stage.thrust);
+        }
+
+        currentThrust = new UnityEngine.Vector2(0, 0);
+
+        foreach (UnityEngine.Vector2 thrust in totalThrust)
+        {
+            currentThrust += thrust;
+        }
+
+        updateMass();
     }
 
     public void updateMass()

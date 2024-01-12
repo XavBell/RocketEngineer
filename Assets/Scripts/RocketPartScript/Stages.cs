@@ -29,7 +29,7 @@ public class Stages
         string fuelType = GetType("fuel");
 
         List<RocketPart> engines = GetEngines();
-        float massFlowRate = totalMassFlowRate(engines);
+        float massFlowRate = totalMassFlowRate(engines) * thrustCoefficient;
 
         string propellantType = GetPropellant(oxidizerType, fuelType);
         float percentageFuel = 0f;
@@ -47,8 +47,8 @@ public class Stages
         }
 
         //Shouldn't need to use the MyTime because it's only ran in simulate mode
-        float consumedFuel = Time.fixedDeltaTime * massFlowRate * percentageFuel;
-        float consumedOxidizer = Time.fixedDeltaTime * massFlowRate * percentageOxidizer;
+        float consumedFuel = Time.deltaTime * massFlowRate * percentageFuel;
+        float consumedOxidizer = Time.deltaTime * massFlowRate * percentageOxidizer;
         if(fuelQty - consumedFuel >= 0 && oxidizerQty - consumedOxidizer >= 0 && consumedFuel != 0 && consumedOxidizer != 0)
         {
             foreach(RocketPart engine in engines)

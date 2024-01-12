@@ -84,7 +84,7 @@ public class Prediction : MonoBehaviour
         double[] times = new double[numPoints];
         UnityEngine.Vector3[] positions = new UnityEngine.Vector3[numPoints];
 
-        if(Input.GetKey("z") || updated == false)
+        if(planetGravity.gameObject.GetComponent<Rocket>().throttle > 0|| updated == false)
         {
             SetKeplerParams(keplerParams, rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, time);
             if(rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)
