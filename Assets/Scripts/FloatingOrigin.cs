@@ -19,10 +19,15 @@ public class FloatingOrigin : MonoBehaviour
     private RocketPart[] rps;
     public List<GameObject> planets = new List<GameObject>();
     public TimeManager MyTime;
+    public MasterManager masterManager;
+
+    public bool recalculateParameters;
 
     // Start is called before the first frame update
     void Start()
     {
+        UpdateReferenceBody();
+        masterManager = FindObjectOfType<MasterManager>();
         planets.Add(sun);
         planets.Add(earth);
         planets.Add(moon);
@@ -30,14 +35,22 @@ public class FloatingOrigin : MonoBehaviour
 
     void FixedUpdate()
     {
-        //updateFloatReference();
-        UpdateReferenceBody();
+        if(recalculateParameters == true)
+        {
+            RocketPath[] rockets = FindObjectsOfType<RocketPath>();
+            foreach(RocketPath rocket in rockets)
+            {
+                //rocket.CalculateParameters();
+            }
+            recalculateParameters = false;
+        }
+        updateFloatReference();
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        updateFloatReference();
+
     }
 
 
@@ -45,19 +58,25 @@ public class FloatingOrigin : MonoBehaviour
     public void updateFloatReference()
     {
         if(Camera.transform.position.magnitude > threshold){
-            Vector3 difference = Vector3.zero - Camera.transform.position; 
-            for(int z = 0; z < SceneManager.sceneCount; z++)
-            {
-                foreach (GameObject g in SceneManager.GetSceneAt(z).GetRootGameObjects())
-                {
-                   UpdatePosition(g, difference);
-                }
-            }
-            
-            Prediction.GetComponent<Prediction>().updated = false;
-        }
-        //Physics.SyncTransforms();
 
+                Vector3 difference = Vector3.zero - Camera.transform.position; 
+                for(int z = 0; z < SceneManager.sceneCount; z++)
+                {
+                    foreach (GameObject g in SceneManager.GetSceneAt(z).GetRootGameObjects())
+                    {
+                    UpdatePosition(g, difference);
+                    }
+                }
+
+                recalculateParameters = true;
+
+                LineRenderer lr = Prediction.GetComponent<LineRenderer>();
+                for(int i = 0; i < lr.positionCount; i++)
+                {
+                    lr.SetPosition(i, lr.GetPosition(i) + difference);
+                }
+            
+        }
     }
 
     public void UpdatePosition(GameObject g, Vector3 difference)
@@ -72,7 +91,7 @@ public class FloatingOrigin : MonoBehaviour
             g.transform.position = new Vector3((float)dt.x_pos, (float)dt.y_pos, (float)dt.z_pos);
             if(g.GetComponent<RocketPath>())
             {
-                g.GetComponent<RocketPath>().CalculateParameters();
+                //g.GetComponent<RocketPath>().CalculateParameters();
             }
         }
         if(dt == null)

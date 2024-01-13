@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
+using Unity.Mathematics;
 
 public class RocketPath : MonoBehaviour
 {
@@ -69,15 +70,16 @@ public class RocketPath : MonoBehaviour
             UnityEngine.Vector2 planetPosition2D = planetGravity.planet.transform.position;
         }
 
+
     }
 
     public void CalculateParameters()
     {
         startTime = (float)MyTime.time;
-        SetKeplerParams(KeplerParams, rb.position, planetGravity.planet.transform.position, rb.velocity, gravityParam, MyTime.time);
+        SetKeplerParams(KeplerParams, rb.position, planetGravity.planet.transform.position, rb.velocity, gravityParam, startTime);
         if(KeplerParams.eccentricity > 1)
         {
-            CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.planet.transform.position, gravityParam, (float)MyTime.time);
+            CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.planet.transform.position, gravityParam, startTime);
         }
     }
 
@@ -87,19 +89,34 @@ public class RocketPath : MonoBehaviour
         {
             if(KeplerParams.eccentricity < 1)
             {
-                Vector2 transformV = GetOrbitPositionKepler(gravityParam, (float)MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + planetGravity.planet.transform.position;
+                double x = 0;
+                double y = 0;
+                double vX;
+                double vY;
+                GetOrbitPositionKepler(gravityParam, (float)MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
                 return transformV;
             }
 
             if(KeplerParams.eccentricity > 1)
             {
-                Vector2 transformV = GetOrbitalPositionHyperbolic(Mo, (float)MyTime.time, Ho, e, a, i, n, startTime) + planetGravity.planet.transform.position;
+                double x = 0;
+                double y = 0;
+                double vX;
+                double vY;
+                GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
                 return transformV;
             }
 
             if(KeplerParams.eccentricity == 1)
             {
-                Vector2 transformV = GetOrbitalPositionHyperbolic(Mo, (float)MyTime.time, Ho, e, a, i, n, startTime) + planetGravity.planet.transform.position;
+                double x = 0;
+                double y = 0;
+                double vX;
+                double vY;
+                GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
                 return transformV;
             }
         }
@@ -109,31 +126,144 @@ public class RocketPath : MonoBehaviour
             MyTime = FindObjectOfType<TimeManager>();
             if(KeplerParams.eccentricity < 1)
             {
-                Vector2 transformV = GetOrbitPositionKepler(gravityParam, (float)MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + planetGravity.planet.transform.position;
+                double x = 0;
+                double y = 0;
+                double vX;
+                double vY;
+                GetOrbitPositionKepler(gravityParam, (float)MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
                 return transformV;
             }
 
             if(KeplerParams.eccentricity > 1)
             {
-                Vector2 transformV = GetOrbitalPositionHyperbolic(Mo, (float)MyTime.time, Ho, e, a, i, n, startTime) + planetGravity.planet.transform.position;
+                double x = 0;
+                double y = 0;
+                double vX;
+                double vY;
+                GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
                 return transformV;
             }
 
             if(KeplerParams.eccentricity == 1)
             {
-                Vector2 transformV = GetOrbitalPositionHyperbolic(Mo, (float)MyTime.time, Ho, e, a, i, n, startTime) + planetGravity.planet.transform.position;
+                double x = 0;
+                double y = 0;
+                double vX;
+                double vY;
+                GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
                 return transformV;
             }
         }
 
         return rb.position;
-
     }
 
+    double timeConstant = 0.00001f;
     public Vector2 updateVelocity()
     {
-        return Vector2.zero;
+        if(MyTime != null)
+        {
+            if(KeplerParams.eccentricity < 1)
+            {
+                double x2 = 0;
+                double y2 = 0;
+                double x1 = 0;
+                double y1 = 0;
+                double time2 = MyTime.time + timeConstant;
+                double time1 = MyTime.time;
+                double vX;
+                double vY;
+                GetOrbitPositionKepler(gravityParam, time2, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x2, out y2, out vX, out vY);
+                GetOrbitPositionKepler(gravityParam, time1, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x1, out y1, out vX, out vY);
+                return new Vector2((float)vX, (float)vY);
+            }
+
+            if(KeplerParams.eccentricity > 1)
+            {
+                double x2 = 0;
+                double y2 = 0;
+                double x1 = 0;
+                double y1 = 0;
+                double time2 = MyTime.time + timeConstant;
+                double time1 = MyTime.time;
+                double vX;
+                double vY;
+                GetOrbitalPositionHyperbolic(Mo, time2, Ho, e, a, i, n, startTime, out x2, out y2, out vX, out vY);
+                GetOrbitalPositionHyperbolic(Mo, time1, Ho, e, a, i, n, startTime, out x1, out y1, out vX, out vY);
+                return new Vector2((float)vX, (float)vY);
+            }
+
+            if(KeplerParams.eccentricity == 1)
+            {
+                double x2 = 0;
+                double y2 = 0;
+                double x1 = 0;
+                double y1 = 0;
+                double time2 = MyTime.time + timeConstant;
+                double time1 = MyTime.time;
+                double vX;
+                double vY;
+                GetOrbitalPositionHyperbolic(Mo, time2, Ho, e, a, i, n, startTime, out x2, out y2, out vX, out vY);
+                GetOrbitalPositionHyperbolic(Mo, time1, Ho, e, a, i, n, startTime, out x1, out y1, out vX, out vY);
+                return new Vector2((float)vX, (float)vY);
+            }
+        }
+
+        if(MyTime == null)
+        {
+            MyTime = FindObjectOfType<TimeManager>();
+            if(KeplerParams.eccentricity < 1)
+            {
+                double x2 = 0;
+                double y2 = 0;
+                double x1 = 0;
+                double y1 = 0;
+                double time2 = MyTime.time + timeConstant;
+                double time1 = MyTime.time;
+                double vX;
+                double vY;
+                GetOrbitPositionKepler(gravityParam, time2, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x2, out y2, out vX, out vY);
+                GetOrbitPositionKepler(gravityParam, time1, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x1, out y1, out vX, out vY);
+                return new Vector2((float)vX, (float)vY);
+            }
+
+            if(KeplerParams.eccentricity > 1)
+            {
+                double x2 = 0;
+                double y2 = 0;
+                double x1 = 0;
+                double y1 = 0;
+                double time2 = MyTime.time + timeConstant;
+                double time1 = MyTime.time;
+                double vX;
+                double vY;
+                GetOrbitalPositionHyperbolic(Mo, time2, Ho, e, a, i, n, startTime, out x2, out y2, out vX, out vY);
+                GetOrbitalPositionHyperbolic(Mo, time1, Ho, e, a, i, n, startTime, out x1, out y1, out vX, out vY);
+                return new Vector2((float)vX, (float)vY);
+            }
+
+            if(KeplerParams.eccentricity == 1)
+            {
+                double x2 = 0;
+                double y2 = 0;
+                double x1 = 0;
+                double y1 = 0;
+                double time2 = MyTime.time + timeConstant;
+                double time1 = MyTime.time;
+                double vX;
+                double vY;
+                GetOrbitalPositionHyperbolic(Mo, time2, Ho, e, a, i, n, startTime, out x2, out y2, out vX, out vY);
+                GetOrbitalPositionHyperbolic(Mo, time1, Ho, e, a, i, n, startTime, out x1, out y1, out vX, out vY); 
+                return new Vector2((float)vX, (float)vY);
+            }
+        }
+        return rb.velocity;
     }
+
+    
 
     void DrawLine(float time, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)
     {
@@ -160,7 +290,7 @@ public class RocketPath : MonoBehaviour
         
     }
 
-    public static Vector3 GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch)
+    public static void GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, out double X, out double Y, out double VX, out double VY)
     {
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
@@ -189,14 +319,22 @@ public class RocketPath : MonoBehaviour
 
         // Compute r (radius)
         double r = semiMajorAxis * (1 - eccentricity * Math.Cos(EA));
+        double h = Math.Sqrt(gravityParam * semiMajorAxis * (1- Math.Pow(eccentricity, 2)));
+        double p = semiMajorAxis*(1-Math.Pow(eccentricity,2));
+
+        //Vector3 odot = new Vector3((float)Math.Sin(EA), (float)(Math.Sqrt(1 - eccentricity * eccentricity) * Math.Cos(EA)), 0);
+        //odot = (float)(Math.Sqrt(gravityParam * semiMajorAxis) / r)*odot;
         
 
         // Compute XYZ positions
-        double X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
-        double Y = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
-        double Z = r * (Math.Sin(inclination) * Math.Sin(argPeriapsis + TA));
+        X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
+        double Z = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
+        Y = r * (Math.Sin(inclination) * Math.Sin(argPeriapsis + TA));
 
-        return new((float)X, (float)Z, 0); // FLIP Y-Z FOR UNITY
+        VX = (X*h*eccentricity/(r*p))*Math.Sin(TA) - (h/r)*(Math.Cos(LAN)* Math.Sin(argPeriapsis+TA) + Math.Sin(LAN)*Math.Cos(argPeriapsis+TA)*Math.Cos(inclination));
+        VY = (Y*h*eccentricity/(r*p))*Math.Sin(TA) + (h/r)*(Math.Cos(argPeriapsis+TA)*Math.Sin(inclination));
+
+        // FLIP Y-Z FOR UNITY
     }
     public static Vector3 GetOrbitVelocityKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, double AP, double X, double Y, double Z)
     {
@@ -382,7 +520,12 @@ public class RocketPath : MonoBehaviour
 
         for (int count = 0; count < numPoints; count++)
         {
-            UnityEngine.Vector3 pos = GetOrbitPositionKepler(gravityParam, time, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch) + new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
+            double x = 0;
+            double y = 0;
+            double vX;
+            double vY;
+            GetOrbitPositionKepler(gravityParam, time, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
+            UnityEngine.Vector3 pos = new Vector3((float)x, (float)y, 0) + new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
             times[count] = time;
             positions[count] = pos;
 
@@ -440,18 +583,29 @@ public class RocketPath : MonoBehaviour
 
     }
 
-    public static Vector3 GetOrbitalPositionHyperbolic(float Mo, float time, float Ho, float e, float a, float i, float n, float startTime)
+    public static void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double e, double a, double i, double n, double startTime, out double x, out double y, out double VX, out double VY)
     {
         //Calculate mean anomaly
-        float M = Mo + (time - startTime)*n;
-        float H = Ho;
+        double M = Mo + (time - startTime)*n;
+        double H = Ho;
 
         //Calculate current hyperbolic anomaly
-        H = (float)(H + (M - e*Math.Sinh(H) + H)/(e*Math.Cosh(H)-1));
+        H = H + (M - e*Math.Sinh(H) + H)/(e*Math.Cosh(H)-1);
 
-        Vector2 rawP = new Vector2((float)(a*(e - Math.Cosh(H))), (float)(a*Mathf.Sqrt(Mathf.Pow(e, 2)-1)*Math.Sinh(H)));
-        Vector2 finalPos =  new Vector2(rawP.x*Mathf.Cos(i)-rawP.y*Mathf.Sin(i), rawP.x*Mathf.Sin(i)+rawP.y*Mathf.Cos(i));
-        return finalPos;    
+        double rawX = a*(e - Math.Cosh(H));
+        double rawY = a*Math.Sqrt(Math.Pow(e, 2)-1)*Math.Sinh(H);
+        
+        x = rawX*Math.Cos(i)-rawY*Math.Sin(i);
+        y = rawX*Math.Sin(i)+rawY*Math.Cos(i);
+
+        double t = (e * Math.Cosh(H)-1)/n;
+        double rawVX = (-a*Math.Sinh(H))/t;
+        double rawVY = Math.Sqrt(Math.Pow(e, 2) - 1)* a * Math.Cosh(H)/t;
+        VX = rawVX * Math.Cos(i) - rawVY*Math.Sin(i);
+        VY = rawVX * Math.Sin(i) + rawVY*Math.Cos(i);
+
+
+
     }
 
 }

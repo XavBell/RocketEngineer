@@ -49,7 +49,7 @@ public class RocketStateManager : MonoBehaviour
             return;
         }
 
-        if(planetGravity.possessed == true || (planetGravity.cam.transform.position - transform.position).magnitude < 100)
+        if((planetGravity.possessed == true || (planetGravity.cam.transform.position - transform.position).magnitude < 100) && MyTime.scaler == 1)
         {
             state = "simulate";
             if(previousState != state)
@@ -62,7 +62,7 @@ public class RocketStateManager : MonoBehaviour
             return;
         }
 
-        if(planetGravity.possessed == false && previousState == "simulate")
+        if(MyTime.scaler > 1 && previousState == "simulate")
         {
             state = "rail";
             if(previousState != state)
@@ -99,7 +99,7 @@ public class RocketStateManager : MonoBehaviour
             previous_Y = curr_Y;
             curr_X = transform.x;
             curr_Y = transform.y;
-            Vector2 velocity = new Vector2((curr_X-previous_X)/MyTime.deltaTime, (curr_Y-previous_Y)/MyTime.deltaTime);
+            Vector2 velocity = prediction.updateVelocity();
             planetGravity.rb.velocity = velocity;
             return;
         }

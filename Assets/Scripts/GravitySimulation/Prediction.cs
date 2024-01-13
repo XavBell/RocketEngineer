@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
 using UnityEngine.Timeline;
+using JetBrains.Annotations;
 
 public class Prediction : MonoBehaviour
 {
@@ -23,16 +24,22 @@ public class Prediction : MonoBehaviour
     public float rocketMass;
     public float gravityParam = 0;
 
-    public KeplerParams KeplerParams =  new KeplerParams();
+    public KeplerParams KeplerParams = new KeplerParams();
 
     public bool updated;
     public TimeManager MyTime;
 
 
+    public List<GameObject> SubLevel;
 
+    public bool subPrediction = false;
 
+    public Vector2 newInitialVelocity;
+    public float newInitialTime;
+    public Vector2 newInitialPosition;
+    public Vector2 moonPosition;
+    public float newGravityParam;
 
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -43,37 +50,42 @@ public class Prediction : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(MasterManager == null)
+        if (MasterManager == null)
         {
             GameObject MastRef = GameObject.FindGameObjectWithTag("MasterManager");
-            if(MastRef)
+            if (MastRef)
             {
                 MasterManager = MastRef.GetComponent<MasterManager>();
             }
         }
 
-        if(MasterManager != null && MasterManager.ActiveRocket != null)
+        if (MasterManager != null && MasterManager.ActiveRocket != null)
         {
             planetGravity = MasterManager.ActiveRocket.GetComponent<PlanetGravity>();
             rb = planetGravity.rb;
             G = planetGravity.G;
             rocketMass = planetGravity.rb.mass;
-            gravityParam = G*(planetGravity.Mass + rocketMass);
+            gravityParam = G * (planetGravity.Mass + rocketMass);
 
         }
 
-        if(planetGravity != null)
+        if (planetGravity != null && subPrediction == false)
         {
             float time = Time.time;
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
             UnityEngine.Vector2 planetPosition2D = planetGravity.planet.transform.position;
-            if(planetGravity.planet.GetComponent<TypeScript>().type == "moon")
+            if (planetGravity.planet.GetComponent<TypeScript>().type == "moon")
             {
                 planetPosition2D = planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time);
-                rocketVelocity2D = rb.velocity - new Vector2((planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x - planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time - MyTime.deltaTime).x)/MyTime.deltaTime, (planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y - planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time - MyTime.deltaTime).y)/MyTime.deltaTime);
+                rocketVelocity2D = rb.velocity - new Vector2((planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x - planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time - MyTime.deltaTime).x) / MyTime.deltaTime, (planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y - planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time - MyTime.deltaTime).y) / MyTime.deltaTime);
             }
             DrawLine(time, line, KeplerParams, rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam);
+        }
+
+        if (subPrediction == true)
+        {
+            DrawLine(newInitialTime, line, KeplerParams, newInitialPosition, newInitialVelocity, moonPosition, newGravityParam);
         }
 
     }
@@ -84,17 +96,17 @@ public class Prediction : MonoBehaviour
         double[] times = new double[numPoints];
         UnityEngine.Vector3[] positions = new UnityEngine.Vector3[numPoints];
 
-        if(planetGravity.gameObject.GetComponent<Rocket>().throttle > 0|| updated == false)
+        if (planetGravity.gameObject.GetComponent<Rocket>().throttle > 0 || updated == false)
         {
             SetKeplerParams(keplerParams, rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, time);
-            if(rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)
+            if (rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)
             {
                 CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
                 line.positionCount = numPoints;
                 line.SetPositions(positions);
             }
 
-            if(rb.velocity.magnitude != 0 && keplerParams.eccentricity > 1)
+            if (rb.velocity.magnitude != 0 && keplerParams.eccentricity > 1)
             {
                 CalculateParametersHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, time, line);
             }
@@ -102,7 +114,7 @@ public class Prediction : MonoBehaviour
             updated = true;
         }
 
-        
+
     }
 
     public static UnityEngine.Vector3 GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch)
@@ -113,11 +125,11 @@ public class Prediction : MonoBehaviour
         double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); // TODO (Mean Angular Motion can be computed at build/run time once)
         double timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
         double MA = timeWithOffset * meanAngularMotion;
-        
+
 
         // Compute EA (Eccentric Anomaly)
         double EA = MA;
-        
+
 
         for (int count = 0; count < 3; count++)
         {
@@ -126,7 +138,7 @@ public class Prediction : MonoBehaviour
             if (Math.Abs(dE) < 1e-6)
             {
                 break;
-            } 
+            }
         }
 
         // Compute TA (True Anomaly)
@@ -134,7 +146,7 @@ public class Prediction : MonoBehaviour
 
         // Compute r (radius)
         double r = semiMajorAxis * (1 - eccentricity * Math.Cos(EA));
-        
+
 
         // Compute XYZ positions
         double X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
@@ -178,7 +190,7 @@ public class Prediction : MonoBehaviour
             if (Math.Abs(dE) < 1e-12)
             {
                 break;
-            } 
+            }
         }
 
         // Compute TA (True Anomaly)
@@ -196,7 +208,7 @@ public class Prediction : MonoBehaviour
     }
 
     public static double GetTimeOffsetFromTrueAnomaly(double trueAnomaly, double meanAngularMotion, double eccentricity)
-        {
+    {
         // Offset by Mathf.Pi so 0 TA lines up with default start position from GetOrbitPositionKepler.
         // Wrap into -pi to +pi range.
         double TA_Clean = Modulo((trueAnomaly + Mathf.PI), (Mathf.PI * 2)) - Mathf.PI;
@@ -207,17 +219,17 @@ public class Prediction : MonoBehaviour
         }
         double MA = EA - eccentricity * Math.Sin(EA);
         double t = MA / meanAngularMotion;
-        
+
 
         return t;
     }
 
     public static void KtoCfromC(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time, out double semiMajorAxis, out double eccentricity, out double argPeriapsis, out double LAN, out double inclination, out double timeToPeriapsis, out double trueAnomalyAtEpoch)
-    {   
+    {
         //Calculate rocket position in 3D and transform it for Kepler
         UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, 0, rocketPosition2D.y); //FLIP for Unity
         UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, 0, planetPosition2D.y); //FLIP for Unity
-        
+
         rocketPosition3D = rocketPosition3D - planetPosition3D; //Assume planet at (0,0,0)
 
         //Calculate velocity
@@ -233,22 +245,22 @@ public class Prediction : MonoBehaviour
         double h = h_bar.magnitude;
 
         //Compute specific energy
-        double E = (0.5f * Math.Pow(v, 2)) - gravityParam/r;
+        double E = (0.5f * Math.Pow(v, 2)) - gravityParam / r;
 
         //Compute semi-major axis
-        double a = -gravityParam/(2*E);
+        double a = -gravityParam / (2 * E);
 
         //Compute eccentricity
-        double e = Math.Sqrt(1 - Math.Pow(h,2)/(a*gravityParam));
-      
+        double e = Math.Sqrt(1 - Math.Pow(h, 2) / (a * gravityParam));
+
         //Compute inclination
-        double i = Math.Acos(h_bar.z/h);
+        double i = Math.Acos(h_bar.z / h);
 
         //Compute right ascension of ascending node
         double omega_LAN = Math.Atan2(h_bar.x, -h_bar.y);
 
         //Compute argument of latitude v+w
-        double lat = Math.Atan2((rocketPosition3D[2]/Math.Sin(i)), (rocketPosition3D[0]*Math.Cos(omega_LAN) + rocketPosition3D[1] * Math.Sin(omega_LAN)));
+        double lat = Math.Atan2((rocketPosition3D[2] / Math.Sin(i)), (rocketPosition3D[0] * Math.Cos(omega_LAN) + rocketPosition3D[1] * Math.Sin(omega_LAN)));
 
         // Compute true anomaly, v, (not actual true anomaly)
         double p = a * (1 - Math.Pow(e, 2));
@@ -265,11 +277,11 @@ public class Prediction : MonoBehaviour
         double T = time - (1 / n) * (EA - e * Math.Sin(EA));
 
         double TA = GetTrueAnomalyFromTimeOffset(T, gravityParam, a, e);
-        
+
 
         semiMajorAxis = a;
         eccentricity = e;
-        argPeriapsis = Modulo(omega_AP, Mathf.PI*2);
+        argPeriapsis = Modulo(omega_AP, Mathf.PI * 2);
         LAN = omega_LAN;
         inclination = i;
         timeToPeriapsis = T;
@@ -278,7 +290,7 @@ public class Prediction : MonoBehaviour
 
     public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, float gravityParam, float time)
     {
-        KtoCfromC(rocketPosition2D, planetPosition2D,rocketVelocity2D, gravityParam, time, out keplerParams.semiMajorAxis, out keplerParams.eccentricity, out keplerParams.argumentOfPeriapsis, out keplerParams.longitudeOfAscendingNode, out keplerParams.inclination, out keplerParams.timeToPeriapsis, out keplerParams.trueAnomalyAtEpoch);
+        KtoCfromC(rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, time, out keplerParams.semiMajorAxis, out keplerParams.eccentricity, out keplerParams.argumentOfPeriapsis, out keplerParams.longitudeOfAscendingNode, out keplerParams.inclination, out keplerParams.timeToPeriapsis, out keplerParams.trueAnomalyAtEpoch);
     }
 
     public void CalculatePoints(double time, int numPoints, double gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref double[] times, ref UnityEngine.Vector3[] positions)
@@ -295,7 +307,11 @@ public class Prediction : MonoBehaviour
             time += timeIncrement;
         }
 
-        DetectIntercept(positions, times, Earth, potentialBody, orbitMarker);
+        if (subPrediction == false)
+        {
+            DetectIntercept(positions, times, Earth, Moon, orbitMarker);
+        }
+
 
     }
 
@@ -303,12 +319,12 @@ public class Prediction : MonoBehaviour
     {
         //Calculate rocket position in 3D and transform it for Kepler
         UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, rocketPosition2D.y, 0);
-        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0); 
-        
+        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
+
         rocketPosition3D = rocketPosition3D - planetPosition3D; //Assume planet at (0,0,0)
 
         //Calculate velocity
-        UnityEngine.Vector3 rocketVelocity3D = new UnityEngine.Vector3(rocketVelocity2D.x, rocketVelocity2D.y, 0); 
+        UnityEngine.Vector3 rocketVelocity3D = new UnityEngine.Vector3(rocketVelocity2D.x, rocketVelocity2D.y, 0);
 
         //Find position and velocity magnitude
         double r = rocketPosition3D.magnitude;
@@ -319,98 +335,123 @@ public class Prediction : MonoBehaviour
         double h = h_bar.magnitude;
 
         //Calculate eccentricity vector
-        UnityEngine.Vector3 eccentricity_bar = UnityEngine.Vector3.Cross(rocketVelocity3D, h_bar)/(float)gravityParam - rocketPosition3D/(float)r;
+        UnityEngine.Vector3 eccentricity_bar = UnityEngine.Vector3.Cross(rocketVelocity3D, h_bar) / (float)gravityParam - rocketPosition3D / (float)r;
         double e = eccentricity_bar.magnitude;
-        
+
         //Calculate inclination
         double i = Math.Atan2(-eccentricity_bar.y, -eccentricity_bar.x);
 
         //Calculate semi-major axis
-        double a  = 1/(2/r - Math.Pow(v, 2)/gravityParam);
-        
+        double a = 1 / (2 / r - Math.Pow(v, 2) / gravityParam);
+
         //Calculate raw position
-        UnityEngine.Vector2 p = new UnityEngine.Vector2((float)(rocketPosition3D.x*Math.Cos(i)+rocketPosition3D.y*Math.Sin(i)), (float)(rocketPosition3D.y*Math.Cos(i)-rocketPosition3D.x*Math.Sin(i)));
+        UnityEngine.Vector2 p = new UnityEngine.Vector2((float)(rocketPosition3D.x * Math.Cos(i) + rocketPosition3D.y * Math.Sin(i)), (float)(rocketPosition3D.y * Math.Cos(i) - rocketPosition3D.x * Math.Sin(i)));
         //Moon.transform.position = p;
 
         //Calculate Hyperbolic anomaly
-        double Ho = Math.Atanh((p.y/(a*Math.Sqrt(Math.Pow(e, 2)-1)))/(e-p.x/a));
+        double Ho = Math.Atanh((p.y / (a * Math.Sqrt(Math.Pow(e, 2) - 1))) / (e - p.x / a));
 
-        
-        double Mo = Math.Sinh(Ho)*e-Ho;
+
+        double Mo = Math.Sinh(Ho) * e - Ho;
 
 
         //Determine branch of hyperbola
         double dot = UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D);
-        double det = rocketPosition3D.x*rocketVelocity3D.y - rocketVelocity3D.x * rocketPosition3D.y;
+        double det = rocketPosition3D.x * rocketVelocity3D.y - rocketVelocity3D.x * rocketPosition3D.y;
 
         double angle = Math.Atan2(det, dot);
 
         //Calculate mean velocity
-        double n = Math.Sqrt(gravityParam/Math.Abs(Math.Pow(a, 3)))*Math.Sign(angle);
+        double n = Math.Sqrt(gravityParam / Math.Abs(Math.Pow(a, 3))) * Math.Sign(angle);
 
         //Plot positions
         int timeStep = 10;
         int maxStep = 300;
         UnityEngine.Vector3[] positions = new UnityEngine.Vector3[maxStep];
         double H = Ho;
-        double[]times = new double[maxStep];
+        double[] times = new double[maxStep];
 
-        for(int ia = 0; ia<maxStep; ia++)
+        for (int ia = 0; ia < maxStep; ia++)
         {
             //Calculate mean anomaly
-            double M = Mo + (((ia)*timeStep-time) + time)*n;
+            double M = Mo + (((ia) * timeStep - time) + time) * n;
 
             //Calculate current hyperbolic anomaly
-            H = H + (M - e*Math.Sinh(H) + H)/(e*Math.Cosh(H)-1);
+            H = H + (M - e * Math.Sinh(H) + H) / (e * Math.Cosh(H) - 1);
 
             //Raw position vector
-            UnityEngine.Vector2 rawP = new UnityEngine.Vector2((float)(a*(e - Math.Cosh(H))), (float)(a*Math.Sqrt(Math.Pow(e, 2)-1)*Math.Sinh(H)));
-            if((new UnityEngine.Vector2((float)(rawP.x*Math.Cos(i)-rawP.y*Math.Sin(i)), (float)(rawP.x*Math.Sin(i)+rawP.y*Math.Cos(i))) + planetPosition2D).magnitude < 10000000)
+            UnityEngine.Vector2 rawP = new UnityEngine.Vector2((float)(a * (e - Math.Cosh(H))), (float)(a * Math.Sqrt(Math.Pow(e, 2) - 1) * Math.Sinh(H)));
+            if ((new UnityEngine.Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i))) + planetPosition2D).magnitude < 10000000)
             {
-                positions[ia] = new UnityEngine.Vector2((float)(rawP.x*Math.Cos(i)-rawP.y*Math.Sin(i)), (float)(rawP.x*Math.Sin(i)+rawP.y*Math.Cos(i))) + planetPosition2D;
-                times[ia] = (ia)*timeStep-time + time;
+                positions[ia] = new UnityEngine.Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i))) + planetPosition2D;
+                times[ia] = (ia) * timeStep - time + time;
             }
-                 
+
         }
 
-        
-        DetectIntercept(positions, times, Earth, potentialBody, orbitMarker);
+        if (subPrediction == false)
+        {
+            DetectIntercept(positions, times, Earth, potentialBody, orbitMarker);
+        }
+
         line.positionCount = maxStep;
         line.SetPositions(positions);
     }
 
     public void DetectIntercept(Vector3[] points, double[] times, GameObject orbitingBodyPos, GameObject potentialBody, GameObject orbitMarker)
     {
-        //Minimum distance from moon is 391100 for gravity switch
-        //That means that distance from planet must be at least 377,700
-        List<Vector3> PotentialPos = new List<Vector3>();
-        List<double> PotentialTimes = new List<double>();
-
+        List<Vector3> potentialPosition = new List<Vector3>();
+        List<double> potentialTimes = new List<double>();
         int i = 0;
-        foreach(double time in PotentialTimes)
+        foreach (Vector3 position in points)
         {
-            if((points[i] - Moon.GetComponent<BodyPath>().GetPositionAtTime((float)time)).magnitude >= 371800)
+            //Upper and lower limit
+            if ((position - orbitingBodyPos.transform.position).magnitude < 3844000 + planetGravity.SolarSystemManager.moonSOI && (position - orbitingBodyPos.transform.position).magnitude > 3844000 - planetGravity.SolarSystemManager.moonSOI)
             {
-                PotentialPos.Add(points[i]);
-                PotentialTimes.Add(time);
+                potentialPosition.Add(position);
+                potentialTimes.Add(times[i]);
+
             }
             i++;
         }
 
-        i = 0;
-        foreach(float time in PotentialTimes)
+        int j = 0;
+        List<int> positionsToRemove = new List<int>();
+        foreach(Vector3 position in potentialPosition)
         {
-            Vector3 potentialPosition = potentialBody.GetComponent<BodyPath>().GetPositionAtTime(time);
-            //Assume minimum of 500m (?)
-            if((potentialPosition - PotentialPos[i]).magnitude < 5000)
-            {
-                Debug.Log("Intercept Found");
-                orbitMarker.transform.position = potentialPosition;
-                return;
+            if((position - Moon.GetComponent<BodyPath>().GetPositionAtTime((float)potentialTimes[j])+Earth.transform.position).magnitude < planetGravity.SolarSystemManager.moonSOI)
+           {
+                positionsToRemove.Add(j);
             }
-            i++;
+            j++;
+        }
+
+        if (positionsToRemove.Count > 0)
+        {
+            foreach(GameObject level in SubLevel)
+            {
+                Destroy(level);
+            }
+            SubLevel.Clear();
+            GameObject subLevel = new GameObject();
+            LineRenderer line = subLevel.AddComponent<LineRenderer>();
+            Prediction prediction = subLevel.AddComponent<Prediction>();
+            SubLevel.Add(subLevel);
+
+            prediction.line = line;
+            prediction.line.widthMultiplier = 3000;
+            prediction.subPrediction = true;
+
+            prediction.newGravityParam = G * (planetGravity.Mass + rocketMass);
+            prediction.newInitialTime = (float)potentialTimes[positionsToRemove[0]];
+            prediction.newInitialPosition = potentialPosition[positionsToRemove[0]];
+            Vector3 moonVelocity = (Moon.GetComponent<BodyPath>().GetPositionAtTime(prediction.newInitialTime + 0.001f) - Moon.GetComponent<BodyPath>().GetPositionAtTime(prediction.newInitialTime))/0.001f;
+            prediction.newInitialVelocity = (potentialPosition[positionsToRemove[0] + 1] -  potentialPosition[positionsToRemove[0]])/(float)(potentialTimes[positionsToRemove[0] + 1] - potentialTimes[positionsToRemove[0]]);
+            prediction.moonPosition = Earth.transform.position + Moon.GetComponent<BodyPath>().GetPositionAtTime(prediction.newInitialTime);
         }
 
     }
+
+
 
 }

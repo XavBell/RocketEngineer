@@ -22,7 +22,7 @@ public class MapManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         EarthIcon.transform.position = mapCam.WorldToScreenPoint(Earth.transform.position);
         SunIcon.transform.position = mapCam.WorldToScreenPoint(Sun.transform.position);
