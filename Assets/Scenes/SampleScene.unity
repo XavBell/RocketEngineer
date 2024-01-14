@@ -8530,8 +8530,6 @@ MonoBehaviour:
   - {fileID: 300218204}
   flightUI:
   - {fileID: 1269784186}
-  Prediction: {fileID: 0}
-  MapUI: {fileID: 0}
   planetRadius: 63710
   localMode: none
   IDMax: 0
@@ -9403,7 +9401,7 @@ MonoBehaviour:
   MasterManager: {fileID: 0}
   MoonSprite: {fileID: 0}
   EarthSprite: {fileID: 0}
-  Prediction: {fileID: 1795889142}
+  Prediction: {fileID: 0}
   launchsiteManager: {fileID: 1494031408}
   threshold: 5000
 --- !u!114 &519420034
@@ -9686,7 +9684,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &542871971
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11707,7 +11705,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &665218029
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11784,6 +11782,7 @@ RectTransform:
   - {fileID: 542871971}
   - {fileID: 745909348}
   - {fileID: 2140071082}
+  - {fileID: 1673097444}
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11874,7 +11873,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &673585104
 GameObject:
@@ -13102,7 +13101,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &745909348
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15326,7 +15325,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 17
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &871451384
 GameObject:
@@ -19297,7 +19296,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1152195469}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1673097443}
+        m_TargetAssemblyTypeName: MapManager, Assembly-CSharp
+        m_MethodName: mapOn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1152195469
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19770,7 +19781,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 19
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1174706235
 GameObject:
@@ -20396,7 +20407,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1188206418
 GameObject:
@@ -25179,7 +25190,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 18
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1431175329
 GameObject:
@@ -27306,7 +27317,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 13
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1533844072
 GameObject:
@@ -29416,6 +29427,12 @@ MonoBehaviour:
   MoonIcon: {fileID: 542871970}
   Moon: {fileID: 680244244}
   mapCam: {fileID: 519420031}
+  icons: []
+  rockets: []
+  prediction: []
+  MapOn: 0
+  cursor: {fileID: 2655591415972963116, guid: beae72a481b42426aa91514776e6a938, type: 3}
+  predictionPrefab: {fileID: 4468450867335054349, guid: 90c0bab755ed045aea1c7f544905e44f, type: 3}
 --- !u!4 &1673097444
 Transform:
   m_ObjectHideFlags: 0
@@ -29423,13 +29440,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1673097442}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -13067620, y: -11895957, z: -60322.934}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -13069540, y: -11897037, z: -60322.934}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_Father: {fileID: 665218032}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1674163391
 GameObject:
@@ -30329,7 +30346,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1770179541
 GameObject:
@@ -31110,172 +31127,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1794611374}
   m_CullTransparentMesh: 1
---- !u!1 &1795889142
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1795889143}
-  - component: {fileID: 1795889145}
-  - component: {fileID: 1795889144}
-  m_Layer: 0
-  m_Name: Prediction
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1795889143
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1795889142}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1873.0635, y: 796.11505, z: -9.901958}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 12
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &1795889144
-LineRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1795889142}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 0
-  m_LightProbeUsage: 0
-  m_ReflectionProbeUsage: 0
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 2eabf0b4e5a114681af4f31b8787e919, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
-  m_Parameters:
-    serializedVersion: 3
-    widthMultiplier: 1
-    widthCurve:
-      serializedVersion: 2
-      m_Curve:
-      - serializedVersion: 3
-        time: 0
-        value: 1
-        inSlope: 0
-        outSlope: 0
-        tangentMode: 0
-        weightedMode: 0
-        inWeight: 0.33333334
-        outWeight: 0.33333334
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    colorGradient:
-      serializedVersion: 2
-      key0: {r: 0.055989042, g: 0.3070756, b: 0.9465654, a: 1}
-      key1: {r: 0, g: 0.26597843, b: 0.9433962, a: 1}
-      key2: {r: 1, g: 1, b: 1, a: 0}
-      key3: {r: 1, g: 0, b: 0, a: 0}
-      key4: {r: 0, g: 0, b: 0, a: 0}
-      key5: {r: 0, g: 0, b: 0, a: 0}
-      key6: {r: 0, g: 0, b: 0, a: 0}
-      key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 9638
-      ctime1: 22359
-      ctime2: 38165
-      ctime3: 65535
-      ctime4: 0
-      ctime5: 0
-      ctime6: 0
-      ctime7: 0
-      atime0: 0
-      atime1: 65535
-      atime2: 0
-      atime3: 0
-      atime4: 0
-      atime5: 0
-      atime6: 0
-      atime7: 0
-      m_Mode: 0
-      m_NumColorKeys: 4
-      m_NumAlphaKeys: 2
-    numCornerVertices: 0
-    numCapVertices: 0
-    alignment: 0
-    textureMode: 0
-    shadowBias: 0.5
-    generateLightingData: 0
-  m_UseWorldSpace: 1
-  m_Loop: 0
---- !u!114 &1795889145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1795889142}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 419aa33f7f7cbd24db2d40aada272a89, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  planetGravity: {fileID: 0}
-  WorldSaveManager: {fileID: 0}
-  MasterManager: {fileID: 0}
-  potentialBody: {fileID: 680244244}
-  orbitMarker: {fileID: 669034168}
-  line: {fileID: 1795889144}
-  rb: {fileID: 0}
-  Moon: {fileID: 680244244}
-  Earth: {fileID: 2121345929}
-  G: 0
-  rocketMass: 0
-  gravityParam: 0
-  updated: 0
-  MyTime: {fileID: 0}
-  SubLevel: []
-  subPrediction: 0
-  newInitialVelocity: {x: 0, y: 0}
-  newInitialTime: 0
-  newInitialPosition: {x: 0, y: 0}
-  moonPosition: {x: 0, y: 0}
-  newGravityParam: 0
-  startTime: 0
 --- !u!1 &1800833207
 GameObject:
   m_ObjectHideFlags: 0
@@ -36474,7 +36325,7 @@ MonoBehaviour:
   earth: {fileID: 2121345929}
   moon: {fileID: 680244244}
   customCursor: {fileID: 931935178}
-  Prediction: {fileID: 1795889142}
+  Prediction: {fileID: 0}
   Camera: {fileID: 519420028}
   planets: []
   MyTime: {fileID: 1757857673}
@@ -36482,6 +36333,7 @@ MonoBehaviour:
   recalculateParameters: 0
   closestPlanet: {fileID: 0}
   bypass: 0
+  DO: 1
 --- !u!4 &2071063436
 Transform:
   m_ObjectHideFlags: 0
@@ -37726,7 +37578,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2140071082
 RectTransform:
   m_ObjectHideFlags: 0

@@ -89,11 +89,22 @@ public class FloatingOrigin : MonoBehaviour
 
             recalculateParameters = true;
 
-            LineRenderer lr = Prediction.GetComponent<LineRenderer>();
-            for (int i = 0; i < lr.positionCount; i++)
+            Prediction[] predictions = FindObjectsOfType<Prediction>();
+            foreach(Prediction pred in predictions)
             {
-                lr.SetPosition(i, lr.GetPosition(i) + difference);
+                if(pred != null)
+                {
+                    LineRenderer lr = pred.GetComponent<LineRenderer>();
+                for (int i = 0; i < lr.positionCount; i++)
+                {
+                    lr.SetPosition(i, lr.GetPosition(i) + difference);
+                }
+
+                }
+
+
             }
+            
 
         }
     }

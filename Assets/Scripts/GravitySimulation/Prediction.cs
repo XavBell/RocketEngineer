@@ -69,9 +69,9 @@ public class Prediction : MonoBehaviour
             }
         }
 
-        if (MasterManager != null && MasterManager.ActiveRocket != null)
+        if (planetGravity != null)
         {
-            planetGravity = MasterManager.ActiveRocket.GetComponent<PlanetGravity>();
+            //planetGravity = MasterManager.ActiveRocket.GetComponent<PlanetGravity>();
             rb = planetGravity.rb;
             G = planetGravity.G;
             rocketMass = planetGravity.rb.mass;
