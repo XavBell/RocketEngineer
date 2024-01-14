@@ -137,7 +137,7 @@ public class BodyPath : MonoBehaviour
         return new Vector3((float)x, (float)y, 0);
     }
 
-    public Vector3 GetVelocityAtTime(float Time)
+    public Vector3 GetVelocityAtTime(double Time)
     {
         double x;
         double y;

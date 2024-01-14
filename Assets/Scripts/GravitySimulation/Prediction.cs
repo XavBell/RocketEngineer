@@ -147,7 +147,7 @@ public class Prediction : MonoBehaviour
         {
             double dE = (EA - eccentricity * Math.Sin(EA) - MA) / (1 - eccentricity * Math.Cos(EA));
             EA -= dE;
-            if (Math.Abs(dE) < 1e-50)
+            if (Math.Abs(dE) < 1e-10)
             {
                 break;
             }
