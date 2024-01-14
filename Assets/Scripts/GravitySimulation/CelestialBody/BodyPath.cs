@@ -86,7 +86,12 @@ public class BodyPath : MonoBehaviour
         {
             if(updated == false)
             {
-                Vector3 transform2 = GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
+                double x;
+                double y;
+                double VX;
+                double VY;
+                GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
+                Vector3 transform2 = new Vector3((float)x, (float)y, 0) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
                 this.transform.position = transform2;
                 this.GetComponent<DoubleTransform>().x_pos = transform2.x;
                 this.GetComponent<DoubleTransform>().y_pos = transform2.y;
@@ -124,11 +129,25 @@ public class BodyPath : MonoBehaviour
     /// <returns>Position of body at time</returns>
     public Vector3 GetPositionAtTime(float Time)
     {
-        Vector3 transform = GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch);
-        return transform;
+        double x;
+        double y;
+        double VX;
+        double VY;
+        GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
+        return new Vector3((float)x, (float)y, 0);
     }
 
-    public static Vector3 GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch)
+    public Vector3 GetVelocityAtTime(float Time)
+    {
+        double x;
+        double y;
+        double VX;
+        double VY;
+        GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
+        return new Vector3((float)VX, (float)VY, 0);
+    }
+
+    public static void GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, out double X, out double Y, out double VX, out double VY)
     {
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
@@ -158,13 +177,19 @@ public class BodyPath : MonoBehaviour
         // Compute r (radius)
         double r = semiMajorAxis * (1 - eccentricity * Math.Cos(EA));
         
+        //Compute h and p for velocity
+        double h = Math.Sqrt(gravityParam * semiMajorAxis * (1- Math.Pow(eccentricity, 2)));
+        double p = semiMajorAxis*(1-Math.Pow(eccentricity,2));
 
         // Compute XYZ positions
-        double X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
-        double Y = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
-        double Z = r * (Math.Sin(inclination) * Math.Sin(argPeriapsis + TA));
+        X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
+        double Z = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
+        Y = r * (Math.Sin(inclination) * Math.Sin(argPeriapsis + TA));
 
-        return new((float)X, (float)Z, 0); // FLIP Y-Z FOR UNITY
+        VX = (X*h*eccentricity/(r*p))*Math.Sin(TA) - (h/r)*(Math.Cos(LAN)* Math.Sin(argPeriapsis+TA) + Math.Sin(LAN)*Math.Cos(argPeriapsis+TA)*Math.Cos(inclination));
+        VY = (Y*h*eccentricity/(r*p))*Math.Sin(TA) + (h/r)*(Math.Cos(argPeriapsis+TA)*Math.Sin(inclination));
+
+        
     }
 
     public static float Modulo(float x, float m)
@@ -311,7 +336,12 @@ public class BodyPath : MonoBehaviour
 
         for (int count = 0; count < numPoints; count++)
         {
-            UnityEngine.Vector3 pos = GetOrbitPositionKepler(gravityParam, time, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch) + new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
+            double x;
+            double y;
+            double VX;
+            double VY;
+            GetOrbitPositionKepler(gravityParam, time, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
+            Vector3 pos = new Vector3((float)x, (float)y, 0)+ new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
             times[count] = (float)time;
             positions[count] = pos;
 

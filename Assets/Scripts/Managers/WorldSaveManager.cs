@@ -30,6 +30,7 @@ public class WorldSaveManager : MonoBehaviour
 
     public GameObject earth;
     public GameObject moon;
+    public GameObject sun;
 
     public GameObject worldCamera;
 
@@ -319,6 +320,7 @@ public class WorldSaveManager : MonoBehaviour
         
         earth.GetComponent<EarthScript>().InitializeEarth();
         moon.GetComponent<MoonScript>().InitializeMoon();
+        sun.GetComponent<SunScript>().InitializeSun();
         
         loaded = true;
         } else if(loadedWorld.version != version.currentVersion)

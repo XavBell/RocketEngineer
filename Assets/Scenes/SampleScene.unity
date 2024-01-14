@@ -20383,6 +20383,7 @@ MonoBehaviour:
   G: 6.67e-11
   earthgSlvl: 9.8
   earthRadius: 63710
+  earthSOI: 9000000
   earthMass: 0
   moongSlvl: 1.6
   moonRadius: 17000
@@ -27296,6 +27297,7 @@ MonoBehaviour:
   commandCenterPrefab: {fileID: 4919702563059865179, guid: 21e16416e8ecbc04fbe148727c3f19e9, type: 3}
   earth: {fileID: 2121345929}
   moon: {fileID: 680244244}
+  sun: {fileID: 1877019593}
   worldCamera: {fileID: 519420028}
   loaded: 0
   MasterManager: {fileID: 0}
@@ -31215,18 +31217,18 @@ LineRenderer:
       m_RotationOrder: 4
     colorGradient:
       serializedVersion: 2
-      key0: {r: 1, g: 1, b: 1, a: 1}
-      key1: {r: 1, g: 1, b: 1, a: 1}
-      key2: {r: 0, g: 0, b: 0, a: 0}
-      key3: {r: 0, g: 0, b: 0, a: 0}
+      key0: {r: 0.055989042, g: 0.3070756, b: 0.9465654, a: 1}
+      key1: {r: 0, g: 0.26597843, b: 0.9433962, a: 1}
+      key2: {r: 1, g: 1, b: 1, a: 0}
+      key3: {r: 1, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}
       key5: {r: 0, g: 0, b: 0, a: 0}
       key6: {r: 0, g: 0, b: 0, a: 0}
       key7: {r: 0, g: 0, b: 0, a: 0}
-      ctime0: 0
-      ctime1: 65535
-      ctime2: 0
-      ctime3: 0
+      ctime0: 9638
+      ctime1: 22359
+      ctime2: 38165
+      ctime3: 65535
       ctime4: 0
       ctime5: 0
       ctime6: 0
@@ -31239,8 +31241,8 @@ LineRenderer:
       atime5: 0
       atime6: 0
       atime7: 0
-      m_Mode: 1
-      m_NumColorKeys: 2
+      m_Mode: 0
+      m_NumColorKeys: 4
       m_NumAlphaKeys: 2
     numCornerVertices: 0
     numCapVertices: 0
@@ -31276,6 +31278,14 @@ MonoBehaviour:
   gravityParam: 0
   updated: 0
   MyTime: {fileID: 0}
+  SubLevel: []
+  subPrediction: 0
+  newInitialVelocity: {x: 0, y: 0}
+  newInitialTime: 0
+  newInitialPosition: {x: 0, y: 0}
+  moonPosition: {x: 0, y: 0}
+  newGravityParam: 0
+  startTime: 0
 --- !u!1 &1800833207
 GameObject:
   m_ObjectHideFlags: 0
@@ -32622,6 +32632,23 @@ MonoBehaviour:
   x_vel: 0
   y_vel: 0
   mass: 0
+--- !u!114 &1877019601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877019593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b325c2be7b974072b987c25ded2d901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SolarSystemManager: {fileID: 1182590599}
+  sunMass: 0
+  gSlvl: 0
+  G: 0
+  sunRadius: 0
 --- !u!1 &1883194558
 GameObject:
   m_ObjectHideFlags: 0
@@ -36461,6 +36488,8 @@ MonoBehaviour:
   Camera: {fileID: 519420028}
   planets: []
   MyTime: {fileID: 1757857673}
+  masterManager: {fileID: 0}
+  recalculateParameters: 0
 --- !u!4 &2071063436
 Transform:
   m_ObjectHideFlags: 0
@@ -37416,7 +37445,7 @@ MonoBehaviour:
   x_pos: 0
   y_pos: 0
   x_vel: 0
-  y_vel: 1.15
+  y_vel: 650000
   mass: 0
 --- !u!120 &2121345932
 LineRenderer:

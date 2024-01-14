@@ -213,7 +213,7 @@ public class PlanetGravity : MonoBehaviour
             planet = bestPlanet;
         }
 
-        if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < 371805)
+        if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < SolarSystemManager.moonSOI)
         {
             Mass = bestPlanet.GetComponent<MoonScript>().moonMass;
             atmoAlt = 0.0f;
