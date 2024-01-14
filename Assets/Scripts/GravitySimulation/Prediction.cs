@@ -85,11 +85,6 @@ public class Prediction : MonoBehaviour
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
             UnityEngine.Vector2 planetPosition2D = planetGravity.planet.transform.position;
-            if (planetGravity.planet.GetComponent<TypeScript>().type == "moon")
-            {
-                planetPosition2D = planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time);
-                rocketVelocity2D = rb.velocity - new Vector2((planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).x - planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time - MyTime.deltaTime).x) / MyTime.deltaTime, (planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time).y - planetGravity.planet.GetComponent<BodyPath>().GetPositionAtTime((float)MyTime.time - MyTime.deltaTime).y) / MyTime.deltaTime);
-            }
             DrawLine(time, line, KeplerParams, rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam);
         }
 
@@ -331,7 +326,7 @@ public class Prediction : MonoBehaviour
 
         if (subPrediction == false)
         {
-            DetectIntercept(positions, times, Earth, Moon, orbitMarker);
+            //DetectIntercept(positions, times, Earth, Moon, orbitMarker);
         }
 
 

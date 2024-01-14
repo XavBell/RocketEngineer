@@ -29,6 +29,7 @@ public class RocketPath : MonoBehaviour
     float e;
     float i;
     public double startTime;
+    public bool bypass = false;
     
     // Start is called before the first frame update
     void Start()
@@ -228,7 +229,6 @@ public class RocketPath : MonoBehaviour
         // Compute XYZ positions
         X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
         Y = r * (Math.Sin(inclination) * Math.Sin(argPeriapsis + TA));
-        Debug.Log(eccentricity);
 
         VX = (X*h*eccentricity/(r*p))*Math.Sin(TA) - (h/r)*(Math.Cos(LAN)* Math.Sin(argPeriapsis+TA) + Math.Sin(LAN)*Math.Cos(argPeriapsis+TA)*Math.Cos(inclination));
         VY = (Y*h*eccentricity/(r*p))*Math.Sin(TA) + (h/r)*(Math.Cos(argPeriapsis+TA)*Math.Sin(inclination));

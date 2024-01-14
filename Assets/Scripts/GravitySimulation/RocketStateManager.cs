@@ -18,6 +18,8 @@ public class RocketStateManager : MonoBehaviour
     public float previous_Y = 0f;
     public TimeManager MyTime;
 
+    bool ran = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,8 +33,19 @@ public class RocketStateManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        StateUpdater();
-        UpdatePosition();
+        //StateUpdater();
+        //UpdatePosition();
+        ran = false;
+    }
+
+    void LateUpdate()
+    {
+        if(ran == false)
+        {
+            StateUpdater();
+            UpdatePosition();
+            ran = true;
+        }
     }
 
 
@@ -43,6 +56,7 @@ public class RocketStateManager : MonoBehaviour
             state = "landed";
             if(previousState != state)
             {
+
                 planetGravity.rb.simulated = true;
             }
             previousState = state;
@@ -54,9 +68,8 @@ public class RocketStateManager : MonoBehaviour
             state = "simulate";
             if(previousState != state)
             {
+                planetGravity.updateReferenceBody();
                 planetGravity.rb.simulated = true;
-                //Vector2 velocity = new Vector2((curr_X-previous_X)/MyTime.deltaTime, (curr_Y-previous_Y)/MyTime.deltaTime);
-                //planetGravity.rb.velocity = velocity;
             }
             previousState = state;
             return;
@@ -67,6 +80,7 @@ public class RocketStateManager : MonoBehaviour
             state = "rail";
             if(previousState != state)
             {
+                planetGravity.updateReferenceBody();
                 planetGravity.rb.simulated = false;
                 prediction.startTime = (float)prediction.MyTime.time;
                 prediction.CalculateParameters();

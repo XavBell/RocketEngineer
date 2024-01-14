@@ -173,11 +173,12 @@ public class PlanetGravity : MonoBehaviour
         }
     }
 
-    void updateReferenceBody()
+    public void updateReferenceBody()
     {
         planets = GameObject.FindGameObjectsWithTag("Planet");
         float bestDistance = Mathf.Infinity;
         GameObject bestPlanet = null;
+        GameObject previous = planet;
         
         GameObject Earth = null;
         GameObject Moon = null;
@@ -204,30 +205,42 @@ public class PlanetGravity : MonoBehaviour
             }
         }
 
-        if (bestPlanet.GetComponent<TypeScript>().type == "earth")
+        if(bestPlanet != null)
         {
-            Mass = bestPlanet.GetComponent<EarthScript>().earthMass;
-            atmoAlt = 0.0f;
-            aeroCoefficient = 0.0f;
-            planetRadius = bestPlanet.GetComponent<EarthScript>().earthRadius;
-            planet = bestPlanet;
+            if (bestPlanet.GetComponent<TypeScript>().type == "earth")
+            {
+                Mass = SolarSystemManager.earthMass;
+                atmoAlt = 0.0f;
+                aeroCoefficient = 0.0f;
+                planetRadius = SolarSystemManager.earthRadius;
+                planet = bestPlanet;
+            }
+
+            if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < SolarSystemManager.moonSOI)
+            {
+                Mass = SolarSystemManager.moonMass;
+                atmoAlt = 0.0f;
+                aeroCoefficient = 0.0f;
+                planetRadius = SolarSystemManager.moonRadius;
+                planet = bestPlanet;
+            }else{
+                Mass = SolarSystemManager.earthMass;
+                atmoAlt = 0.0f;
+                aeroCoefficient = 0.0f;
+                planetRadius = SolarSystemManager.earthRadius;
+                planet = Earth;
+
+            }
+
+            if(previous != planet)
+            {
+                this.GetComponent<RocketStateManager>().state = "simulate";
+                TimeManager.setScaler(1);
+            }
+
         }
 
-        if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < SolarSystemManager.moonSOI)
-        {
-            Mass = bestPlanet.GetComponent<MoonScript>().moonMass;
-            atmoAlt = 0.0f;
-            aeroCoefficient = 0.0f;
-            planetRadius = bestPlanet.GetComponent<MoonScript>().moonRadius;
-            planet = bestPlanet;
-        }else if(Earth != null) {
-            bestPlanet = Earth;
-            Mass = bestPlanet.GetComponent<EarthScript>().earthMass;
-            atmoAlt = 0.0f;
-            aeroCoefficient = 0.0f;
-            planetRadius = bestPlanet.GetComponent<EarthScript>().earthRadius;
-            planet = bestPlanet;
-        }
+        
 
     }
 }

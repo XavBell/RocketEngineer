@@ -127,7 +127,7 @@ public class BodyPath : MonoBehaviour
     /// </summary>
     /// <param name="Time"></param>
     /// <returns>Position of body at time</returns>
-    public Vector3 GetPositionAtTime(float Time)
+    public Vector3 GetPositionAtTime(double Time)
     {
         double x;
         double y;
