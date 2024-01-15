@@ -140,6 +140,8 @@ public class StageViewer : MonoBehaviour
         rocket.GetComponent<PlanetGravity>().possessed = false;
         MasterManager masterManager = FindObjectOfType<MasterManager>();
         masterManager.gameState = "Building";
+        BuildingManager buildingManager = FindObjectOfType<BuildingManager>();
+        buildingManager.exitFlightMode();
         CameraControl camera = FindObjectOfType<CameraControl>();
         launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
         camera.transform.position = launchsiteManager.commandCenter.transform.position;

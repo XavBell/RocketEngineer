@@ -42,12 +42,12 @@ public class Prediction : MonoBehaviour
 
 
     //For Hyperbolic
-    float Ho;
-    float Mo;
-    float n;
-    float a;
-    float e;
-    float i;
+    double Ho;
+    double Mo;
+    double n;
+    double a;
+    double e;
+    double i;
     public float startTime;
 
     // Start is called before the first frame update
@@ -408,7 +408,7 @@ public class Prediction : MonoBehaviour
 
         if (subPrediction == false)
         {
-            DetectIntercept(positions, times, Earth, potentialBody, orbitMarker);
+            //DetectIntercept(positions, times, Earth, potentialBody, orbitMarker);
         }
 
         line.positionCount = maxStep;
@@ -445,23 +445,23 @@ public class Prediction : MonoBehaviour
         a  = 1/(2/r - Mathf.Pow(v, 2)/gravityParam);
         
         //Calculate raw position
-        UnityEngine.Vector2 p = new UnityEngine.Vector2(rocketPosition3D.x*Mathf.Cos(i)+rocketPosition3D.y*Mathf.Sin(i), rocketPosition3D.y*Mathf.Cos(i)-rocketPosition3D.x*Mathf.Sin(i));
+        UnityEngine.Vector2 p = new UnityEngine.Vector2((float)(rocketPosition3D.x*Math.Cos(i)+rocketPosition3D.y*Math.Sin(i)), (float)(rocketPosition3D.y*Math.Cos(i)-rocketPosition3D.x*Math.Sin(i)));
         //Moon.transform.position = p;
 
         //Calculate Hyperbolic anomaly
-        Ho = (float)Math.Atanh((p.y/(a*Mathf.Sqrt(Mathf.Pow(e, 2)-1)))/(e-p.x/a));
+        Ho = Math.Atanh((p.y/(a*Math.Sqrt(Math.Pow(e, 2)-1)))/(e-p.x/a));
 
         
-        Mo = (float)(Math.Sinh(Ho)*e-Ho);
+        Mo = Math.Sinh(Ho)*e-Ho;
 
 
         //Determine branch of hyperbola
-        float dot = UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D);
-        float det = rocketPosition3D.x*rocketVelocity3D.y - rocketVelocity3D.x * rocketPosition3D.y;
+        double dot = UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D);
+        double det = rocketPosition3D.x*rocketVelocity3D.y - rocketVelocity3D.x * rocketPosition3D.y;
 
-        float angle = Mathf.Atan2(det, dot);
+        double angle = Math.Atan2(det, dot);
         //Calculate mean velocity
-        n = Mathf.Sqrt(gravityParam/Mathf.Abs(Mathf.Pow(a, 3)))*Mathf.Sign(angle);
+        n = Math.Sqrt(gravityParam/Math.Abs(Math.Pow(a, 3)))*Math.Sign(angle);
 
     }
 

@@ -22,12 +22,12 @@ public class RocketPath : MonoBehaviour
     public bool updated;
     public TimeManager MyTime;
 
-    float Ho;
-    float Mo;
-    float n;
-    float a;
-    float e;
-    float i;
+    double Ho;
+    double Mo;
+    double n;
+    double a;
+    double e;
+    double i;
     public double startTime;
     public bool bypass = false;
     
@@ -53,9 +53,9 @@ public class RocketPath : MonoBehaviour
             }
         }
 
-        if(MasterManager != null && MasterManager.ActiveRocket != null)
+        if(MasterManager != null)
         {
-            planetGravity = MasterManager.ActiveRocket.GetComponent<PlanetGravity>();
+            planetGravity = this.GetComponent<PlanetGravity>();
             rb = planetGravity.rb;
             G = planetGravity.G;
             rocketMass = planetGravity.rb.mass;
@@ -381,41 +381,41 @@ public class RocketPath : MonoBehaviour
         UnityEngine.Vector3 rocketVelocity3D = new UnityEngine.Vector3(rocketVelocity2D.x, rocketVelocity2D.y, 0); 
 
         //Find position and velocity magnitude
-        float r = rocketPosition3D.magnitude;
-        float v = rocketVelocity3D.magnitude;
+        double r = rocketPosition3D.magnitude;
+        double v = rocketVelocity3D.magnitude;
 
         //Calculate specific angular momentum
         UnityEngine.Vector3 h_bar = UnityEngine.Vector3.Cross(rocketPosition3D, rocketVelocity3D);
-        float h = h_bar.magnitude;
+        double h = h_bar.magnitude;
 
         //Calculate eccentricity vector
-        UnityEngine.Vector3 eccentricity_bar = UnityEngine.Vector3.Cross(rocketVelocity3D, h_bar)/gravityParam - rocketPosition3D/r;
+        UnityEngine.Vector3 eccentricity_bar = UnityEngine.Vector3.Cross(rocketVelocity3D, h_bar)/gravityParam - rocketPosition3D/(float)r;
         e = eccentricity_bar.magnitude;
         
         //Calculate inclination
-        i = Mathf.Atan2(-eccentricity_bar.y, -eccentricity_bar.x);
+        i = Math.Atan2(-eccentricity_bar.y, -eccentricity_bar.x);
 
         //Calculate semi-major axis
-        a  = 1/(2/r - Mathf.Pow(v, 2)/gravityParam);
+        a  = 1/(2/r - Math.Pow(v, 2)/gravityParam);
         
         //Calculate raw position
-        UnityEngine.Vector2 p = new UnityEngine.Vector2(rocketPosition3D.x*Mathf.Cos(i)+rocketPosition3D.y*Mathf.Sin(i), rocketPosition3D.y*Mathf.Cos(i)-rocketPosition3D.x*Mathf.Sin(i));
+        UnityEngine.Vector2 p = new UnityEngine.Vector2((float)(rocketPosition3D.x*Math.Cos(i)+rocketPosition3D.y*Math.Sin(i)), (float)(rocketPosition3D.y*Math.Cos(i)-rocketPosition3D.x*Math.Sin(i)));
         //Moon.transform.position = p;
 
         //Calculate Hyperbolic anomaly
-        Ho = (float)Math.Atanh((p.y/(a*Mathf.Sqrt(Mathf.Pow(e, 2)-1)))/(e-p.x/a));
+        Ho = Math.Atanh(p.y/(a*Math.Sqrt(Math.Pow(e, 2)-1))/(e-p.x/a));
 
         
-        Mo = (float)(Math.Sinh(Ho)*e-Ho);
+        Mo = Math.Sinh(Ho)*e-Ho;
 
 
         //Determine branch of hyperbola
-        float dot = UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D);
-        float det = rocketPosition3D.x*rocketVelocity3D.y - rocketVelocity3D.x * rocketPosition3D.y;
+        double dot = UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D);
+        double det = rocketPosition3D.x*rocketVelocity3D.y - rocketVelocity3D.x * rocketPosition3D.y;
 
-        float angle = Mathf.Atan2(det, dot);
+        double angle = Math.Atan2(det, dot);
         //Calculate mean velocity
-        n = Mathf.Sqrt(gravityParam/Mathf.Abs(Mathf.Pow(a, 3)))*Mathf.Sign(angle);
+        n = Math.Sqrt(gravityParam/Math.Abs(Math.Pow(a, 3)))*Math.Sign(angle);
     }
 
     public static void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double e, double a, double i, double n, double startTime, out double x, out double y, out double VX, out double VY)

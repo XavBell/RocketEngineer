@@ -14,8 +14,8 @@ public class BodyPath : MonoBehaviour
     public MasterManager MasterManager;
     public LineRenderer line;
     public SolarSystemManager solarSystemManager;
-    public float G;
-    public float gravityParam = 0;
+    public double G;
+    public double gravityParam = 0;
 
     public KeplerParams KeplerParams =  new KeplerParams();
 
@@ -27,7 +27,6 @@ public class BodyPath : MonoBehaviour
     public Rigidbody2D rb;
 
     bool udated = false;
-    float time = 0;
 
 
     
@@ -57,7 +56,7 @@ public class BodyPath : MonoBehaviour
         if(MasterManager != null)
         {
             G = solarSystemManager.G;
-            gravityParam = G*(float)(this.GetComponent<PhysicsStats>().mass + OrbitingBody.GetComponent<PhysicsStats>().mass);
+            gravityParam = G*(this.GetComponent<PhysicsStats>().mass + OrbitingBody.GetComponent<PhysicsStats>().mass);
 
         }
 
@@ -102,10 +101,10 @@ public class BodyPath : MonoBehaviour
         }
     }
 
-    void DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)
+    void DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, double gravityParam)
     {
         int numPoints = 1000;
-        float[] times = new float[numPoints];
+        double[] times = new double[numPoints];
         Vector3[] positions = new Vector3[numPoints];
 
         if(true == true)
@@ -324,12 +323,12 @@ public class BodyPath : MonoBehaviour
         trueAnomalyAtEpoch = TA;
     }
 
-    public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, float gravityParam, float time)
+    public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time)
     {
         KtoCfromC(rocketPosition2D, planetPosition2D,rocketVelocity2D, gravityParam, time, out keplerParams.semiMajorAxis, out keplerParams.eccentricity, out keplerParams.argumentOfPeriapsis, out keplerParams.longitudeOfAscendingNode, out keplerParams.inclination, out keplerParams.timeToPeriapsis, out keplerParams.trueAnomalyAtEpoch);
     }
 
-    public static void CalculatePoints(double time, int numPoints, float gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref float[] times, ref UnityEngine.Vector3[] positions)
+    public static void CalculatePoints(double time, int numPoints, double gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref double[] times, ref UnityEngine.Vector3[] positions)
     {
         var period = GetOrbitalPeriod(gravityParam, keplerParams.semiMajorAxis);
         var timeIncrement = period / numPoints;
@@ -342,10 +341,10 @@ public class BodyPath : MonoBehaviour
             double VY;
             GetOrbitPositionKepler(gravityParam, time, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
             Vector3 pos = new Vector3((float)x, (float)y, 0)+ new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
-            times[count] = (float)time;
+            times[count] = time;
             positions[count] = pos;
 
-            time += (float)timeIncrement;
+            time += timeIncrement;
         }
     }
 
