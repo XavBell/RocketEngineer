@@ -258,11 +258,11 @@ public class RocketPath : MonoBehaviour
 
         double EA = MA;
 
-        for (int count = 0; count < 10; count++)
+        for (int count = 0; count < 500; count++)
         {
             double dE = (EA - eccentricity * Math.Sin(EA) - MA) / (1 - eccentricity * Math.Cos(EA));
             EA -= dE;
-            if (Math.Abs(dE) < 1e-12)
+            if (Math.Abs(dE) < 1e-10)
             {
                 break;
             } 

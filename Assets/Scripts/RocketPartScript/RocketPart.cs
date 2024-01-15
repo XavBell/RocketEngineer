@@ -4,9 +4,11 @@ using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class RocketPart : MonoBehaviour
 {
+    public ParticleSystem explosion;
     [field: SerializeField] public string _partType;
 
     public string _partName{get; set;}
@@ -28,5 +30,15 @@ public class RocketPart : MonoBehaviour
     public void SetGuid()
     {
         _partID = Guid.NewGuid();
+    }
+
+    void OnDestroy()
+    {
+        if(explosion != null)
+        {
+            explosion.gameObject.transform.parent = null;
+            explosion.Play();
+        }
+        
     }
 }

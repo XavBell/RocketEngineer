@@ -24,6 +24,7 @@ public class Engine : RocketPart
     public bool willFail = false;
     public float timeOfFail;
     public float outReadThrust;
+    public bool willExplode = false;
 
     public void activate()
     {
@@ -44,6 +45,10 @@ public class Engine : RocketPart
         if(outThrust < minThrust || outThrust > maxThrust)
         {
             willFail = true;
+            if(percentageOfThrust < 0.5f || percentageOfThrust > 1.5f)
+            {
+                willExplode = true;
+            }
             timeOfFail = maxTime * percentageOfThrust;
         }else{
             willFail = false;
@@ -61,6 +66,18 @@ public class Engine : RocketPart
             fail = false;
         }else if(willFail == true && timeOfFail >= time){
             fail = false;
+            if(willExplode == true)
+            {
+                if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
+                {
+                    GameObject toDestroy = this.gameObject.transform.parent.gameObject;
+                    Destroy(toDestroy);
+                }else if(explosion != null){
+                    explosion.transform.parent = null;
+                    explosion.Play();
+                    Destroy(this.gameObject);
+                }
+            }
         }else{
             fail = false;
         }

@@ -23,7 +23,7 @@ public class flightUIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(masterManager.gameState == "Flight")
+        if(masterManager.gameState == "Flight" && stageViewer.rocket != null)
         {
             updateUI();
         }

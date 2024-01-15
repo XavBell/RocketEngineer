@@ -97,7 +97,7 @@ public class Prediction : MonoBehaviour
 
     void DrawLine(float time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)
     {
-        int numPoints = 200;
+        int numPoints = 1000;
         double[] times = new double[numPoints];
         UnityEngine.Vector3[] positions = new UnityEngine.Vector3[numPoints];
 
@@ -109,6 +109,7 @@ public class Prediction : MonoBehaviour
                 CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
                 line.positionCount = numPoints;
                 line.SetPositions(positions);
+                line.loop = true;
             }
 
             if (rb.velocity.magnitude != 0 && keplerParams.eccentricity > 1)
@@ -116,6 +117,7 @@ public class Prediction : MonoBehaviour
                 CalculateParametersHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, time, line);
                 CalculateParameterHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, MyTime.time);
                 startTime = (float)MyTime.time;
+                line.loop = false;
             }
 
             updated = true;
@@ -383,7 +385,7 @@ public class Prediction : MonoBehaviour
 
         //Plot positions
         int timeStep = 10;
-        int maxStep = 300;
+        int maxStep = 3000;
         UnityEngine.Vector3[] positions = new UnityEngine.Vector3[maxStep];
         double H = Ho;
         double[] times = new double[maxStep];

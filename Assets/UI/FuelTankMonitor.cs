@@ -47,10 +47,10 @@ public class FuelTankMonitor : MonoBehaviour
         float tryN = 0;
         if(float.TryParse(target.text.ToString(), out tryN))
         {
-            outputInputManager.externalTemperature = tryN;
+            outputInputManager.targetTemperature = tryN;
             return;
         }else{
-            outputInputManager.externalTemperature = outputInputManager.internalTemperature;
+            outputInputManager.targetTemperature = outputInputManager.internalTemperature;
         }
     }
 
@@ -62,6 +62,36 @@ public class FuelTankMonitor : MonoBehaviour
             return;
         }else{
             openValve(rate);
+        }
+    }
+
+    public void cooler()
+    {
+        if(outputInputManager.coolerActive == false)
+        {
+            outputInputManager.coolerActive = true;
+            return;
+        }
+
+        if(outputInputManager.coolerActive == true)
+        {
+            outputInputManager.coolerActive = false;
+            return;
+        }
+    }
+
+    public void vent()
+    {
+        if(outputInputManager.ventActive == false)
+        {
+            outputInputManager.ventActive = true;
+            return;
+        }
+
+        if(outputInputManager.ventActive == true)
+        {
+            outputInputManager.ventActive = false;
+            return;
         }
     }
     public void openValve(float rate)

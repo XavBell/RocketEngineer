@@ -20386,12 +20386,15 @@ MonoBehaviour:
   earthRadius: 63710
   earthSOI: 9000000
   earthMass: 0
+  earthAlt: 1000
+  earthDensitySlvl: 1
   moongSlvl: 1.6
   moonRadius: 17000
   moonMass: 0
-  moonSOI: 371805
+  moonSOI: 600000
   sunSlvl: 274.4
   sunRadius: 6.957e+9
+  sunSOI: 10000000
   sunMass: 0
   needUpdate: 0
 --- !u!4 &1182590600
@@ -22294,7 +22297,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1269784187
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32355,8 +32358,8 @@ MonoBehaviour:
   m_Spacing: 2
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
-  m_ChildControlWidth: 0
-  m_ChildControlHeight: 0
+  m_ChildControlWidth: 1
+  m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0

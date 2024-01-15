@@ -23,6 +23,7 @@ public class PlanetGravity : MonoBehaviour
     public float atmoAlt = 0.0f;
     public float aeroCoefficient = 0f;
     public float planetRadius = 0f; //Planet radius in m
+    public float planetDensity = 0f;
     float maxAlt;
 
 
@@ -51,6 +52,7 @@ public class PlanetGravity : MonoBehaviour
     public SolarSystemManager SolarSystemManager;
     public DoubleTransform dt;
     public Camera cam;
+    public float baseCoefficient = 0.075f;
 
     // Start is called before the first frame update
     void Start()
@@ -120,7 +122,19 @@ public class PlanetGravity : MonoBehaviour
         Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
         Vector3 ForceVector = forceDir * (G*(Mass*rb.mass)/(float)(Dist * Dist));
         Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
-        Vector3 ResultVector = (ForceVector + Thrust);
+        Vector3 DragVector = new Vector3(0, 0, 0);
+        Debug.Log(atmoAlt);
+        if(Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 2)
+        {
+            double airPressure = 1/((Dist-planetRadius))*planetDensity;
+            double drag = baseCoefficient * airPressure * rb.velocity.magnitude/2;
+            DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
+            Debug.Log(DragVector);
+        }
+        Vector3 ResultVector = (ForceVector + Thrust + DragVector);
+        
+        
+
         rb.AddForce(ResultVector);
         GetComponent<DoubleTransform>().x_pos = rb.position.x;
         GetComponent<DoubleTransform>().y_pos = rb.position.y;
@@ -210,8 +224,8 @@ public class PlanetGravity : MonoBehaviour
             if (bestPlanet.GetComponent<TypeScript>().type == "earth")
             {
                 Mass = SolarSystemManager.earthMass;
-                atmoAlt = 0.0f;
-                aeroCoefficient = 0.0f;
+                atmoAlt = SolarSystemManager.earthAlt;
+                planetDensity = SolarSystemManager.earthDensitySlvl;
                 planetRadius = SolarSystemManager.earthRadius;
                 planet = bestPlanet;
             }
@@ -223,13 +237,19 @@ public class PlanetGravity : MonoBehaviour
                 aeroCoefficient = 0.0f;
                 planetRadius = SolarSystemManager.moonRadius;
                 planet = bestPlanet;
-            }else{
+            }else if((this.transform.position - Earth.transform.position).magnitude < SolarSystemManager.earthSOI){
                 Mass = SolarSystemManager.earthMass;
-                atmoAlt = 0.0f;
-                aeroCoefficient = 0.0f;
-                planetRadius = SolarSystemManager.earthRadius;
+                atmoAlt = SolarSystemManager.earthAlt;
+                aeroCoefficient = SolarSystemManager.earthDensitySlvl;
+                planetDensity = SolarSystemManager.earthRadius;
                 planet = Earth;
 
+            }else{
+                Mass = SolarSystemManager.sunMass;
+                atmoAlt = 0.0f;
+                aeroCoefficient = 0.0f;
+                planetRadius = SolarSystemManager.sunRadius;
+                planet = FindObjectOfType<SunScript>().gameObject;
             }
 
             if(previous != planet)

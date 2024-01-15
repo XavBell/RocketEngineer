@@ -36,14 +36,17 @@ public class outputInputManager : MonoBehaviour
     public float tankHeight = 0;
     public float tankThickness = 0.1f;
     public float tankThermalConductivity = 10f;
+    public float tankCoolerPower = 500f;
     public float tankSurfaceArea = 2000f;
     public string tankState = "working";
 
     public float externalTemperature = 298f;
+    public float targetTemperature = 298f;
     //In pascals
     public float externalPressure = 101000f;
-    public float internalPressure = 0f;
-    public float internalTemperature = 0f;
+    public float internalPressure = 298f;
+    public float internalTemperature = 298f;
+    public float maxPressure = 4e8f;
     public string substance = "none";
     public string state = "none";
 
@@ -55,6 +58,8 @@ public class outputInputManager : MonoBehaviour
     public float substanceSpecificHeatCapacity; //J/kgK
 
     public bool log = false;
+    public bool coolerActive = false;
+    public bool ventActive = false;
 
     public float variation;
 
@@ -63,6 +68,7 @@ public class outputInputManager : MonoBehaviour
     public string type = "default";
     public string circuit = "none";
     public TimeManager MyTime;
+    public ParticleSystem explosion;
 
     void Start()
     {
@@ -82,19 +88,54 @@ public class outputInputManager : MonoBehaviour
             //InitializeOutput();
         }
 
-        if(type == "default" && MyTime != null)
-        {
-            updateParents();
-            setRate();
-            fuelTransfer();
-        }
-
         if(GetComponent<Tank>() != null)
         {
             InitializeCircuitTank();
         }
 
+        if(type == "default" && MyTime != null)
+        {
+            updateParents();
+            setRate();
+            fuelTransfer();
+            vent();
+            checkBreak();
+        }
+
         
+
+        
+    }
+
+    void checkBreak()
+    {
+        if(internalPressure > maxPressure)
+        {
+            if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
+            {
+                GameObject toDestroy = this.gameObject.transform.parent.gameObject;
+                Destroy(toDestroy);
+            }else if(explosion != null){
+                explosion.transform.parent = null;
+                explosion.Play();
+                Destroy(this.gameObject);
+            }
+            return;
+        }
+        
+        if(volume > tankVolume)
+        {
+            if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
+            {
+                GameObject toDestroy = this.gameObject.transform.parent.gameObject;
+                DestroyImmediate(toDestroy);
+            }else if(explosion != null){
+                explosion.transform.parent = null;
+                explosion.Play();
+                DestroyImmediate(this.gameObject);
+            }
+            return;
+        }
     }
 
     void Initialize()
@@ -146,6 +187,24 @@ public class outputInputManager : MonoBehaviour
         if(!inputParent && moles != 0)
         {
             rate = selfRate;
+        }
+    }
+
+    void vent()
+    {
+        if(ventActive == true)
+        {
+            state = "gas";
+            float molarRate = 5000/substanceMolarMass;
+            variation = molarRate * MyTime.deltaTime;
+            if(moles -  variation >= 0)
+            {
+                variation = molarRate * MyTime.deltaTime;
+                moles -=  variation;
+            }else{
+                moles = 0;
+                substance = "none";
+            }
         }
     }
 
@@ -229,6 +288,23 @@ public class outputInputManager : MonoBehaviour
         }
     }
 
+    public void updateExternalTemp()
+    {
+        if(this.gameObject.transform.parent != null)
+        {
+            if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
+            {
+                PlanetGravity PG = this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>();
+                if((this.gameObject.transform.position - PG.planet.transform.position).magnitude > PG.planetRadius+PG.atmoAlt)
+                {
+                    externalTemperature = internalTemperature;
+                }
+            }
+            
+            
+        }
+    }
+
     private void CalculateRocketTankVariation(float molarRate)
     {
         launchPadManager launchPad = this.GetComponent<launchPadManager>();
@@ -292,6 +368,7 @@ public class outputInputManager : MonoBehaviour
         substanceProperty.AssignProperty(substance, out substanceDensity, out substanceLiquidTemperature, out substanceGaseousTemperature, out substanceSolidTemperature, out substanceMolarMass, out substanceSpecificHeatCapacity);
         SetState();
         CalculateConditionsFromState();
+        updateExternalTemp();
     }
 
     private void CalculateConditionsFromState()
@@ -346,10 +423,36 @@ public class outputInputManager : MonoBehaviour
 
     void CalculateTemperature()
     {
+        float temp = 0;
+        float tankLocalThermalConductivity = 0;
+        if(coolerActive == true)
+        {
+            temp = targetTemperature;
+            tankLocalThermalConductivity = tankCoolerPower;
+        }
+
+        if(coolerActive == false)
+        {
+            temp = externalTemperature;
+            tankLocalThermalConductivity = tankThermalConductivity;
+        }
+        
+
         //Calculate T (might not work if internal is higher than external or reverse)
-        float Q_cond = (tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
+        float Q_cond = 0;
+        if(temp < internalTemperature)
+        {
+            Q_cond = (tankLocalThermalConductivity * tankSurfaceArea * (temp - internalTemperature)) / tankThickness;
+        }
+
+        if(temp < externalTemperature)
+        {
+            Q_cond = (tankLocalThermalConductivity * tankSurfaceArea * (internalTemperature - temp)) / tankThickness;
+        }
+        
+        
         float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
-        if (internalTemperature != externalTemperature)
+        if (internalTemperature != temp)
         {
             internalTemperature += deltaInternal;
         }
