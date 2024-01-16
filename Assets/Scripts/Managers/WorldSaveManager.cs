@@ -428,7 +428,12 @@ public class WorldSaveManager : MonoBehaviour
 
                 if (part._partType == "tank")
                 {
-
+                    Tank tank = part.gameObject.GetComponent<Tank>();
+                    savePart._volume = tank._volume;
+                    savePart.x_scale = tank.gameObject.GetComponent<SpriteRenderer>().size.x;
+                    savePart.y_scale = tank.gameObject.GetComponent<SpriteRenderer>().size.y;
+                    savePart.tankMaterial = tank.tankMaterial;
+                    savePart.propellantCategory = tank.propellantCategory;
                 }
                 saveStage.Parts.Add(savePart);
             }
@@ -523,6 +528,12 @@ public class WorldSaveManager : MonoBehaviour
                         if (savePart.type == "tank")
                         {
                             currentPart = Instantiate(Tank, root.transform);
+                            Tank tank = currentPart.gameObject.GetComponent<Tank>();
+                            tank._volume = savePart._volume;
+                            tank.gameObject.GetComponent<SpriteRenderer>().size = new Vector2(savePart.x_scale, savePart.y_scale);
+                            tank.tankMaterial = savePart.tankMaterial;
+                            tank.propellantCategory = savePart.propellantCategory;
+                            tank.transform.localScale = new Vector3(1, 1, 0);
                         }
 
                         if (savePart.type == "decoupler")
@@ -544,69 +555,5 @@ public class WorldSaveManager : MonoBehaviour
             i++;
         }
     }
-
-
-
-
-
-
-
-
-
-    //TO DELETE
-    public void save(Rocket Rocket)
-    {
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder))
-        {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder);
-        }
-
-        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder + Rocket.name + ".json"))
-        {
-            savecraft saveRocket = new savecraft();
-            int i = 0;
-            saveRocket.coreID = Rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
-            foreach (Stages stage in Rocket.GetComponent<Rocket>().Stages)
-            {
-                foreach (RocketPart part in stage.Parts)
-                {
-
-                    //Set tank
-                    if (part._partType == "tank")
-                    {
-                        saveRocket.x_scale.Add(part.GetComponent<BoxCollider2D>().size.x);
-                        saveRocket.y_scale.Add(part.GetComponent<BoxCollider2D>().size.y);
-                        saveRocket.volume.Add(part.GetComponent<Tank>()._volume);
-                        saveRocket.propellantType.Add(part.GetComponent<Tank>().propellantCategory);
-                        saveRocket.tankMaterial.Add(part.GetComponent<Tank>().tankMaterial);
-                    }
-
-                    //Set Engine
-                    if (part._partType == "engine")
-                    {
-                        saveRocket.engineName.Add(part.GetComponent<Engine>()._partName);
-                        saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
-                        saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
-                    }
-                }
-
-                i++;
-            }
-
-            var jsonString = JsonConvert.SerializeObject(saveRocket);
-            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder + Rocket.name + ".json", jsonString);
-
-        }
-        else
-        {
-            //cry
-        }
-    }
-
-    public void setPosition(float x, float y, float z, GameObject current)
-    {
-        current.transform.localPosition = new Vector3(x, y, z);
-    }
-
 
 }

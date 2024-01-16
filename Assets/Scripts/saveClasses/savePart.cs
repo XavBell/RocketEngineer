@@ -14,6 +14,12 @@ public class savePart
     public float posY;
     public float cost;
 
+    //AttachPoints
+    public Guid guidTop;
+    public Guid guidBottom;
+    public Guid guidLeft;
+    public Guid guidRight;
+
     //ENGINE
     public float thrust;
     public float rate;
@@ -29,4 +35,11 @@ public class savePart
     public bool willFail;
     public float timeOfFail;
     public bool willExplode;
+
+    //TANK
+    public float _volume;
+    public float x_scale;
+    public float y_scale;
+    public string tankMaterial;
+    public string propellantCategory;
 }

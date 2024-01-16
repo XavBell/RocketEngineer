@@ -123,13 +123,11 @@ public class PlanetGravity : MonoBehaviour
         Vector3 ForceVector = forceDir * (G*(Mass*rb.mass)/(float)(Dist * Dist));
         Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
         Vector3 DragVector = new Vector3(0, 0, 0);
-        Debug.Log(atmoAlt);
-        if(Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 2)
+        if(Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 10)
         {
             double airPressure = 1/((Dist-planetRadius))*planetDensity;
             double drag = baseCoefficient * airPressure * rb.velocity.magnitude/2;
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
-            Debug.Log(DragVector);
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
         
