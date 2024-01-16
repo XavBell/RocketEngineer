@@ -50,18 +50,18 @@ public class WorldSaveManager : MonoBehaviour
     void Start()
     {
         MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
-        loadWorld(); 
+        loadWorld();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.J))
+        if (Input.GetKey(KeyCode.J))
         {
             saveTheWorld();
         }
 
-        if(Input.GetKey(KeyCode.H) && loaded == false)
+        if (Input.GetKey(KeyCode.H) && loaded == false)
         {
             loadWorld();
         }
@@ -110,7 +110,7 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.previouslyLoaded = true;
 
         GameObject[] buildings = GameObject.FindGameObjectsWithTag("building");
-        foreach(GameObject building in buildings)
+        foreach (GameObject building in buildings)
         {
             saveWorld.buildingTypes.Add(building.GetComponent<buildingType>().type);
             saveWorld.buildingIDs.Add(building.GetComponent<buildingType>().buildingID);
@@ -122,55 +122,55 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.buildingRotY.Add(building.transform.eulerAngles.y);
             saveWorld.buildingRotZ.Add(building.transform.eulerAngles.z);
 
-            if(building.GetComponent<buildingType>().type == "designer")
+            if (building.GetComponent<buildingType>().type == "designer")
             {
                 saveWorld.inputIDs.Add(0);
                 saveWorld.outputIDs.Add(0);
             }
 
-            if(building.GetComponent<buildingType>().type == "commandCenter")
+            if (building.GetComponent<buildingType>().type == "commandCenter")
             {
                 saveWorld.inputIDs.Add(0);
                 saveWorld.outputIDs.Add(0);
             }
 
-            if(building.GetComponent<buildingType>().type == "VAB")
+            if (building.GetComponent<buildingType>().type == "VAB")
             {
                 saveWorld.inputIDs.Add(0);
                 saveWorld.outputIDs.Add(0);
             }
 
-            if(building.GetComponent<buildingType>().type == "GSEtank")
+            if (building.GetComponent<buildingType>().type == "GSEtank")
             {
-                
+
                 saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
                 saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
             }
-            
-            if(building.GetComponent<buildingType>().type == "launchPad")
+
+            if (building.GetComponent<buildingType>().type == "launchPad")
             {
                 outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
-                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                foreach (outputInputManager outputInputManager in outputInputManagers1)
                 {
                     saveWorld.inputIDs.Add(outputInputManager.inputParentID);
                     saveWorld.outputIDs.Add(outputInputManager.outputParentID);
                 }
             }
 
-            if(building.GetComponent<buildingType>().type == "staticFireStand")
+            if (building.GetComponent<buildingType>().type == "staticFireStand")
             {
                 outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
-                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                foreach (outputInputManager outputInputManager in outputInputManagers1)
                 {
                     saveWorld.inputIDs.Add(outputInputManager.inputParentID);
                     saveWorld.outputIDs.Add(outputInputManager.outputParentID);
                 }
             }
 
-            if(building.GetComponent<buildingType>().type == "standTank")
+            if (building.GetComponent<buildingType>().type == "standTank")
             {
                 outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
-                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                foreach (outputInputManager outputInputManager in outputInputManagers1)
                 {
                     saveWorld.inputIDs.Add(outputInputManager.inputParentID);
                     saveWorld.outputIDs.Add(outputInputManager.outputParentID);
@@ -179,7 +179,7 @@ public class WorldSaveManager : MonoBehaviour
         }
 
         outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
-        foreach(outputInputManager outputInputManager in outputInputManagers)
+        foreach (outputInputManager outputInputManager in outputInputManagers)
         {
             saveWorld.selfGuid.Add(outputInputManager.guid);
             saveWorld.InputGuid.Add(outputInputManager.inputGuid);
@@ -187,12 +187,12 @@ public class WorldSaveManager : MonoBehaviour
         }
 
         Rocket[] Rockets = FindObjectsOfType<Rocket>();
-        foreach(Rocket rocket in Rockets)
+        foreach (Rocket rocket in Rockets)
         {
             saveRocket(rocket, saveWorld);
         }
-        
-       
+
+
 
         var jsonString = JsonConvert.SerializeObject(saveWorld);
         System.IO.File.WriteAllText(MasterManager.GetComponent<MasterManager>().worldPath, jsonString);
@@ -205,181 +205,183 @@ public class WorldSaveManager : MonoBehaviour
         jsonString = File.ReadAllText(MasterManager.GetComponent<MasterManager>().worldPath);
         saveWorld loadedWorld = JsonConvert.DeserializeObject<saveWorld>(jsonString);
         FileVersionManger version = new FileVersionManger();
-        if(loadedWorld.version == version.currentVersion){
-        int alreadyUsed = 0;
-        int capsuleID = 0;
-
-        int engineCount = 0;
-        int tankCount = 0;
-        int decouplerCount = 0;
-
-        if(loadedWorld.previouslyLoaded == true)
+        if (loadedWorld.version == version.currentVersion)
         {
-            FindObjectOfType<TimeManager>().time = loadedWorld.time;
-            FindObjectOfType<TimeManager>().bypass = true;
-            earth.transform.position = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
-            moon.transform.position = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+            int alreadyUsed = 0;
+            int capsuleID = 0;
 
-            earth.GetComponent<PhysicsStats>().x_vel = loadedWorld.earthVX;
-            earth.GetComponent<PhysicsStats>().y_vel = loadedWorld.earthVY;
+            int engineCount = 0;
+            int tankCount = 0;
+            int decouplerCount = 0;
 
-            moon.GetComponent<PhysicsStats>().x_vel = loadedWorld.moonVX;
-            moon.GetComponent<PhysicsStats>().y_vel = loadedWorld.moonVY;
-
-            MasterManager.GetComponent<pointManager>().nPoints = loadedWorld.nPoints;
-            MasterManager.GetComponent<MasterManager>().partName = loadedWorld.partName;
-            MasterManager.GetComponent<MasterManager>().partType = loadedWorld.partType;
-            MasterManager.GetComponent<MasterManager>().count = loadedWorld.count;
-        }
-
-        
-
-        int count = 0;
-
-
-        BuildingManager.GetComponent<BuildingManager>().IDMax = loadedWorld.IDMax;
-
-        foreach(string buildingType in loadedWorld.buildingTypes)
-        {
-            Vector3 position = new Vector3(loadedWorld.buildingLocX[count], loadedWorld.buildingLocY[count], loadedWorld.buildingLocZ[count]);
-            Vector3 rotation = new Vector3(loadedWorld.buildingRotX[count], loadedWorld.buildingRotY[count], loadedWorld.buildingRotZ[count]);
-
-            if(buildingType == "designer")
+            if (loadedWorld.previouslyLoaded == true)
             {
-                GameObject current = Instantiate(designerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                current.transform.SetParent(earth.transform);
-                current.transform.localPosition = position;
-                current.transform.eulerAngles = rotation;
-                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                launchsiteManager.designer = current;
+                FindObjectOfType<TimeManager>().time = loadedWorld.time;
+                FindObjectOfType<TimeManager>().bypass = true;
+                earth.transform.position = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
+                moon.transform.position = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+
+                earth.GetComponent<PhysicsStats>().x_vel = loadedWorld.earthVX;
+                earth.GetComponent<PhysicsStats>().y_vel = loadedWorld.earthVY;
+
+                moon.GetComponent<PhysicsStats>().x_vel = loadedWorld.moonVX;
+                moon.GetComponent<PhysicsStats>().y_vel = loadedWorld.moonVY;
+
+                MasterManager.GetComponent<pointManager>().nPoints = loadedWorld.nPoints;
+                MasterManager.GetComponent<MasterManager>().partName = loadedWorld.partName;
+                MasterManager.GetComponent<MasterManager>().partType = loadedWorld.partType;
+                MasterManager.GetComponent<MasterManager>().count = loadedWorld.count;
             }
 
-            if(buildingType == "GSEtank")
-            {
-                GameObject current = Instantiate(fuelTankPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                current.transform.SetParent(earth.transform);
-                current.transform.localPosition = position;
-                current.transform.eulerAngles = rotation;
-                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
-            }
 
-            if(buildingType == "launchPad")
+
+            int count = 0;
+
+
+            BuildingManager.GetComponent<BuildingManager>().IDMax = loadedWorld.IDMax;
+
+            foreach (string buildingType in loadedWorld.buildingTypes)
             {
-                GameObject current = Instantiate(launchPadPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                current.transform.SetParent(earth.transform);
-                current.transform.localPosition = position;
-                current.transform.eulerAngles = rotation;
-                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
-                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                Vector3 position = new Vector3(loadedWorld.buildingLocX[count], loadedWorld.buildingLocY[count], loadedWorld.buildingLocZ[count]);
+                Vector3 rotation = new Vector3(loadedWorld.buildingRotX[count], loadedWorld.buildingRotY[count], loadedWorld.buildingRotZ[count]);
+
+                if (buildingType == "designer")
                 {
-                    outputInputManager.inputParentID = loadedWorld.inputIDs[count];
-                    outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                    GameObject current = Instantiate(designerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    current.transform.SetParent(earth.transform);
+                    current.transform.localPosition = position;
+                    current.transform.eulerAngles = rotation;
+                    current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                    launchsiteManager.designer = current;
+                }
+
+                if (buildingType == "GSEtank")
+                {
+                    GameObject current = Instantiate(fuelTankPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    current.transform.SetParent(earth.transform);
+                    current.transform.localPosition = position;
+                    current.transform.eulerAngles = rotation;
+                    current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                    current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                    current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
+                }
+
+                if (buildingType == "launchPad")
+                {
+                    GameObject current = Instantiate(launchPadPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    current.transform.SetParent(earth.transform);
+                    current.transform.localPosition = position;
+                    current.transform.eulerAngles = rotation;
+                    current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                    outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
+                    foreach (outputInputManager outputInputManager in outputInputManagers1)
+                    {
+                        outputInputManager.inputParentID = loadedWorld.inputIDs[count];
+                        outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                    }
+                }
+
+                if (buildingType == "VAB")
+                {
+                    GameObject current = Instantiate(VABPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    current.transform.SetParent(earth.transform);
+                    current.transform.localPosition = position;
+                    current.transform.eulerAngles = rotation;
+                    current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                }
+
+                if (buildingType == "commandCenter")
+                {
+                    GameObject current = Instantiate(commandCenterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    current.transform.SetParent(earth.transform);
+                    current.transform.localPosition = position;
+                    current.transform.eulerAngles = rotation;
+                    current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                    launchsiteManager.commandCenter = current;
+                }
+
+                if (buildingType == "standTank")
+                {
+                    GameObject current = Instantiate(standTankPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    current.transform.SetParent(earth.transform);
+                    current.transform.localPosition = position;
+                    current.transform.eulerAngles = rotation;
+                    current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                    outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
+                    foreach (outputInputManager outputInputManager in outputInputManagers1)
+                    {
+                        outputInputManager.inputParentID = loadedWorld.inputIDs[count];
+                        outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                    }
+                }
+
+                if (buildingType == "staticFireStand")
+                {
+                    GameObject current = Instantiate(staticFireStandPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                    current.transform.SetParent(earth.transform);
+                    current.transform.localPosition = position;
+                    current.transform.eulerAngles = rotation;
+                    current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                    outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
+                    foreach (outputInputManager outputInputManager in outputInputManagers1)
+                    {
+                        outputInputManager.inputParentID = loadedWorld.inputIDs[count];
+                        outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                    }
+                }
+                count++;
+            }
+
+            loadRocket(loadedWorld);
+
+            outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
+            int x = 0;
+            foreach (outputInputManager outputInputManager in outputInputManagers)
+            {
+                outputInputManager.guid = loadedWorld.selfGuid[x];
+                outputInputManager.inputGuid = loadedWorld.InputGuid[x];
+                outputInputManager.outputGuid = loadedWorld.OutputGuid[x];
+                x++;
+            }
+
+            foreach (outputInputManager outputInputManager1 in outputInputManagers)
+            {
+                foreach (outputInputManager outputInputManager2 in outputInputManagers)
+                {
+                    if (outputInputManager1.guid == outputInputManager2.outputGuid)
+                    {
+                        outputInputManager2.outputParent = outputInputManager1;
+                        outputInputManager1.inputParent = outputInputManager2;
+                    }
+
+                    if (outputInputManager2.guid == outputInputManager1.outputGuid)
+                    {
+                        outputInputManager1.outputParent = outputInputManager2;
+                        outputInputManager2.inputParent = outputInputManager1;
+                    }
                 }
             }
 
-            if(buildingType == "VAB")
+
+
+            launchsiteManager.updateVisibleButtons();
+            if (launchsiteManager.commandCenter != null)
             {
-                GameObject current = Instantiate(VABPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                current.transform.SetParent(earth.transform);
-                current.transform.localPosition = position;
-                current.transform.eulerAngles = rotation;
-                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
+                worldCamera.transform.position = launchsiteManager.commandCenter.transform.position;
             }
 
-            if(buildingType == "commandCenter")
-            {
-                GameObject current = Instantiate(commandCenterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                current.transform.SetParent(earth.transform);
-                current.transform.localPosition = position;
-                current.transform.eulerAngles = rotation;
-                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                launchsiteManager.commandCenter = current;
-            }
 
-            if(buildingType == "standTank")
-            {
-                GameObject current = Instantiate(standTankPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                current.transform.SetParent(earth.transform);
-                current.transform.localPosition = position;
-                current.transform.eulerAngles = rotation;
-                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
-                foreach(outputInputManager outputInputManager in outputInputManagers1)
-                {
-                    outputInputManager.inputParentID = loadedWorld.inputIDs[count];
-                    outputInputManager.outputParentID = loadedWorld.outputIDs[count];
-                }
-            }
 
-            if(buildingType == "staticFireStand")
-            {
-                GameObject current = Instantiate(staticFireStandPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-                current.transform.SetParent(earth.transform);
-                current.transform.localPosition = position;
-                current.transform.eulerAngles = rotation;
-                current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
-                foreach(outputInputManager outputInputManager in outputInputManagers1)
-                {
-                    outputInputManager.inputParentID = loadedWorld.inputIDs[count];
-                    outputInputManager.outputParentID = loadedWorld.outputIDs[count];
-                }
-            }
-            count++;
+
+            earth.GetComponent<EarthScript>().InitializeEarth();
+            moon.GetComponent<MoonScript>().InitializeMoon();
+            sun.GetComponent<SunScript>().InitializeSun();
+
+            loaded = true;
         }
-
-        loadRocket(loadedWorld);
-        
-        outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
-        int x = 0;
-        foreach(outputInputManager outputInputManager in outputInputManagers)
+        else if (loadedWorld.version != version.currentVersion)
         {
-            outputInputManager.guid = loadedWorld.selfGuid[x];
-            outputInputManager.inputGuid = loadedWorld.InputGuid[x];
-            outputInputManager.outputGuid = loadedWorld.OutputGuid[x];
-            x++;
-        }
-
-        foreach(outputInputManager outputInputManager1 in outputInputManagers)
-        {
-            foreach(outputInputManager outputInputManager2 in outputInputManagers)
-            {
-                if(outputInputManager1.guid == outputInputManager2.outputGuid)
-                {
-                    outputInputManager2.outputParent = outputInputManager1;
-                    outputInputManager1.inputParent = outputInputManager2;
-                }
-        
-                if(outputInputManager2.guid == outputInputManager1.outputGuid)
-                {
-                   outputInputManager1.outputParent = outputInputManager2;
-                    outputInputManager2.inputParent = outputInputManager1;
-                }
-            }
-        }
-
-        
-
-        launchsiteManager.updateVisibleButtons();
-        if(launchsiteManager.commandCenter != null)
-        {
-            worldCamera.transform.position = launchsiteManager.commandCenter.transform.position;
-        }
-
-        
-
-        
-        earth.GetComponent<EarthScript>().InitializeEarth();
-        moon.GetComponent<MoonScript>().InitializeMoon();
-        sun.GetComponent<SunScript>().InitializeSun();
-        
-        loaded = true;
-        } else if(loadedWorld.version != version.currentVersion)
-        {
-           UnityEngine.Debug.Log("File version not compatible");
+            UnityEngine.Debug.Log("File version not compatible");
         }
     }
 
@@ -391,10 +393,10 @@ public class WorldSaveManager : MonoBehaviour
         saveWorldRocket.v_x.Add(rocket.GetComponent<Rigidbody2D>().velocity.x);
         saveWorldRocket.v_y.Add(rocket.GetComponent<Rigidbody2D>().velocity.y);
         saveWorldRocket.coreID = rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
-        foreach(Stages stage in rocket.Stages)
+        foreach (Stages stage in rocket.Stages)
         {
             saveStage saveStage = new saveStage();
-            foreach(RocketPart part in stage.Parts)
+            foreach (RocketPart part in stage.Parts)
             {
                 savePart savePart = new savePart();
                 savePart.type = part._partType;
@@ -405,6 +407,29 @@ public class WorldSaveManager : MonoBehaviour
                 savePart.posX = part.transform.localPosition.x;
                 savePart.posY = part.transform.localPosition.y;
                 savePart.cost = part._partCost;
+                if (part._partType == "engine")
+                {
+                    Engine engine = part.gameObject.GetComponent<Engine>();
+                    savePart.thrust = engine._thrust;
+                    savePart.tvcSpeed = engine._tvcSpeed;
+                    savePart.rate = engine._rate;
+                    savePart.reliability = engine.reliability;
+                    savePart.turbineName = engine._turbineName;
+                    savePart.nozzleName = engine._nozzleName;
+                    savePart.pumpName = engine._pumpName;
+                    savePart.tvcName = engine._tvcName;
+                    savePart.maxAngle = engine._maxAngle;
+                    savePart.maxTime = engine.maxTime;
+                    savePart.willExplode = engine.willExplode;
+                    savePart.willFail = engine.willFail;
+                    savePart.timeOfFail = engine.timeOfFail;
+                    savePart.operational = engine.operational;
+                }
+
+                if (part._partType == "tank")
+                {
+
+                }
                 saveStage.Parts.Add(savePart);
             }
             saveWorldRocket.stages.Add(saveStage);
@@ -415,7 +440,7 @@ public class WorldSaveManager : MonoBehaviour
     public void loadRocket(saveWorld load)
     {
         int i = 0;
-        foreach(saveWorldRocket saveRocket in load.rockets)
+        foreach (saveWorldRocket saveRocket in load.rockets)
         {
             int stageID = 0;
             int partID = 0;
@@ -423,12 +448,12 @@ public class WorldSaveManager : MonoBehaviour
             int corePosPart = 0;
             savePart core = new savePart();
             //Find core
-            foreach(saveStage saveStage in saveRocket.stages)
+            foreach (saveStage saveStage in saveRocket.stages)
             {
                 partID = 0;
-                foreach(savePart savePart in saveStage.Parts)
+                foreach (savePart savePart in saveStage.Parts)
                 {
-                    if(savePart.guid == saveRocket.coreID)
+                    if (savePart.guid == saveRocket.coreID)
                     {
                         core = savePart;
                     }
@@ -437,16 +462,16 @@ public class WorldSaveManager : MonoBehaviour
                 stageID++;
             }
 
-            
+
             //Instantiate core
             GameObject root = null;
-            if(core.type == "satellite")
+            if (core.type == "satellite")
             {
                 root = Instantiate(Satellite);
                 root.AddComponent<Rocket>();
             }
 
-            if(root != null)
+            if (root != null)
             {
                 root.transform.position = new Vector3((float)saveRocket.x_pos[i], (float)saveRocket.y_pos[i], 0);
                 root.AddComponent<Rigidbody2D>();
@@ -463,34 +488,49 @@ public class WorldSaveManager : MonoBehaviour
             }
 
             //Load all parts
-            foreach(saveStage saveStage in saveRocket.stages)
+            foreach (saveStage saveStage in saveRocket.stages)
             {
-                foreach(savePart savePart in saveStage.Parts)
+                foreach (savePart savePart in saveStage.Parts)
                 {
-                    GameObject currentPart  = null;
-                    if(savePart != core)
+                    GameObject currentPart = null;
+                    if (savePart != core)
                     {
-                        if(savePart.type == "satellite")
+                        if (savePart.type == "satellite")
                         {
                             currentPart = Instantiate(Satellite, root.transform);
                         }
 
-                        if(savePart.type == "engine")
+                        if (savePart.type == "engine")
                         {
                             currentPart = Instantiate(Engine, root.transform);
+                            Engine engine = currentPart.gameObject.GetComponent<Engine>();
+                            engine._thrust = savePart.thrust;
+                            engine._tvcSpeed = savePart.tvcSpeed;
+                            engine._rate = savePart.rate;
+                            engine.reliability = savePart.reliability;
+                            engine._turbineName = savePart.turbineName;
+                            engine._nozzleName = savePart.nozzleName;
+                            engine._pumpName = savePart.pumpName;
+                            engine._tvcName = savePart.tvcName;
+                            engine._maxAngle = savePart.maxAngle;
+                            engine.maxTime = savePart.maxTime;
+                            engine.willExplode = savePart.willExplode;
+                            engine.willFail = savePart.willFail;
+                            engine.timeOfFail = savePart.timeOfFail;
+                            engine.operational = savePart.operational;
                         }
 
-                        if(savePart.type == "tank")
+                        if (savePart.type == "tank")
                         {
                             currentPart = Instantiate(Tank, root.transform);
                         }
 
-                        if(savePart.type == "decoupler")
+                        if (savePart.type == "decoupler")
                         {
                             currentPart = Instantiate(Decoupler, root.transform);
                         }
 
-                        if(currentPart != null)
+                        if (currentPart != null)
                         {
                             currentPart.transform.localPosition = new Vector3(savePart.posX, savePart.posY, 0);
                             currentPart.GetComponent<RocketPart>()._partMass = savePart.mass;
@@ -513,7 +553,7 @@ public class WorldSaveManager : MonoBehaviour
 
 
 
-//TO DELETE
+    //TO DELETE
     public void save(Rocket Rocket)
     {
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder))
@@ -521,18 +561,18 @@ public class WorldSaveManager : MonoBehaviour
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder);
         }
 
-        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder + Rocket.name + ".json"))
+        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder + Rocket.name + ".json"))
         {
             savecraft saveRocket = new savecraft();
             int i = 0;
             saveRocket.coreID = Rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
-            foreach(Stages stage in Rocket.GetComponent<Rocket>().Stages)
+            foreach (Stages stage in Rocket.GetComponent<Rocket>().Stages)
             {
-                foreach(RocketPart part in stage.Parts)
+                foreach (RocketPart part in stage.Parts)
                 {
-                    
+
                     //Set tank
-                    if(part._partType == "tank")
+                    if (part._partType == "tank")
                     {
                         saveRocket.x_scale.Add(part.GetComponent<BoxCollider2D>().size.x);
                         saveRocket.y_scale.Add(part.GetComponent<BoxCollider2D>().size.y);
@@ -540,9 +580,9 @@ public class WorldSaveManager : MonoBehaviour
                         saveRocket.propellantType.Add(part.GetComponent<Tank>().propellantCategory);
                         saveRocket.tankMaterial.Add(part.GetComponent<Tank>().tankMaterial);
                     }
-                    
+
                     //Set Engine
-                    if(part._partType == "engine")
+                    if (part._partType == "engine")
                     {
                         saveRocket.engineName.Add(part.GetComponent<Engine>()._partName);
                         saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
@@ -556,7 +596,9 @@ public class WorldSaveManager : MonoBehaviour
             var jsonString = JsonConvert.SerializeObject(saveRocket);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.GetComponent<MasterManager>().FolderName + savePathRef.rocketFolder + Rocket.name + ".json", jsonString);
 
-        }else{
+        }
+        else
+        {
             //cry
         }
     }
