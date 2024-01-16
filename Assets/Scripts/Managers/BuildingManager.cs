@@ -183,7 +183,6 @@ public class BuildingManager : MonoBehaviour
 
         if(button.active == false)
         {
-            Debug.Log(button);
             button.SetActive(true);
             PanelFadeIn(button);
             StartCoroutine(ActiveDeactive(0.1f, button, true));

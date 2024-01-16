@@ -12,4 +12,5 @@ public class savePart
     public float mass;
     public float posX;
     public float posY;
+    public float cost;
 }

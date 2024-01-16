@@ -7,6 +7,7 @@ public class saveWorld
 {
     public string version = "0.0.4";
     public bool previouslyLoaded = false;
+    public double time;
 
     public int IDMax;
 
@@ -29,6 +30,9 @@ public class saveWorld
     public float earthLocX;
     public float earthLocY;
     public float earthLocZ;
+
+    public float earthVX;
+    public float earthVY;
 
     public float earthRotX;
     public float earthRotY;
@@ -67,6 +71,8 @@ public class saveWorld
     public float moonLocX;
     public float moonLocY;
     public float moonLocZ;
+    public float moonVX;
+    public float moonVY;
 
     public List<int> childrenNumber = new List<int>();
     public List<string> types = new List<string>();

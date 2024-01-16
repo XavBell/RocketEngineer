@@ -79,7 +79,7 @@ public class staticFireStandManager : MonoBehaviour
                     }
                 }
 
-                if((failed == true || fuelSufficient == false || oxidizerSufficient == false) && engineStaticFireTracker != null)
+                if((failed == true || fuelSufficient == false || oxidizerSufficient == false || stopped == true) && engineStaticFireTracker != null)
                 {
                     //Save results to file and null tracker and save new reliabili
                     started = false;
@@ -140,8 +140,7 @@ public class staticFireStandManager : MonoBehaviour
                         var jsonString = JsonConvert.SerializeObject(saveObject);
                         System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json", jsonString);
                     }
-                    
-                    failed = false;
+                    stopped = true;
                     engineStaticFireTracker = null;
                     oxidizerSufficient = true;
                     fuelSufficient = true;

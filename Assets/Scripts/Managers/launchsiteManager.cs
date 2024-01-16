@@ -54,11 +54,6 @@ public class launchsiteManager : MonoBehaviour
         if(designer != null)
         {
             designerBtn.SetActive(false);
-            designBtn.SetActive(true);
-        }else if(designer == null)
-        {
-            designBtn.SetActive(false);
-            designerBtn.SetActive(true);
         }
     }
 }

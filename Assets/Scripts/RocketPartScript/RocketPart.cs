@@ -16,7 +16,7 @@ public class RocketPart : MonoBehaviour
 
     public Guid _partID{get; set;}
 
-    public float _partMass{get; set;}
+    [field: SerializeField] public float _partMass{get; set;}
 
     public string _path{get; set;}
 

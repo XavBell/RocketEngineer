@@ -40,6 +40,12 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject BuildingManager;
     public launchsiteManager launchsiteManager;
 
+    public GameObject Satellite;
+    public GameObject Engine;
+    public GameObject Decoupler;
+    public GameObject Tank;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -66,6 +72,8 @@ public class WorldSaveManager : MonoBehaviour
     {
         saveWorld saveWorld = new saveWorld();
 
+        saveWorld.time = FindObjectOfType<TimeManager>().time;
+
         saveWorld.cameraLocX = worldCamera.transform.localPosition.x;
         saveWorld.cameraLocY = worldCamera.transform.localPosition.y;
         saveWorld.cameraLocZ = worldCamera.transform.localPosition.z;
@@ -85,6 +93,12 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.moonLocX = moon.transform.localPosition.x;
         saveWorld.moonLocY = moon.transform.localPosition.y;
         saveWorld.moonLocZ = moon.transform.localPosition.z;
+
+        double time = FindObjectOfType<TimeManager>().time;
+        saveWorld.moonVX = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
+        saveWorld.moonVY = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
+        saveWorld.earthVX = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
+        saveWorld.earthVY = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
 
         saveWorld.nPoints = MasterManager.GetComponent<pointManager>().nPoints;
         saveWorld.partName = MasterManager.GetComponent<MasterManager>().partName;
@@ -128,26 +142,39 @@ public class WorldSaveManager : MonoBehaviour
 
             if(building.GetComponent<buildingType>().type == "GSEtank")
             {
+                
                 saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
                 saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
             }
             
             if(building.GetComponent<buildingType>().type == "launchPad")
             {
-                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
-                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
+                outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
+                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                {
+                    saveWorld.inputIDs.Add(outputInputManager.inputParentID);
+                    saveWorld.outputIDs.Add(outputInputManager.outputParentID);
+                }
             }
 
             if(building.GetComponent<buildingType>().type == "staticFireStand")
             {
-                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
-                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
+                outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
+                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                {
+                    saveWorld.inputIDs.Add(outputInputManager.inputParentID);
+                    saveWorld.outputIDs.Add(outputInputManager.outputParentID);
+                }
             }
 
             if(building.GetComponent<buildingType>().type == "standTank")
             {
-                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
-                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
+                outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
+                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                {
+                    saveWorld.inputIDs.Add(outputInputManager.inputParentID);
+                    saveWorld.outputIDs.Add(outputInputManager.outputParentID);
+                }
             }
         }
 
@@ -159,7 +186,11 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
         }
 
-        //Rocket[] Rockets = FindObjectsOfType<Rocket>();
+        Rocket[] Rockets = FindObjectsOfType<Rocket>();
+        foreach(Rocket rocket in Rockets)
+        {
+            saveRocket(rocket, saveWorld);
+        }
         
        
 
@@ -184,11 +215,16 @@ public class WorldSaveManager : MonoBehaviour
 
         if(loadedWorld.previouslyLoaded == true)
         {
-            //earth.transform.localPosition = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
-            //worldCamera.transform.localPosition = new Vector3(loadedWorld.cameraLocX, loadedWorld.cameraLocY, loadedWorld.cameraLocZ);
-            //earth.transform.eulerAngles = new Vector3(loadedWorld.earthRotX, loadedWorld.earthRotY, loadedWorld.earthRotZ);
-            //worldCamera.transform.eulerAngles = new Vector3(loadedWorld.cameraRotX, loadedWorld.cameraRotY, loadedWorld.cameraRotZ);
-            //moon.transform.localPosition = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+            FindObjectOfType<TimeManager>().time = loadedWorld.time;
+            FindObjectOfType<TimeManager>().bypass = true;
+            earth.transform.position = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
+            moon.transform.position = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+
+            earth.GetComponent<PhysicsStats>().x_vel = loadedWorld.earthVX;
+            earth.GetComponent<PhysicsStats>().y_vel = loadedWorld.earthVY;
+
+            moon.GetComponent<PhysicsStats>().x_vel = loadedWorld.moonVX;
+            moon.GetComponent<PhysicsStats>().y_vel = loadedWorld.moonVY;
 
             MasterManager.GetComponent<pointManager>().nPoints = loadedWorld.nPoints;
             MasterManager.GetComponent<MasterManager>().partName = loadedWorld.partName;
@@ -225,8 +261,8 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
+                current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
+                current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
             }
 
             if(buildingType == "launchPad")
@@ -236,8 +272,12 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
+                outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
+                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                {
+                    outputInputManager.inputParentID = loadedWorld.inputIDs[count];
+                    outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                }
             }
 
             if(buildingType == "VAB")
@@ -266,8 +306,12 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
+                outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
+                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                {
+                    outputInputManager.inputParentID = loadedWorld.inputIDs[count];
+                    outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                }
             }
 
             if(buildingType == "staticFireStand")
@@ -277,41 +321,53 @@ public class WorldSaveManager : MonoBehaviour
                 current.transform.localPosition = position;
                 current.transform.eulerAngles = rotation;
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
+                outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
+                foreach(outputInputManager outputInputManager in outputInputManagers1)
+                {
+                    outputInputManager.inputParentID = loadedWorld.inputIDs[count];
+                    outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                }
             }
             count++;
         }
-        
-        //outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
-        //int x = 0;
-        //foreach(outputInputManager outputInputManager in outputInputManagers)
-        //{
-        //    outputInputManager.guid = loadedWorld.selfGuid[x];
-        //    outputInputManager.inputGuid = loadedWorld.InputGuid[x];
-        //    outputInputManager.outputGuid = loadedWorld.OutputGuid[x];
-        //    x++;
-        //}
 
-        //foreach(outputInputManager outputInputManager1 in outputInputManagers)
-        //{
-        //    foreach(outputInputManager outputInputManager2 in outputInputManagers)
-        //    {
-        //        if(outputInputManager1.guid == outputInputManager2.outputGuid)
-        //        {
-        //            outputInputManager2.outputParent = outputInputManager1;
-        //            outputInputManager1.inputParent = outputInputManager2;
-        //        }
-        //
-        //        if(outputInputManager2.guid == outputInputManager1.outputGuid)
-        //        {
-        //            outputInputManager1.outputParent = outputInputManager2;
-        //            outputInputManager2.inputParent = outputInputManager1;
-        //        }
-        //    }
-        //}
+        loadRocket(loadedWorld);
+        
+        outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
+        int x = 0;
+        foreach(outputInputManager outputInputManager in outputInputManagers)
+        {
+            outputInputManager.guid = loadedWorld.selfGuid[x];
+            outputInputManager.inputGuid = loadedWorld.InputGuid[x];
+            outputInputManager.outputGuid = loadedWorld.OutputGuid[x];
+            x++;
+        }
+
+        foreach(outputInputManager outputInputManager1 in outputInputManagers)
+        {
+            foreach(outputInputManager outputInputManager2 in outputInputManagers)
+            {
+                if(outputInputManager1.guid == outputInputManager2.outputGuid)
+                {
+                    outputInputManager2.outputParent = outputInputManager1;
+                    outputInputManager1.inputParent = outputInputManager2;
+                }
+        
+                if(outputInputManager2.guid == outputInputManager1.outputGuid)
+                {
+                   outputInputManager1.outputParent = outputInputManager2;
+                    outputInputManager2.inputParent = outputInputManager1;
+                }
+            }
+        }
+
+        
 
         launchsiteManager.updateVisibleButtons();
+        if(launchsiteManager.commandCenter != null)
+        {
+            worldCamera.transform.position = launchsiteManager.commandCenter.transform.position;
+        }
 
         
 
@@ -334,6 +390,7 @@ public class WorldSaveManager : MonoBehaviour
         saveWorldRocket.y_pos.Add(rocket.GetComponent<DoubleTransform>().y_pos);
         saveWorldRocket.v_x.Add(rocket.GetComponent<Rigidbody2D>().velocity.x);
         saveWorldRocket.v_y.Add(rocket.GetComponent<Rigidbody2D>().velocity.y);
+        saveWorldRocket.coreID = rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
         foreach(Stages stage in rocket.Stages)
         {
             saveStage saveStage = new saveStage();
@@ -345,8 +402,9 @@ public class WorldSaveManager : MonoBehaviour
                 savePart.path = part._path;
                 savePart.guid = part._partID;
                 savePart.mass = part._partMass;
-                savePart.posX = part.transform.position.x;
-                savePart.posY = part.transform.position.y;
+                savePart.posX = part.transform.localPosition.x;
+                savePart.posY = part.transform.localPosition.y;
+                savePart.cost = part._partCost;
                 saveStage.Parts.Add(savePart);
             }
             saveWorldRocket.stages.Add(saveStage);
@@ -356,9 +414,94 @@ public class WorldSaveManager : MonoBehaviour
 
     public void loadRocket(saveWorld load)
     {
+        int i = 0;
         foreach(saveWorldRocket saveRocket in load.rockets)
         {
+            int stageID = 0;
+            int partID = 0;
+            int corePosStage = 0;
+            int corePosPart = 0;
+            savePart core = new savePart();
+            //Find core
+            foreach(saveStage saveStage in saveRocket.stages)
+            {
+                partID = 0;
+                foreach(savePart savePart in saveStage.Parts)
+                {
+                    if(savePart.guid == saveRocket.coreID)
+                    {
+                        core = savePart;
+                    }
+                    partID++;
+                }
+                stageID++;
+            }
 
+            
+            //Instantiate core
+            GameObject root = null;
+            if(core.type == "satellite")
+            {
+                root = Instantiate(Satellite);
+                root.AddComponent<Rocket>();
+            }
+
+            if(root != null)
+            {
+                root.transform.position = new Vector3((float)saveRocket.x_pos[i], (float)saveRocket.y_pos[i], 0);
+                root.AddComponent<Rigidbody2D>();
+                root.GetComponent<Rigidbody2D>().angularDrag = 0;
+                root.GetComponent<Rigidbody2D>().freezeRotation = true;
+                root.GetComponent<Rigidbody2D>().gravityScale = 0;
+                root.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
+                root.AddComponent<PlanetGravity>();
+                root.GetComponent<PlanetGravity>().core = root;
+                root.GetComponent<Rocket>().core = root;
+                root.AddComponent<RocketStateManager>();
+                root.AddComponent<RocketPath>();
+                root.AddComponent<BodySwitcher>();
+            }
+
+            //Load all parts
+            foreach(saveStage saveStage in saveRocket.stages)
+            {
+                foreach(savePart savePart in saveStage.Parts)
+                {
+                    GameObject currentPart  = null;
+                    if(savePart != core)
+                    {
+                        if(savePart.type == "satellite")
+                        {
+                            currentPart = Instantiate(Satellite, root.transform);
+                        }
+
+                        if(savePart.type == "engine")
+                        {
+                            currentPart = Instantiate(Engine, root.transform);
+                        }
+
+                        if(savePart.type == "tank")
+                        {
+                            currentPart = Instantiate(Tank, root.transform);
+                        }
+
+                        if(savePart.type == "decoupler")
+                        {
+                            currentPart = Instantiate(Decoupler, root.transform);
+                        }
+
+                        if(currentPart != null)
+                        {
+                            currentPart.transform.localPosition = new Vector3(savePart.posX, savePart.posY, 0);
+                            currentPart.GetComponent<RocketPart>()._partMass = savePart.mass;
+                            currentPart.GetComponent<RocketPart>()._partID = savePart.guid;
+                            currentPart.GetComponent<RocketPart>()._partCost = savePart.cost;
+                        }
+                    }
+                }
+            }
+
+            i++;
         }
     }
 

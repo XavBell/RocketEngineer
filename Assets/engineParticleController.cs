@@ -36,9 +36,13 @@ public class engineParticleController : MonoBehaviour
             {
                 var em = plume.GetComponent<ParticleSystem>().emission;
                 em.rateOverTime = 0; 
-            }else if(this.gameObject.transform.parent.GetComponent<Rocket>().currentThrust.magnitude > 0){
-                var em = plume.GetComponent<ParticleSystem>().emission;
-                em.rateOverTime = (throttle*baseRate)/100; 
+            }else if(this.gameObject.transform.parent.GetComponent<Rocket>() != null){
+                if(this.gameObject.transform.parent.GetComponent<Rocket>().throttle > 0)
+                {
+                    var em = plume.GetComponent<ParticleSystem>().emission;
+                    em.rateOverTime = (throttle*baseRate)/100; 
+                }
+                
             }
         }else{
             var em = plume.GetComponent<ParticleSystem>().emission;
