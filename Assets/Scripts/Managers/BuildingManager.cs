@@ -135,7 +135,7 @@ public class BuildingManager : MonoBehaviour
     public void EnterResearch()
     {
         WorldSaveManager.saveTheWorld();
-        SceneManager.LoadScene("Building");
+        SceneManager.LoadScene("Research");
     }
 
     public void Connect(GameObject output, GameObject input)

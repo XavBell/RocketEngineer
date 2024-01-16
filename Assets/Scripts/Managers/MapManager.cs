@@ -43,7 +43,7 @@ public class MapManager : MonoBehaviour
                 if(icon != null)
                 {
 
-                    icon.transform.localScale = new Vector2(mapCam.orthographicSize,mapCam.orthographicSize);
+                    icon.transform.localScale = new Vector2(mapCam.orthographicSize,mapCam.orthographicSize)/100;
                 }
                 
             }

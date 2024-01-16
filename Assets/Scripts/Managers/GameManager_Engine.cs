@@ -67,6 +67,16 @@ public class GameManager_Engine : MonoBehaviour
     public string selectedNozzle;
     public string selectedTVC;
 
+    public GameObject NozzleSmallBtn;
+    public GameObject PumpSmallBtn;
+    public GameObject TurbineSmallBtn;
+    public GameObject TVCSmallBtn;
+
+    public GameObject NozzleRaptorBtn;
+    public GameObject PumpRaptorBtn;
+    public GameObject TurbineRaptorBtn;
+    public GameObject TVCRaptorBtn;
+
 
     // Start is called before the first frame update
     void Start()
@@ -76,6 +86,47 @@ public class GameManager_Engine : MonoBehaviour
             GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
             MasterManager = GMM.GetComponent<MasterManager>();
             initializeEngineInFolder();
+        }
+
+        //Update activated buttons
+        if(MasterManager.tvcUnlocked.Contains("TVCSmall"))
+        {
+            TVCSmallBtn.SetActive(true);
+        }
+
+        if(MasterManager.nozzleUnlocked.Contains("NozzleSmall"))
+        {
+            NozzleSmallBtn.SetActive(true);
+        }
+
+        if(MasterManager.pumpUnlocked.Contains("PumpSmall"))
+        {
+            PumpSmallBtn.SetActive(true);
+        }
+
+        if(MasterManager.turbineUnlocked.Contains("TurbineSmall"))
+        {
+            TurbineSmallBtn.SetActive(true);
+        }
+
+        if(MasterManager.tvcUnlocked.Contains("TVCRaptor"))
+        {
+            TVCRaptorBtn.SetActive(true);
+        }
+
+        if(MasterManager.nozzleUnlocked.Contains("NozzleRaptor"))
+        {
+            NozzleRaptorBtn.SetActive(true);
+        }
+
+        if(MasterManager.turbineUnlocked.Contains("PumpRaptor"))
+        {
+            PumpRaptorBtn.SetActive(true);
+        }
+
+        if(MasterManager.turbineUnlocked.Contains("TurbineRaptor"))
+        {
+            TurbineRaptorBtn.SetActive(true);
         }
         
     }

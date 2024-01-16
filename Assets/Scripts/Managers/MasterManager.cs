@@ -40,6 +40,7 @@ public class MasterManager : MonoBehaviour
     public GameObject MainCanvas;
     public GameObject loadCanvas;
     public GameObject newWorldCanvas;
+    public GameObject optionCanvas;
     public List<GameObject> buttons = new List<GameObject>();
 
     public float MenuThrust = 200;
@@ -49,6 +50,23 @@ public class MasterManager : MonoBehaviour
     public List<string> partType = new List<string>();
     public List<string> partName = new List<string>();
     public List<int> count = new List<int>();
+
+    public List<string> turbineUnlocked = new List<string>();
+    public List<string> pumpUnlocked = new List<string>();
+    public List<string> nozzleUnlocked = new List<string>();
+    public List<string> tvcUnlocked = new List<string>();
+
+    public List<string> tankMaterialUnlocked = new List<string>();
+
+    public float maxTankBuildSizeX = 1;
+    public float maxTankBuildSizeY = 1;
+
+    public float maxRocketBuildSizeX = 1;
+    public float maxRocketBuildSizeY = 1;
+
+    public List<string> nodeUnlocked = new List<string>();
+
+    public Toggle fullScreen;
     
    
 
@@ -172,11 +190,19 @@ public class MasterManager : MonoBehaviour
         newWorldCanvas.SetActive(true);
     }
 
+    public void options()
+    {
+        rocketActive = true;
+        MainCanvas.SetActive(false);
+        optionCanvas.SetActive(true);
+    }
+
     public void back()
     {
         MainCanvas.SetActive(true);
         newWorldCanvas.SetActive(false);
         loadCanvas.SetActive(false);
+        optionCanvas.SetActive(false);
     }
 
     void thrust()
@@ -193,5 +219,18 @@ public class MasterManager : MonoBehaviour
 	    AlertText.SetActive(true);
         yield return new WaitForSeconds(1);
         AlertText.SetActive(false);
+    }
+
+    public void Toggle()
+    {
+        if(fullScreen.isOn == true)
+        {
+            Screen.fullScreen = true;
+        }
+
+        if(fullScreen.isOn == false)
+        {
+            Screen.fullScreen = false;
+        }
     }
 }

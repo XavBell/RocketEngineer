@@ -94,7 +94,7 @@ public class GameManager_Tank : MonoBehaviour
             MasterManager = GMM.GetComponent<MasterManager>();
             initializeTanksnFolder();
         }
-        
+
     }
 
     // Update is called once per frame
@@ -114,39 +114,47 @@ public class GameManager_Tank : MonoBehaviour
     void updateSize()
     {
         float number;
-        if(float.TryParse(tankDiameter.text, out number))
+        if (float.TryParse(tankDiameter.text, out number))
         {
+
             tankDiameterFloat = float.Parse(tankDiameter.text);
-
-            if(tankDiameterFloat == tankSP.size.x)
+            if (MasterManager.maxTankBuildSizeX <= tankDiameterFloat)
             {
-                startingScaleD = tankSP.size;
-                currentD = 0;
+                if (tankDiameterFloat == tankSP.size.x)
+                {
+                    startingScaleD = tankSP.size;
+                    currentD = 0;
+                }
+
+                if (tankSP.size.x != tankDiameterFloat)
+                {
+                    tankSP.size = UnityEngine.Vector2.Lerp(startingScaleD, new UnityEngine.Vector2(tankDiameterFloat, tankSP.size.y), currentD * 5);
+                    currentD += Time.deltaTime;
+                }
             }
 
-            if(tankSP.size.x != tankDiameterFloat)
-            {
-                tankSP.size = UnityEngine.Vector2.Lerp(startingScaleD, new UnityEngine.Vector2(tankDiameterFloat, tankSP.size.y), currentD * 5);
-                currentD += Time.deltaTime;
-            }
-            
+
         }
 
         if (float.TryParse(tankHeight.text, out number))
         {
             tankHeightFloat = float.Parse(tankHeight.text);
-            if(tankSP.size.y == tankHeightFloat)
+            if (MasterManager.maxTankBuildSizeY <= tankHeightFloat)
             {
-                startingScaleH = tankSP.size;
-                currentH = 0;
+                if (tankSP.size.y == tankHeightFloat)
+                {
+                    startingScaleH = tankSP.size;
+                    currentH = 0;
+                }
+
+                if (tankSP.size.y != tankHeightFloat)
+                {
+                    tankSP.size = UnityEngine.Vector2.Lerp(startingScaleH, new UnityEngine.Vector2(tankSP.size.x, tankHeightFloat), currentH * 5);
+                    currentH += Time.deltaTime;
+                }
             }
 
-            if(tankSP.size.y != tankHeightFloat)
-            {
-                tankSP.size = UnityEngine.Vector2.Lerp(startingScaleH, new UnityEngine.Vector2(tankSP.size.x, tankHeightFloat), currentH*5);
-                currentH += Time.deltaTime;
-            }
-            
+
         }
 
     }
@@ -156,10 +164,10 @@ public class GameManager_Tank : MonoBehaviour
         float massDensity = 1750f; //Assuming aluminium
         float wallThickness = 0.0005f; //Assuming 0.1 cm thickness
         //float fuelDensity = 460.0f; //Assuming methane
-        volume = Mathf.PI * Mathf.Pow(tankDiameterFloat/2, 2) * tankHeightFloat;
-        mass = (volume -  Mathf.PI * Mathf.Pow(tankDiameterFloat/2 - wallThickness, 2)*tankHeightFloat) * massDensity;
+        volume = Mathf.PI * Mathf.Pow(tankDiameterFloat / 2, 2) * tankHeightFloat;
+        mass = (volume - Mathf.PI * Mathf.Pow(tankDiameterFloat / 2 - wallThickness, 2) * tankHeightFloat) * massDensity;
         tankMaterial = materialDropdown.options[materialDropdown.value].text.ToString();
-        if(tankMaterial == "StainlessSteel")
+        if (tankMaterial == "StainlessSteel")
         {
             maxPressure = 200000f;
             thermalConductivity = 0.09f;
@@ -184,7 +192,7 @@ public class GameManager_Tank : MonoBehaviour
 
         saveName = "/" + savePath.text;
 
-        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json"))
+        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json"))
         {
             saveTank saveObject = new saveTank();
             saveObject.path = savePathRef.tankFolder;
@@ -204,14 +212,15 @@ public class GameManager_Tank : MonoBehaviour
 
             var jsonString = JsonConvert.SerializeObject(saveObject);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json", jsonString);
-        }else if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName+ savePathRef.engineFolder + saveName + ".json"))
+        }
+        else if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
         {
             saveTank saveTank = new saveTank();
             var jsonString2 = JsonConvert.SerializeObject(saveTank);
             jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json");
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString2);
 
-            if(loadedTank.usedNum == 0)
+            if (loadedTank.usedNum == 0)
             {
                 File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json");
                 save();
@@ -271,7 +280,7 @@ public class GameManager_Tank : MonoBehaviour
 
         var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder);
         var fileInfo = info.GetFiles();
-        if(fileInfo.Length == 0)
+        if (fileInfo.Length == 0)
         {
             return;
         }

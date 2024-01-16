@@ -3718,7 +3718,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &520845289
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7055,7 +7055,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &854290137
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7509,7 +7509,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &925619096
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12247,7 +12247,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1561107649
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12694,6 +12694,14 @@ MonoBehaviour:
   selectedPump: 
   selectedNozzle: 
   selectedTVC: 
+  NozzleSmallBtn: {fileID: 1936169861}
+  PumpSmallBtn: {fileID: 1924549601}
+  TurbineSmallBtn: {fileID: 1561107648}
+  TVCSmallBtn: {fileID: 1763433545}
+  NozzleRaptorBtn: {fileID: 520845288}
+  PumpRaptorBtn: {fileID: 925619095}
+  TurbineRaptorBtn: {fileID: 854290136}
+  TVCRaptorBtn: {fileID: 1901484037}
 --- !u!4 &1588675118
 Transform:
   m_ObjectHideFlags: 0
@@ -13006,7 +13014,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1763433546
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13620,7 +13628,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1901484038
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13639,7 +13647,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 100, y: -160}
+  m_AnchoredPosition: {x: 100, y: -50}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1901484039
@@ -14053,7 +14061,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1924549602
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14187,7 +14195,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1936169862
 RectTransform:
   m_ObjectHideFlags: 0
