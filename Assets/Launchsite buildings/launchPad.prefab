@@ -190,7 +190,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -500.59, y: -274.1007}
+  m_AnchoredPosition: {x: 3.5700684, y: -0.8999939}
   m_SizeDelta: {x: 160, y: 126.3146}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7087522811916376149
@@ -354,8 +354,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: -504.03, y: -273.44}
+  m_SizeDelta: {x: 67.28, y: 40.6193}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &3242045175861339931
 GameObject:
@@ -417,7 +417,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 3
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &5906584683850466963
 MonoBehaviour:
@@ -497,7 +497,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -506.16, y: -274.1007}
+  m_AnchoredPosition: {x: -2, y: -0.9}
   m_SizeDelta: {x: 160, y: 126.3146}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2855515099165527181
@@ -727,6 +727,7 @@ GameObject:
   - component: {fileID: 7394985772004179922}
   - component: {fileID: 8208019030907920418}
   - component: {fileID: -4488605434850809749}
+  - component: {fileID: 9020689521050503935}
   m_Layer: 7
   m_Name: launchPad
   m_TagString: building
@@ -858,12 +859,15 @@ MonoBehaviour:
   tankHeight: 5
   tankThickness: 0.1
   tankThermalConductivity: 1
+  tankCoolerPower: 500
   tankSurfaceArea: 2000
   tankState: working
   externalTemperature: 298
+  targetTemperature: 298
   externalPressure: 101
   internalPressure: 0
   internalTemperature: 0
+  maxPressure: 400000000
   substance: none
   state: none
   substanceDensity: 0
@@ -873,11 +877,14 @@ MonoBehaviour:
   substanceMolarMass: 0
   substanceSpecificHeatCapacity: 0
   log: 0
+  coolerActive: 0
+  ventActive: 0
   variation: 0
   engines: []
   type: default
   circuit: oxidizer
   MyTime: {fileID: 0}
+  explosion: {fileID: 0}
 --- !u!114 &6114230335073138526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -897,6 +904,7 @@ MonoBehaviour:
   selectUI: {fileID: 0}
   UI: {fileID: 0}
   cost: 5
+  buildingManager: {fileID: 0}
 --- !u!114 &5381789719691407045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -966,12 +974,15 @@ MonoBehaviour:
   tankHeight: 0
   tankThickness: 0.1
   tankThermalConductivity: 10
+  tankCoolerPower: 500
   tankSurfaceArea: 2000
   tankState: working
   externalTemperature: 298
+  targetTemperature: 298
   externalPressure: 101
   internalPressure: 0
   internalTemperature: 0
+  maxPressure: 400000000
   substance: none
   state: none
   substanceDensity: 0
@@ -981,11 +992,14 @@ MonoBehaviour:
   substanceMolarMass: 0
   substanceSpecificHeatCapacity: 0
   log: 0
+  coolerActive: 0
+  ventActive: 0
   variation: 0
   engines: []
   type: default
   circuit: fuel
   MyTime: {fileID: 0}
+  explosion: {fileID: 0}
 --- !u!50 &-4488605434850809749
 Rigidbody2D:
   serializedVersion: 4
@@ -1007,6 +1021,51 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &9020689521050503935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6114230335073138526}
+          m_TargetAssemblyTypeName: buildingType, Assembly-CSharp
+          m_MethodName: changeColorRed
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 6114230335073138526}
+          m_TargetAssemblyTypeName: buildingType, Assembly-CSharp
+          m_MethodName: changeColorWhite
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &6686694195158721372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1036,7 +1095,7 @@ RectTransform:
   m_GameObject: {fileID: 6686694195158721372}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.036568, y: 0.036568, z: 0.036568}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6424560398842991129}
@@ -1046,7 +1105,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -503.37, y: -277.23}
-  m_SizeDelta: {x: 82.9601, y: 75.5233}
+  m_SizeDelta: {x: 3.033685, y: 2.761736}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7026671464454688728
 CanvasRenderer:
@@ -1085,7 +1144,7 @@ MonoBehaviour:
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_PixelsPerUnitMultiplier: 36.22
 --- !u!114 &4441888725473449697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1201,7 +1260,7 @@ RectTransform:
   m_GameObject: {fileID: 7646858889582070070}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.20451, y: 0.20451, z: 0.20451}
+  m_LocalScale: {x: 0.005670858, y: 0.005670858, z: 0.005670858}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 239328573810028727}

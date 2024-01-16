@@ -4,6 +4,7 @@ using UnityEngine;
 using System.IO;
 using TMPro;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class operationManager : MonoBehaviour
 {
@@ -172,12 +173,31 @@ public class operationManager : MonoBehaviour
         tankDropdown.AddOptions(options);
     }
 
+    public void PanelFadeIn(GameObject panel)
+    {
+        panel.GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
+        panel.GetComponent<RectTransform>().transform.DOScale(1, 0.1f);
+    }
+
+    public void PanelFadeOut(GameObject panel)
+    {
+        panel.transform.DOScale(0, 0.1f);
+        panel.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    private IEnumerator ActiveDeactive(float waitTime, GameObject panel, bool activated)
+    {
+        yield return new WaitForSeconds(waitTime);
+        panel.SetActive(activated);
+    }
+
     public void selectLaunchpad()
     {
         launchPadManager[] launchPads = FindObjectsOfType<launchPadManager>();
         foreach (launchPadManager launchPad in launchPads)
         {
             launchPad.button.SetActive(true);
+            PanelFadeIn(launchPad.button);
             launchPad.button.GetComponent<OnClick>().op = this;
             launchPad.button.GetComponent<OnClick>().savedLaunchpad = launchPad.gameObject;
         }
@@ -189,6 +209,7 @@ public class operationManager : MonoBehaviour
         foreach (staticFireStandManager stand in stands)
         {
             stand.button.SetActive(true);
+            PanelFadeIn(stand.button);
             stand.button.GetComponent<OnClick>().op = this;
             stand.button.GetComponent<OnClick>().savedLaunchpad = stand.gameObject;
         }
@@ -200,6 +221,7 @@ public class operationManager : MonoBehaviour
         foreach (standManager stand in stands)
         {
             stand.button.SetActive(true);
+            PanelFadeIn(stand.button);
             stand.button.GetComponent<OnClick>().op = this;
             stand.button.GetComponent<OnClick>().savedLaunchpad = stand.gameObject;
         }
@@ -238,22 +260,22 @@ public class operationManager : MonoBehaviour
         launchPadManager[] launchPads = FindObjectsOfType<launchPadManager>();
         foreach (launchPadManager launchPad in launchPads)
         {
-            launchPad.button.SetActive(false);
-            //launchPad.button.GetComponent<OnClick>().op = null;
+            PanelFadeOut(launchPad.button);
+            StartCoroutine(ActiveDeactive(1, launchPad.button, false));
         }
 
         staticFireStandManager[] stands = FindObjectsOfType<staticFireStandManager>();
         foreach (staticFireStandManager stand in stands)
         {
-            stand.button.SetActive(false);
-            //stand.button.GetComponent<OnClick>().op = null;
+            PanelFadeOut(stand.button);
+            StartCoroutine(ActiveDeactive(1, stand.button, false));
         }
 
         standManager[] stands1 = FindObjectsOfType<standManager>();
         foreach (standManager stand in stands1)
         {
-            stand.button.SetActive(false);
-            //stand.button.GetComponent<OnClick>().op = null;
+            PanelFadeOut(stand.button);
+            StartCoroutine(ActiveDeactive(1, stand.button, false));
         }
 
         if (selectedLaunchPad != null)
@@ -299,11 +321,10 @@ public class operationManager : MonoBehaviour
 
         if (operationDropdown.value == 1) //Engine static fire
         {
-
             int value = engineDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] == "Engine" && MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] == "Engine" && MasterManager.count[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] > 0)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] -= 1;
+                MasterManager.count[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] -= 1;
                 onclick.path = "/" + engineDropdown.options[value].text.ToString();
                 onclick.launchPad = selectedLaunchPad;
                 onclick.load("/engines");
@@ -316,9 +337,9 @@ public class operationManager : MonoBehaviour
         if (operationDropdown.value == 2) //Tank test
         {
             int value = tankDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] == "Tank" && MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] == "Tank" && MasterManager.count[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] > 0)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] -= 1;
+                MasterManager.count[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] -= 1;
                 onclick.path = "/" + tankDropdown.options[value].text.ToString();
                 onclick.launchPad = selectedLaunchPad;
                 onclick.load("/tanks");
@@ -331,9 +352,9 @@ public class operationManager : MonoBehaviour
         if (operationDropdown.value == 3) //WDR test
         {
             int value = vehicleWDRDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] > 0)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] -= 1;
+                MasterManager.count[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] -= 1;
                 onclick.path = "/" + vehicleWDRDropdown.options[value].text.ToString();
                 onclick.launchPad = selectedLaunchPad;
                 onclick.load("/rockets");
@@ -347,9 +368,9 @@ public class operationManager : MonoBehaviour
         if (operationDropdown.value == 4) //Rocket SF test
         {
             int value = vehicleStaticFireDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] > 0)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] -= 1;
+                MasterManager.count[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] -= 1;
                 onclick.path = "/" + vehicleStaticFireDropdown.options[value].text.ToString();
                 onclick.launchPad = selectedLaunchPad;
                 onclick.load("/rockets");

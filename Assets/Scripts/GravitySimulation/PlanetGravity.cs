@@ -254,8 +254,12 @@ public class PlanetGravity : MonoBehaviour
 
             if(previous != planet)
             {
-                this.GetComponent<RocketStateManager>().state = "simulate";
-                TimeManager.setScaler(1);
+                if(this.GetComponent<RocketStateManager>() != null && TimeManager != null)
+                {
+                    this.GetComponent<RocketStateManager>().state = "simulate";
+                    TimeManager.setScaler(1);
+                }
+                
             }
 
         }

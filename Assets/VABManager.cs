@@ -18,6 +18,7 @@ public class VABManager : MonoBehaviour
     public TMP_Text costTxt;
     public savePath savePathRef = new savePath();
     public MasterManager MasterManager;
+    public BuildingManager buildingManager;
 
     public List<string> tanks = new List<string>();
     public List<string> engines = new List<string>();
@@ -27,6 +28,7 @@ public class VABManager : MonoBehaviour
     void Start()
     {
         MasterManager = FindObjectOfType<MasterManager>();
+        buildingManager = FindObjectOfType<BuildingManager>();
         if (MasterManager != null)
         {
             retrieveRocketSaved();
@@ -42,6 +44,8 @@ public class VABManager : MonoBehaviour
     {
 
     }
+
+    
 
     public void onValueChanged()
     {

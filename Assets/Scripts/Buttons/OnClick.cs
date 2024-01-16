@@ -12,6 +12,7 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using DG.Tweening;
 public class OnClick : MonoBehaviour
 {
     public Button b1;
@@ -186,6 +187,7 @@ public class OnClick : MonoBehaviour
             core.GetComponent<Rigidbody2D>().angularDrag = 0;
             core.GetComponent<Rigidbody2D>().freezeRotation = true;
             core.GetComponent<Rigidbody2D>().gravityScale = 0;
+            core.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             core.AddComponent<PlanetGravity>();
             core.GetComponent<PlanetGravity>().core = core;
             core.GetComponent<Rocket>().core = core;
@@ -269,7 +271,10 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<Engine>().reliability = loadedEngine.reliability;
             spawnedRocket.GetComponent<Engine>().maxTime = loadedEngine.maxTime;
             spawnedRocket.GetComponent<Engine>()._partCost = loadedEngine.cost;
-            //spawnedRocket.GetComponent<Engine>().InitializeFail();
+            if(launchPad.GetComponent<buildingType>().anchor != null)
+            {
+                spawnedRocket.transform.position = launchPad.GetComponent<buildingType>().anchor.transform.position;
+            }
 
         }
 
@@ -293,6 +298,10 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<Tank>()._volume = loadedTank.volume;
             spawnedRocket.GetComponent<Tank>().tankMaterial = loadedTank.tankMaterial;
             spawnedRocket.GetComponent<Tank>()._partCost = loadedTank.cost;
+            if(launchPad.GetComponent<buildingType>().anchor != null)
+            {
+                spawnedRocket.transform.position = launchPad.GetComponent<buildingType>().anchor.transform.position;
+            }
         }
     }
 
@@ -474,22 +483,26 @@ public class OnClick : MonoBehaviour
         {
             if(building.GetComponent<buildingType>().type == "GSEtank")
             {
-                building.GetComponent<buildingType>().outputUI.SetActive(false);
+                PanelFadeOut(building.GetComponent<buildingType>().outputUI);
+                StartCoroutine(ActiveDeactive(1, building.GetComponent<buildingType>().outputUI, false));
             }
 
             if(building.GetComponent<buildingType>().type == "launchPad")
             {
-                building.GetComponent<buildingType>().inputUI.SetActive(false);
+                PanelFadeOut(building.GetComponent<buildingType>().inputUI);
+                StartCoroutine(ActiveDeactive(1, building.GetComponent<buildingType>().inputUI, false));
             }
 
             if(building.GetComponent<buildingType>().type == "standTank")
             {
-                building.GetComponent<buildingType>().inputUI.SetActive(false);
+                PanelFadeOut(building.GetComponent<buildingType>().inputUI);
+                StartCoroutine(ActiveDeactive(1, building.GetComponent<buildingType>().inputUI, false));
             }
 
             if(building.GetComponent<buildingType>().type == "staticFireStand")
             {
-                building.GetComponent<buildingType>().inputUI.SetActive(false);
+                PanelFadeOut(building.GetComponent<buildingType>().inputUI);
+                StartCoroutine(ActiveDeactive(1, building.GetComponent<buildingType>().inputUI, false));
             }
         }
 
@@ -498,7 +511,8 @@ public class OnClick : MonoBehaviour
         {
             fcm.input = input;
         }
-        inputUI.SetActive(false);
+        PanelFadeOut(inputUI);
+        StartCoroutine(ActiveDeactive(1, inputUI, false));
     }
 
     public void setOutput(outputInputManager output)
@@ -518,21 +532,25 @@ public class OnClick : MonoBehaviour
             if(building.GetComponent<buildingType>().type == "launchPad")
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
+                PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
             if(building.GetComponent<buildingType>().type == "staticFireStand")
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
+                PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
             if(building.GetComponent<buildingType>().type == "standTank")
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
+                PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
             if(building.GetComponent<buildingType>().type == "GSEtank")
             {
-                building.GetComponent<buildingType>().outputUI.SetActive(false);
+                PanelFadeOut(building.GetComponent<buildingType>().outputUI);
+                StartCoroutine(ActiveDeactive(1, building.GetComponent<buildingType>().outputUI, false));
             }
         }
         
@@ -541,8 +559,27 @@ public class OnClick : MonoBehaviour
         if(fcm != null)
         {
             fcm.output = output;
-            outputUI.SetActive(false);
+            PanelFadeOut(outputUI);
+            StartCoroutine(ActiveDeactive(1, outputUI, false));
         }
+    }
+
+    private IEnumerator ActiveDeactive(float waitTime, GameObject panel, bool activated)
+    {
+        yield return new WaitForSeconds(waitTime);
+        panel.SetActive(activated);
+    }
+
+    public void PanelFadeIn(GameObject panel)
+    {
+        panel.transform.localScale = new Vector3(0, 0, 0);
+        panel.transform.DOScale(1, 0.1f);
+    }
+
+    public void PanelFadeOut(GameObject panel)
+    {
+        panel.transform.DOScale(0, 0.1f);
+        panel.transform.localScale = new Vector3(1, 1, 1);
     }
 
     public void setDestination(GameObject tank)
@@ -560,7 +597,8 @@ public class OnClick : MonoBehaviour
         {
             if(gse.type == "GSEtank")
             {
-                gse.selectUI.SetActive(false);
+                PanelFadeOut(gse.selectUI);
+                StartCoroutine(ActiveDeactive(1, gse.selectUI, false));
             }
         }
     }

@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: -1274458954670939915}
   - component: {fileID: 3278524945468769281}
   - component: {fileID: 5225662392098473629}
+  - component: {fileID: 6169371541686346134}
   m_Layer: 7
   m_Name: CommandCenter
   m_TagString: building
@@ -192,6 +193,7 @@ MonoBehaviour:
   selectUI: {fileID: 0}
   UI: {fileID: 0}
   cost: 5
+  buildingManager: {fileID: 0}
 --- !u!114 &-1274458954670939915
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,3 +258,48 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 17.71, y: 6.619999}
   m_EdgeRadius: 0
+--- !u!114 &6169371541686346134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4919702563059865179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -7231299993301385086}
+          m_TargetAssemblyTypeName: buildingType, Assembly-CSharp
+          m_MethodName: changeColorRed
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -7231299993301385086}
+          m_TargetAssemblyTypeName: buildingType, Assembly-CSharp
+          m_MethodName: changeColorWhite
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2

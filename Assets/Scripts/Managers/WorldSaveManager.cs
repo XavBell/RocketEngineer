@@ -268,7 +268,6 @@ public class WorldSaveManager : MonoBehaviour
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
                 //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
                 //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
-                launchsiteManager.commandCenter = current;
             }
 
             if(buildingType == "staticFireStand")
@@ -280,7 +279,6 @@ public class WorldSaveManager : MonoBehaviour
                 current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
                 //current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
                 //current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
-                launchsiteManager.commandCenter = current;
             }
             count++;
         }

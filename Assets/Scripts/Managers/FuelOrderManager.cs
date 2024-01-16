@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System.Linq;
+using DG.Tweening;
 
 public class FuelOrderManager : MonoBehaviour
 {
@@ -27,6 +28,12 @@ public class FuelOrderManager : MonoBehaviour
         
     }
 
+    public void PanelFadeIn(GameObject panel)
+    {
+        panel.GetComponent<RectTransform>().localScale = new Vector3(0, 0, 0);
+        panel.GetComponent<RectTransform>().transform.DOScale(1, 0.1f);
+    }
+
     public void selectDestination()
     {
         buildingType[] tanks = FindObjectsOfType<buildingType>();
@@ -35,6 +42,7 @@ public class FuelOrderManager : MonoBehaviour
             if(tank.type == "GSEtank")
             {
                 tank.selectUI.SetActive(true);
+                PanelFadeIn(tank.selectUI);
             }
         } 
     }
@@ -51,6 +59,7 @@ public class FuelOrderManager : MonoBehaviour
                 selectedDestination.GetComponent<outputInputManager>().substance = "kerosene";
                 selectedDestination.GetComponent<outputInputManager>().moles = moles;
                 selectedDestination.GetComponent<outputInputManager>().internalTemperature = selectedDestination.GetComponent<outputInputManager>().externalTemperature;
+                Debug.Log("test");
             }
 
             if(substanceDropdown.value == 1)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -14,6 +15,8 @@ public class flightUIManager : MonoBehaviour
     public TMP_Text velocity;
     public TMP_Text altitude;
     public RectTransform throttleBar;
+    public TMP_Text apopasis;
+    public TMP_Text periapsis;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +37,17 @@ public class flightUIManager : MonoBehaviour
         rocketUI.transform.rotation = stageViewer.rocket.transform.rotation;
         velocity.text = Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude).ToString() + " m/s";
         altitude.text = Mathf.Round((stageViewer.rocket.transform.position - stageViewer.rocket.GetComponent<PlanetGravity>().planet.transform.position).magnitude - stageViewer.rocket.GetComponent<PlanetGravity>().planetRadius).ToString() + " m";
+        RocketPath rocketPath = stageViewer.rocket.GetComponent<RocketPath>();
+        //rocketPath.CalculateParameters();
+        if(rocketPath.KeplerParams != null)
+        {
+            
+            if(rocketPath.KeplerParams.eccentricity < 1)
+            {
+                apopasis.text = rocketPath.KeplerParams.semiMajorAxis.ToString();
+                periapsis.text = (rocketPath.KeplerParams.semiMajorAxis*(Math.Sqrt(1-Math.Pow(rocketPath.KeplerParams.eccentricity, 2)))).ToString();
+            }
+        }
 
         if(Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude) != 0)
         {

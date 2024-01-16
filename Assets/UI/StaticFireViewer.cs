@@ -71,12 +71,12 @@ public class StaticFireViewer : MonoBehaviour
 
     public void stopTest()
     {
-        staticFireStand.GetComponent<staticFireStandManager>().failed = true;
+        staticFireStand.GetComponent<staticFireStandManager>().stopped = true;
     }
 
     public void Terminate()
     {
-        staticFireStand.GetComponent<staticFireStandManager>().failed = true;
+        staticFireStand.GetComponent<staticFireStandManager>().stopped = true;
         Destroy(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine);
         this.gameObject.SetActive(false);
     }

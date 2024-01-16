@@ -98,6 +98,10 @@ public class outputInputManager : MonoBehaviour
             updateParents();
             setRate();
             fuelTransfer();
+
+            calculateInternalConditions();
+            
+            
             vent();
             checkBreak();
         }
@@ -180,13 +184,13 @@ public class outputInputManager : MonoBehaviour
     {
         if(inputParent)
         {
-
             rate = inputParent.rate;
         }
 
         if(!inputParent && moles != 0)
         {
             rate = selfRate;
+            
         }
     }
 
@@ -239,8 +243,6 @@ public class outputInputManager : MonoBehaviour
             staticFireStandManager sFSM = GetComponent<staticFireStandManager>();
             CalculateFlowStaticFireEngine(sFSM.ConnectedEngine.GetComponent<Engine>()._rate, sFSM.started, sFSM.ratio, sFSM);
         }
-
-        calculateInternalConditions();
         
     }
 

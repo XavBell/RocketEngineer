@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 public class BuildingManager : MonoBehaviour
 {
@@ -27,6 +28,7 @@ public class BuildingManager : MonoBehaviour
 
     public int IDMax = 0;
     public GameObject PauseUI;
+    public bool CanDestroy = false;
 
     public List<GameObject> DynamicParts = new List<GameObject>();    
     
@@ -58,6 +60,7 @@ public class BuildingManager : MonoBehaviour
                 position = (v.normalized*-(planetRadius + partToConstruct.GetComponent<BoxCollider2D>().size.y/2));
                 position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
                 GameObject current = Instantiate(partToConstruct, position, Quaternion.Euler(0f, 0f, lookAngle));
+                ObjectFall(current);
                 current.transform.SetParent(earth.transform);
                 current.GetComponent<buildingType>().buildingID = IDMax+1;
                 IDMax += 1;
@@ -89,6 +92,11 @@ public class BuildingManager : MonoBehaviour
                 PauseUI.SetActive(true);
             }
         }
+    }
+
+    public void allowDestroy()
+    {
+        CanDestroy = true;
     }
 
     public void Close()
@@ -172,17 +180,46 @@ public class BuildingManager : MonoBehaviour
     public void activateDeactivate(GameObject button)
     {
         hidePanels(button);
-        if(button.activeSelf == true)
+
+        if(button.active == false)
         {
-            button.SetActive(false);
+            Debug.Log(button);
+            button.SetActive(true);
+            PanelFadeIn(button);
+            StartCoroutine(ActiveDeactive(0.1f, button, true));
             return;
         }
 
-        if(button.activeSelf == false)
+         if(button.active = true)
         {
-            button.SetActive(true);
+            PanelFadeOut(button);
+            StartCoroutine(ActiveDeactive(0.1f, button, false));
             return;
         }
+    }
+
+    private IEnumerator ActiveDeactive(float waitTime, GameObject panel, bool activated)
+    {
+        yield return new WaitForSeconds(waitTime);
+        panel.SetActive(activated);
+    }
+
+    public void PanelFadeIn(GameObject panel)
+    {
+        panel.transform.localScale = new Vector3(0, 0, 0);
+        panel.transform.DOScale(1, 0.1f);
+    }
+
+    public void PanelFadeOut(GameObject panel)
+    {
+        panel.transform.DOScale(0, 0.1f);
+        panel.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+    public void ObjectFall(GameObject current)
+    {
+        current.transform.localScale = new Vector3(0, 0, 0);
+        current.transform.DOScale(0.1f, 0.1f);
     }
 
     public void hidePanels(GameObject excludedPanel)
@@ -191,6 +228,7 @@ public class BuildingManager : MonoBehaviour
         {
             if(panel != excludedPanel)
             {
+                PanelFadeOut(panel);
                 panel.SetActive(false);
             }
         }

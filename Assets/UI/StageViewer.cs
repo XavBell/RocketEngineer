@@ -13,6 +13,7 @@ public class StageViewer : MonoBehaviour
     public GameObject TankUI;
     public GameObject Content;
     public TMP_Text altitude;
+    
     private int nStages = -1;
 
     // Start is called before the first frame update

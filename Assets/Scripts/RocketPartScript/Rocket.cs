@@ -383,6 +383,7 @@ public class Rocket : MonoBehaviour
                     rp.gameObject.AddComponent<Rigidbody2D>();
                 }
                 rp.GetComponent<Rigidbody2D>().simulated = true;
+                rp.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 rp.GetComponent<Rigidbody2D>().freezeRotation = true;
                 rp.GetComponent<Rigidbody2D>().angularDrag = 0;
                 rp.GetComponent<Rigidbody2D>().gravityScale = 0;
@@ -390,6 +391,7 @@ public class Rocket : MonoBehaviour
             
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
+                rp.gameObject.GetComponent<PlanetGravity>().planet = this.GetComponent<PlanetGravity>().planet;
                 rp.GetComponent<PlanetGravity>().initialized = true;
                 rp.GetComponent<PlanetGravity>().possessed = false;
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
@@ -418,6 +420,8 @@ public class Rocket : MonoBehaviour
 
                 rp.gameObject.transform.parent = null;
                 rp.GetComponent<Rocket>().updateMass();
+                rp.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(1, 1));
+                this.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(1, 1));
                 this.updateMass();
                 rp.gameObject.GetComponent<PlanetGravity>().stageViewerForceCall();
             }
@@ -631,6 +635,7 @@ public class Rocket : MonoBehaviour
                     rp.gameObject.AddComponent<Rigidbody2D>();
                 }
                 rp.GetComponent<Rigidbody2D>().simulated = true;
+                rp.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 rp.GetComponent<Rigidbody2D>().freezeRotation = true;
                 rp.GetComponent<Rigidbody2D>().angularDrag = 0;
                 rp.GetComponent<Rigidbody2D>().gravityScale = 0;
@@ -644,6 +649,8 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
                 rp.gameObject.AddComponent<RocketStateManager>();
                 rp.gameObject.AddComponent<BodySwitcher>();
+                this.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(1, 1));
+                rp.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(1, 1));
                 
                 rp.gameObject.transform.parent = null;
 

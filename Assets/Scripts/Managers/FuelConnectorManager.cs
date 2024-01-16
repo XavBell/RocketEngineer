@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class FuelConnectorManager : MonoBehaviour
 {
@@ -43,6 +44,12 @@ public class FuelConnectorManager : MonoBehaviour
         selectOutput();
     }
 
+    public void PanelFadeIn(GameObject panel)
+    {
+        panel.transform.localScale = new Vector3(0, 0, 0);
+        panel.transform.DOScale(1, 0.1f);
+    }
+
     public void selectInput()
     {
         outputInputManager[] potentialInputsOutputs = FindObjectsOfType<outputInputManager>();
@@ -57,19 +64,22 @@ public class FuelConnectorManager : MonoBehaviour
 
         foreach(GameObject building in actualOutputInput)
         {
-            if(building.GetComponent<buildingType>().type == "launchPad")
+            if(building.GetComponent<buildingType>().type == "launchPad" && building.GetComponent<buildingType>().inputUI.active == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
+                PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
-            if(building.GetComponent<buildingType>().type == "staticFireStand")
+            if(building.GetComponent<buildingType>().type == "staticFireStand"&& building.GetComponent<buildingType>().inputUI.active == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
+                PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
-            if(building.GetComponent<buildingType>().type == "standTank")
+            if(building.GetComponent<buildingType>().type == "standTank"&& building.GetComponent<buildingType>().inputUI.active == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
+                PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
         }
     }
@@ -91,6 +101,7 @@ public class FuelConnectorManager : MonoBehaviour
             if(building.GetComponent<buildingType>().type == "GSEtank")
             {
                 building.GetComponent<buildingType>().outputUI.SetActive(true);
+                PanelFadeIn(building.GetComponent<buildingType>().outputUI);
             }
         }
     }

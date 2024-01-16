@@ -34,7 +34,7 @@ public class RocketPart : MonoBehaviour
 
     void OnDestroy()
     {
-        if(explosion != null)
+        if(explosion != null && SceneManager.GetActiveScene().name == "SampleScene")
         {
             explosion.gameObject.transform.parent = null;
             explosion.Play();

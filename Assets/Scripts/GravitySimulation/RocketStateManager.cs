@@ -70,6 +70,11 @@ public class RocketStateManager : MonoBehaviour
             {
                 planetGravity.updateReferenceBody();
                 planetGravity.rb.simulated = true;
+                if(this.GetComponent<Rocket>().throttle > 0)
+                {
+                    prediction.CalculateParameters();
+                }
+                
             }
             previousState = state;
             return;
