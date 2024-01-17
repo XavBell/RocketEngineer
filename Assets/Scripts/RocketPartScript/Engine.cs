@@ -62,12 +62,15 @@ public class Engine : RocketPart
         if(willFail == true && timeOfFail <= time)
         {
             fail = true;
-        }else if(willFail == false){
-            fail = false;
-        }else if(willFail == true && timeOfFail >= time){
-            fail = false;
             if(willExplode == true)
             {
+                if(this.gameObject.transform.parent.GetComponent<staticFireStandManager>() != null)
+                {
+                    this.gameObject.transform.parent.GetComponent<staticFireStandManager>().failed = false;
+                    this.gameObject.transform.parent.GetComponent<staticFireStandManager>().started = false;
+                    this.gameObject.transform.parent.GetComponent<staticFireStandManager>().stopped = true;
+                    
+                }
                 if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
                 {
                     GameObject toDestroy = this.gameObject.transform.parent.gameObject;
@@ -78,6 +81,10 @@ public class Engine : RocketPart
                     Destroy(this.gameObject);
                 }
             }
+        }else if(willFail == false){
+            fail = false;
+        }else if(willFail == true && timeOfFail >= time){
+            fail = false;
         }else{
             fail = false;
         }

@@ -8,4 +8,5 @@ public class Nozzle
     public float thrustModifier = 0f;
     public float rateModifier = 1f;
     public float mass = 0f;
+    public float cost = 0f;
 }

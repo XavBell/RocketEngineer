@@ -23,6 +23,20 @@ public class saveWorld
     public List<string> partName = new List<string>();
     public List<int> count = new List<int>();
 
+    public List<string> turbineUnlocked = new List<string>();
+    public List<string> pumpUnlocked = new List<string>();
+    public List<string> nozzleUnlocked = new List<string>();
+    public List<string> tvcUnlocked = new List<string>();
+
+    public List<string> tankMaterialUnlocked = new List<string>();
+
+    public float maxTankBuildSizeX;
+    public float maxTankBuildSizeY;
+
+    public float maxRocketBuildSizeX;
+    public float maxRocketBuildSizeY;
+    public List<string> nodeUnlocked = new List<string>();
+
     public float nPoints;
 
     //SolarSystem

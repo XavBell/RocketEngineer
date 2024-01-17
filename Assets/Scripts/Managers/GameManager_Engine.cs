@@ -25,6 +25,10 @@ public class GameManager_Engine : MonoBehaviour
     public string turbineName;
     public string nozzleName;
     public string TVCName;
+    public float costNozzle;
+    public float costTVC;
+    public float costPump;
+    public float costTurbine;
     public TMP_InputField savePath;
     public string saveName;
 
@@ -240,6 +244,7 @@ public class GameManager_Engine : MonoBehaviour
             nozzle.mass = nozzleRaptor.mass;
             nozzle.thrustModifier = nozzleRaptor.thrustModifier;
             nozzle.rateModifier = nozzleRaptor.rateModifier;
+            nozzle.cost = nozzleRaptor.cost;
         }
 
         if(selectedNozzle == "NozzleSmall")
@@ -250,6 +255,7 @@ public class GameManager_Engine : MonoBehaviour
             nozzle.mass = nozzleSmall.mass;
             nozzle.thrustModifier = nozzleSmall.thrustModifier;
             nozzle.rateModifier = nozzleSmall.rateModifier;
+            nozzle.cost = nozzleSmall.cost;
         }
     }
 
@@ -263,6 +269,7 @@ public class GameManager_Engine : MonoBehaviour
             turbine.mass = turbineRaptor.mass;
             turbine.rate = turbineRaptor.rate;
             turbine.thrustModifier = turbineRaptor.thrustModifier;
+            turbine.cost = turbineRaptor.cost;
         }
 
         if(selectedTurbine == "TurbineSmall")
@@ -273,6 +280,7 @@ public class GameManager_Engine : MonoBehaviour
             turbine.mass = turbineSmall.mass;
             turbine.rate = turbineSmall.rate;
             turbine.thrustModifier = turbineSmall.thrustModifier;
+            turbine.cost = turbineSmall.cost;
         }
     }
 
@@ -285,6 +293,7 @@ public class GameManager_Engine : MonoBehaviour
             pump.pumpName = pumpRaptor.pumpName;
             pump.mass = pumpRaptor.mass;
             pump.thrust = pumpRaptor.thrust;
+            pump.cost = pumpRaptor.cost;
         }
 
         if(selectedPump == "PumpSmall")
@@ -294,6 +303,7 @@ public class GameManager_Engine : MonoBehaviour
             pump.pumpName = pumpSmall.pumpName;
             pump.mass = pumpSmall.mass;
             pump.thrust = pumpSmall.thrust;
+            pump.cost = pumpSmall.cost;
         }
     }
 
@@ -307,6 +317,7 @@ public class GameManager_Engine : MonoBehaviour
             tvc.mass = tvcRaptor.mass;
             tvc.maxAngle = tvcRaptor.maxAngle;
             tvc.speed = tvcRaptor.speed; 
+            tvc.cost = tvcRaptor.cost;
         }
 
         if(selectedTVC == "TVCSmall")
@@ -317,6 +328,7 @@ public class GameManager_Engine : MonoBehaviour
             tvc.mass = tvcSmall.mass;
             tvc.maxAngle = tvcSmall.maxAngle;
             tvc.speed = tvcSmall.speed; 
+            tvc.cost = tvcSmall.cost;
         }
     }
 
@@ -342,8 +354,9 @@ public class GameManager_Engine : MonoBehaviour
         speed = tvc.speed;
 
         mass = turbine.mass + tvc.mass + nozzle.mass + pump.mass;
+        cost = nozzle.cost + tvc.cost + nozzle.cost + pump.cost;
 
-        updateCreatorData(mass.ToString(), rate.ToString(), thrust, 0.05f);
+        updateCreatorData(mass.ToString(), rate.ToString(), thrust, 0.05f, cost);
     }
 
     public void save(string selectedTVC, string selectedNozzle, string selectedPump, string selectedTurbine)
@@ -430,12 +443,13 @@ public class GameManager_Engine : MonoBehaviour
         engineMass.text = loadedEngine.mass_s.ToString();
     }
 
-    public void updateCreatorData(string mass, string flowRate, float thrust, float reliability)
+    public void updateCreatorData(string mass, string flowRate, float thrust, float reliability, float cost)
     {
         engineThurst_C.text = (thrust*reliability).ToString() + "-" + ((2-reliability)*thrust).ToString();
         engineMass_C.text = mass;
         engineFlowRate_C.text = flowRate;
         engineReliability_C.text = reliability.ToString();
+        engineCost.text = cost.ToString();
     }
 
     public void activateDeactivate(GameObject button)

@@ -8,4 +8,5 @@ public class TurbineRaptor
     public float thrustModifier = 1.5f;
     public float rate = 50f;
     public float mass = 1000f;
+    public float cost = 0f;
 }

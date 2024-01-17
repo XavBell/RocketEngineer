@@ -4828,6 +4828,8 @@ GameObject:
   - component: {fileID: -5080833827905664930}
   - component: {fileID: -8321136543703045104}
   - component: {fileID: 6922984723435189394}
+  - component: {fileID: 8397477178556683943}
+  - component: {fileID: -3817347418221125347}
   m_Layer: 2
   m_Name: Engine
   m_TagString: Untagged
@@ -4924,6 +4926,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion: {fileID: 1490254964843477739}
   _partType: engine
+  <_partMass>k__BackingField: 0
   <_attachTop>k__BackingField: {fileID: 2632861862024081867}
   <_attachBottom>k__BackingField: {fileID: 498988792802685914}
   <_attachRight>k__BackingField: {fileID: 0}
@@ -4944,6 +4947,7 @@ MonoBehaviour:
   willFail: 0
   timeOfFail: 0
   outReadThrust: 0
+  willExplode: 0
 --- !u!61 &1198361084908310891
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5044,6 +5048,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plume: {fileID: 532448843869624569}
   baseRate: 10
+--- !u!114 &8397477178556683943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884268472767985740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b907098064098493cab0498427131569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3817347418221125347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1884268472767985740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b907098064098493cab0498427131569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5018022124775737825
 GameObject:
   m_ObjectHideFlags: 0

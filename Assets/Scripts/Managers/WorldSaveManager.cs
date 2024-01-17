@@ -44,6 +44,7 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject Engine;
     public GameObject Decoupler;
     public GameObject Tank;
+    public List<Rocket> rocketToExclude = new List<Rocket>();
 
 
     // Start is called before the first frame update
@@ -105,6 +106,19 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.count = MasterManager.GetComponent<MasterManager>().count;
         saveWorld.partType = MasterManager.GetComponent<MasterManager>().partType;
 
+        saveWorld.turbineUnlocked = MasterManager.GetComponent<MasterManager>().turbineUnlocked;
+        saveWorld.pumpUnlocked = MasterManager.GetComponent<MasterManager>().pumpUnlocked;
+        saveWorld.nozzleUnlocked = MasterManager.GetComponent<MasterManager>().nozzleUnlocked;
+        saveWorld.tvcUnlocked = MasterManager.GetComponent<MasterManager>().tvcUnlocked;
+        saveWorld.tankMaterialUnlocked = MasterManager.GetComponent<MasterManager>().tankMaterialUnlocked;
+
+        saveWorld.maxRocketBuildSizeX = MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeX;
+        saveWorld.maxRocketBuildSizeY = MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeY;
+        saveWorld.maxTankBuildSizeX = MasterManager.GetComponent<MasterManager>().maxTankBuildSizeX;
+        saveWorld.maxTankBuildSizeY = MasterManager.GetComponent<MasterManager>().maxTankBuildSizeY;
+        saveWorld.nodeUnlocked = MasterManager.GetComponent<MasterManager>().nodeUnlocked;
+
+
         saveWorld.IDMax = BuildingManager.GetComponent<BuildingManager>().IDMax;
 
         saveWorld.previouslyLoaded = true;
@@ -155,6 +169,10 @@ public class WorldSaveManager : MonoBehaviour
                     saveWorld.inputIDs.Add(outputInputManager.inputParentID);
                     saveWorld.outputIDs.Add(outputInputManager.outputParentID);
                 }
+                if (building.GetComponent<launchPadManager>().ConnectedRocket != null)
+                {
+                    rocketToExclude.Add(building.GetComponent<launchPadManager>().ConnectedRocket.GetComponent<Rocket>());
+                }
             }
 
             if (building.GetComponent<buildingType>().type == "staticFireStand")
@@ -181,15 +199,22 @@ public class WorldSaveManager : MonoBehaviour
         outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
         foreach (outputInputManager outputInputManager in outputInputManagers)
         {
-            saveWorld.selfGuid.Add(outputInputManager.guid);
-            saveWorld.InputGuid.Add(outputInputManager.inputGuid);
-            saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
+            if (outputInputManager.gameObject.GetComponent<buildingType>() != null)
+            {
+                saveWorld.selfGuid.Add(outputInputManager.guid);
+                saveWorld.InputGuid.Add(outputInputManager.inputGuid);
+                saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
+            }
         }
 
         Rocket[] Rockets = FindObjectsOfType<Rocket>();
         foreach (Rocket rocket in Rockets)
         {
-            saveRocket(rocket, saveWorld);
+            if (!rocketToExclude.Contains(rocket))
+            {
+                saveRocket(rocket, saveWorld);
+            }
+
         }
 
 
@@ -231,6 +256,22 @@ public class WorldSaveManager : MonoBehaviour
                 MasterManager.GetComponent<MasterManager>().partName = loadedWorld.partName;
                 MasterManager.GetComponent<MasterManager>().partType = loadedWorld.partType;
                 MasterManager.GetComponent<MasterManager>().count = loadedWorld.count;
+
+                if (loadedWorld.nodeUnlocked.Count > MasterManager.GetComponent<MasterManager>().nodeUnlocked.Count)
+                {
+                    MasterManager.GetComponent<MasterManager>().turbineUnlocked = loadedWorld.turbineUnlocked;
+                    MasterManager.GetComponent<MasterManager>().pumpUnlocked = loadedWorld.pumpUnlocked;
+                    MasterManager.GetComponent<MasterManager>().nozzleUnlocked = loadedWorld.nozzleUnlocked;
+                    MasterManager.GetComponent<MasterManager>().tvcUnlocked = loadedWorld.tvcUnlocked;
+                    MasterManager.GetComponent<MasterManager>().tankMaterialUnlocked = loadedWorld.tankMaterialUnlocked;
+
+                    MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeX = loadedWorld.maxRocketBuildSizeX;
+                    MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeY = loadedWorld.maxRocketBuildSizeY;
+                    MasterManager.GetComponent<MasterManager>().maxTankBuildSizeX = loadedWorld.maxTankBuildSizeX;
+                    MasterManager.GetComponent<MasterManager>().maxTankBuildSizeY = loadedWorld.maxTankBuildSizeY;
+                    MasterManager.GetComponent<MasterManager>().nodeUnlocked = loadedWorld.nodeUnlocked;
+                }
+
             }
 
 
@@ -332,7 +373,7 @@ public class WorldSaveManager : MonoBehaviour
                 count++;
             }
 
-            loadRocket(loadedWorld);
+            //loadRocket(loadedWorld);
 
             outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
             int x = 0;

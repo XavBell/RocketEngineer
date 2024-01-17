@@ -7,4 +7,5 @@ public class PumpSmall
     public string pumpName = "Pump Small";
     public float thrust = 50600f;
     public float mass = 100f;
+    public float cost = 2f;
 }

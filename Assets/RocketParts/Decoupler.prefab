@@ -98,6 +98,7 @@ GameObject:
   - component: {fileID: 8187502661009820173}
   - component: {fileID: 3526747109037619070}
   - component: {fileID: 8448149127402839303}
+  - component: {fileID: -7931905270412442001}
   m_Layer: 0
   m_Name: Decoupler
   m_TagString: Untagged
@@ -190,6 +191,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosion: {fileID: 5347664881567455075}
   _partType: decoupler
+  <_partMass>k__BackingField: 0
   <_attachTop>k__BackingField: {fileID: 8800689796880995750}
   <_attachBottom>k__BackingField: {fileID: 2713876310524093391}
   <_attachRight>k__BackingField: {fileID: 0}
@@ -282,6 +284,18 @@ MonoBehaviour:
   z_pos: 0
   previousPos: {x: 0, y: 0, z: 0}
   currentPos: {x: 0, y: 0, z: 0}
+--- !u!114 &-7931905270412442001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120019584567089529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b907098064098493cab0498427131569, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4564679376141232524
 GameObject:
   m_ObjectHideFlags: 0

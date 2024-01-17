@@ -136,6 +136,7 @@ public class staticFireStandManager : MonoBehaviour
                         //Updated Value
                         saveObject.reliability = engine.reliability;
                         saveObject.maxTime = engine.maxTime;
+                        saveObject.cost = engine._partCost;
 
                         var jsonString = JsonConvert.SerializeObject(saveObject);
                         System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json", jsonString);

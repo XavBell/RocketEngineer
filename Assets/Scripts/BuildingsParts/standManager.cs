@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using System.Linq;
 
 public class standManager : MonoBehaviour
 {
@@ -99,11 +100,22 @@ public class standManager : MonoBehaviour
                         System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests/" + "TankPressureTests" + saveName, jsonString);
                     }
 
-                    //Save new engine reliability and maxTime
+
                     if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<RocketPart>().name + ".json"))
                     {
-                        //Probably no data to update here
-                        //Indeed
+                        saveTank saveObject = new saveTank();
+                        RocketPart part = ConnectedTank.GetComponent<RocketPart>();
+                        //Save previous unchanged value
+                        saveObject.path = savePathRef.tankFolder;
+                        saveObject.tankName = tank._partName;
+                        saveObject.mass = tank._partMass;
+                        
+                        //Updated Value
+                        saveObject.maxRecPressure = tankStatusTracker.Pressure.Max();
+                        saveObject.cost = tank._partCost;
+
+                        var jsonString = JsonConvert.SerializeObject(saveObject);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName  + ".json", jsonString);
                     }
                     
                     failed = false;

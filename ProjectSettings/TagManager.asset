@@ -17,6 +17,7 @@ TagManager:
   - TimeManager
   - building
   - Prediction
+  - DestroyedPop
   layers:
   - Default
   - TransparentFX
@@ -51,6 +52,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Foreground
+    uniqueID: 4053515789
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0

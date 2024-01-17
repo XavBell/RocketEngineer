@@ -63,7 +63,10 @@ public class StaticFireViewer : MonoBehaviour
 
     public void startTest()
     {
+        staticFireStand.GetComponent<staticFireStandManager>().startTime = (float)FindObjectOfType<TimeManager>().time;
+        staticFireStand.GetComponent<staticFireStandManager>().stopped = false;
         staticFireStand.GetComponent<staticFireStandManager>().started = true;
+        staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().InitializeFail();
         previouslyRan = true;
         MasterManager masterManager = FindObjectOfType<MasterManager>();
         masterManager.GetComponent<pointManager>().nPoints += 2f;
@@ -77,6 +80,7 @@ public class StaticFireViewer : MonoBehaviour
     public void Terminate()
     {
         staticFireStand.GetComponent<staticFireStandManager>().stopped = true;
+        staticFireStand.GetComponent<staticFireStandManager>().failed = false;
         Destroy(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine);
         this.gameObject.SetActive(false);
     }

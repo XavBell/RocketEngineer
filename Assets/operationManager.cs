@@ -34,6 +34,7 @@ public class operationManager : MonoBehaviour
     public GameObject staticFireRocketPanel;
     public GameObject tankPressurePanel;
     public GameObject WDRPanel;
+    public GameObject popUpBuilt;
     // Start is called before the first frame update
     void Start()
     {
@@ -191,6 +192,7 @@ public class operationManager : MonoBehaviour
         panel.SetActive(activated);
     }
 
+
     public void selectLaunchpad()
     {
         launchPadManager[] launchPads = FindObjectsOfType<launchPadManager>();
@@ -305,80 +307,159 @@ public class operationManager : MonoBehaviour
         {
 
             int value = vehicleLaunchDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] != null)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] -= 1;
-                onclick.path = "/" + vehicleLaunchDropdown.options[value].text.ToString();
-                onclick.launchPad = selectedLaunchPad;
-                onclick.load("/rockets");
-                stageViewer.gameObject.SetActive(true);
-                stageViewer.rocket = onclick.spawnedRocket;
-                stageViewer.updateStagesView(false);
-                stageViewer.updateInfoPerStage(false);
-                selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
+                if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] > 0)
+                {
+                    MasterManager.count[MasterManager.partName.IndexOf(vehicleLaunchDropdown.options[value].text.ToString())] -= 1;
+                    onclick.path = "/" + vehicleLaunchDropdown.options[value].text.ToString();
+                    onclick.launchPad = selectedLaunchPad;
+                    onclick.load("/rockets");
+                    stageViewer.gameObject.SetActive(true);
+                    stageViewer.rocket = onclick.spawnedRocket;
+                    stageViewer.updateStagesView(false);
+                    stageViewer.updateInfoPerStage(false);
+                    selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
+                }
+                else
+                {
+                    popUpBuilt.SetActive(true);
+                    PanelFadeIn(popUpBuilt);
+                    StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+                }
+            }
+            else
+            {
+                popUpBuilt.SetActive(true);
+                PanelFadeIn(popUpBuilt);
+                StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
             }
         }
 
         if (operationDropdown.value == 1) //Engine static fire
         {
             int value = engineDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] == "Engine" && MasterManager.count[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] != null)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] -= 1;
-                onclick.path = "/" + engineDropdown.options[value].text.ToString();
-                onclick.launchPad = selectedLaunchPad;
-                onclick.load("/engines");
-                staticFireViewer.gameObject.SetActive(true);
-                staticFireViewer.staticFireStand = selectedLaunchPad;
-                selectedLaunchPad.GetComponent<staticFireStandManager>().ConnectedEngine = onclick.spawnedRocket;
+                if (MasterManager.partType[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] == "Engine" && MasterManager.count[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] > 0)
+                {
+                    MasterManager.count[MasterManager.partName.IndexOf(engineDropdown.options[value].text.ToString())] -= 1;
+                    onclick.path = "/" + engineDropdown.options[value].text.ToString();
+                    onclick.launchPad = selectedLaunchPad;
+                    onclick.load("/engines");
+                    staticFireViewer.gameObject.SetActive(true);
+                    staticFireViewer.staticFireStand = selectedLaunchPad;
+                    selectedLaunchPad.GetComponent<staticFireStandManager>().ConnectedEngine = onclick.spawnedRocket;
+                }
+                else
+                {
+                    popUpBuilt.SetActive(true);
+                    PanelFadeIn(popUpBuilt);
+                    StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+                }
             }
+            else
+            {
+                popUpBuilt.SetActive(true);
+                PanelFadeIn(popUpBuilt);
+                StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+            }
+
         }
 
         if (operationDropdown.value == 2) //Tank test
         {
             int value = tankDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] == "Tank" && MasterManager.count[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] != null)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] -= 1;
-                onclick.path = "/" + tankDropdown.options[value].text.ToString();
-                onclick.launchPad = selectedLaunchPad;
-                onclick.load("/tanks");
-                pressureTestViewer.gameObject.SetActive(true);
-                pressureTestViewer.Stand = selectedLaunchPad;
-                selectedLaunchPad.GetComponent<standManager>().ConnectedTank = onclick.spawnedRocket;
+                if (MasterManager.partType[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] == "Tank" && MasterManager.count[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] > 0)
+                {
+                    MasterManager.count[MasterManager.partName.IndexOf(tankDropdown.options[value].text.ToString())] -= 1;
+                    onclick.path = "/" + tankDropdown.options[value].text.ToString();
+                    onclick.launchPad = selectedLaunchPad;
+                    onclick.load("/tanks");
+                    pressureTestViewer.gameObject.SetActive(true);
+                    pressureTestViewer.Stand = selectedLaunchPad;
+                    selectedLaunchPad.GetComponent<standManager>().ConnectedTank = onclick.spawnedRocket;
+                }
+                else
+                {
+                    popUpBuilt.SetActive(true);
+                    PanelFadeIn(popUpBuilt);
+                    StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+                }
             }
+            else
+            {
+                popUpBuilt.SetActive(true);
+                PanelFadeIn(popUpBuilt);
+                StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+            }
+
         }
 
         if (operationDropdown.value == 3) //WDR test
         {
             int value = vehicleWDRDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] != null)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] -= 1;
-                onclick.path = "/" + vehicleWDRDropdown.options[value].text.ToString();
-                onclick.launchPad = selectedLaunchPad;
-                onclick.load("/rockets");
-                WDRTestViewer.gameObject.SetActive(true);
-                WDRTestViewer.launchPad = selectedLaunchPad;
-                selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
-                selectedLaunchPad.GetComponent<launchPadManager>().operation = "WDR";
+                if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] > 0)
+                {
+                    MasterManager.count[MasterManager.partName.IndexOf(vehicleWDRDropdown.options[value].text.ToString())] -= 1;
+                    onclick.path = "/" + vehicleWDRDropdown.options[value].text.ToString();
+                    onclick.launchPad = selectedLaunchPad;
+                    onclick.load("/rockets");
+                    WDRTestViewer.gameObject.SetActive(true);
+                    WDRTestViewer.launchPad = selectedLaunchPad;
+                    selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
+                    selectedLaunchPad.GetComponent<launchPadManager>().operation = "WDR";
+                }
+                else
+                {
+                    popUpBuilt.SetActive(true);
+                    PanelFadeIn(popUpBuilt);
+                    StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+                }
             }
+            else
+            {
+                popUpBuilt.SetActive(true);
+                PanelFadeIn(popUpBuilt);
+                StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+            }
+
         }
 
         if (operationDropdown.value == 4) //Rocket SF test
         {
             int value = vehicleStaticFireDropdown.value;
-            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] > 0)
+            if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] != null)
             {
-                MasterManager.count[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] -= 1;
-                onclick.path = "/" + vehicleStaticFireDropdown.options[value].text.ToString();
-                onclick.launchPad = selectedLaunchPad;
-                onclick.load("/rockets");
-                RocketStaticFireViewer.gameObject.SetActive(true);
-                RocketStaticFireViewer.launchpad = selectedLaunchPad;
-                selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
-                selectedLaunchPad.GetComponent<launchPadManager>().operation = "staticFire";
+                if (MasterManager.partType[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] == "Rocket" && MasterManager.count[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] > 0)
+                {
+                    MasterManager.count[MasterManager.partName.IndexOf(vehicleStaticFireDropdown.options[value].text.ToString())] -= 1;
+                    onclick.path = "/" + vehicleStaticFireDropdown.options[value].text.ToString();
+                    onclick.launchPad = selectedLaunchPad;
+                    onclick.load("/rockets");
+                    RocketStaticFireViewer.gameObject.SetActive(true);
+                    RocketStaticFireViewer.launchpad = selectedLaunchPad;
+                    selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
+                    selectedLaunchPad.GetComponent<launchPadManager>().operation = "staticFire";
+                }
+                else
+                {
+                    popUpBuilt.SetActive(true);
+                    PanelFadeIn(popUpBuilt);
+                    StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+                }
             }
+            else
+            {
+                popUpBuilt.SetActive(true);
+                PanelFadeIn(popUpBuilt);
+                StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
+            }
+
         }
     }
 

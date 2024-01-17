@@ -34,6 +34,7 @@ public class GameManager_Tank : MonoBehaviour
 
     public float tankHeightFloat;
     public float tankDiameterFloat;
+    public float costValue;
     public string propellantCategory;
 
     //Volume in m3
@@ -171,6 +172,7 @@ public class GameManager_Tank : MonoBehaviour
         {
             maxPressure = 200000f;
             thermalConductivity = 0.09f;
+            costValue = mass * 1.2f;
         }
     }
 
@@ -180,6 +182,7 @@ public class GameManager_Tank : MonoBehaviour
         maxVolume_c.text = volume.ToString();
         thermalConductivity_c.text = thermalConductivity.ToString();
         maxPressure_c.text = maxPressure.ToString();
+        cost.text = costValue.ToString();
     }
 
 

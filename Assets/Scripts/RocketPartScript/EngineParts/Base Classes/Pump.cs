@@ -8,4 +8,5 @@ public class Pump
     public float thrust = 0f;
     public string propellant = "none";
     public float mass = 0f;
+    public float cost = 0f;
 }

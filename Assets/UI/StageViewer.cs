@@ -157,7 +157,7 @@ public class StageViewer : MonoBehaviour
         CameraControl camera = FindObjectOfType<CameraControl>();
         launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
         camera.transform.position = launchsiteManager.commandCenter.transform.position;
-        Destroy(masterManager.ActiveRocket);
+        Destroy(rocket);
         this.gameObject.SetActive(false);
         masterManager.ActiveRocket = null;
     }
