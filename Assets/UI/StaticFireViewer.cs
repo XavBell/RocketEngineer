@@ -55,10 +55,14 @@ public class StaticFireViewer : MonoBehaviour
 
     void updateThrust()
     {
-        if(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().outReadThrust != float.NaN)
+        if(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>() != null)
         {
-            thrust.text = staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().outReadThrust.ToString();
+            if(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().outReadThrust != float.NaN)
+            {
+                thrust.text = staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().outReadThrust.ToString();
+            }
         }
+        
     }
 
     public void startTest()

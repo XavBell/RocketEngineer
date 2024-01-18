@@ -119,8 +119,7 @@ public class GameManager_Tank : MonoBehaviour
         {
 
             tankDiameterFloat = float.Parse(tankDiameter.text);
-            if (MasterManager.maxTankBuildSizeX <= tankDiameterFloat)
-            {
+
                 if (tankDiameterFloat == tankSP.size.x)
                 {
                     startingScaleD = tankSP.size;
@@ -132,7 +131,7 @@ public class GameManager_Tank : MonoBehaviour
                     tankSP.size = UnityEngine.Vector2.Lerp(startingScaleD, new UnityEngine.Vector2(tankDiameterFloat, tankSP.size.y), currentD * 5);
                     currentD += Time.deltaTime;
                 }
-            }
+            
 
 
         }
@@ -140,8 +139,7 @@ public class GameManager_Tank : MonoBehaviour
         if (float.TryParse(tankHeight.text, out number))
         {
             tankHeightFloat = float.Parse(tankHeight.text);
-            if (MasterManager.maxTankBuildSizeY <= tankHeightFloat)
-            {
+
                 if (tankSP.size.y == tankHeightFloat)
                 {
                     startingScaleH = tankSP.size;
@@ -153,7 +151,7 @@ public class GameManager_Tank : MonoBehaviour
                     tankSP.size = UnityEngine.Vector2.Lerp(startingScaleH, new UnityEngine.Vector2(tankSP.size.x, tankHeightFloat), currentH * 5);
                     currentH += Time.deltaTime;
                 }
-            }
+            
 
 
         }

@@ -61,7 +61,7 @@ public class staticFireStandManager : MonoBehaviour
                     ConnectedEngine.GetComponent<Engine>().activate();
                 }
 
-                if(failed == false && (fuelSufficient == true && oxidizerSufficient == true) && engineStaticFireTracker != null)
+                if(failed == false && (fuelSufficient == true && oxidizerSufficient == true) && engineStaticFireTracker != null && oxidizer.state == "liquid" && fuel.state == "liquid")
                 {
                     Engine engine = ConnectedEngine.GetComponent<Engine>();
                     bool fail;
@@ -118,10 +118,15 @@ public class staticFireStandManager : MonoBehaviour
                     if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName + ".json"))
                     {
                         saveEngine saveObject = new saveEngine();
+                        var jsonString = JsonConvert.SerializeObject(saveObject);
+                        jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json");
+                        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+
                         RocketPart part = ConnectedEngine.GetComponent<RocketPart>();
+                        saveObject = loadedEngine;
                         //Save previous unchanged value
                         saveObject.path = savePathRef.engineFolder;
-                        saveObject.engineName = engine._partName;
+                        saveObject.engineName = part._partName;
                         saveObject.thrust_s = engine._thrust;
                         saveObject.mass_s = engine._partMass;
                         saveObject.rate_s = engine._rate;
@@ -138,8 +143,8 @@ public class staticFireStandManager : MonoBehaviour
                         saveObject.maxTime = engine.maxTime;
                         saveObject.cost = engine._partCost;
 
-                        var jsonString = JsonConvert.SerializeObject(saveObject);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json", jsonString);
+                        var jsonString1 = JsonConvert.SerializeObject(saveObject);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json", jsonString1);
                     }
                     stopped = true;
                     engineStaticFireTracker = null;

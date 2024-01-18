@@ -185,6 +185,7 @@ public class outputInputManager : MonoBehaviour
         if(inputParent)
         {
             rate = inputParent.rate;
+            targetTemperature = inputParent.targetTemperature;
         }
 
         if(!inputParent && moles != 0)
@@ -447,9 +448,9 @@ public class outputInputManager : MonoBehaviour
             Q_cond = (tankLocalThermalConductivity * tankSurfaceArea * (temp - internalTemperature)) / tankThickness;
         }
 
-        if(temp < externalTemperature)
+        if(temp > internalTemperature)
         {
-            Q_cond = (tankLocalThermalConductivity * tankSurfaceArea * (internalTemperature - temp)) / tankThickness;
+            Q_cond = -(tankLocalThermalConductivity * tankSurfaceArea * (internalTemperature - temp)) / tankThickness;
         }
         
         

@@ -104,7 +104,12 @@ public class standManager : MonoBehaviour
                     if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<RocketPart>().name + ".json"))
                     {
                         saveTank saveObject = new saveTank();
+                        var jsonString = JsonConvert.SerializeObject(saveObject);
+                        jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName  + ".json");
+                        saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
+
                         RocketPart part = ConnectedTank.GetComponent<RocketPart>();
+                        saveObject = loadedTank;
                         //Save previous unchanged value
                         saveObject.path = savePathRef.tankFolder;
                         saveObject.tankName = tank._partName;
@@ -114,8 +119,8 @@ public class standManager : MonoBehaviour
                         saveObject.maxRecPressure = tankStatusTracker.Pressure.Max();
                         saveObject.cost = tank._partCost;
 
-                        var jsonString = JsonConvert.SerializeObject(saveObject);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName  + ".json", jsonString);
+                        var jsonString1 = JsonConvert.SerializeObject(saveObject);
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName  + ".json", jsonString1);
                     }
                     
                     failed = false;

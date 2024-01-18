@@ -28,7 +28,7 @@ public class engineParticleController : MonoBehaviour
             {
                if(this.gameObject.transform.parent.GetComponent<staticFireStandManager>().started == true)
                {
-                    throttle = 1;
+                    throttle = 100;
                }
             }
             

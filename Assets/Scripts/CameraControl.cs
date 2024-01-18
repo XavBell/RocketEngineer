@@ -65,6 +65,7 @@ public class CameraControl : MonoBehaviour
         if(MasterManager.GetComponent<MasterManager>().ActiveRocket != null)
         {
             UpdateToRocketPosition();
+            reOrient();
         }
         
 
@@ -146,6 +147,25 @@ public class CameraControl : MonoBehaviour
             cam.orthographicSize = 150000f;
             targetZoom = cam.orthographicSize;
         }
+    }
+
+    void reOrient()
+    {
+        if(MasterManager.GetComponent<MasterManager>().ActiveRocket != null)
+        {
+            PlanetGravity pl = MasterManager.GetComponent<MasterManager>().ActiveRocket.GetComponent<PlanetGravity>();
+            if((pl.planet.transform.position - pl.gameObject.transform.position).magnitude - pl.planetRadius < pl.atmoAlt)
+            {
+                Vector2 v = new Vector3(pl.planet.transform.position.x, pl.planet.transform.position.y) - this.gameObject.transform.position;
+                float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+                this.gameObject.transform.rotation = Quaternion.Euler(this.gameObject.transform.rotation.eulerAngles.x, this.gameObject.transform.rotation.eulerAngles.y, lookAngle);
+            }else{
+                this.gameObject.transform.rotation = Quaternion.Euler(this.gameObject.transform.rotation.eulerAngles.x, this.gameObject.transform.rotation.eulerAngles.y, 0);
+            }
+        }else{
+            this.gameObject.transform.rotation = Quaternion.Euler(this.gameObject.transform.rotation.eulerAngles.x, this.gameObject.transform.rotation.eulerAngles.y, 0);
+        }
+
     }
 
     void UpdateToRocketPosition()

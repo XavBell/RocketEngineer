@@ -217,7 +217,6 @@ public class FloatingOrigin : MonoBehaviour
             
             if(closestPlanet != masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet)
             {
-                Debug.Log("hi");
                 MyTime.setScaler(1);
 
                 bypass = true;
@@ -247,12 +246,17 @@ public class FloatingOrigin : MonoBehaviour
 
                 if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<TypeScript>().type == "sun")
                 {
-                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
+                    //Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     //masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
                     //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
                 
                 closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet;
+                Prediction[] predictions = FindObjectsOfType<Prediction>();
+                foreach(Prediction prediction in predictions)
+                {
+                    prediction.updated = false;
+                }
                 toRecalculate = true;
             }
             

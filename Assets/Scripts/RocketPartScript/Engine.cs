@@ -61,6 +61,7 @@ public class Engine : RocketPart
         float outThrust = _thrust * percentageOfThrust;
         if(willFail == true && timeOfFail <= time)
         {
+            outThrust = 0;
             fail = true;
             if(willExplode == true)
             {

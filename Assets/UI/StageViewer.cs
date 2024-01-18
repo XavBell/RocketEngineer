@@ -147,6 +147,7 @@ public class StageViewer : MonoBehaviour
         launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
         camera.transform.position = launchsiteManager.commandCenter.transform.position;
         masterManager.ActiveRocket = null;
+        camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
     }
 
     public void Terminate()
@@ -160,5 +161,6 @@ public class StageViewer : MonoBehaviour
         Destroy(rocket);
         this.gameObject.SetActive(false);
         masterManager.ActiveRocket = null;
+        camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
     }
 }

@@ -51,6 +51,13 @@ public class launchsiteManager : MonoBehaviour
             }
         }
 
+        if(designer == null)
+        {
+            designBtn.SetActive(false);
+        }else{
+            designBtn.SetActive(true);
+        }
+
         if(designer != null)
         {
             designerBtn.SetActive(false);

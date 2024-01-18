@@ -446,6 +446,8 @@ public class Prediction : MonoBehaviour
         //Calculate semi-major axis
         a  = 1/(2/r - Mathf.Pow(v, 2)/gravityParam);
         
+
+        //MOVING THAT TO GET POSITION MIGHT FIX
         //Calculate raw position
         UnityEngine.Vector2 p = new UnityEngine.Vector2((float)(rocketPosition3D.x*Math.Cos(i)+rocketPosition3D.y*Math.Sin(i)), (float)(rocketPosition3D.y*Math.Cos(i)-rocketPosition3D.x*Math.Sin(i)));
         //Moon.transform.position = p;
@@ -469,6 +471,7 @@ public class Prediction : MonoBehaviour
 
     public static void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double e, double a, double i, double n, double startTime, out double x, out double y, out double VX, out double VY)
     {
+        //SEE COMMENT ABOVE FUNCTION
         //Calculate mean anomaly
         double M = Mo + (time - startTime)*n;
         double H = Ho;
@@ -533,13 +536,13 @@ public class Prediction : MonoBehaviour
             if(KeplerParams.eccentricity < 1)
             {
                 GetOrbitPositionKepler(gravityParam, (float)potentialTimes[0], KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out X, out Y, out VX, out VY);
-                prediction.newInitialVelocity = new Vector3((float)VX, (float)VY, 0);
+                prediction.newInitialVelocity = new Vector3((float)VX, (float)VY, 0) - moonVelocity;
             }
 
             if(KeplerParams.eccentricity >= 1)
             {
                 GetOrbitalPositionHyperbolic(Mo, potentialTimes[0], Ho, e, a, i, n, startTime, out X, out Y, out VX, out VY);
-                prediction.newInitialVelocity = new Vector3((float)VX, (float)VY, 0);
+                prediction.newInitialVelocity = new Vector3((float)VX, (float)VY, 0)- moonVelocity;
             }
 
             prediction.moonPosition = Earth.transform.position + Moon.GetComponent<BodyPath>().GetPositionAtTime(prediction.newInitialTime);

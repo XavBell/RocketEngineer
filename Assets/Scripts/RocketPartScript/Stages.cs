@@ -28,6 +28,8 @@ public class Stages
         string oxidizerType = GetType("oxidizer");
         string fuelType = GetType("fuel");
 
+        bool liquid = GetState();
+
         List<RocketPart> engines = GetEngines();
         float massFlowRate = totalMassFlowRate(engines) * thrustCoefficient;
 
@@ -49,7 +51,7 @@ public class Stages
         //Shouldn't need to use the MyTime because it's only ran in simulate mode
         float consumedFuel = Time.deltaTime * massFlowRate * percentageFuel;
         float consumedOxidizer = Time.deltaTime * massFlowRate * percentageOxidizer;
-        if(fuelQty - consumedFuel >= 0 && oxidizerQty - consumedOxidizer >= 0 && consumedFuel != 0 && consumedOxidizer != 0)
+        if(fuelQty - consumedFuel >= 0 && oxidizerQty - consumedOxidizer >= 0 && consumedFuel != 0 && consumedOxidizer != 0 && liquid == true)
         {
             foreach(RocketPart engine in engines)
             {
@@ -107,6 +109,22 @@ public class Stages
         }else{
             return "none";
         }
+    }
+    
+    bool GetState()
+    {
+        foreach(RocketPart part in Parts)
+        {
+            if(part._partType == "tank")
+            {
+                if(part.GetComponent<outputInputManager>().state != "liquid")
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 
     float GetQty(string type)

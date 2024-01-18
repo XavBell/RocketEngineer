@@ -420,6 +420,7 @@ public class RocketPath : MonoBehaviour
 
     public static void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double e, double a, double i, double n, double startTime, out double x, out double y, out double VX, out double VY)
     {
+        //SEE COMMENT IN PREDICTION
         //Calculate mean anomaly
         double M = Mo + (time - startTime)*n;
         double H = Ho;
