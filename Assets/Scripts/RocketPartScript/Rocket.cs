@@ -1,4 +1,3 @@
-using System.Numerics;
 using System;
 using System.Runtime.InteropServices.ComTypes;
 using System.Data;
@@ -8,7 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
-using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
 
 public class Rocket : MonoBehaviour
 {
@@ -649,8 +648,8 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
                 rp.gameObject.AddComponent<RocketStateManager>();
                 rp.gameObject.AddComponent<BodySwitcher>();
-                this.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(1, 1));
-                rp.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(1, 1));
+                this.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1));
+                rp.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1));
                 
                 rp.gameObject.transform.parent = null;
 

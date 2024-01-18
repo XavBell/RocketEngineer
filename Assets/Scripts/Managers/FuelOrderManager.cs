@@ -59,7 +59,6 @@ public class FuelOrderManager : MonoBehaviour
                 selectedDestination.GetComponent<outputInputManager>().substance = "kerosene";
                 selectedDestination.GetComponent<outputInputManager>().moles = moles;
                 selectedDestination.GetComponent<outputInputManager>().internalTemperature = selectedDestination.GetComponent<outputInputManager>().externalTemperature;
-                Debug.Log("test");
             }
 
             if(substanceDropdown.value == 1)

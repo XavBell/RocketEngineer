@@ -28,6 +28,7 @@ public class BuildingManager : MonoBehaviour
 
     public int IDMax = 0;
     public GameObject PauseUI;
+    public GameObject TutorialPanel;
     public bool CanDestroy = false;
 
     public List<GameObject> DynamicParts = new List<GameObject>();    
@@ -136,6 +137,21 @@ public class BuildingManager : MonoBehaviour
     {
         WorldSaveManager.saveTheWorld();
         SceneManager.LoadScene("Research");
+    }
+
+    public void Tutorial()
+    {
+        if(TutorialPanel.active == false)
+        {
+            TutorialPanel.SetActive(true);
+            return;
+        }
+
+        if(TutorialPanel.active == true)
+        {
+            TutorialPanel.SetActive(false);
+            return;
+        }
     }
 
     public void Connect(GameObject output, GameObject input)

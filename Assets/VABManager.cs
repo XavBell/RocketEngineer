@@ -263,8 +263,6 @@ public class VABManager : MonoBehaviour
             {
                 foreach (int index in typeCorresponding)
                 {
-                    Debug.Log(index);
-                    Debug.Log(partName.value);
                     if (MasterManager.partName[index] == partName.options[partName.value].text)
                     {
                         indexFinal = index;
@@ -528,8 +526,6 @@ public class VABManager : MonoBehaviour
                     int indexFinal = -1;
                     foreach (int index in typeCorresponding)
                     {
-                        Debug.Log("/" + MasterManager.partName[index]);
-                        Debug.Log(engine);
                         if ("/" + MasterManager.partName[index] == engine + ".json")
                         {
                             indexFinal = index;
@@ -545,7 +541,6 @@ public class VABManager : MonoBehaviour
                 int i = 0;
                 foreach (int index in indexEngines)
                 {
-                    Debug.Log(index);
                     if (countEngine[i] <= MasterManager.count[index])
                     {
                         MasterManager.count[index] -= countEngine[i];

@@ -136,7 +136,6 @@ public class RocketPath : MonoBehaviour
                 return transformV;
             }
         }
-        Debug.Log("MISSED");
         return rb.position;
         
     }
@@ -188,7 +187,6 @@ public class RocketPath : MonoBehaviour
                 return new Vector2((float)vX, (float)vY);
             }
         }
-        Debug.Log("MISSED");
         return rb.velocity;
     }
 
