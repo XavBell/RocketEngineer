@@ -211,19 +211,19 @@ public class FloatingOrigin : MonoBehaviour
             double bestDistance = Mathf.Infinity;
             if(closestPlanet == null)
             {
-                closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet;
+                closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet();
             }
 
             
-            if(closestPlanet != masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet)
+            if(closestPlanet != masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet())
             {
                 MyTime.setScaler(1);
 
                 bypass = true;
                 //Earth to Moon
-                if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<TypeScript>().type == "moon")
+                if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type == "moon")
                 {
-                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
+                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     //masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
                     //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
@@ -231,7 +231,7 @@ public class FloatingOrigin : MonoBehaviour
                 //Moon to Earth
                 if(closestPlanet.GetComponent<TypeScript>().type == "moon")
                 {
-                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
+                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     //masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity += new Vector2(velocity.x, velocity.y);
                     //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
@@ -239,19 +239,19 @@ public class FloatingOrigin : MonoBehaviour
                 //Sun to Earth
                 if(closestPlanet.GetComponent<TypeScript>().type == "sun")
                 {
-                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
+                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
                     //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
 
-                if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<TypeScript>().type == "sun")
+                if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type == "sun")
                 {
                     //Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     //masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
                     //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
                 
-                closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet;
+                closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet();
                 Prediction[] predictions = FindObjectsOfType<Prediction>();
                 foreach(Prediction prediction in predictions)
                 {

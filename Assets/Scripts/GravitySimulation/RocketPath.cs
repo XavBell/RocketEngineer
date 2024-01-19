@@ -57,9 +57,9 @@ public class RocketPath : MonoBehaviour
         {
             planetGravity = this.GetComponent<PlanetGravity>();
             rb = planetGravity.rb;
-            G = planetGravity.G;
+            G = FindObjectOfType<SolarSystemManager>().G;
             rocketMass = planetGravity.rb.mass;
-            gravityParam = G*(planetGravity.Mass + rocketMass);
+            gravityParam = G*(planetGravity.getMass() + rocketMass);
 
         }
 
@@ -68,7 +68,7 @@ public class RocketPath : MonoBehaviour
             double time = MyTime.time;
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
-            UnityEngine.Vector2 planetPosition2D = planetGravity.planet.transform.position;
+            UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
         }
 
 
@@ -77,10 +77,10 @@ public class RocketPath : MonoBehaviour
     public void CalculateParameters()
     {
         startTime = MyTime.time;
-        SetKeplerParams(KeplerParams, rb.position, planetGravity.planet.transform.position, rb.velocity, gravityParam, startTime);
+        SetKeplerParams(KeplerParams, rb.position, planetGravity.getPlanet().transform.position, rb.velocity, gravityParam, startTime);
         if(KeplerParams.eccentricity > 1)
         {
-            CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.planet.transform.position, gravityParam, startTime);
+            CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.getPlanet().transform.position, gravityParam, startTime);
         }
     }
 
@@ -95,7 +95,7 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
-                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
                 return transformV;
             }
 
@@ -106,7 +106,7 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
-                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
                 return transformV;
             }
         }
@@ -121,7 +121,7 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
-                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
                 return transformV;
             }
 
@@ -132,7 +132,7 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
-                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.planet.transform.position;
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
                 return transformV;
             }
         }

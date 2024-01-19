@@ -10,54 +10,77 @@ using UnityEngine.UI;
 
 public class PlanetGravity : MonoBehaviour
 {
-
-    //public LineRenderer PlLR;
-    public GameObject[] planets;
-    public bool initialized = false;
-    public GameObject core;
+    private GameObject[] planets;
+    private bool initialized = false;
+    private GameObject core;
+    public GameObject getCore()
+    {
+        return core;
+    }
+    public void setCore(GameObject core)
+    {
+        this.core = core;
+    }
 
     //Gravity variables for Earth
-    public GameObject planet;
-    public float Mass = 0f; //Planet mass in kg
-    public float G = 0f; //Gravitational constant
-    public float atmoAlt = 0.0f;
-    public float aeroCoefficient = 0f;
-    public float planetRadius = 0f; //Planet radius in m
-    public float planetDensity = 0f;
-    float maxAlt;
+    private GameObject planet;
+    public GameObject getPlanet()
+    {
+        return planet;
+    }
+    public void setPlanet(GameObject _planet)
+    {
+        this.planet = _planet;
+    }
+    
+    private float Mass = 0f; //Planet mass in kg
+    public float getMass()
+    {
+        return Mass;
+    }
+
+    private float G = 0f; //Gravitational constant
+    private float atmoAlt = 0.0f;
+    public float getAtmoAlt()
+    {
+        return atmoAlt;
+    }
+    private float aeroCoefficient = 0f;
+    private float planetRadius = 0f; //Planet radius in m
+    public float getPlanetRadius()
+    {
+        return planetRadius;
+    }
+    private float planetDensity = 0f;
 
 
     //Rocket variables
+    //Leaving rb public bcs SO MANY THINGS are using it
     public Rigidbody2D rb;
+
+    //Leaving rocket mass public too because it is used in another script for increment
     public float rocketMass;
-    public float thrust;
-    UnityEngine.Vector3 AeroForces;
-    public ParticleSystem particle;
+    //Aerodynamic coefficient
+    private float baseCoefficient = 0.075f;
 
-    public bool stageUpdated = false;
-
-    public GameObject WorldSaveManager;
-
+    //This is public bcs it makes sense, everything should be able to quickly change that
     public bool possessed = false;
-    public bool landed = false;
-    public Vector2 previousVelocity = new Vector2(Mathf.Infinity, Mathf.Infinity);
+    private bool landed = false;
 
-    public GameObject TimeRef;
-    public TimeManager TimeManager;
-    public MasterManager MasterManager;
-    public StageViewer stageViewer;
+    private TimeManager TimeManager;
+    private MasterManager MasterManager;
+    private StageViewer stageViewer;
 
-    public float time = 0;
-
-    public SolarSystemManager SolarSystemManager;
-    public DoubleTransform dt;
-    public Camera cam;
-    public float baseCoefficient = 0.075f;
+    private SolarSystemManager SolarSystemManager;
+    private Camera cam;
+    public Camera getCamera()
+    {
+        return cam;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         SolarSystemManager = GameObject.FindObjectOfType<SolarSystemManager>();
         rb = GetComponent<Rigidbody2D>();
         core.GetComponent<Rocket>().updateMass();
@@ -70,24 +93,16 @@ public class PlanetGravity : MonoBehaviour
 
     }
 
-
     void FixedUpdate()
     {
         checkManager();
 
         if (SceneManager.GetActiveScene().name == "SampleScene" && cam != null)
         {
-
             initializeRocket();
-
-            if (landed == true)
-            {
-                rb.simulated = false;
-            }
             updateReferenceBody();
             if (possessed == true)
             {
-                //rb.simulated = true;
                 MasterManager.ActiveRocket = core;
                 core.GetComponent<Rocket>().updateRocketStaging();
             }
@@ -96,6 +111,7 @@ public class PlanetGravity : MonoBehaviour
 
     void Update()
     {
+        //Rocket controls
         if (possessed == true)
         {
             MasterManager.ActiveRocket = core;
@@ -104,6 +120,7 @@ public class PlanetGravity : MonoBehaviour
         }
     }
 
+    //To be called from RocketStateManager
     public void simulate()
     {
         simulateGravity();
@@ -137,25 +154,15 @@ public class PlanetGravity : MonoBehaviour
     {
         if (MasterManager == null)
         {
-            GameObject MastRef = GameObject.FindGameObjectWithTag("MasterManager");
-            if (TimeRef != null)
+            if (TimeManager != null)
             {
-                MasterManager = MastRef.GetComponent<MasterManager>();
+                MasterManager = FindObjectOfType<MasterManager>();
             }
         }
 
-        if (TimeRef == null)
+        if (TimeManager == null)
         {
-            TimeRef = GameObject.FindGameObjectWithTag("TimeManager");
-            if (TimeRef != null)
-            {
-                TimeManager = TimeRef.GetComponent<TimeManager>();
-            }
-        }
-
-        if (WorldSaveManager == null)
-        {
-            WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
+            TimeManager = FindObjectOfType<TimeManager>();
         }
 
         if (stageViewer == null)
@@ -170,7 +177,7 @@ public class PlanetGravity : MonoBehaviour
         stageViewer1.fullReset(true);
     }
 
-    void initializeRocket()
+    public void initializeRocket()
     {
         if (initialized == false)
         {

@@ -15,71 +15,59 @@ using Newtonsoft.Json;
 public class GameManager_Engine : MonoBehaviour
 {
    //Specs Float
-    public float mass;
-    public float thrust;
-    public float rate;
-    public float maxAngle;
-    public float speed;
-    public float cost;
-    public string pumpName;
-    public string turbineName;
-    public string nozzleName;
-    public string TVCName;
-    public float costNozzle;
-    public float costTVC;
-    public float costPump;
-    public float costTurbine;
-    public TMP_InputField savePath;
-    public string saveName;
+    private float mass;
+    private float thrust;
+    private float rate;
+    private float maxAngle;
+    private float speed;
+    private float cost;
+    private TMP_InputField savePath;
+    private string saveName;
 
-    public TMP_Dropdown pumpDropdown;
-    public TMP_Dropdown turbineDropdown;
+    //For data visualizer
+    private TMP_Dropdown engineDropdown;
 
-    public TMP_Dropdown nozzleDropdown;
+    private savePath savePathRef = new savePath();
 
-    public TMP_Dropdown tvcDropdown;
+    private MasterManager MasterManager = new MasterManager();
 
-    public TMP_Dropdown engineDropdown;
-
-    public savePath savePathRef = new savePath();
-
-    public MasterManager MasterManager = new MasterManager();
-
-    public GameObject MainPanel;
-    public GameObject CreatorPanel;
-    public GameObject DataPanel;
+    private GameObject MainPanel;
+    private GameObject CreatorPanel;
+    private GameObject DataPanel;
 
     //Text field for Data Viewer
-    public TMP_Text engineName;
-    public TMP_Text engineExpectedThrust;
-    public TMP_Text engineMaximumRunTime;
-    public TMP_Text engineEstimatedReliability;
-    public TMP_Text engineMassFlowRate;
-    public TMP_Text engineMass;
+    private TMP_Text engineName;
+    private TMP_Text engineExpectedThrust;
+    private TMP_Text engineMaximumRunTime;
+    private TMP_Text engineEstimatedReliability;
+    private TMP_Text engineMassFlowRate;
+    private TMP_Text engineMass;
 
     //Text field for Creator
-    public TMP_Text engineMass_C;
-    public TMP_Text engineThurst_C;
-    public TMP_Text engineFlowRate_C;
-    public TMP_Text engineReliability_C;
-    public TMP_Text engineCost;
+    private TMP_Text engineMass_C;
+    private TMP_Text engineThurst_C;
+    private TMP_Text engineFlowRate_C;
+    private TMP_Text engineReliability_C;
+    private TMP_Text engineCost;
 
-    public GameObject[] panels;
+    private GameObject[] panels;
 
-    public string selectedTurbine;
-    public string selectedPump;
-    public string selectedNozzle;
-    public string selectedTVC;
+    private Turbine selectedTurbine;
+    private Pump selectedPump;
+    private Nozzle selectedNozzle;
+    private TVC selectedTVC;
 
-    public GameObject NozzleSmallBtn;
-    public GameObject PumpSmallBtn;
-    public GameObject TurbineSmallBtn;
-    public GameObject TVCSmallBtn;
 
-    public GameObject NozzleRaptorBtn;
-    public GameObject PumpRaptorBtn;
-    public GameObject TurbineRaptorBtn;
-    public GameObject TVCRaptorBtn;
+    //Buttons for tech tree and parts
+    private GameObject NozzleSmallBtn;
+    private GameObject PumpSmallBtn;
+    private GameObject TurbineSmallBtn;
+    private GameObject TVCSmallBtn;
+
+    private GameObject NozzleRaptorBtn;
+    private GameObject PumpRaptorBtn;
+    private GameObject TurbineRaptorBtn;
+    private GameObject TVCRaptorBtn;
 
 
     // Start is called before the first frame update
@@ -91,7 +79,24 @@ public class GameManager_Engine : MonoBehaviour
             MasterManager = GMM.GetComponent<MasterManager>();
             initializeEngineInFolder();
         }
+        updateAvailableParts();
+    }
 
+    // Update is called once per frame
+    void Update()
+    {
+
+        if (SceneManager.GetActiveScene().name.ToString() == "EngineDesign")
+        {
+
+            UpdateValues();
+            
+        }
+
+    }
+
+    void updateAvailableParts()
+    {
         //Update activated buttons
         if(MasterManager.tvcUnlocked.Contains("TVCSmall"))
         {
@@ -132,21 +137,6 @@ public class GameManager_Engine : MonoBehaviour
         {
             TurbineRaptorBtn.SetActive(true);
         }
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-        if (SceneManager.GetActiveScene().name.ToString() == "EngineDesign")
-        {
-            if(selectedNozzle != null && selectedPump != null && selectedTurbine != null && selectedTVC != null)
-            {
-                UpdateValues();
-            }
-        }
-
     }
 
 
@@ -178,36 +168,7 @@ public class GameManager_Engine : MonoBehaviour
 
     public void UpdateValues()
     {
-        Nozzle nozzle = new Nozzle();
-        Pump pump = new Pump();
-        Turbine turbine = new Turbine();
-        TVC tvc = new TVC();
-
-        setTurbine(selectedTurbine, turbine);
-        setPump(selectedPump, pump);
-        setNozzle(selectedNozzle, nozzle);
-        setTVC(selectedTVC, tvc);
-        setValues(tvc, nozzle, turbine, pump);
-    }
-
-    public void setTurbine(TMP_Text button)
-    {
-        selectedTurbine = button.text.ToString();
-    }
-
-    public void setPump(TMP_Text button)
-    {
-        selectedPump = button.text.ToString();
-    }
-
-    public void setNozzle(TMP_Text button)
-    {
-        selectedNozzle = button.text.ToString();
-    }
-
-    public void setTVC(TMP_Text button)
-    {
-        selectedTVC = button.text.ToString();
+        setValues(selectedTVC, selectedNozzle, selectedTurbine, selectedPump);
     }
 
     public void Create()
@@ -217,128 +178,36 @@ public class GameManager_Engine : MonoBehaviour
         Turbine turbine = new Turbine();
         TVC tvc = new TVC();
 
-        //string selectedTurbine = turbineDropdown.options[turbineDropdown.value].text.ToString();
-        //string selectedPump = pumpDropdown.options[pumpDropdown.value].text.ToString();
-        //string selectedNozzle = nozzleDropdown.options[nozzleDropdown.value].text.ToString();
-        //string selectedTVC = tvcDropdown.options[tvcDropdown.value].text.ToString();
-
-        setTurbine(selectedTurbine, turbine);
-        setPump(selectedPump, pump);
-        setNozzle(selectedNozzle, nozzle);
-        setTVC(selectedTVC, tvc);
         setValues(tvc, nozzle, turbine, pump);
 
         if(savePath.text != null)
         {
-            save(selectedTVC, selectedNozzle, selectedPump, selectedTurbine);
+            save();
         }
     }
 
-    public void setNozzle(string selectedNozzle, Nozzle nozzle)
+    public void setNozzle(Nozzle nozzle)
     {
-        if(selectedNozzle == "NozzleRaptor")
-        {
-            NozzleRaptor nozzleRaptor = new NozzleRaptor();
-
-            nozzle.nozzleName = nozzleRaptor.nozzleName;
-            nozzle.mass = nozzleRaptor.mass;
-            nozzle.thrustModifier = nozzleRaptor.thrustModifier;
-            nozzle.rateModifier = nozzleRaptor.rateModifier;
-            nozzle.cost = nozzleRaptor.cost;
-        }
-
-        if(selectedNozzle == "NozzleSmall")
-        {
-            NozzleSmall nozzleSmall = new NozzleSmall();
-
-            nozzle.nozzleName = nozzleSmall.nozzleName;
-            nozzle.mass = nozzleSmall.mass;
-            nozzle.thrustModifier = nozzleSmall.thrustModifier;
-            nozzle.rateModifier = nozzleSmall.rateModifier;
-            nozzle.cost = nozzleSmall.cost;
-        }
+        selectedNozzle = nozzle;
     }
 
-    public void setTurbine(string selectedTurbine, Turbine turbine)
+    public void setTurbine(Turbine turbine)
     {
-        if(selectedTurbine == "TurbineRaptor")
-        {
-            TurbineRaptor turbineRaptor = new TurbineRaptor();
-
-            turbine.turbineName = turbineRaptor.turbineName;
-            turbine.mass = turbineRaptor.mass;
-            turbine.rate = turbineRaptor.rate;
-            turbine.thrustModifier = turbineRaptor.thrustModifier;
-            turbine.cost = turbineRaptor.cost;
-        }
-
-        if(selectedTurbine == "TurbineSmall")
-        {
-            TurbineSmall turbineSmall = new TurbineSmall();
-
-            turbine.turbineName = turbineSmall.turbineName;
-            turbine.mass = turbineSmall.mass;
-            turbine.rate = turbineSmall.rate;
-            turbine.thrustModifier = turbineSmall.thrustModifier;
-            turbine.cost = turbineSmall.cost;
-        }
+        selectedTurbine = turbine;
     }
 
-    public void setPump(string selectedPump, Pump pump)
+    public void setPump(Pump pump)
     {
-        if(selectedPump == "PumpRaptor")
-        {
-            PumpRaptor pumpRaptor = new PumpRaptor();
-
-            pump.pumpName = pumpRaptor.pumpName;
-            pump.mass = pumpRaptor.mass;
-            pump.thrust = pumpRaptor.thrust;
-            pump.cost = pumpRaptor.cost;
-        }
-
-        if(selectedPump == "PumpSmall")
-        {
-            PumpSmall pumpSmall = new PumpSmall();
-
-            pump.pumpName = pumpSmall.pumpName;
-            pump.mass = pumpSmall.mass;
-            pump.thrust = pumpSmall.thrust;
-            pump.cost = pumpSmall.cost;
-        }
+        selectedPump = pump;
     }
 
-    public void setTVC(string selectedTVC, TVC tvc)
+    public void setTVC(TVC tvc)
     {
-        if(selectedTVC == "TVCRaptor")
-        {
-            TVCRaptor tvcRaptor = new TVCRaptor();
-
-            tvc.TVCName = tvcRaptor.TVCName;
-            tvc.mass = tvcRaptor.mass;
-            tvc.maxAngle = tvcRaptor.maxAngle;
-            tvc.speed = tvcRaptor.speed; 
-            tvc.cost = tvcRaptor.cost;
-        }
-
-        if(selectedTVC == "TVCSmall")
-        {
-            TVCSmall tvcSmall = new TVCSmall();
-
-            tvc.TVCName = tvcSmall.TVCName;
-            tvc.mass = tvcSmall.mass;
-            tvc.maxAngle = tvcSmall.maxAngle;
-            tvc.speed = tvcSmall.speed; 
-            tvc.cost = tvcSmall.cost;
-        }
+        selectedTVC = tvc;
     }
 
     public void setValues(TVC tvc, Nozzle nozzle, Turbine turbine, Pump pump)
     {
-        TVCName = tvc.TVCName;
-        nozzleName = nozzle.nozzleName;
-        pumpName = pump.pumpName;
-        turbineName = turbine.turbineName;
-
         //Order is important
         rate = turbine.rate;
         thrust = pump.thrust;
@@ -359,7 +228,7 @@ public class GameManager_Engine : MonoBehaviour
         updateCreatorData(mass.ToString(), rate.ToString(), thrust, 0.05f, cost);
     }
 
-    public void save(string selectedTVC, string selectedNozzle, string selectedPump, string selectedTurbine)
+    public void save()
     {
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder))
         {
@@ -380,10 +249,10 @@ public class GameManager_Engine : MonoBehaviour
             saveObject.tvcMaxAngle_s = maxAngle;
             saveObject.cost = Convert.ToSingle(engineCost.text);
 
-            saveObject.tvcName_s = selectedTVC;
-            saveObject.nozzleName_s = selectedNozzle;
-            saveObject.turbineName_s = selectedTurbine;
-            saveObject.pumpName_s = selectedPump;
+            saveObject.tvcName_s = selectedTVC.TVCName;
+            saveObject.nozzleName_s = selectedNozzle.nozzleName;
+            saveObject.turbineName_s = selectedTurbine.turbineName;
+            saveObject.pumpName_s = selectedPump.pumpName;
 
             saveObject.reliability = 0.05f;
             saveObject.maxTime = 1f;
@@ -401,7 +270,7 @@ public class GameManager_Engine : MonoBehaviour
             if(loadedEngine.usedNum == 0)
             {
                 File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json");
-                save(selectedTVC, selectedNozzle, selectedPump, selectedTurbine);
+                save();
                 return;
             }
         }
@@ -478,5 +347,4 @@ public class GameManager_Engine : MonoBehaviour
             }
         }
     }
-
 }

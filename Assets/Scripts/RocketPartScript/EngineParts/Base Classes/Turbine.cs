@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Turbine 
+[CreateAssetMenu(fileName = "Turbine", menuName = "ScriptableObjects/Turbine")]
+public class Turbine:ScriptableObject
 {
     public string turbineName = "default";
     public float thrustModifier = 0f;

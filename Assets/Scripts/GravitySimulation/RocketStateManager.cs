@@ -51,19 +51,18 @@ public class RocketStateManager : MonoBehaviour
 
     void StateUpdater()
     {
-        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && planetGravity.rb.velocity.magnitude < 1 && previousState == "simulate" && (planetGravity.cam.transform.position - transform.position).magnitude > 100)
+        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && planetGravity.rb.velocity.magnitude < 1 && previousState == "simulate" && (planetGravity.getCamera().transform.position - transform.position).magnitude > 100)
         {
             state = "landed";
             if(previousState != state)
             {
-
-                planetGravity.rb.simulated = true;
+                planetGravity.rb.simulated = false;
             }
             previousState = state;
             return;
         }
 
-        if((planetGravity.possessed == true || (planetGravity.cam.transform.position - transform.position).magnitude < 100) && MyTime.scaler == 1)
+        if((planetGravity.possessed == true || (planetGravity.getCamera().transform.position - transform.position).magnitude < 100) && MyTime.scaler == 1)
         {
             state = "simulate";
             if(previousState != state)

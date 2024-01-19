@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Nozzle 
+[CreateAssetMenu(fileName = "Nozzle", menuName = "ScriptableObjects/Nozzle")]
+public class Nozzle:ScriptableObject
 {
     public string nozzleName = "default";
     public float thrustModifier = 0f;

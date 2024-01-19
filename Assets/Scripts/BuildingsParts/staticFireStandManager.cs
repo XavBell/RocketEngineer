@@ -44,8 +44,8 @@ public class staticFireStandManager : MonoBehaviour
     {
         if(ConnectedEngine != null)
         {
-            string oxidizerType = oxidizer.substance;
-            string fuelType = fuel.substance;
+            string oxidizerType = oxidizer.substance.name;
+            string fuelType = fuel.substance.name;
 
             if(oxidizerType == "LOX" && fuelType == "kerosene")
             {

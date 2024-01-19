@@ -42,7 +42,7 @@ public class standManager : MonoBehaviour
     {
         if(ConnectedTank != null)
         {
-            string substanceType = output.substance;
+            Substance substanceType = output.substance;
             ConnectedTank.GetComponent<outputInputManager>().inputParent = output.inputParent;
             if(output.inputParent != null)
             {

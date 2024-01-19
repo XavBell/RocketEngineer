@@ -40,6 +40,9 @@ public class OnClick : MonoBehaviour
     public GameObject outputUI;
     public GameObject selectUI;
 
+    private Substance kerosene;
+    private Substance LOX;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -189,7 +192,7 @@ public class OnClick : MonoBehaviour
             core.GetComponent<Rigidbody2D>().gravityScale = 0;
             core.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             core.AddComponent<PlanetGravity>();
-            core.GetComponent<PlanetGravity>().core = core;
+            core.GetComponent<PlanetGravity>().setCore(core);
             core.GetComponent<Rocket>().core = core;
             //core.AddComponent<DoubleTransform>();
             core.AddComponent<RocketStateManager>();
@@ -427,16 +430,12 @@ public class OnClick : MonoBehaviour
         Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
         currentPrefab.transform.position = attachPoint.transform.position + difference;
         currentPrefab.transform.SetParent(capsule.transform);
-        if(currentPrefab.GetComponent<Part>().type == "engine")
-        {
-            capsule.GetComponent<PlanetGravity>().particle.transform.position = currentPrefab.transform.position;
-        }
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
     }
 
     public void AddFuel(GameObject tank)
     {
-        tank.GetComponent<outputInputManager>().substance = "kerosene";
+        tank.GetComponent<outputInputManager>().substance = kerosene;
         tank.GetComponent<outputInputManager>().moles = 50;
         tank.GetComponent<outputInputManager>().internalTemperature = 298f;
         tank.GetComponent<outputInputManager>().internalPressure = 100f;

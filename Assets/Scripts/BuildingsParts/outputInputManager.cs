@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.Assertions.Must;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public class outputInputManager : MonoBehaviour
 {
     [SerializeField]
-    substanceProperty substanceProperty = new substanceProperty();
     public Guid guid;
     public Guid inputGuid;
     public Guid outputGuid;
@@ -47,15 +48,9 @@ public class outputInputManager : MonoBehaviour
     public float internalPressure = 298f;
     public float internalTemperature = 298f;
     public float maxPressure = 4e8f;
-    public string substance = "none";
+    public Substance substance;
     public string state = "none";
 
-    public float substanceDensity; //kg/m3
-    public float substanceLiquidTemperature; //K
-    public float substanceSolidTemperature; //K
-    public float substanceGaseousTemperature; //K
-    public float substanceMolarMass; //g/mol
-    public float substanceSpecificHeatCapacity; //J/kgK
 
     public bool log = false;
     public bool coolerActive = false;
@@ -186,7 +181,7 @@ public class outputInputManager : MonoBehaviour
         if(ventActive == true)
         {
             state = "gas";
-            float molarRate = 5000/substanceMolarMass;
+            float molarRate = 5000/substance.MolarMass;
             variation = molarRate * MyTime.deltaTime;
             if(moles -  variation >= 0)
             {
@@ -194,14 +189,14 @@ public class outputInputManager : MonoBehaviour
                 moles -=  variation;
             }else{
                 moles = 0;
-                substance = "none";
+                substance = null;
             }
         }
     }
 
     void fuelTransfer()
     {
-        float molarRate = rate/substanceMolarMass;
+        float molarRate = rate/substance.MolarMass;
 
         if(outputParent && this.GetComponent<launchPadManager>() == null)
         {
@@ -248,7 +243,7 @@ public class outputInputManager : MonoBehaviour
                 {
                     sFSM.oxidizerSufficient = true;
                     //Multiply by 1000 bcs engine rate is kg
-                    float consumedMoles = consumedOxidizer*1000/substanceMolarMass;
+                    float consumedMoles = consumedOxidizer*1000/substance.MolarMass;
                     moles -= consumedMoles;
                     return;
                 }else{
@@ -266,7 +261,7 @@ public class outputInputManager : MonoBehaviour
                 if(mass - consumedFuel >= 0)
                 {
                     sFSM.fuelSufficient = true;
-                    float consumedMoles = consumedFuel*1000/substanceMolarMass;
+                    float consumedMoles = consumedFuel*1000/substance.MolarMass;
                     moles -= consumedMoles;
                     return;
                 }else{
@@ -284,7 +279,7 @@ public class outputInputManager : MonoBehaviour
             if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
             {
                 PlanetGravity PG = this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>();
-                if((this.gameObject.transform.position - PG.planet.transform.position).magnitude > PG.planetRadius+PG.atmoAlt)
+                if((this.gameObject.transform.position - PG.getPlanet().transform.position).magnitude > PG.getPlanetRadius()+PG.getAtmoAlt())
                 {
                     externalTemperature = internalTemperature;
                 }
@@ -354,7 +349,7 @@ public class outputInputManager : MonoBehaviour
 
     void calculateInternalConditions()
     {
-        substanceProperty.AssignProperty(substance, out substanceDensity, out substanceLiquidTemperature, out substanceGaseousTemperature, out substanceSolidTemperature, out substanceMolarMass, out substanceSpecificHeatCapacity);
+        
         SetState();
         CalculateConditionsFromState();
         updateExternalTemp();
@@ -365,10 +360,10 @@ public class outputInputManager : MonoBehaviour
         if (state == "liquid")
         {
             ConvertMass();
-            volume = mass / substanceDensity;
+            volume = mass / substance.Density;
             float ratio = volume / tankVolume;
             float heightLiquid = ratio * tankHeight;
-            internalPressure = substanceDensity * 9.8f * heightLiquid;
+            internalPressure = substance.Density * 9.8f * heightLiquid;
 
             if (internalPressure == float.NaN)
             {
@@ -397,7 +392,7 @@ public class outputInputManager : MonoBehaviour
         {
             ConvertMass();
 
-            volume = mass / substanceDensity;
+            volume = mass / substance.Density;
 
             if (tankVolume < volume)
             {
@@ -440,7 +435,7 @@ public class outputInputManager : MonoBehaviour
         }
         
         
-        float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substanceSpecificHeatCapacity);
+        float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substance.SpecificHeatCapacity);
         if (internalTemperature != temp)
         {
             internalTemperature += deltaInternal;
@@ -450,50 +445,24 @@ public class outputInputManager : MonoBehaviour
     void ConvertMass()
     {
         //Convert moles to mass
-        mass = moles * substanceMolarMass;
+        mass = moles * substance.MolarMass;
         //Convert g to kg
         mass /= 1000;
     }
 
     private void SetState()
     {
-        if (substanceSolidTemperature < internalTemperature && internalTemperature < substanceGaseousTemperature)
+        if (substance.SolidTemperature < internalTemperature && internalTemperature < substance.GaseousTemperature)
         {
             state = "liquid";
         }
-        else if (internalTemperature > substanceGaseousTemperature)
+        else if (internalTemperature > substance.GaseousTemperature)
         {
             state = "gas";
         }
-        else if (internalTemperature < substanceSolidTemperature)
+        else if (internalTemperature < substance.SolidTemperature)
         {
             state = "solid";
-        }
-    }
-
-    public void InitializeInput()
-    {
-        GameObject[] Inputs;
-        Inputs = GameObject.FindGameObjectsWithTag("building");
-        foreach (GameObject input in Inputs)
-        {
-            if(input.GetComponent<buildingType>().buildingID == inputParentID)
-            {
-                //inputParent = input;
-            }
-        }
-    }
-
-    public void InitializeOutput()
-    {
-        GameObject[] Outputs;
-        Outputs = GameObject.FindGameObjectsWithTag("building");
-        foreach (GameObject output in Outputs)
-        {
-            if(output.GetComponent<buildingType>().buildingID == outputParentID)
-            {
-                //outputParent = output;
-            }
         }
     }
 }

@@ -18,11 +18,6 @@ public class InformationCalculator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(planetGravity.planet != null)
-        {
-            //float dist = (planetGravity.planet.transform.position - this.transform.position).magnitude - planetGravity.planetRadius;
-            //altitudeText.text = dist.ToString();
-        }
         
     }
 }

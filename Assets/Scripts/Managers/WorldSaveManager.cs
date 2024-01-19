@@ -526,7 +526,7 @@ public class WorldSaveManager : MonoBehaviour
                 root.GetComponent<Rigidbody2D>().gravityScale = 0;
                 root.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
                 root.AddComponent<PlanetGravity>();
-                root.GetComponent<PlanetGravity>().core = root;
+                root.GetComponent<PlanetGravity>().setCore(root);
                 root.GetComponent<Rocket>().core = root;
                 root.AddComponent<RocketStateManager>();
                 root.AddComponent<RocketPath>();

@@ -36,9 +36,8 @@ public class flightUIManager : MonoBehaviour
     {
         rocketUI.transform.rotation = stageViewer.rocket.transform.rotation;
         velocity.text = Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude).ToString() + " m/s";
-        altitude.text = Mathf.Round((stageViewer.rocket.transform.position - stageViewer.rocket.GetComponent<PlanetGravity>().planet.transform.position).magnitude - stageViewer.rocket.GetComponent<PlanetGravity>().planetRadius).ToString() + " m";
+        altitude.text = Mathf.Round((stageViewer.rocket.transform.position - stageViewer.rocket.GetComponent<PlanetGravity>().getPlanet().transform.position).magnitude - stageViewer.rocket.GetComponent<PlanetGravity>().getPlanetRadius()).ToString() + " m";
         RocketPath rocketPath = stageViewer.rocket.GetComponent<RocketPath>();
-        //rocketPath.CalculateParameters();
         if(rocketPath.KeplerParams != null)
         {
             

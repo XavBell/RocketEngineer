@@ -18,7 +18,7 @@ public class Rocket : MonoBehaviour
     public float rocketMass;
     public float throttle = 0f;
     public List<Engine> engines = new List<Engine>();
-    public UnityEngine.Vector2 currentThrust;
+    public Vector2 currentThrust;
     public float factor = 8;
 
     void Update()
@@ -390,11 +390,9 @@ public class Rocket : MonoBehaviour
             
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
-                rp.gameObject.GetComponent<PlanetGravity>().planet = this.GetComponent<PlanetGravity>().planet;
-                rp.GetComponent<PlanetGravity>().initialized = true;
                 rp.GetComponent<PlanetGravity>().possessed = false;
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
-                rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+                rp.gameObject.GetComponent<PlanetGravity>().setCore(rp.gameObject);
                 rp.gameObject.AddComponent<RocketStateManager>();
                 rp.gameObject.AddComponent<BodySwitcher>();
 
@@ -642,10 +640,10 @@ public class Rocket : MonoBehaviour
             
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
-                rp.GetComponent<PlanetGravity>().initialized = true;
+                rp.GetComponent<PlanetGravity>().initializeRocket();
                 rp.GetComponent<PlanetGravity>().possessed = false;
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
-                rp.gameObject.GetComponent<PlanetGravity>().core = rp.gameObject;
+                rp.gameObject.GetComponent<PlanetGravity>().setCore(rp.gameObject);
                 rp.gameObject.AddComponent<RocketStateManager>();
                 rp.gameObject.AddComponent<BodySwitcher>();
                 this.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1));

@@ -25,8 +25,8 @@ public class Stages
         float oxidizerQty = GetQty("oxidizer");
         float fuelQty = GetQty("fuel");
 
-        string oxidizerType = GetType("oxidizer");
-        string fuelType = GetType("fuel");
+        string oxidizerType = GetType("oxidizer").name;
+        string fuelType = GetType("fuel").name;
 
         bool liquid = GetState();
 
@@ -76,22 +76,22 @@ public class Stages
                 {
                     if(tank.GetComponent<outputInputManager>().circuit == "oxidizer")
                     {
-                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer*1000f/tank.GetComponent<outputInputManager>().substanceMolarMass < 0)
+                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer*1000f/tank.GetComponent<outputInputManager>().substance.MolarMass < 0)
                         {
                             tank.GetComponent<outputInputManager>().moles = 0;
                         }else{
-                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer*1000f/tank.GetComponent<outputInputManager>().substanceMolarMass;
+                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/oxidizerQty*consumedOxidizer*1000f/tank.GetComponent<outputInputManager>().substance.MolarMass;
                         }
                         
                     }
 
                     if(tank.GetComponent<outputInputManager>().circuit == "fuel")
                     {
-                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel*1000f/tank.GetComponent<outputInputManager>().substanceMolarMass < 0)
+                        if(tank.GetComponent<outputInputManager>().moles - tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel*1000f/tank.GetComponent<outputInputManager>().substance.MolarMass < 0)
                         {
                             tank.GetComponent<outputInputManager>().moles = 0;
                         }else{
-                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel*1000f/tank.GetComponent<outputInputManager>().substanceMolarMass;
+                            tank.GetComponent<outputInputManager>().moles -= tank.GetComponent<outputInputManager>().mass/fuelQty*consumedFuel*1000f/tank.GetComponent<outputInputManager>().substance.MolarMass;
                         }
                         
                     }
@@ -144,9 +144,9 @@ public class Stages
         return qty;
     }
 
-    string GetType(string type)
+    Substance GetType(string type)
     {
-        string substance = "none";
+        Substance substance = null;
         foreach(RocketPart part in Parts)
         {
             if(part._partType == "tank")

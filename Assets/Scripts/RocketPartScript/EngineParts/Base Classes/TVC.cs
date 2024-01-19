@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TVC 
+[CreateAssetMenu(fileName = "TVC", menuName = "ScriptableObjects/TVC")]
+public class TVC:ScriptableObject
 {
     public string TVCName = "default";
     public float maxAngle = 0.0f;

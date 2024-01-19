@@ -55,6 +55,7 @@ public class Prediction : MonoBehaviour
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         MyTime = FindObjectOfType<TimeManager>();
+        G = FindObjectOfType<SolarSystemManager>().G;
     }
 
     // Update is called once per frame
@@ -71,12 +72,9 @@ public class Prediction : MonoBehaviour
 
         if (planetGravity != null)
         {
-            //planetGravity = MasterManager.ActiveRocket.GetComponent<PlanetGravity>();
             rb = planetGravity.rb;
-            G = planetGravity.G;
             rocketMass = planetGravity.rb.mass;
-            gravityParam = G * (planetGravity.Mass + rocketMass);
-
+            gravityParam = G * (planetGravity.getMass() + rocketMass);
         }
 
         if (planetGravity != null && subPrediction == false)
@@ -84,7 +82,7 @@ public class Prediction : MonoBehaviour
             float time = Time.time;
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
-            UnityEngine.Vector2 planetPosition2D = planetGravity.planet.transform.position;
+            UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
             DrawLine(time, line, KeplerParams, rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam);
         }
 
@@ -501,7 +499,7 @@ public class Prediction : MonoBehaviour
         foreach (Vector3 position in points)
         {
             //Upper and lower limit
-            if ((position - (Moon.GetComponent<BodyPath>().GetPositionAtTime((float)times[i]) + Earth.transform.position)).magnitude < planetGravity.SolarSystemManager.moonSOI)
+            if ((position - (Moon.GetComponent<BodyPath>().GetPositionAtTime((float)times[i]) + Earth.transform.position)).magnitude < FindObjectOfType<SolarSystemManager>().moonSOI)
             {
                 potentialPosition.Add(position);
                 potentialTimes.Add(times[i]);
@@ -525,7 +523,7 @@ public class Prediction : MonoBehaviour
             prediction.line.widthMultiplier = 3000;
             prediction.subPrediction = true;
 
-            prediction.newGravityParam = G * (planetGravity.Mass + rocketMass);
+            prediction.newGravityParam = G * (planetGravity.getMass() + rocketMass);
             prediction.newInitialTime = (float)potentialTimes[0];
             prediction.newInitialPosition = potentialPosition[0];
             Vector3 moonVelocity = Moon.GetComponent<BodyPath>().GetVelocityAtTime((float)potentialTimes[0]);

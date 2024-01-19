@@ -51,20 +51,7 @@ public class BodySwitcher : MonoBehaviour
 
     public void updateReferenceBody()
     {
-        foreach(GameObject planet in planets)
-        {
-            float distance = Vector2.Distance(moon.transform.position, this.transform.position);
-            if(planet.GetComponent<TypeScript>().type == "moon" && distance < solarSystemManager.moonSOI)
-            {
-                this.GetComponent<PlanetGravity>().planet = planet;
-                referenceBody = planet;
-                return;
-            }else{ 
-                this.GetComponent<PlanetGravity>().planet = earth;
-                referenceBody = planet;
-                return;
-            }
-        }
+        
     }
     
 }
