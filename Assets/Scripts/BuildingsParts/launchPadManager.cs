@@ -42,6 +42,9 @@ public class launchPadManager : MonoBehaviour
 
         if(ConnectedRocket != null)
         {
+            //Disconnect rocket from launchpad
+
+            //(WHY TF IS THAT HERE)
             if(ConnectedRocket.GetComponent<PlanetGravity>().possessed == true)
             {
                 ConnectedRocket.GetComponent<outputInputManager>().inputParent = null;
@@ -52,17 +55,17 @@ public class launchPadManager : MonoBehaviour
 
         if(operation == "launch")
         {
-
+            //TODO
         }
 
         if(operation == "staticFire")
         {
-            
+            //TODO
         }
 
         if(operation == "WDR")
         {
-            
+            //TODO
         }
     }
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//PRETTY SURE IT'S OBSOLETE
 public class BodySwitcher : MonoBehaviour
 {
     private GameObject moon;

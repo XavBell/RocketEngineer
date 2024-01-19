@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//ACTUALLY Occluder
 public class occulterManager : MonoBehaviour
 {
     public string partType;

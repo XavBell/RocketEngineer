@@ -23,7 +23,15 @@ public class DetectClick : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButtonDown(1))
+
+        CheckForRightClickOnBuilding();
+        CheckForDestroy();
+
+    }
+
+    void CheckForRightClickOnBuilding()
+    {
+        if (Input.GetMouseButtonDown(1))
         {
             RaycastHit2D raycastHit;
             Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -44,7 +52,9 @@ public class DetectClick : MonoBehaviour
                             current.GetComponent<buildingType>().UI.SetActive(true);
                             PanelFadeIn(current.GetComponent<buildingType>().UI);
                             return;
-                        }else{
+                        }
+                        else
+                        {
                             PanelFadeOut(current.GetComponent<buildingType>().UI);
                             StartCoroutine(ActiveDeactive(0.1f, current.GetComponent<buildingType>().UI, false));
                             return;
@@ -58,7 +68,9 @@ public class DetectClick : MonoBehaviour
                             current.GetComponent<buildingType>().UI.SetActive(true);
                             PanelFadeIn(current.GetComponent<buildingType>().UI);
                             return;
-                        }else{
+                        }
+                        else
+                        {
                             PanelFadeOut(current.GetComponent<buildingType>().UI);
                             StartCoroutine(ActiveDeactive(0.1f, current.GetComponent<buildingType>().UI, false));
                             return;
@@ -70,29 +82,34 @@ public class DetectClick : MonoBehaviour
             }
         }
 
-        
+    }
 
-        if(Input.GetMouseButtonDown(0))
+    void CheckForDestroy()
+    {
+        if (buildingManager.CanDestroy == true)
         {
-            RaycastHit2D raycastHit;
-            Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
-            raycastHit = Physics2D.Raycast(ray, -Vector2.up);
-            if (raycastHit.transform != null)
+            if (Input.GetMouseButtonDown(0))
             {
-                if (raycastHit.transform.gameObject.GetComponent<buildingType>())
+                RaycastHit2D raycastHit;
+                Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
+                raycastHit = Physics2D.Raycast(ray, -Vector2.up);
+                if (raycastHit.transform != null)
                 {
-
-                    GameObject current = raycastHit.transform.gameObject;
-                    if(buildingManager.CanDestroy == true)
+                    if (raycastHit.transform.gameObject.GetComponent<buildingType>())
                     {
+
+                        GameObject current = raycastHit.transform.gameObject;
+
                         Destroy(current);
                         buildingManager.CanDestroy = false;
-                    }
-                }
 
+                    }
+
+                }
             }
         }
+
     }
 
     private IEnumerator ActiveDeactive(float waitTime, GameObject panel, bool activated)

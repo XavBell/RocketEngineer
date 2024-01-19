@@ -14,6 +14,7 @@ public class InformationCalculator : MonoBehaviour
         
     }
 
+    //WAS USED FOR DEBUG
     // Update is called once per frame
     void Update()
     {

@@ -62,12 +62,12 @@ public class PlanetGravity : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         core.GetComponent<Rocket>().updateMass();
         rb.mass = core.GetComponent<Rocket>().rocketMass;
-        if(SceneManager.GetActiveScene().name == "SampleScene")
+        if (SceneManager.GetActiveScene().name == "SampleScene")
         {
             cam = GameObject.FindObjectOfType<Camera>();
             G = SolarSystemManager.G;
         }
-        
+
     }
 
 
@@ -79,30 +79,25 @@ public class PlanetGravity : MonoBehaviour
         {
 
             initializeRocket();
-            
 
-            if(landed == true)
+            if (landed == true)
             {
                 rb.simulated = false;
             }
             updateReferenceBody();
-            if(possessed == true)
+            if (possessed == true)
             {
                 //rb.simulated = true;
                 MasterManager.ActiveRocket = core;
                 core.GetComponent<Rocket>().updateRocketStaging();
-            }  
-
+            }
         }
-
-
     }
 
     void Update()
     {
-        if(possessed == true)
+        if (possessed == true)
         {
-            //rb.simulated = true;
             MasterManager.ActiveRocket = core;
             core.GetComponent<Rocket>().controlThrust();
             core.GetComponent<Rocket>()._orientation();
@@ -115,23 +110,23 @@ public class PlanetGravity : MonoBehaviour
     }
 
     void simulateGravity()
-    {   
+    {
         //Gravity
         rb.mass = core.GetComponent<Rocket>().rocketMass;
         double Dist = Vector2.Distance(rb.transform.position, new Vector2((float)planet.GetComponent<DoubleTransform>().x_pos, (float)planet.GetComponent<DoubleTransform>().y_pos));
         Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
-        Vector3 ForceVector = forceDir * (G*(Mass*rb.mass)/(float)(Dist * Dist));
+        Vector3 ForceVector = forceDir * (G * (Mass * rb.mass) / (float)(Dist * Dist));
         Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
         Vector3 DragVector = new Vector3(0, 0, 0);
-        if(Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 20)
+        if (Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 20)
         {
-            double airPressure = 1/((Dist-planetRadius))*planetDensity;
-            double drag = baseCoefficient * airPressure * rb.velocity.magnitude/2;
+            double airPressure = 1 / ((Dist - planetRadius)) * planetDensity;
+            double drag = baseCoefficient * airPressure * rb.velocity.magnitude / 2;
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
-        
-        
+
+
 
         rb.AddForce(ResultVector);
         GetComponent<DoubleTransform>().x_pos = rb.position.x;
@@ -140,30 +135,30 @@ public class PlanetGravity : MonoBehaviour
 
     void checkManager()
     {
-        if(MasterManager == null)
+        if (MasterManager == null)
         {
             GameObject MastRef = GameObject.FindGameObjectWithTag("MasterManager");
-            if(TimeRef != null)
+            if (TimeRef != null)
             {
                 MasterManager = MastRef.GetComponent<MasterManager>();
             }
         }
 
-        if(TimeRef == null)
+        if (TimeRef == null)
         {
             TimeRef = GameObject.FindGameObjectWithTag("TimeManager");
-            if(TimeRef != null)
+            if (TimeRef != null)
             {
                 TimeManager = TimeRef.GetComponent<TimeManager>();
             }
         }
 
-        if(WorldSaveManager == null)
+        if (WorldSaveManager == null)
         {
             WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         }
 
-        if(stageViewer == null)
+        if (stageViewer == null)
         {
             stageViewer = GameObject.FindObjectOfType<StageViewer>();
         }
@@ -178,8 +173,7 @@ public class PlanetGravity : MonoBehaviour
     void initializeRocket()
     {
         if (initialized == false)
-        {       
-            //transform.localScale = new UnityEngine.Vector3(0.5f, 0.5f, 0.5f);
+        {
             rb = GetComponent<Rigidbody2D>();
             initialized = true;
         }
@@ -191,78 +185,91 @@ public class PlanetGravity : MonoBehaviour
         float bestDistance = Mathf.Infinity;
         GameObject bestPlanet = null;
         GameObject previous = planet;
-        
+
         GameObject Earth = null;
         GameObject Moon = null;
 
-        foreach(GameObject go in planets)
+        foreach (GameObject go in planets)
         {
             UnityEngine.Vector3 distance = go.transform.position - transform.position;
             float distMag = distance.magnitude;
 
-            if(distMag < bestDistance)
+            if (distMag < bestDistance)
             {
                 bestDistance = distMag;
                 bestPlanet = go;
             }
 
-            if(go.GetComponent<TypeScript>().type == "earth")
+            if (go.GetComponent<TypeScript>().type == "earth")
             {
                 Earth = go;
             }
 
-            if(go.GetComponent<TypeScript>().type == "moon")
+            if (go.GetComponent<TypeScript>().type == "moon")
             {
                 Moon = go;
             }
         }
 
-        if(bestPlanet != null)
+        if (bestPlanet != null)
         {
-            if (bestPlanet.GetComponent<TypeScript>().type == "earth")
+            setPlanetProperty(bestPlanet, bestDistance, Earth);
+
+            //If there's a SOI change during timewarp we must be safe and exit timewarp
+            //Code HAS to be there 
+            if (previous != planet)
             {
-                Mass = SolarSystemManager.earthMass;
-                atmoAlt = SolarSystemManager.earthAlt;
-                planetDensity = SolarSystemManager.earthDensitySlvl;
-                planetRadius = SolarSystemManager.earthRadius;
-                planet = bestPlanet;
+                exitTimewarp();
             }
+        }
+    }
 
-            if(bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < SolarSystemManager.moonSOI)
-            {
-                Mass = SolarSystemManager.moonMass;
-                atmoAlt = 0.0f;
-                aeroCoefficient = 0.0f;
-                planetRadius = SolarSystemManager.moonRadius;
-                planet = bestPlanet;
-            }else if((this.transform.position - Earth.transform.position).magnitude < SolarSystemManager.earthSOI){
-                Mass = SolarSystemManager.earthMass;
-                atmoAlt = SolarSystemManager.earthAlt;
-                aeroCoefficient = SolarSystemManager.earthDensitySlvl;
-                planetDensity = SolarSystemManager.earthRadius;
-                planet = Earth;
+    void exitTimewarp()
+    {
+        if (this.GetComponent<RocketStateManager>() != null && TimeManager != null)
+        {
+            this.GetComponent<RocketStateManager>().state = "simulate";
+            TimeManager.setScaler(1);
+        }
+    }
 
-            }else{
-                Mass = SolarSystemManager.sunMass;
-                atmoAlt = 0.0f;
-                aeroCoefficient = 0.0f;
-                planetRadius = SolarSystemManager.sunRadius;
-                planet = FindObjectOfType<SunScript>().gameObject;
-            }
-
-            if(previous != planet)
-            {
-                if(this.GetComponent<RocketStateManager>() != null && TimeManager != null)
-                {
-                    this.GetComponent<RocketStateManager>().state = "simulate";
-                    TimeManager.setScaler(1);
-                }
-                
-            }
-
+    void setPlanetProperty(GameObject bestPlanet, float bestDistance, GameObject Earth)
+    {
+        if (bestPlanet.GetComponent<TypeScript>().type == "earth")
+        {
+            Mass = SolarSystemManager.earthMass;
+            atmoAlt = SolarSystemManager.earthAlt;
+            planetDensity = SolarSystemManager.earthDensitySlvl;
+            planetRadius = SolarSystemManager.earthRadius;
+            planet = bestPlanet;
         }
 
-        
+        if (bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < SolarSystemManager.moonSOI)
+        {
+            Mass = SolarSystemManager.moonMass;
+            atmoAlt = 0.0f;
+            aeroCoefficient = 0.0f;
+            planetRadius = SolarSystemManager.moonRadius;
+            planet = bestPlanet;
+        }
+        else if ((this.transform.position - Earth.transform.position).magnitude < SolarSystemManager.earthSOI)
+        {
+            Mass = SolarSystemManager.earthMass;
+            atmoAlt = SolarSystemManager.earthAlt;
+            aeroCoefficient = SolarSystemManager.earthDensitySlvl;
+            planetDensity = SolarSystemManager.earthRadius;
+            planet = Earth;
 
+        }
+        else
+        {
+            Mass = SolarSystemManager.sunMass;
+            atmoAlt = 0.0f;
+            aeroCoefficient = 0.0f;
+            planetRadius = SolarSystemManager.sunRadius;
+            planet = FindObjectOfType<SunScript>().gameObject;
+        }
     }
 }
+
+

@@ -78,16 +78,7 @@ public class outputInputManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(inputParentID > 0 && inputParent == null)
-        {
-            //InitializeInput();
-        }
-
-        if(outputParentID > 0 && outputParent == null)
-        {
-            //InitializeOutput();
-        }
-
+        //Meaning its either a rocket tank alone or a tank in a rocket
         if(GetComponent<Tank>() != null)
         {
             InitializeCircuitTank();
@@ -101,13 +92,9 @@ public class outputInputManager : MonoBehaviour
 
             calculateInternalConditions();
             
-            
             vent();
             checkBreak();
         }
-
-        
-
         
     }
 
@@ -191,7 +178,6 @@ public class outputInputManager : MonoBehaviour
         if(!inputParent && moles != 0)
         {
             rate = selfRate;
-            
         }
     }
 
