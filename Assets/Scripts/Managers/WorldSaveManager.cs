@@ -138,27 +138,27 @@ public class WorldSaveManager : MonoBehaviour
 
             if (building.GetComponent<buildingType>().type == "designer")
             {
-                saveWorld.inputIDs.Add(0);
-                saveWorld.outputIDs.Add(0);
+                saveWorld.InputGuid.Add(new Guid());
+                saveWorld.OutputGuid.Add(new Guid());
             }
 
             if (building.GetComponent<buildingType>().type == "commandCenter")
             {
-                saveWorld.inputIDs.Add(0);
-                saveWorld.outputIDs.Add(0);
+                saveWorld.InputGuid.Add(new Guid());
+                saveWorld.OutputGuid.Add(new Guid());
             }
 
             if (building.GetComponent<buildingType>().type == "VAB")
             {
-                saveWorld.inputIDs.Add(0);
-                saveWorld.outputIDs.Add(0);
+                saveWorld.InputGuid.Add(new Guid());
+                saveWorld.OutputGuid.Add(new Guid());
             }
 
             if (building.GetComponent<buildingType>().type == "GSEtank")
             {
 
-                saveWorld.inputIDs.Add(building.GetComponent<outputInputManager>().inputParentID);
-                saveWorld.outputIDs.Add(building.GetComponent<outputInputManager>().outputParentID);
+                saveWorld.InputGuid.Add(building.GetComponent<outputInputManager>().inputGuid);
+                saveWorld.OutputGuid.Add(building.GetComponent<outputInputManager>().outputGuid);
             }
 
             if (building.GetComponent<buildingType>().type == "launchPad")
@@ -166,8 +166,8 @@ public class WorldSaveManager : MonoBehaviour
                 outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
                 foreach (outputInputManager outputInputManager in outputInputManagers1)
                 {
-                    saveWorld.inputIDs.Add(outputInputManager.inputParentID);
-                    saveWorld.outputIDs.Add(outputInputManager.outputParentID);
+                    saveWorld.InputGuid.Add(outputInputManager.inputGuid);
+                    saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
                 }
                 if (building.GetComponent<launchPadManager>().ConnectedRocket != null)
                 {
@@ -180,8 +180,8 @@ public class WorldSaveManager : MonoBehaviour
                 outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
                 foreach (outputInputManager outputInputManager in outputInputManagers1)
                 {
-                    saveWorld.inputIDs.Add(outputInputManager.inputParentID);
-                    saveWorld.outputIDs.Add(outputInputManager.outputParentID);
+                    saveWorld.InputGuid.Add(outputInputManager.inputGuid);
+                    saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
                 }
             }
 
@@ -190,8 +190,8 @@ public class WorldSaveManager : MonoBehaviour
                 outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
                 foreach (outputInputManager outputInputManager in outputInputManagers1)
                 {
-                    saveWorld.inputIDs.Add(outputInputManager.inputParentID);
-                    saveWorld.outputIDs.Add(outputInputManager.outputParentID);
+                    saveWorld.InputGuid.Add(outputInputManager.inputGuid);
+                    saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
                 }
             }
         }
@@ -303,8 +303,8 @@ public class WorldSaveManager : MonoBehaviour
                     current.transform.localPosition = position;
                     current.transform.eulerAngles = rotation;
                     current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                    current.GetComponent<outputInputManager>().inputParentID = loadedWorld.inputIDs[count];
-                    current.GetComponent<outputInputManager>().outputParentID = loadedWorld.outputIDs[count];
+                    current.GetComponent<outputInputManager>().inputGuid = loadedWorld.InputGuid[count];
+                    current.GetComponent<outputInputManager>().outputGuid = loadedWorld.OutputGuid[count];
                 }
 
                 if (buildingType == "launchPad")
@@ -317,8 +317,8 @@ public class WorldSaveManager : MonoBehaviour
                     outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
                     foreach (outputInputManager outputInputManager in outputInputManagers1)
                     {
-                        outputInputManager.inputParentID = loadedWorld.inputIDs[count];
-                        outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                        outputInputManager.inputGuid = loadedWorld.InputGuid[count];
+                        outputInputManager.outputGuid = loadedWorld.OutputGuid[count];
                     }
                 }
 
@@ -351,8 +351,8 @@ public class WorldSaveManager : MonoBehaviour
                     outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
                     foreach (outputInputManager outputInputManager in outputInputManagers1)
                     {
-                        outputInputManager.inputParentID = loadedWorld.inputIDs[count];
-                        outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                        outputInputManager.inputGuid = loadedWorld.InputGuid[count];
+                        outputInputManager.outputGuid = loadedWorld.OutputGuid[count];
                     }
                 }
 
@@ -366,8 +366,8 @@ public class WorldSaveManager : MonoBehaviour
                     outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
                     foreach (outputInputManager outputInputManager in outputInputManagers1)
                     {
-                        outputInputManager.inputParentID = loadedWorld.inputIDs[count];
-                        outputInputManager.outputParentID = loadedWorld.outputIDs[count];
+                        outputInputManager.inputGuid = loadedWorld.InputGuid[count];
+                        outputInputManager.outputGuid = loadedWorld.OutputGuid[count];
                     }
                 }
                 count++;

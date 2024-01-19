@@ -12,14 +12,9 @@ public class outputInputManager : MonoBehaviour
     public Guid guid;
     public Guid inputGuid;
     public Guid outputGuid;
-    public int selfID = 0;
-    public bool connectedAsRocket = false;
     
-    public int inputParentID = 0;
     public outputInputManager inputParent;
-    
 
-    public int outputParentID = 0;
     public outputInputManager outputParent;
 
     public TextMeshProUGUI quantityText;
@@ -79,7 +74,7 @@ public class outputInputManager : MonoBehaviour
             InitializeCircuitTank();
         }
 
-        if(type == "default" && MyTime != null)
+        if(type == "default" && MyTime != null && substance != null)
         {
             updateParents();
             setRate();
@@ -135,7 +130,6 @@ public class outputInputManager : MonoBehaviour
 
         if(GetComponent<buildingType>())
         {
-            selfID = GetComponent<buildingType>().buildingID;
             internalTemperature = externalTemperature;
             internalPressure = externalPressure;
         }

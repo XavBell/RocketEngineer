@@ -66,9 +66,6 @@ public class saveWorld
     public List<float> buildingRotY = new List<float>();
     public List<float> buildingRotZ = new List<float>();
 
-    public List<int> outputIDs = new List<int>();
-    public List<int> inputIDs = new List<int>();
-
     public List<Guid> selfGuid = new List<Guid>();
     public List<Guid> InputGuid = new List<Guid>();
     public List<Guid> OutputGuid = new List<Guid>();

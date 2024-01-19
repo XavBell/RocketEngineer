@@ -154,15 +154,6 @@ public class BuildingManager : MonoBehaviour
         }
     }
 
-    public void Connect(GameObject output, GameObject input)
-    {
-        output.GetComponent<outputInputManager>().outputParentID = input.GetComponent<outputInputManager>().selfID;
-        //output.GetComponent<outputInputManager>().outputParent = input;
-        input.GetComponent<outputInputManager>().inputParentID = output.GetComponent<outputInputManager>().selfID;
-        //input.GetComponent<outputInputManager>().inputParent = output;
-        localMode = "none";
-    }
-
     public void ConstructPart(GameObject part)
     {
         if(Cursor.visible == true)
