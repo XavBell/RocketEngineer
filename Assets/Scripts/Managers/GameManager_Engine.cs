@@ -14,42 +14,57 @@ using Newtonsoft.Json;
 
 public class GameManager_Engine : MonoBehaviour
 {
-   //Specs Float
+    //Specs Float
     private float mass;
     private float thrust;
     private float rate;
     private float maxAngle;
     private float speed;
     private float cost;
+    [SerializeField]
     private TMP_InputField savePath;
     private string saveName;
 
     //For data visualizer
+    [SerializeField]
     private TMP_Dropdown engineDropdown;
 
     private savePath savePathRef = new savePath();
 
     private MasterManager MasterManager = new MasterManager();
-
+    [SerializeField]
     private GameObject MainPanel;
+    [SerializeField]
     private GameObject CreatorPanel;
+    [SerializeField]
     private GameObject DataPanel;
 
     //Text field for Data Viewer
+    [SerializeField]
     private TMP_Text engineName;
+    [SerializeField]
     private TMP_Text engineExpectedThrust;
+    [SerializeField]
     private TMP_Text engineMaximumRunTime;
+    [SerializeField]
     private TMP_Text engineEstimatedReliability;
+    [SerializeField]
     private TMP_Text engineMassFlowRate;
+    [SerializeField]
     private TMP_Text engineMass;
 
     //Text field for Creator
+    [SerializeField]
     private TMP_Text engineMass_C;
+    [SerializeField]
     private TMP_Text engineThurst_C;
+    [SerializeField]
     private TMP_Text engineFlowRate_C;
+    [SerializeField]
     private TMP_Text engineReliability_C;
+    [SerializeField]
     private TMP_Text engineCost;
-
+    [SerializeField]
     private GameObject[] panels;
 
     private Turbine selectedTurbine;
@@ -59,14 +74,21 @@ public class GameManager_Engine : MonoBehaviour
 
 
     //Buttons for tech tree and parts
+    [SerializeField]
     private GameObject NozzleSmallBtn;
+    [SerializeField]
     private GameObject PumpSmallBtn;
+    [SerializeField]
     private GameObject TurbineSmallBtn;
+    [SerializeField]
     private GameObject TVCSmallBtn;
-
+    [SerializeField]
     private GameObject NozzleRaptorBtn;
+    [SerializeField]
     private GameObject PumpRaptorBtn;
+    [SerializeField]
     private GameObject TurbineRaptorBtn;
+    [SerializeField]
     private GameObject TVCRaptorBtn;
 
 
@@ -90,7 +112,7 @@ public class GameManager_Engine : MonoBehaviour
         {
 
             UpdateValues();
-            
+
         }
 
     }
@@ -98,42 +120,42 @@ public class GameManager_Engine : MonoBehaviour
     void updateAvailableParts()
     {
         //Update activated buttons
-        if(MasterManager.tvcUnlocked.Contains("TVCSmall"))
+        if (MasterManager.tvcUnlocked.Contains("TVCSmall"))
         {
             TVCSmallBtn.SetActive(true);
         }
 
-        if(MasterManager.nozzleUnlocked.Contains("NozzleSmall"))
+        if (MasterManager.nozzleUnlocked.Contains("NozzleSmall"))
         {
             NozzleSmallBtn.SetActive(true);
         }
 
-        if(MasterManager.pumpUnlocked.Contains("PumpSmall"))
+        if (MasterManager.pumpUnlocked.Contains("PumpSmall"))
         {
             PumpSmallBtn.SetActive(true);
         }
 
-        if(MasterManager.turbineUnlocked.Contains("TurbineSmall"))
+        if (MasterManager.turbineUnlocked.Contains("TurbineSmall"))
         {
             TurbineSmallBtn.SetActive(true);
         }
 
-        if(MasterManager.tvcUnlocked.Contains("TVCRaptor"))
+        if (MasterManager.tvcUnlocked.Contains("TVCRaptor"))
         {
             TVCRaptorBtn.SetActive(true);
         }
 
-        if(MasterManager.nozzleUnlocked.Contains("NozzleRaptor"))
+        if (MasterManager.nozzleUnlocked.Contains("NozzleRaptor"))
         {
             NozzleRaptorBtn.SetActive(true);
         }
 
-        if(MasterManager.turbineUnlocked.Contains("PumpRaptor"))
+        if (MasterManager.turbineUnlocked.Contains("PumpRaptor"))
         {
             PumpRaptorBtn.SetActive(true);
         }
 
-        if(MasterManager.turbineUnlocked.Contains("TurbineRaptor"))
+        if (MasterManager.turbineUnlocked.Contains("TurbineRaptor"))
         {
             TurbineRaptorBtn.SetActive(true);
         }
@@ -180,7 +202,7 @@ public class GameManager_Engine : MonoBehaviour
 
         setValues(tvc, nozzle, turbine, pump);
 
-        if(savePath.text != null)
+        if (savePath.text != null)
         {
             save();
         }
@@ -208,24 +230,28 @@ public class GameManager_Engine : MonoBehaviour
 
     public void setValues(TVC tvc, Nozzle nozzle, Turbine turbine, Pump pump)
     {
-        //Order is important
-        rate = turbine.rate;
-        thrust = pump.thrust;
+        if (tvc != null && nozzle != null && turbine != null && pump != null)
+        {
+            //Order is important
+            rate = turbine.rate;
+            thrust = pump.thrust;
 
-        float rateChangeNozzle = rate * (nozzle.rateModifier-1);
-        float thrustChangeNozzle = thrust * (nozzle.thrustModifier-1);
-        float thrustChangeTurbine = thrust * (turbine.thrustModifier-1);
+            float rateChangeNozzle = rate * (nozzle.rateModifier - 1);
+            float thrustChangeNozzle = thrust * (nozzle.thrustModifier - 1);
+            float thrustChangeTurbine = thrust * (turbine.thrustModifier - 1);
 
-        rate += rateChangeNozzle;
-        thrust += thrustChangeNozzle + thrustChangeTurbine;
+            rate += rateChangeNozzle;
+            thrust += thrustChangeNozzle + thrustChangeTurbine;
 
-        maxAngle = tvc.maxAngle;
-        speed = tvc.speed;
+            maxAngle = tvc.maxAngle;
+            speed = tvc.speed;
 
-        mass = turbine.mass + tvc.mass + nozzle.mass + pump.mass;
-        cost = nozzle.cost + tvc.cost + nozzle.cost + pump.cost;
+            mass = turbine.mass + tvc.mass + nozzle.mass + pump.mass;
+            cost = nozzle.cost + tvc.cost + nozzle.cost + pump.cost;
 
-        updateCreatorData(mass.ToString(), rate.ToString(), thrust, 0.05f, cost);
+            updateCreatorData(mass.ToString(), rate.ToString(), thrust, 0.05f, cost);
+        }
+
     }
 
     public void save()
@@ -237,7 +263,7 @@ public class GameManager_Engine : MonoBehaviour
 
         saveName = "/" + savePath.text;
 
-        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
+        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
         {
             saveEngine saveObject = new saveEngine();
             saveObject.path = savePathRef.engineFolder;
@@ -260,14 +286,15 @@ public class GameManager_Engine : MonoBehaviour
 
             var jsonString = JsonConvert.SerializeObject(saveObject);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json", jsonString);
-        }else if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName+ savePathRef.engineFolder + saveName + ".json"))
+        }
+        else if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
         {
             saveEngine saveEngine = new saveEngine();
             var jsonString2 = JsonConvert.SerializeObject(saveEngine);
             jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json");
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString2);
 
-            if(loadedEngine.usedNum == 0)
+            if (loadedEngine.usedNum == 0)
             {
                 File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json");
                 save();
@@ -287,7 +314,7 @@ public class GameManager_Engine : MonoBehaviour
 
         var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder);
         var fileInfo = info.GetFiles();
-        if(fileInfo.Length == 0)
+        if (fileInfo.Length == 0)
         {
             return;
         }
@@ -305,7 +332,7 @@ public class GameManager_Engine : MonoBehaviour
         jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + engineDropdown.options[engineDropdown.value].text.ToString());
         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
         engineName.text = loadedEngine.engineName;
-        engineExpectedThrust.text = (loadedEngine.reliability * loadedEngine.thrust_s).ToString() + "-" + ((2-loadedEngine.reliability)*loadedEngine.thrust_s).ToString();
+        engineExpectedThrust.text = (loadedEngine.reliability * loadedEngine.thrust_s).ToString() + "-" + ((2 - loadedEngine.reliability) * loadedEngine.thrust_s).ToString();
         engineMaximumRunTime.text = loadedEngine.maxTime.ToString();
         engineEstimatedReliability.text = loadedEngine.reliability.ToString();
         engineMassFlowRate.text = loadedEngine.rate_s.ToString();
@@ -314,7 +341,7 @@ public class GameManager_Engine : MonoBehaviour
 
     public void updateCreatorData(string mass, string flowRate, float thrust, float reliability, float cost)
     {
-        engineThurst_C.text = (thrust*reliability).ToString() + "-" + ((2-reliability)*thrust).ToString();
+        engineThurst_C.text = (thrust * reliability).ToString() + "-" + ((2 - reliability) * thrust).ToString();
         engineMass_C.text = mass;
         engineFlowRate_C.text = flowRate;
         engineReliability_C.text = reliability.ToString();
@@ -324,13 +351,13 @@ public class GameManager_Engine : MonoBehaviour
     public void activateDeactivate(GameObject button)
     {
         hidePanels(button);
-        if(button.activeSelf == true)
+        if (button.activeSelf == true)
         {
             button.SetActive(false);
             return;
         }
 
-        if(button.activeSelf == false)
+        if (button.activeSelf == false)
         {
             button.SetActive(true);
             return;
@@ -339,9 +366,9 @@ public class GameManager_Engine : MonoBehaviour
 
     public void hidePanels(GameObject excludedPanel)
     {
-        foreach(GameObject panel in panels)
+        foreach (GameObject panel in panels)
         {
-            if(panel != excludedPanel)
+            if (panel != excludedPanel)
             {
                 panel.SetActive(false);
             }

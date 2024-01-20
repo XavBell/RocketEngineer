@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     private GameObject partToConstruct;
     private GameObject capsule;
     public CustomCursor customCursor;
-    public bool capsuleBuilt = false;
     public TMP_InputField saveName;
     public GameObject scroll;
     public GameObject scrollEngine;
@@ -45,7 +44,7 @@ public class GameManager : MonoBehaviour
     public GameObject panel;
 
     public MasterManager MasterManager = new MasterManager();
-    
+
     public bool delayStarted = false;
 
     public GameObject CursorGameObject;
@@ -64,14 +63,13 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(SceneManager.GetActiveScene().name.ToString() == "Building")
+        if (SceneManager.GetActiveScene().name.ToString() == "Building")
         {
             GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
             MasterManager = GMM.GetComponent<MasterManager>();
 
             retrieveEngineSaved();
             retrieveTankSaved();
-            //retrieveRocketSaved();
         }
     }
 
@@ -80,56 +78,24 @@ public class GameManager : MonoBehaviour
     {
         Rotate();
         updateSaveName();
-        if(Input.GetMouseButtonDown(0) && partToConstruct != null)
+        if (Input.GetMouseButtonDown(0) && partToConstruct != null)
         {
             ResetCursorGameObject();
             GameObject currentPrefab = null;
-            if (partToConstruct.GetComponent<RocketPart>()._partType == "satellite" && capsuleBuilt == false && Cursor.visible == false)
+            if (Cursor.visible == false)
             {
                 Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 currentPrefab = Instantiate(partToConstruct, position, Quaternion.Euler(customCursor.transform.eulerAngles));
+                if (partPath != null)
+                {
+                    load(partPath, currentPrefab);
+                }
                 Vector2 prefabPos = new Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
 
-            if (partToConstruct.GetComponent<RocketPart>()._partType == "tank" && Cursor.visible == false)
-            {
-                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
-                if (partPath != null)
-                {
-                    load(partPath, currentPrefab);
-                }
-                UnityEngine.Vector2 prefabPos = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
-                setPosition(prefabPos, currentPrefab);
-                currentPrefab.GetComponent<RocketPart>().SetGuid();
-            }
-
-            if (partToConstruct.GetComponent<RocketPart>()._partType == "decoupler" && Cursor.visible == false)
-            {
-                UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
-                setPosition(currentPrefab.transform.position, currentPrefab);
-                currentPrefab.GetComponent<RocketPart>().SetGuid();
-            }
-
-            if (partToConstruct.GetComponent<RocketPart>()._partType.ToString() == "engine" && Cursor.visible == false)
-            {
-                Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                currentPrefab = Instantiate(partToConstruct, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
-                if (partPath != null)
-                {
-                    load(partPath, currentPrefab);
-                }
-                Vector2 enginePosition = new UnityEngine.Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
-                setPosition(enginePosition, currentPrefab);
-                currentPrefab.GetComponent<RocketPart>().SetGuid();
-            }
-
-            
-            
-            if(currentPrefab != null && Rocket.GetComponent<Rocket>().core == null)
+            if (currentPrefab != null && Rocket.GetComponent<Rocket>().core == null)
             {
                 Rocket.GetComponent<Rocket>().core = currentPrefab;
             }
@@ -150,18 +116,18 @@ public class GameManager : MonoBehaviour
 
     public void Launch()
     {
-        
+
         SceneManager.LoadScene("SampleScene");
     }
 
     void updateCost()
     {
         float cost = 0;
-        foreach(Stages stage in Rocket.GetComponent<Rocket>().Stages)
+        foreach (Stages stage in Rocket.GetComponent<Rocket>().Stages)
         {
-            foreach(RocketPart part in stage.Parts)
+            foreach (RocketPart part in stage.Parts)
             {
-                if(cost != float.NaN)
+                if (cost != float.NaN)
                 {
                     cost += part._partCost;
                 }
@@ -173,7 +139,7 @@ public class GameManager : MonoBehaviour
 
     public void Clear()
     {
-        if(capsule != null)
+        if (capsule != null)
         {
             Destroy(capsule);
         }
@@ -187,14 +153,14 @@ public class GameManager : MonoBehaviour
 
     public void ConstructPart(GameObject part)
     {
-        if(Cursor.visible == true)
+        if (Cursor.visible == true)
         {
             customCursor.gameObject.SetActive(true);
             UnityEngine.Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CursorGameObject = Instantiate(part, position, UnityEngine.Quaternion.Euler(customCursor.transform.eulerAngles));
             CursorGameObject.transform.SetParent(customCursor.transform);
 
-            if(partPath != null)
+            if (partPath != null)
             {
                 load(partPath, CursorGameObject);
             }
@@ -205,9 +171,9 @@ public class GameManager : MonoBehaviour
 
     public void Rotate()
     {
-        if(Cursor.visible == false && delayStarted == false)
+        if (Cursor.visible == false && delayStarted == false)
         {
-            if(Input.GetKey(KeyCode.R))
+            if (Input.GetKey(KeyCode.R))
             {
                 customCursor.transform.Rotate(0, 0, 90);
                 StartCoroutine(Delay());
@@ -215,7 +181,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator Delay() 
+    IEnumerator Delay()
     {
         delayStarted = true;
         yield return new WaitForSeconds(0.3f);
@@ -232,7 +198,7 @@ public class GameManager : MonoBehaviour
         saveEngine saveEngine = new saveEngine();
         saveTank saveTank = new saveTank();
 
-        if(fileTypePath == savePathRef.engineFolder)
+        if (fileTypePath == savePathRef.engineFolder)
         {
             var jsonString = JsonConvert.SerializeObject(saveEngine);
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
@@ -254,7 +220,7 @@ public class GameManager : MonoBehaviour
             engine.reliability = loadedEngine.reliability;
             engine.maxTime = loadedEngine.maxTime;
             engine._partCost = loadedEngine.cost;
-            
+
         }
 
         if (fileTypePath == savePathRef.tankFolder)
@@ -262,7 +228,7 @@ public class GameManager : MonoBehaviour
             var jsonString = JsonConvert.SerializeObject(saveTank);
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + fileTypePath + path);
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
-            
+
             prefab.GetComponent<SpriteRenderer>().size = new UnityEngine.Vector2(loadedTank.tankSizeX, loadedTank.tankSizeY);
 
             Tank tank = prefab.GetComponent<Tank>();
@@ -281,12 +247,12 @@ public class GameManager : MonoBehaviour
             tank.y_scale = loadedTank.tankSizeY;
             tank._partCost = loadedTank.cost;
             int value = propellantLine.value;
-            if(value == 0)
+            if (value == 0)
             {
                 tank.propellantCategory = "oxidizer";
             }
 
-            if(value == 1)
+            if (value == 1)
             {
                 tank.propellantCategory = "fuel";
             }
@@ -297,17 +263,17 @@ public class GameManager : MonoBehaviour
     public void deleteRocket()
     {
         //Retrieve file and for each tank/engine saved remove 1 to usedNum
-        if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + path))
+        if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + path))
         {
             saveRocket saveRocket = new saveRocket();
             var jsonString = JsonConvert.SerializeObject(saveRocket);
-            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + path );
+            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + path);
             saveRocket loadedRocket = JsonConvert.DeserializeObject<saveRocket>(jsonString);
             int engineCount = 0;
             int tankCount = 0;
-            foreach(string attachedBodies in loadedRocket.attachedBodies)
+            foreach (string attachedBodies in loadedRocket.attachedBodies)
             {
-                if(attachedBodies == "engine")
+                if (attachedBodies == "engine")
                 {
                     saveEngine saveEngine = new saveEngine();
                     var jsonString1 = JsonConvert.SerializeObject(saveEngine);
@@ -319,7 +285,7 @@ public class GameManager : MonoBehaviour
                     engineCount++;
                 }
 
-                if(attachedBodies == "tank")
+                if (attachedBodies == "tank")
                 {
                     saveTank saveTank = new saveTank();
                     var jsonString1 = JsonConvert.SerializeObject(saveTank);
@@ -330,19 +296,19 @@ public class GameManager : MonoBehaviour
                     System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + loadedRocket.tankPaths[tankCount] + loadedRocket.tankNames[tankCount] + ".json", jsonString1);
                     tankCount++;
                 }
-                
+
             }
 
             File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + path);
             retrieveRocketSaved();
         }
-        
+
     }
 
     public void retrieveRocketSaved()
     {
         GameObject[] buttons = GameObject.FindGameObjectsWithTag("spawnedButton");
-        foreach(GameObject but in buttons)
+        foreach (GameObject but in buttons)
         {
             Destroy(but);
         }
@@ -355,7 +321,7 @@ public class GameManager : MonoBehaviour
 
         var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
         var fileInfo = info.GetFiles();
-        if(fileInfo.Length == 0)
+        if (fileInfo.Length == 0)
         {
             return;
         }
@@ -370,7 +336,7 @@ public class GameManager : MonoBehaviour
             child.GetComponentInChildren<OnClick>().filePath = savePathRef.rocketFolder;
 
         }
-        
+
     }
 
     public void retrieveEngineSaved()
@@ -386,7 +352,7 @@ public class GameManager : MonoBehaviour
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder);
         }
 
-        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName+ savePathRef.engineFolder);
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder);
         var fileInfo = info.GetFiles();
         foreach (var file in fileInfo)
         {
@@ -429,7 +395,7 @@ public class GameManager : MonoBehaviour
 
     public void CreateNewEngine()
     {
-        if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path))
+        if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path))
         {
             ConstructPart(PrefabToConstruct);
         }
@@ -437,21 +403,22 @@ public class GameManager : MonoBehaviour
 
     public void DeleteEngine()
     {
-        if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path) && capsule == null)
+        if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path) && capsule == null)
         {
             saveEngine saveEngine = new saveEngine();
             saveTank saveTank = new saveTank();
-            if(partPath == savePathRef.engineFolder)
+            if (partPath == savePathRef.engineFolder)
             {
                 var jsonString2 = JsonConvert.SerializeObject(saveEngine);
                 jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
                 saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString2);
 
-                if(loadedEngine.usedNum == 0)
+                if (loadedEngine.usedNum == 0)
                 {
-                   File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
-                   retrieveEngineSaved();
-                }else if(loadedEngine.usedNum > 0)
+                    File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
+                    retrieveEngineSaved();
+                }
+                else if (loadedEngine.usedNum > 0)
                 {
                     int x = Screen.width / 2;
                     int y = Screen.height / 2;
@@ -461,17 +428,18 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            if(partPath == savePathRef.tankFolder)
+            if (partPath == savePathRef.tankFolder)
             {
                 var jsonString2 = JsonConvert.SerializeObject(saveTank);
                 jsonString2 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
                 saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString2);
 
-                if(loadedTank.usedNum == 0)
+                if (loadedTank.usedNum == 0)
                 {
-                   File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
-                   retrieveTankSaved();
-                }else if(loadedTank.usedNum > 0)
+                    File.Delete(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + partPath + path);
+                    retrieveTankSaved();
+                }
+                else if (loadedTank.usedNum > 0)
                 {
                     int x = Screen.width / 2;
                     int y = Screen.height / 2;
@@ -491,7 +459,7 @@ public class GameManager : MonoBehaviour
         List<GameObject> potentialAttach = new List<GameObject>();
         foreach (AttachPointScript attach in attachs)
         {
-            if(attach.attachedBody == null && attach.referenceBody != currentPart)
+            if (attach.attachedBody == null && attach.referenceBody != currentPart)
             {
                 potentialAttach.Add(attach.gameObject);
             }
@@ -508,7 +476,7 @@ public class GameManager : MonoBehaviour
         {
             UnityEngine.Vector2 attachPos = new UnityEngine.Vector2(attach.transform.position.x, attach.transform.position.y);
             float distance = UnityEngine.Vector2.Distance(attachPos, position);
-            if(distance < bestDistance)
+            if (distance < bestDistance)
             {
                 bestAttach = attach;
                 bestDistance = distance;
@@ -520,27 +488,27 @@ public class GameManager : MonoBehaviour
     public void setPosition(UnityEngine.Vector2 partPosition, GameObject part)
     {
         GameObject attachPoint = findClosestAttach(partPosition, part);
-        if(attachPoint != null)
+        if (attachPoint != null)
         {
             AttachPointScript attachRef = attachPoint.GetComponent<AttachPointScript>();
             List<GameObject> attachsSelf = new List<GameObject>();
-        
-            if(part.GetComponent<RocketPart>()._attachBottom != null)
+
+            if (part.GetComponent<RocketPart>()._attachBottom != null)
             {
                 attachsSelf.Add(part.GetComponent<RocketPart>()._attachBottom);
             }
 
-            if(part.GetComponent<RocketPart>()._attachLeft != null)
+            if (part.GetComponent<RocketPart>()._attachLeft != null)
             {
                 attachsSelf.Add(part.GetComponent<RocketPart>()._attachLeft);
             }
 
-            if(part.GetComponent<RocketPart>()._attachRight != null)
+            if (part.GetComponent<RocketPart>()._attachRight != null)
             {
                 attachsSelf.Add(part.GetComponent<RocketPart>()._attachRight);
             }
 
-            if(part.GetComponent<RocketPart>()._attachTop != null)
+            if (part.GetComponent<RocketPart>()._attachTop != null)
             {
                 attachsSelf.Add(part.GetComponent<RocketPart>()._attachTop);
             }
@@ -553,11 +521,11 @@ public class GameManager : MonoBehaviour
             {
                 UnityEngine.Vector2 attachSelfPos = new UnityEngine.Vector2(attachSelf.transform.position.x, attachSelf.transform.position.y);
                 float Distance = UnityEngine.Vector2.Distance(attachPointPos, attachSelfPos);
-                if(Distance < bestDistance)
+                if (Distance < bestDistance)
                 {
                     bestDistance = Distance;
                     bestPoint = attachSelf;
-                }            
+                }
             }
             attachRef.attachedBody = part;
             bestPoint.GetComponent<AttachPointScript>().attachedBody = attachRef.referenceBody;
@@ -565,7 +533,7 @@ public class GameManager : MonoBehaviour
             UnityEngine.Vector2 difference = partPosition - pointPosition;
             part.transform.position = attachPointPos + difference;
         }
-        
+
     }
 
     public void save()
@@ -575,110 +543,122 @@ public class GameManager : MonoBehaviour
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
         }
 
-        if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath))
+        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath))
         {
             savecraft saveRocket = new savecraft();
             int i = 0;
             saveRocket.coreID = Rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
-            foreach(Stages stage in Rocket.GetComponent<Rocket>().Stages)
+            foreach (Stages stage in Rocket.GetComponent<Rocket>().Stages)
             {
-                foreach(RocketPart part in stage.Parts)
+                foreach (RocketPart part in stage.Parts)
                 {
-                    if(!saveRocket.PartsID.Contains(part._partID))
+                    if (!saveRocket.PartsID.Contains(part._partID))
                     {
-                    saveRocket.StageNumber.Add(i);
-                    saveRocket.PartsID.Add(part._partID);
-                    saveRocket.partType.Add(part._partType);
+                        saveRocket.StageNumber.Add(i);
+                        saveRocket.PartsID.Add(part._partID);
+                        saveRocket.partType.Add(part._partType);
 
-                    saveRocket.mass.Add(part._partMass);
+                        saveRocket.mass.Add(part._partMass);
 
-                    UnityEngine.Vector3 positionCore = Rocket.GetComponent<Rocket>().core.transform.position;
-                    saveRocket.x_pos.Add(part.transform.position.x - positionCore.x);
-                    saveRocket.y_pos.Add(part.transform.position.y - positionCore.y);
-                    saveRocket.z_pos.Add(part.transform.position.z - positionCore.z);
-                    saveRocket.z_rot.Add(part.transform.localEulerAngles.z);
+                        UnityEngine.Vector3 positionCore = Rocket.GetComponent<Rocket>().core.transform.position;
+                        saveRocket.x_pos.Add(part.transform.position.x - positionCore.x);
+                        saveRocket.y_pos.Add(part.transform.position.y - positionCore.y);
+                        saveRocket.z_pos.Add(part.transform.position.z - positionCore.z);
+                        saveRocket.z_rot.Add(part.transform.localEulerAngles.z);
 
-                    //Set attachpoints references
-                    if(part._attachTop != null)
-                    {
-                        if(part._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+                        //Set attachpoints references
+                        if (part._attachTop != null)
                         {
-                            saveRocket.attachedTop.Add(part._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
-                        }else if(part._attachTop.GetComponent<AttachPointScript>().attachedBody == null){
+                            if (part._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+                            {
+                                saveRocket.attachedTop.Add(part._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
+                            }
+                            else if (part._attachTop.GetComponent<AttachPointScript>().attachedBody == null)
+                            {
+                                saveRocket.attachedTop.Add(new Guid());
+                            }
+
+                        }
+                        else if (part._attachTop == null)
+                        {
                             saveRocket.attachedTop.Add(new Guid());
                         }
 
-                    }else if(part._attachTop == null)
-                    {
-                        saveRocket.attachedTop.Add(new Guid());
-                    }
-
-                    if(part._attachBottom != null)
-                    {
-                        if(part._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                        if (part._attachBottom != null)
                         {
-                            saveRocket.attachedBottom.Add(part._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
-                        }else if(part._attachBottom.GetComponent<AttachPointScript>().attachedBody == null){
+                            if (part._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                            {
+                                saveRocket.attachedBottom.Add(part._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
+                            }
+                            else if (part._attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
+                            {
+                                saveRocket.attachedBottom.Add(new Guid());
+                            }
+
+                        }
+                        else if (part._attachBottom == null)
+                        {
                             saveRocket.attachedBottom.Add(new Guid());
                         }
 
-                    }else if(part._attachBottom == null)
-                    {
-                        saveRocket.attachedBottom.Add(new Guid());
-                    }
-
-                    if(part._attachLeft != null)
-                    {
-                        if(part._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                        if (part._attachLeft != null)
                         {
-                            saveRocket.attachedLeft.Add(part._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
-                        }else if(part._attachLeft.GetComponent<AttachPointScript>().attachedBody == null){
+                            if (part._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                            {
+                                saveRocket.attachedLeft.Add(part._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
+                            }
+                            else if (part._attachLeft.GetComponent<AttachPointScript>().attachedBody == null)
+                            {
+                                saveRocket.attachedLeft.Add(new Guid());
+                            }
+
+                        }
+                        else if (part._attachLeft == null)
+                        {
                             saveRocket.attachedLeft.Add(new Guid());
                         }
 
-                    }else if(part._attachLeft == null)
-                    {
-                        saveRocket.attachedLeft.Add(new Guid());
-                    }
-
-                    if(part._attachRight != null)
-                    {
-                        if(part._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                        if (part._attachRight != null)
                         {
-                            saveRocket.attachedRight.Add(part._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
-                        }else if(part._attachRight.GetComponent<AttachPointScript>().attachedBody == null){
+                            if (part._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                            {
+                                saveRocket.attachedRight.Add(part._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID);
+                            }
+                            else if (part._attachRight.GetComponent<AttachPointScript>().attachedBody == null)
+                            {
+                                saveRocket.attachedRight.Add(new Guid());
+                            }
+
+                        }
+                        else if (part._attachRight == null)
+                        {
                             saveRocket.attachedRight.Add(new Guid());
                         }
 
-                    }else if(part._attachRight == null)
-                    {
-                        saveRocket.attachedRight.Add(new Guid());
-                    }
 
+                        //Set tank
+                        if (part._partType == "tank")
+                        {
+                            saveRocket.tankName.Add(part.GetComponent<Tank>()._partName);
+                            saveRocket.tankCost.Add(part.GetComponent<Tank>()._partCost);
+                            saveRocket.x_scale.Add(part.GetComponent<BoxCollider2D>().size.x);
+                            saveRocket.y_scale.Add(part.GetComponent<BoxCollider2D>().size.y);
+                            saveRocket.volume.Add(part.GetComponent<Tank>()._volume);
+                            saveRocket.propellantType.Add(part.GetComponent<Tank>().propellantCategory);
+                            saveRocket.tankMaterial.Add(part.GetComponent<Tank>().tankMaterial);
+                        }
 
-                    //Set tank
-                    if(part._partType == "tank")
-                    {
-                        saveRocket.tankName.Add(part.GetComponent<Tank>()._partName);
-                        saveRocket.tankCost.Add(part.GetComponent<Tank>()._partCost);
-                        saveRocket.x_scale.Add(part.GetComponent<BoxCollider2D>().size.x);
-                        saveRocket.y_scale.Add(part.GetComponent<BoxCollider2D>().size.y);
-                        saveRocket.volume.Add(part.GetComponent<Tank>()._volume);
-                        saveRocket.propellantType.Add(part.GetComponent<Tank>().propellantCategory);
-                        saveRocket.tankMaterial.Add(part.GetComponent<Tank>().tankMaterial);
+                        //Set Engine
+                        if (part._partType == "engine")
+                        {
+                            saveRocket.engineName.Add(part.GetComponent<Engine>()._partName);
+                            saveRocket.engineCost.Add(part.GetComponent<Engine>()._partCost);
+                            saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
+                            saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
+                            saveRocket.maxTime.Add(part.GetComponent<Engine>().maxTime);
+                            saveRocket.reliability.Add(part.GetComponent<Engine>().reliability);
+                        }
                     }
-                    
-                    //Set Engine
-                    if(part._partType == "engine")
-                    {
-                        saveRocket.engineName.Add(part.GetComponent<Engine>()._partName);
-                        saveRocket.engineCost.Add(part.GetComponent<Engine>()._partCost);
-                        saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
-                        saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);
-                        saveRocket.maxTime.Add(part.GetComponent<Engine>().maxTime);
-                        saveRocket.reliability.Add(part.GetComponent<Engine>().reliability);
-                    }
-                }
 
 
                 }
@@ -688,7 +668,9 @@ public class GameManager : MonoBehaviour
             var jsonString = JsonConvert.SerializeObject(saveRocket);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + savePath + ".json", jsonString);
 
-        }else{
+        }
+        else
+        {
             //cry
         }
     }
@@ -696,13 +678,13 @@ public class GameManager : MonoBehaviour
     public void activateDeactivate(GameObject button)
     {
         hidePanels(button);
-        if(button.activeSelf == true)
+        if (button.activeSelf == true)
         {
             button.SetActive(false);
             return;
         }
 
-        if(button.activeSelf == false)
+        if (button.activeSelf == false)
         {
             button.SetActive(true);
             return;
@@ -711,9 +693,9 @@ public class GameManager : MonoBehaviour
 
     public void hidePanels(GameObject excludedPanel)
     {
-        foreach(GameObject panel in panels)
+        foreach (GameObject panel in panels)
         {
-            if(panel != excludedPanel)
+            if (panel != excludedPanel)
             {
                 panel.SetActive(false);
             }
@@ -731,7 +713,7 @@ public class GameManager : MonoBehaviour
 
         var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
         var fileInfo = info.GetFiles();
-        if(fileInfo.Length == 0)
+        if (fileInfo.Length == 0)
         {
             return;
         }
