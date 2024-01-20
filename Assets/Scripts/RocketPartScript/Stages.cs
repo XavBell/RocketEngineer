@@ -25,8 +25,14 @@ public class Stages
         float oxidizerQty = GetQty("oxidizer");
         float fuelQty = GetQty("fuel");
 
-        string oxidizerType = GetType("oxidizer").name;
-        string fuelType = GetType("fuel").name;
+        string oxidizerType = null;
+        string fuelType = null;
+        if(fuelQty > 0 && oxidizerQty > 0)
+        {
+            oxidizerType = GetType("oxidizer").name;
+            fuelType = GetType("fuel").name;
+        }
+        
 
         bool liquid = GetState();
 
