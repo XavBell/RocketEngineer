@@ -107,11 +107,6 @@ public class GameManager : MonoBehaviour
             Rocket.GetComponent<Rocket>().scanRocket();
             updateCost();
         }
-
-        if (Input.GetKey(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
     }
 
     public void Launch()
