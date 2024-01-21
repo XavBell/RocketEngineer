@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class engineParticleController : MonoBehaviour
 {
     public GameObject plume;
+    public AudioSource EngineSound;
     public float baseRate = 20;
     // Start is called before the first frame update
     void Start()
@@ -36,17 +37,31 @@ public class engineParticleController : MonoBehaviour
             {
                 var em = plume.GetComponent<ParticleSystem>().emission;
                 em.rateOverTime = 0; 
+                if(EngineSound.isPlaying == true)
+                {
+                    EngineSound.Pause();
+                }
             }else if(this.gameObject.transform.parent.GetComponent<Rocket>() != null){
                 if(this.gameObject.transform.parent.GetComponent<Rocket>().throttle > 0)
                 {
                     var em = plume.GetComponent<ParticleSystem>().emission;
-                    em.rateOverTime = (throttle*baseRate)/100; 
+                    em.rateOverTime = (throttle*baseRate)/100;
+                    if(EngineSound.isPlaying == false)
+                    {
+                        EngineSound.Play();
+                    }
+
                 }
                 
             }
         }else{
             var em = plume.GetComponent<ParticleSystem>().emission;
             em.rateOverTime = 0;
+            if(EngineSound.isPlaying == true)
+            {
+                EngineSound.Pause();
+            }
+
         }
         
     }
