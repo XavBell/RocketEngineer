@@ -50,7 +50,8 @@ public class FloatingOrigin : MonoBehaviour
         
         if(DO == true)
         {
-            updateFloatReference();
+            DO = false;
+            StartCoroutine(updateFloatReference());
         }   
     
         UpdateReferenceBody();
@@ -73,7 +74,7 @@ public class FloatingOrigin : MonoBehaviour
 
 
 
-    public void updateFloatReference()
+    public IEnumerator updateFloatReference()
     {
         if (Camera.transform.position.magnitude > threshold)
         {
@@ -107,6 +108,8 @@ public class FloatingOrigin : MonoBehaviour
             
 
         }
+        yield return new WaitForSeconds(1);
+        DO = true;
     }
 
     public void UpdatePosition(GameObject g, Vector3 difference)
@@ -128,6 +131,7 @@ public class FloatingOrigin : MonoBehaviour
         {
             g.transform.position += difference;
         }
+        
     }
 
     public void PauseRockets()

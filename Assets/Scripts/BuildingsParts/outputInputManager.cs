@@ -12,7 +12,7 @@ public class outputInputManager : MonoBehaviour
     public Guid guid;
     public Guid inputGuid;
     public Guid outputGuid;
-    
+
     public outputInputManager inputParent;
 
     public outputInputManager outputParent;
@@ -69,48 +69,55 @@ public class outputInputManager : MonoBehaviour
     void FixedUpdate()
     {
         //Meaning its either a rocket tank alone or a tank in a rocket
-        if(GetComponent<Tank>() != null)
+        if (GetComponent<Tank>() != null)
         {
             InitializeCircuitTank();
         }
 
-        if(type == "default" && MyTime != null && substance != null)
+        if (type == "default" && MyTime != null && substance != null)
         {
-            updateParents();
-            setRate();
-            fuelTransfer();
-
-            calculateInternalConditions();
-            
-            vent();
-            checkBreak();
+            fuelLogic();
         }
-        
+
+    }
+
+    void fuelLogic()
+    {
+        updateParents();
+        setRate();
+        fuelTransfer();
+        calculateInternalConditions();
+        vent();
+        checkBreak();
     }
 
     void checkBreak()
     {
-        if(internalPressure > maxPressure)
+        if (internalPressure > maxPressure)
         {
-            if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
+            if (this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
             {
                 GameObject toDestroy = this.gameObject.transform.parent.gameObject;
                 Destroy(toDestroy);
-            }else if(explosion != null){
+            }
+            else if (explosion != null)
+            {
                 explosion.transform.parent = null;
                 explosion.Play();
                 Destroy(this.gameObject);
             }
             return;
         }
-        
-        if(volume > tankVolume)
+
+        if (volume > tankVolume)
         {
-            if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
+            if (this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
             {
                 GameObject toDestroy = this.gameObject.transform.parent.gameObject;
                 DestroyImmediate(toDestroy);
-            }else if(explosion != null){
+            }
+            else if (explosion != null)
+            {
                 explosion.transform.parent = null;
                 explosion.Play();
                 DestroyImmediate(this.gameObject);
@@ -123,12 +130,12 @@ public class outputInputManager : MonoBehaviour
     {
         guid = Guid.NewGuid();
 
-        if(MyTime == null)
+        if (MyTime == null)
         {
-            MyTime= FindObjectOfType<TimeManager>();
+            MyTime = FindObjectOfType<TimeManager>();
         }
 
-        if(GetComponent<buildingType>())
+        if (GetComponent<buildingType>())
         {
             internalTemperature = externalTemperature;
             internalPressure = externalPressure;
@@ -140,17 +147,17 @@ public class outputInputManager : MonoBehaviour
         circuit = GetComponent<Tank>().propellantCategory;
         //Assume tank volume is in m3, convert to liters
         tankVolume = GetComponent<Tank>()._volume * 1000;
-        tankSurfaceArea = (GetComponent<Tank>().x_scale/2)*Mathf.PI*2*GetComponent<Tank>().y_scale;
+        tankSurfaceArea = (GetComponent<Tank>().x_scale / 2) * Mathf.PI * 2 * GetComponent<Tank>().y_scale;
     }
-    
+
     void updateParents()
     {
-        if(inputParent)
+        if (inputParent)
         {
             substance = inputParent.substance;
         }
-        
-        if(outputParent)
+
+        if (outputParent)
         {
             outputParent.substance = substance;
         }
@@ -158,13 +165,13 @@ public class outputInputManager : MonoBehaviour
 
     void setRate()
     {
-        if(inputParent)
+        if (inputParent)
         {
             rate = inputParent.rate;
             targetTemperature = inputParent.targetTemperature;
         }
 
-        if(!inputParent && moles != 0)
+        if (!inputParent && moles != 0)
         {
             rate = selfRate;
         }
@@ -172,16 +179,18 @@ public class outputInputManager : MonoBehaviour
 
     void vent()
     {
-        if(ventActive == true)
+        if (ventActive == true)
         {
             state = "gas";
-            float molarRate = 5000/substance.MolarMass;
+            float molarRate = 5000 / substance.MolarMass;
             variation = molarRate * MyTime.deltaTime;
-            if(moles -  variation >= 0)
+            if (moles - variation >= 0)
             {
                 variation = molarRate * MyTime.deltaTime;
-                moles -=  variation;
-            }else{
+                moles -= variation;
+            }
+            else
+            {
                 moles = 0;
                 substance = null;
             }
@@ -190,75 +199,80 @@ public class outputInputManager : MonoBehaviour
 
     void fuelTransfer()
     {
-        float molarRate = rate/substance.MolarMass;
+        float molarRate = rate / substance.MolarMass;
 
-        if(outputParent && this.GetComponent<launchPadManager>() == null)
+        if (outputParent && this.GetComponent<launchPadManager>() == null)
         {
-            if(moles -  molarRate * MyTime.deltaTime >= 0)
+            if (moles - molarRate * MyTime.deltaTime >= 0)
             {
                 variation = molarRate * MyTime.deltaTime;
-                moles -=  variation;
+                moles -= variation;
             }
         }
 
-        if(inputParent && inputParent.moles - inputParent.variation > 0)
+        if (inputParent && inputParent.moles - inputParent.variation > 0)
         {
             moles += inputParent.variation;
             substance = inputParent.substance;
         }
 
         //Logic for rockets
-        if(circuit != "none" && GetComponent<launchPadManager>() != null)
+        if (circuit != "none" && GetComponent<launchPadManager>() != null)
         {
             CalculateRocketTankVariation(molarRate);
         }
 
         //Logic for engines static fire
-        if(circuit != "none" && GetComponent<staticFireStandManager>() != null && GetComponent<staticFireStandManager>().ConnectedEngine != null)
+        if (circuit != "none" && GetComponent<staticFireStandManager>() != null && GetComponent<staticFireStandManager>().ConnectedEngine != null)
         {
             staticFireStandManager sFSM = GetComponent<staticFireStandManager>();
             CalculateFlowStaticFireEngine(sFSM.ConnectedEngine.GetComponent<Engine>()._rate, sFSM.started, sFSM.ratio, sFSM);
         }
-        
+
     }
 
+    //Manage flow of fuel for static fire stand
     private void CalculateFlowStaticFireEngine(float massFlowRateEngine, bool started, float ratio, staticFireStandManager sFSM)
     {
         //Ratio is always oxidizer/fuel
-        if(started == true)
+        if (started == true)
         {
-            if(circuit == "oxidizer")
+            if (circuit == "oxidizer")
             {
-                float percentageOxidizer = ratio/(ratio + 1);
+                float percentageOxidizer = ratio / (ratio + 1);
                 float rate = percentageOxidizer * massFlowRateEngine;
                 //Static fire will be able to be ran at timewarp
                 float consumedOxidizer = rate * MyTime.deltaTime;
-                if(mass - consumedOxidizer >= 0)
+                if (mass - consumedOxidizer >= 0)
                 {
                     sFSM.oxidizerSufficient = true;
                     //Multiply by 1000 bcs engine rate is kg
-                    float consumedMoles = consumedOxidizer*1000/substance.MolarMass;
+                    float consumedMoles = consumedOxidizer * 1000 / substance.MolarMass;
                     moles -= consumedMoles;
                     return;
-                }else{
+                }
+                else
+                {
                     sFSM.oxidizerSufficient = false;
                     return;
                 }
             }
 
-            if(circuit == "fuel")
+            if (circuit == "fuel")
             {
-                float percentageFuel = 1f/(ratio + 1);
+                float percentageFuel = 1f / (ratio + 1);
                 float rate = percentageFuel * massFlowRateEngine;
                 //Static fire will be able to be ran at timewarp
                 float consumedFuel = rate * MyTime.deltaTime;
-                if(mass - consumedFuel >= 0)
+                if (mass - consumedFuel >= 0)
                 {
                     sFSM.fuelSufficient = true;
-                    float consumedMoles = consumedFuel*1000/substance.MolarMass;
+                    float consumedMoles = consumedFuel * 1000 / substance.MolarMass;
                     moles -= consumedMoles;
                     return;
-                }else{
+                }
+                else
+                {
                     sFSM.fuelSufficient = false;
                     return;
                 }
@@ -268,18 +282,16 @@ public class outputInputManager : MonoBehaviour
 
     public void updateExternalTemp()
     {
-        if(this.gameObject.transform.parent != null)
+        if (this.gameObject.transform.parent != null)
         {
-            if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
+            if (this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
             {
                 PlanetGravity PG = this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>();
-                if((this.gameObject.transform.position - PG.getPlanet().transform.position).magnitude > PG.getPlanetRadius()+PG.getAtmoAlt())
+                if ((this.gameObject.transform.position - PG.getPlanet().transform.position).magnitude > PG.getPlanetRadius() + PG.getAtmoAlt())
                 {
                     externalTemperature = internalTemperature;
                 }
             }
-            
-            
         }
     }
 
@@ -332,7 +344,7 @@ public class outputInputManager : MonoBehaviour
 
     private void SetTankConditions(double molesToGive, RocketPart tank)
     {
-        if(inputParent != null)
+        if (inputParent != null)
         {
             tank.GetComponent<outputInputManager>().internalTemperature = inputParent.internalTemperature;
             tank.GetComponent<outputInputManager>().externalTemperature = inputParent.externalTemperature;
@@ -343,7 +355,7 @@ public class outputInputManager : MonoBehaviour
 
     void calculateInternalConditions()
     {
-        
+
         SetState();
         CalculateConditionsFromState();
         updateExternalTemp();
@@ -403,32 +415,32 @@ public class outputInputManager : MonoBehaviour
     {
         float temp = 0;
         float tankLocalThermalConductivity = 0;
-        if(coolerActive == true)
+        if (coolerActive == true)
         {
             temp = targetTemperature;
             tankLocalThermalConductivity = tankCoolerPower;
         }
 
-        if(coolerActive == false)
+        if (coolerActive == false)
         {
             temp = externalTemperature;
             tankLocalThermalConductivity = tankThermalConductivity;
         }
-        
+
 
         //Calculate T (might not work if internal is higher than external or reverse)
         float Q_cond = 0;
-        if(temp < internalTemperature)
+        if (temp < internalTemperature)
         {
             Q_cond = (tankLocalThermalConductivity * tankSurfaceArea * (temp - internalTemperature)) / tankThickness;
         }
 
-        if(temp > internalTemperature)
+        if (temp > internalTemperature)
         {
             Q_cond = -(tankLocalThermalConductivity * tankSurfaceArea * (internalTemperature - temp)) / tankThickness;
         }
-        
-        
+
+
         float deltaInternal = (Q_cond * Time.deltaTime) / (mass * substance.SpecificHeatCapacity);
         if (internalTemperature != temp)
         {

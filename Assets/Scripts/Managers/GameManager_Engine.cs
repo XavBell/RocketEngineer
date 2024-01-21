@@ -195,12 +195,7 @@ public class GameManager_Engine : MonoBehaviour
 
     public void Create()
     {
-        Nozzle nozzle = new Nozzle();
-        Pump pump = new Pump();
-        Turbine turbine = new Turbine();
-        TVC tvc = new TVC();
-
-        setValues(tvc, nozzle, turbine, pump);
+        setValues(selectedTVC, selectedNozzle, selectedTurbine, selectedPump);
 
         if (savePath.text != null)
         {
