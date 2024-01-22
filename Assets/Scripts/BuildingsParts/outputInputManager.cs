@@ -4,7 +4,6 @@ using UnityEngine;
 using TMPro;
 using System;
 using UnityEngine.Assertions.Must;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public class outputInputManager : MonoBehaviour
 {

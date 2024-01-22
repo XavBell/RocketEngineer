@@ -5854,11 +5854,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfID: 0
-  connectedAsRocket: 0
-  inputParentID: 0
   inputParent: {fileID: 0}
-  outputParentID: 0
   outputParent: {fileID: 0}
   quantityText: {fileID: 0}
   rateText: {fileID: 0}
@@ -5880,16 +5876,10 @@ MonoBehaviour:
   internalPressure: 0
   internalTemperature: 0
   maxPressure: 400000000
-  substance: none
+  substance: {fileID: 0}
   state: none
-  substanceDensity: 0
-  substanceLiquidTemperature: 0
-  substanceSolidTemperature: 0
-  substanceGaseousTemperature: 0
-  substanceMolarMass: 0
-  substanceSpecificHeatCapacity: 0
   log: 0
-  coolerActive: 0
+  coolerActive: 1
   ventActive: 0
   variation: 0
   engines: []
@@ -5968,11 +5958,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selfID: 0
-  connectedAsRocket: 0
-  inputParentID: 0
   inputParent: {fileID: 0}
-  outputParentID: 0
   outputParent: {fileID: 0}
   quantityText: {fileID: 0}
   rateText: {fileID: 0}
@@ -5994,16 +5980,10 @@ MonoBehaviour:
   internalPressure: 0
   internalTemperature: 0
   maxPressure: 400000000
-  substance: none
+  substance: {fileID: 0}
   state: none
-  substanceDensity: 0
-  substanceLiquidTemperature: 0
-  substanceSolidTemperature: 0
-  substanceGaseousTemperature: 0
-  substanceMolarMass: 0
-  substanceSpecificHeatCapacity: 0
   log: 0
-  coolerActive: 0
+  coolerActive: 1
   ventActive: 0
   variation: 0
   engines: []

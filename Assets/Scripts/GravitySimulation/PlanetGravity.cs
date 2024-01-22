@@ -61,7 +61,7 @@ public class PlanetGravity : MonoBehaviour
     //Leaving rocket mass public too because it is used in another script for increment
     public float rocketMass;
     //Aerodynamic coefficient
-    private float baseCoefficient = 0.075f;
+    private float baseCoefficient = 0.75f;
 
     //This is public bcs it makes sense, everything should be able to quickly change that
     public bool possessed = false;
@@ -135,11 +135,12 @@ public class PlanetGravity : MonoBehaviour
         Vector3 ForceVector = forceDir * (G * (Mass * rb.mass) / (float)(Dist * Dist));
         Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
         Vector3 DragVector = new Vector3(0, 0, 0);
-        if (Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 20)
+        if (Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 5)
         {
-            double airPressure = 1 / ((Dist - planetRadius)) * planetDensity;
+            double airPressure = 5*Math.Pow(Math.E, (-(Dist-planetRadius)*0.006));
             double drag = baseCoefficient * airPressure * rb.velocity.magnitude / 2;
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
+            Debug.Log(DragVector);
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
 
