@@ -140,7 +140,6 @@ public class PlanetGravity : MonoBehaviour
             double airPressure = 5*Math.Pow(Math.E, (-(Dist-planetRadius)*0.006));
             double drag = baseCoefficient * airPressure * rb.velocity.magnitude / 2;
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
-            Debug.Log(DragVector);
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
 

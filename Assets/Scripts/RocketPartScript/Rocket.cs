@@ -394,6 +394,8 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().setCore(rp.gameObject);
                 rp.gameObject.AddComponent<RocketStateManager>();
+                rp.gameObject.AddComponent<RocketPath>();
+                rp.gameObject.GetComponent<RocketStateManager>().prediction = rp.gameObject.GetComponent<RocketPath>();
                 rp.gameObject.AddComponent<BodySwitcher>();
 
                 foreach(int pos in inPos)
@@ -645,6 +647,8 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().setCore(rp.gameObject);
                 rp.gameObject.AddComponent<RocketStateManager>();
+                rp.gameObject.AddComponent<RocketPath>();
+                rp.gameObject.GetComponent<RocketStateManager>().prediction = rp.gameObject.GetComponent<RocketPath>();
                 rp.gameObject.AddComponent<BodySwitcher>();
                 this.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1));
                 rp.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1));
