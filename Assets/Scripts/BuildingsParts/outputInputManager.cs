@@ -24,10 +24,10 @@ public class outputInputManager : MonoBehaviour
     public float rate;
 
     public float moles = 0;
-    public float volume = 0;
-    public float mass = 0;
+    public float volume = 0; //in m3
+    public float mass = 0; //in kg
 
-    public float tankVolume = 0;
+    public float tankVolume = 0; //in m3
     public float tankHeight = 0;
     public float tankThickness = 0.1f;
     public float tankThermalConductivity = 10f;
@@ -365,7 +365,7 @@ public class outputInputManager : MonoBehaviour
         if (state == "liquid")
         {
             ConvertMass();
-            volume = mass / substance.Density;
+            volume = mass * substance.Density;
             float ratio = volume / tankVolume;
             float heightLiquid = ratio * tankHeight;
             internalPressure = substance.Density * 9.8f * heightLiquid;
