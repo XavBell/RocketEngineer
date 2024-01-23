@@ -87,7 +87,7 @@ public class outputInputManager : MonoBehaviour
         fuelTransfer();
         calculateInternalConditions();
         vent();
-        checkBreak();
+        //checkBreak();
     }
 
     void checkBreak()
@@ -145,7 +145,7 @@ public class outputInputManager : MonoBehaviour
     {
         circuit = GetComponent<Tank>().propellantCategory;
         //Assume tank volume is in m3, convert to liters
-        tankVolume = GetComponent<Tank>()._volume * 1000;
+        tankVolume = GetComponent<Tank>()._volume;
         tankSurfaceArea = (GetComponent<Tank>().x_scale / 2) * Mathf.PI * 2 * GetComponent<Tank>().y_scale;
     }
 
@@ -362,10 +362,10 @@ public class outputInputManager : MonoBehaviour
 
     private void CalculateConditionsFromState()
     {
+        ConvertMass();
         if (state == "liquid")
         {
-            ConvertMass();
-            volume = mass * substance.Density;
+            volume = mass / substance.Density;//m3
             float ratio = volume / tankVolume;
             float heightLiquid = ratio * tankHeight;
             internalPressure = substance.Density * 9.8f * heightLiquid;
@@ -387,7 +387,6 @@ public class outputInputManager : MonoBehaviour
 
         if (state == "gas")
         {
-            ConvertMass();
             CalculateTemperature();
 
             internalPressure = (moles * 8.314f * internalTemperature) / tankVolume; //Not sure about 8.314
@@ -395,9 +394,8 @@ public class outputInputManager : MonoBehaviour
 
         if (state == "solid")
         {
-            ConvertMass();
 
-            volume = mass / substance.Density;
+            volume = mass / substance.Density;//m3
 
             if (tankVolume < volume)
             {
