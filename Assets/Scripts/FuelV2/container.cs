@@ -56,7 +56,7 @@ public class container : MonoBehaviour
         if (state == "liquid")
         {
             ConvertMass();
-            volume = mass * substance.Density;
+            volume = mass / substance.Density;
             float ratio = volume / tankVolume;
             float heightLiquid = ratio * tankHeight;
             internalPressure = substance.Density * 9.8f * heightLiquid;
