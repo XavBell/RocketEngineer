@@ -465,7 +465,7 @@ MonoBehaviour:
         m_MethodName: setInput
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 75406555262869139}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: outputInputManager, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -516,12 +516,12 @@ GameObject:
   - component: {fileID: 5059840335311934394}
   - component: {fileID: 8828679996408878035}
   - component: {fileID: 5645022881832171447}
-  - component: {fileID: 75406555262869139}
   - component: {fileID: 6114230335073138526}
   - component: {fileID: 7394985772004179922}
   - component: {fileID: -8382298268041422409}
   - component: {fileID: 6818565523597856260}
   - component: {fileID: 706129303964915939}
+  - component: {fileID: -4404886566815276666}
   m_Layer: 7
   m_Name: standTank
   m_TagString: building
@@ -639,61 +639,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sp: {fileID: 5059840335311934394}
   bx: {fileID: 8828679996408878035}
---- !u!114 &75406555262869139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4590421016071702574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selfID: 0
-  connectedAsRocket: 0
-  inputParentID: 0
-  inputParent: {fileID: 0}
-  outputParentID: 0
-  outputParent: {fileID: 0}
-  quantityText: {fileID: 0}
-  rateText: {fileID: 0}
-  selfRate: 0
-  rate: 0
-  moles: 0
-  volume: 0
-  mass: 0
-  tankVolume: 10
-  tankHeight: 5
-  tankThickness: 0.1
-  tankThermalConductivity: 1
-  tankCoolerPower: 500
-  tankSurfaceArea: 2000
-  tankState: working
-  externalTemperature: 298
-  targetTemperature: 298
-  externalPressure: 101
-  internalPressure: 0
-  internalTemperature: 0
-  maxPressure: 400000000
-  substance: none
-  state: none
-  substanceDensity: 0
-  substanceLiquidTemperature: 0
-  substanceSolidTemperature: 0
-  substanceGaseousTemperature: 0
-  substanceMolarMass: 0
-  substanceSpecificHeatCapacity: 0
-  log: 0
-  coolerActive: 0
-  ventActive: 0
-  variation: 0
-  engines: []
-  type: default
-  circuit: none
-  MyTime: {fileID: 0}
-  explosion: {fileID: 0}
 --- !u!114 &6114230335073138526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -769,7 +714,7 @@ MonoBehaviour:
   MasterManager: {fileID: 0}
   Spawned: 0
   ConnectedTank: {fileID: 0}
-  output: {fileID: 75406555262869139}
+  output: {fileID: 0}
   standName: stand
   button: {fileID: 680552191032890808}
   ratio: 0
@@ -825,6 +770,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &-4404886566815276666
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d6e55e755c2d49ae84ab5d911e6fcf2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4690095088566067236
 GameObject:
   m_ObjectHideFlags: 0

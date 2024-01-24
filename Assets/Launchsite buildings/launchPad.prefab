@@ -280,7 +280,7 @@ MonoBehaviour:
         m_MethodName: setInput
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 75406555262869139}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: outputInputManager, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -587,7 +587,7 @@ MonoBehaviour:
         m_MethodName: setInput
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 8208019030907920418}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: outputInputManager, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -721,13 +721,12 @@ GameObject:
   - component: {fileID: 4477514624121755276}
   - component: {fileID: 5059840335311934394}
   - component: {fileID: 8828679996408878035}
-  - component: {fileID: 75406555262869139}
   - component: {fileID: 6114230335073138526}
   - component: {fileID: 5381789719691407045}
   - component: {fileID: 7394985772004179922}
-  - component: {fileID: 8208019030907920418}
   - component: {fileID: -4488605434850809749}
   - component: {fileID: 9020689521050503935}
+  - component: {fileID: -7858373172740290332}
   m_Layer: 7
   m_Name: launchPad
   m_TagString: building
@@ -830,61 +829,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 12.02, y: 2.73}
   m_EdgeRadius: 0
---- !u!114 &75406555262869139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4590421016071702574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selfID: 0
-  connectedAsRocket: 0
-  inputParentID: 0
-  inputParent: {fileID: 0}
-  outputParentID: 0
-  outputParent: {fileID: 0}
-  quantityText: {fileID: 0}
-  rateText: {fileID: 0}
-  selfRate: 0
-  rate: 0
-  moles: 0
-  volume: 0
-  mass: 0
-  tankVolume: 10
-  tankHeight: 5
-  tankThickness: 0.1
-  tankThermalConductivity: 1
-  tankCoolerPower: 500
-  tankSurfaceArea: 2000
-  tankState: working
-  externalTemperature: 298
-  targetTemperature: 298
-  externalPressure: 101
-  internalPressure: 0
-  internalTemperature: 0
-  maxPressure: 400000000
-  substance: none
-  state: none
-  substanceDensity: 0
-  substanceLiquidTemperature: 0
-  substanceSolidTemperature: 0
-  substanceGaseousTemperature: 0
-  substanceMolarMass: 0
-  substanceSpecificHeatCapacity: 0
-  log: 0
-  coolerActive: 0
-  ventActive: 0
-  variation: 0
-  engines: []
-  type: default
-  circuit: oxidizer
-  MyTime: {fileID: 0}
-  explosion: {fileID: 0}
 --- !u!114 &6114230335073138526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -903,6 +847,7 @@ MonoBehaviour:
   outputUI: {fileID: 0}
   selectUI: {fileID: 0}
   UI: {fileID: 0}
+  anchor: {fileID: 0}
   cost: 5
   buildingManager: {fileID: 0}
 --- !u!114 &5381789719691407045
@@ -921,8 +866,8 @@ MonoBehaviour:
   MasterManager: {fileID: 0}
   Spawned: 0
   ConnectedRocket: {fileID: 0}
-  oxidizer: {fileID: 75406555262869139}
-  fuel: {fileID: 8208019030907920418}
+  oxidizer: {fileID: 0}
+  fuel: {fileID: 0}
   padName: 
   button: {fileID: 6686694195158721372}
   operation: none
@@ -945,61 +890,6 @@ MonoBehaviour:
   z_pos: 0
   previousPos: {x: 0, y: 0, z: 0}
   currentPos: {x: 0, y: 0, z: 0}
---- !u!114 &8208019030907920418
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4590421016071702574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selfID: 0
-  connectedAsRocket: 0
-  inputParentID: 0
-  inputParent: {fileID: 0}
-  outputParentID: 0
-  outputParent: {fileID: 0}
-  quantityText: {fileID: 0}
-  rateText: {fileID: 0}
-  selfRate: 0
-  rate: 0
-  moles: 0
-  volume: 0
-  mass: 0
-  tankVolume: 0
-  tankHeight: 0
-  tankThickness: 0.1
-  tankThermalConductivity: 10
-  tankCoolerPower: 500
-  tankSurfaceArea: 2000
-  tankState: working
-  externalTemperature: 298
-  targetTemperature: 298
-  externalPressure: 101
-  internalPressure: 0
-  internalTemperature: 0
-  maxPressure: 400000000
-  substance: none
-  state: none
-  substanceDensity: 0
-  substanceLiquidTemperature: 0
-  substanceSolidTemperature: 0
-  substanceGaseousTemperature: 0
-  substanceMolarMass: 0
-  substanceSpecificHeatCapacity: 0
-  log: 0
-  coolerActive: 0
-  ventActive: 0
-  variation: 0
-  engines: []
-  type: default
-  circuit: fuel
-  MyTime: {fileID: 0}
-  explosion: {fileID: 0}
 --- !u!50 &-4488605434850809749
 Rigidbody2D:
   serializedVersion: 4
@@ -1066,6 +956,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &-7858373172740290332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ed6331ad2b7048b6b2abf3943f8bdd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6686694195158721372
 GameObject:
   m_ObjectHideFlags: 0

@@ -232,7 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628751c92e92f42ba9de0306b2d4ea9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputInputManager: {fileID: 75406555262869139}
+  outputInputManager: {fileID: 0}
   current: {fileID: 2431742833946838182}
   max: {fileID: 1806195938454104104}
   Indicator: {fileID: 1605609726862005443}
@@ -1458,7 +1458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628751c92e92f42ba9de0306b2d4ea9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputInputManager: {fileID: 75406555262869139}
+  outputInputManager: {fileID: 0}
   current: {fileID: 4550971486088563371}
   max: {fileID: 1785711892358122565}
   Indicator: {fileID: 8601293874886668564}
@@ -2882,7 +2882,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 628751c92e92f42ba9de0306b2d4ea9b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputInputManager: {fileID: 75406555262869139}
+  outputInputManager: {fileID: 0}
   current: {fileID: 19948416088054664}
   max: {fileID: 2631915910877303717}
   Indicator: {fileID: 2612041146220284574}
@@ -9581,7 +9581,7 @@ MonoBehaviour:
   targetTemperature: {fileID: 0}
   rate: 5000
   target: {fileID: 8223512237680813589}
-  outputInputManager: {fileID: 75406555262869139}
+  outputInputManager: {fileID: 0}
 --- !u!1 &4428265256493498467
 GameObject:
   m_ObjectHideFlags: 0
@@ -14549,11 +14549,12 @@ GameObject:
   - component: {fileID: 5059840335311934394}
   - component: {fileID: 8828679996408878035}
   - component: {fileID: 5645022881832171447}
-  - component: {fileID: 75406555262869139}
   - component: {fileID: 6114230335073138526}
   - component: {fileID: -3657955715482249433}
   - component: {fileID: 7127621353655131803}
   - component: {fileID: 365256319446518389}
+  - component: {fileID: 4254232487021113446}
+  - component: {fileID: 1456214713653176488}
   m_Layer: 7
   m_Name: fuelTank
   m_TagString: building
@@ -14673,51 +14674,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sp: {fileID: 5059840335311934394}
   bx: {fileID: 8828679996408878035}
---- !u!114 &75406555262869139
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4590421016071702574}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inputParent: {fileID: 0}
-  outputParent: {fileID: 0}
-  quantityText: {fileID: 0}
-  rateText: {fileID: 0}
-  selfRate: 0
-  rate: 0
-  moles: 0
-  volume: 0
-  mass: 0
-  tankVolume: 15.71
-  tankHeight: 2
-  tankThickness: 0.1
-  tankThermalConductivity: 0.08
-  tankCoolerPower: 500
-  tankSurfaceArea: 62.8
-  tankState: working
-  externalTemperature: 298
-  targetTemperature: 298
-  externalPressure: 101000
-  internalPressure: 0
-  internalTemperature: 0
-  maxPressure: 400000000
-  substance: {fileID: 0}
-  state: none
-  log: 0
-  coolerActive: 0
-  ventActive: 0
-  variation: 0
-  engines: []
-  type: default
-  circuit: none
-  MyTime: {fileID: 0}
-  explosion: {fileID: 7047054244648731504}
 --- !u!114 &6114230335073138526
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14772,7 +14728,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828722ac13945410d9fc3675b246a1db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputInputManager: {fileID: 75406555262869139}
+  outputInputManager: {fileID: 0}
   particle: {fileID: 4033868345599565310}
   baseRateTime: 5
   baseRateDistance: 50
@@ -14821,6 +14777,46 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &4254232487021113446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba68ebea408fd4ed389787842be3a028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tankVolume: 0
+  tankHeight: 0
+  tankThermalConductivity: 0
+  tankSurfaceArea: 0
+  tankThickness: 0
+  maxPressure: 0
+  moles: 0
+  internalPressure: 0
+  internalTemperature: 0
+  externalTemperature: 0
+  volume: 0
+  state: 
+  mass: 0
+  substance: {fileID: 0}
+  explosion: {fileID: 0}
+  MyTime: {fileID: 0}
+--- !u!114 &1456214713653176488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17f903e507afa4fc8a1156dc4df90930, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4634555123736490523
 GameObject:
   m_ObjectHideFlags: 0
@@ -16640,7 +16636,7 @@ MonoBehaviour:
         m_MethodName: setOutput
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 75406555262869139}
+          m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: outputInputManager, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
