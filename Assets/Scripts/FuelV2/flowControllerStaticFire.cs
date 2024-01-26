@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class flowControllerStaticFire : MonoBehaviour
 {
-    container oxidizerContainer;
-    container fuelContainer;
+    public container fuelContainer;
+    public container oxidizerContainer;
     TimeManager MyTime;
-    staticFireStandManager staticFireStandManager;
+    public staticFireStandManager staticFireStandManager;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +23,11 @@ public class flowControllerStaticFire : MonoBehaviour
 
     void FixedUpdate()
     {
-        CalculateFlowStaticFireEngine(staticFireStandManager.ConnectedEngine.GetComponent<Engine>()._rate, staticFireStandManager.started, staticFireStandManager);
+        if(staticFireStandManager.ConnectedEngine != null)
+        {
+            CalculateFlowStaticFireEngine(staticFireStandManager.ConnectedEngine.GetComponent<Engine>()._rate, staticFireStandManager.started, staticFireStandManager);
+        }
+        
     }
 
     //Flow of fuel for static fires are managed in this component

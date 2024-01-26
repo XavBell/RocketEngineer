@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class flowControllerForLaunchPads : MonoBehaviour
 {
-    launchPadManager launchPadManager;
+    public launchPadManager launchPadManager;
 
-    container oxidizerContainerOrigin;
-    container fuelContainerOrigin;
+    public container oxidizerContainerOrigin;
+    public container fuelContainerOrigin;
 
     Rocket rocket;
 
@@ -36,7 +36,7 @@ public class flowControllerForLaunchPads : MonoBehaviour
         }
     }
 
-    void setTankOrigin()
+    public void setTankOrigin()
     {
         rocket = launchPadManager.ConnectedRocket.GetComponent<Rocket>();
         foreach(Stages stage in rocket.Stages)

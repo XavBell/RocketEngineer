@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class tankParticleController : MonoBehaviour
 {
-    public outputInputManager outputInputManager;
+    public container container;
     public GameObject particle;
     public float baseRateTime = 5;
     public float baseRateDistance = 50;
@@ -18,7 +18,7 @@ public class tankParticleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(((outputInputManager.state == "liquid" && outputInputManager.internalTemperature < 280) || outputInputManager.state == "gas") && outputInputManager.substance != null && outputInputManager.mass != 0)
+        if(((container.state == "liquid" && container.internalTemperature < 280) || container.state == "gas") && container.substance != null && container.mass != 0)
         {
             var em = particle.GetComponent<ParticleSystem>().emission;
             em.rateOverTime = baseRateTime;

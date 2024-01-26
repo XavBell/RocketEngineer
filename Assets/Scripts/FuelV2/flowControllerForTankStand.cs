@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class flowControllerForTankStand : MonoBehaviour
 {
-    container origin;
-    standManager standManager;
+    public container origin;
+    public standManager standManager;
     bool connected  = false;
     // Start is called before the first frame update
     void Start()

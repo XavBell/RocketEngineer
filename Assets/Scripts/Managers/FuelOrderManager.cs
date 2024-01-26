@@ -59,9 +59,9 @@ public class FuelOrderManager : MonoBehaviour
                 //Kerosene
                 float substanceMolarMass = 170f;
                 float moles = float.Parse(quantityText.text.ToString())/substanceMolarMass * 1000;
-                selectedDestination.GetComponent<outputInputManager>().substance = kerosene;
-                selectedDestination.GetComponent<outputInputManager>().moles = moles;
-                selectedDestination.GetComponent<outputInputManager>().internalTemperature = selectedDestination.GetComponent<outputInputManager>().externalTemperature;
+                selectedDestination.GetComponent<container>().substance = kerosene;
+                selectedDestination.GetComponent<container>().moles = moles;
+                selectedDestination.GetComponent<container>().internalTemperature = selectedDestination.GetComponent<container>().externalTemperature;
             }
 
             if(substanceDropdown.value == 1)
@@ -69,9 +69,9 @@ public class FuelOrderManager : MonoBehaviour
                 //Oxygen
                 float substanceMolarMass = 32f;
                 float moles = float.Parse(quantityText.text.ToString())/substanceMolarMass * 1000;
-                selectedDestination.GetComponent<outputInputManager>().substance = LOX;
-                selectedDestination.GetComponent<outputInputManager>().moles = moles;
-                selectedDestination.GetComponent<outputInputManager>().internalTemperature = selectedDestination.GetComponent<outputInputManager>().externalTemperature;
+                selectedDestination.GetComponent<container>().substance = LOX;
+                selectedDestination.GetComponent<container>().moles = moles;
+                selectedDestination.GetComponent<container>().internalTemperature = selectedDestination.GetComponent<container>().externalTemperature;
             }
         }
         selectedDestination = null;

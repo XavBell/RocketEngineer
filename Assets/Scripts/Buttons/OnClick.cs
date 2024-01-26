@@ -32,9 +32,9 @@ public class OnClick : MonoBehaviour
     public operationManager op;
     public GameObject savedLaunchpad;
 
-    public outputInputManager oxidizerInput;
-    public outputInputManager fuelInput;
-    public outputInputManager output;
+    public container oxidizerInput;
+    public container fuelInput;
+    public container output;
     public FuelConnectorManager fcm;
     public GameObject inputUI;
     public GameObject outputUI;
@@ -466,19 +466,19 @@ public class OnClick : MonoBehaviour
         }
     }
 
-    public void setInput(outputInputManager input)
+    public void setInput(container input)
     {
-        outputInputManager[] potentialInputsOutputs = FindObjectsOfType<outputInputManager>();
-        List<GameObject> actualOutputInput = new List<GameObject>();
-        foreach(outputInputManager outputInput in potentialInputsOutputs)
+        container[] potentialContainer = FindObjectsOfType<container>();
+        List<GameObject> actualContainer = new List<GameObject>();
+        foreach(container container in potentialContainer)
         {
-            if(outputInput.gameObject.GetComponent<buildingType>() != null)
+            if(container.gameObject.GetComponent<buildingType>() != null)
             {
-                actualOutputInput.Add(outputInput.gameObject);
+                actualContainer.Add(container.gameObject);
             }
         }
 
-        foreach(GameObject building in actualOutputInput)
+        foreach(GameObject building in actualContainer)
         {
             if(building.GetComponent<buildingType>().type == "GSEtank")
             {
@@ -514,19 +514,19 @@ public class OnClick : MonoBehaviour
         StartCoroutine(ActiveDeactive(1, inputUI, false));
     }
 
-    public void setOutput(outputInputManager output)
+    public void setOutput(container output)
     {
-        outputInputManager[] potentialInputsOutputs = FindObjectsOfType<outputInputManager>();
-        List<GameObject> actualOutputInput = new List<GameObject>();
-        foreach(outputInputManager outputInput in potentialInputsOutputs)
+        container[] potentialContainer = FindObjectsOfType<container>();
+        List<GameObject> actualContainer = new List<GameObject>();
+        foreach(container container in potentialContainer)
         {
-            if(outputInput.gameObject.GetComponent<buildingType>() != null)
+            if(container.gameObject.GetComponent<buildingType>() != null)
             {
-                actualOutputInput.Add(outputInput.gameObject);
+                actualContainer.Add(container.gameObject);
             }
         }
 
-        foreach(GameObject building in actualOutputInput)
+        foreach(GameObject building in actualContainer)
         {
             if(building.GetComponent<buildingType>().type == "launchPad")
             {

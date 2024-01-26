@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,4 +10,15 @@ public class Tank : RocketPart
     public float y_scale;
     public string tankMaterial;
     public string propellantCategory;
+    public float conductivity = 10;
+
+    void Start()
+    {
+        container container = this.GetComponent<container>();
+        container.tankHeight = y_scale;
+        container.tankVolume = _volume;
+        container.tankThermalConductivity = conductivity;
+        container.tankSurfaceArea = x_scale*Mathf.PI*2 + (x_scale*Mathf.PI*y_scale);
+
+    }
 }

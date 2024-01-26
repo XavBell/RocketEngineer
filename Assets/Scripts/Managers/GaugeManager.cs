@@ -6,7 +6,7 @@ using System;
 
 public class GaugeManager : MonoBehaviour
 {
-    public outputInputManager outputInputManager;
+    public container container;
     public TMP_Text current;
     public TMP_Text max;
     public GameObject Indicator;
@@ -20,7 +20,7 @@ public class GaugeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(outputInputManager.mass != 0)
+        if(container.mass != 0)
         {
             calculateIndicatorRotation();
         }

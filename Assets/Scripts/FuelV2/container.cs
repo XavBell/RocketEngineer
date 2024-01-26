@@ -6,6 +6,7 @@ using UnityEngine;
 public class container : MonoBehaviour
 {
     public Guid guid;
+    public string type = "oxidizer";
     public float tankVolume; //m3 container volume
     public float tankHeight; //container height in meter
     public float tankThermalConductivity; //Constant
@@ -16,11 +17,15 @@ public class container : MonoBehaviour
 
     public float moles;
     public float internalPressure; //Pa
-    public float internalTemperature; //K
-    public float externalTemperature; //K
+    public float internalTemperature = 298; //K
+    public float externalTemperature = 298; //K
+    public bool coolerActive = false;
+    public float targetTemperature = 0;
     public float volume; //m3 volume of substance
-    public string state; //state of substance
+    public string state = "none"; //state of substance
     public float mass; //mass in kg of the substance
+
+    public flowController flowController;
 
     public Substance substance; //substance in the container
     public ParticleSystem explosion;
@@ -40,8 +45,12 @@ public class container : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        calculateInternalConditions();
-        checkBreak();
+        if(substance != null)
+        {
+            calculateInternalConditions();
+            checkBreak();
+        }
+        
     }
 
     void calculateInternalConditions()
@@ -90,17 +99,22 @@ public class container : MonoBehaviour
     void CalculateTemperature()
     {
         //Calculate T (might not work if internal is higher than external or reverse)
+        float temp = externalTemperature;
+        if(coolerActive == true)
+        {
+            temp = targetTemperature;
+        }
+
         float Q_cond = 0;
-        if (externalTemperature < internalTemperature)
+        if (temp > internalTemperature)
         {
-            Q_cond = (tankThermalConductivity * tankSurfaceArea * (internalTemperature - externalTemperature)) / tankThickness;
+            Q_cond = (tankThermalConductivity * tankSurfaceArea * (temp - internalTemperature)) / tankThickness;
         }
 
-        if (externalTemperature > internalTemperature)
+        if (temp < internalTemperature)
         {
-            Q_cond = -(tankThermalConductivity * tankSurfaceArea * (externalTemperature - internalTemperature)) / tankThickness;
+            Q_cond = -(tankThermalConductivity * tankSurfaceArea * (internalTemperature - temp)) / tankThickness;
         }
-
 
         float deltaInternal = Q_cond * MyTime.deltaTime / (mass * substance.SpecificHeatCapacity);
         internalTemperature += deltaInternal;

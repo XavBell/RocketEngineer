@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class externalTemperatureController : MonoBehaviour
 {
-    container container;
+    public container container;
     TypeScript[] Planets;
     SolarSystemManager solarSystemManager;
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class externalTemperatureController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        updateExternalTemp();
     }
 
     void updateExternalTemp()

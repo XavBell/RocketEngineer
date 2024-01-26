@@ -128,8 +128,8 @@ MonoBehaviour:
         m_MethodName: setInput
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: outputInputManager, Assembly-CSharp
+          m_ObjectArgument: {fileID: 7816830622374819247}
+          m_ObjectArgumentAssemblyTypeName: container, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -5727,6 +5727,10 @@ GameObject:
   - component: {fileID: 2505248303088848659}
   - component: {fileID: -6971429094049010426}
   - component: {fileID: 5970382784678987698}
+  - component: {fileID: 2117343610370580403}
+  - component: {fileID: 8817336050630286366}
+  - component: {fileID: 7232733461924955198}
+  - component: {fileID: 2693831008845476720}
   m_Layer: 7
   m_Name: staticFireStand
   m_TagString: building
@@ -5993,7 +5997,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 828722ac13945410d9fc3675b246a1db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outputInputManager: {fileID: 0}
+  container: {fileID: 7816830622374819247}
   particle: {fileID: 1284866282756521861}
   baseRateTime: 5
   baseRateDistance: 50
@@ -6009,6 +6013,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fadcbcdea3dc43709c602168ad78f16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fuelContainer: {fileID: 7816830622374819247}
+  oxidizerContainer: {fileID: 777000349647176999}
+  staticFireStandManager: {fileID: -5414461606620557144}
 --- !u!114 &7816830622374819247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6021,19 +6028,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba68ebea408fd4ed389787842be3a028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankVolume: 0
-  tankHeight: 0
-  tankThermalConductivity: 0
-  tankSurfaceArea: 0
-  tankThickness: 0
-  maxPressure: 0
+  tankVolume: 50.25
+  tankHeight: 4
+  tankThermalConductivity: 10
+  tankSurfaceArea: 75.39
+  tankThickness: 0.01
+  maxPressure: 500000
   moles: 0
   internalPressure: 0
   internalTemperature: 0
   externalTemperature: 0
+  coolerActive: 0
+  targetTemperature: 0
   volume: 0
   state: 
   mass: 0
+  flowController: {fileID: 2117343610370580403}
   substance: {fileID: 0}
   explosion: {fileID: 0}
   MyTime: {fileID: 0}
@@ -6049,19 +6059,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba68ebea408fd4ed389787842be3a028, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tankVolume: 0
-  tankHeight: 0
-  tankThermalConductivity: 0
-  tankSurfaceArea: 0
-  tankThickness: 0
-  maxPressure: 0
+  tankVolume: 50.25
+  tankHeight: 4
+  tankThermalConductivity: 10
+  tankSurfaceArea: 75.39
+  tankThickness: 0.01
+  maxPressure: 500000
   moles: 0
   internalPressure: 0
   internalTemperature: 0
   externalTemperature: 0
+  coolerActive: 0
+  targetTemperature: 0
   volume: 0
   state: 
   mass: 0
+  flowController: {fileID: 8817336050630286366}
   substance: {fileID: 0}
   explosion: {fileID: 0}
   MyTime: {fileID: 0}
@@ -6077,6 +6090,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f903e507afa4fc8a1156dc4df90930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 777000349647176999}
+  ventRate: 5000
+  open: 0
 --- !u!114 &2505248303088848659
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6089,6 +6105,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17f903e507afa4fc8a1156dc4df90930, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 7816830622374819247}
+  ventRate: 5000
+  open: 0
 --- !u!114 &-6971429094049010426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6101,6 +6120,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851d5dd233c094e5cb3d47d260721b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 777000349647176999}
+  targetTemperature: 0
+  active: 0
 --- !u!114 &5970382784678987698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6113,6 +6135,69 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851d5dd233c094e5cb3d47d260721b19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  container: {fileID: 7816830622374819247}
+  targetTemperature: 0
+  active: 0
+--- !u!114 &2117343610370580403
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4baf604769de045fdbd1cdf5874f000d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  origin: {fileID: 0}
+  destination: {fileID: 0}
+  selfRate: 0
+  opened: 0
+  MyTime: {fileID: 0}
+--- !u!114 &8817336050630286366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4baf604769de045fdbd1cdf5874f000d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  origin: {fileID: 0}
+  destination: {fileID: 0}
+  selfRate: 0
+  opened: 0
+  MyTime: {fileID: 0}
+--- !u!114 &7232733461924955198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32dcca0df26047739ced51f166906b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  container: {fileID: 7816830622374819247}
+--- !u!114 &2693831008845476720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32dcca0df26047739ced51f166906b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  container: {fileID: 777000349647176999}
 --- !u!1 &6285635554178391811
 GameObject:
   m_ObjectHideFlags: 0
@@ -6401,8 +6486,8 @@ MonoBehaviour:
         m_MethodName: setInput
         m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: outputInputManager, Assembly-CSharp
+          m_ObjectArgument: {fileID: 777000349647176999}
+          m_ObjectArgumentAssemblyTypeName: container, Assembly-CSharp
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

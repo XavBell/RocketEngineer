@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using UnityEditor.ShaderGraph.Serialization;
 
 public class FuelTankMonitor : MonoBehaviour
 {
@@ -17,7 +18,9 @@ public class FuelTankMonitor : MonoBehaviour
     [SerializeField]private float rate;
 
     [SerializeField]private TMP_InputField target;
-    [SerializeField]private outputInputManager outputInputManager;
+    [SerializeField]private container container;
+    [SerializeField]private gasVent gasVent;
+    [SerializeField]private cooler cooler;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,17 +30,20 @@ public class FuelTankMonitor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateValues();
+        if(container.substance != null)
+        {
+            updateValues();
+        }
     }
 
     void updateValues()
     {
-        temperature.text = outputInputManager.internalTemperature.ToString();
-        volume.text = outputInputManager.volume.ToString();
-        pressure.text = outputInputManager.internalPressure.ToString();
-        quantity.text = outputInputManager.mass.ToString();
-        substance.text = outputInputManager.substance.ToString();
-        state.text = outputInputManager.state.ToString();
+        temperature.text = container.internalTemperature.ToString();
+        volume.text = container.volume.ToString();
+        pressure.text = container.internalPressure.ToString();
+        quantity.text = container.mass.ToString();
+        substance.text = container.substance.ToString();
+        state.text = container.state.ToString();
         updateTemp();
     }
 
@@ -47,61 +53,51 @@ public class FuelTankMonitor : MonoBehaviour
         float tryN = 0;
         if(float.TryParse(target.text.ToString(), out tryN))
         {
-            outputInputManager.targetTemperature = tryN;
+            cooler.targetTemperature = tryN;
             return;
         }else{
-            outputInputManager.targetTemperature = outputInputManager.internalTemperature;
+            cooler.targetTemperature = container.internalTemperature;
         }
     }
 
     public void valve()
     {
-        if(outputInputManager.selfRate != 0)
-        {
-            closeValve();
-            return;
-        }else{
-            openValve(rate);
-        }
+        //if(container.selfRate != 0)
+        //{
+        //    closeValve();
+        //    return;
+        //}else{
+        //    openValve(rate);
+        //}
     }
 
-    public void cooler()
+    public void coolActivate()
     {
-        if(outputInputManager.coolerActive == false)
+        if(cooler.active == false)
         {
-            outputInputManager.coolerActive = true;
+            cooler.active = true;
             return;
         }
 
-        if(outputInputManager.coolerActive == true)
+        if(cooler.active == true)
         {
-            outputInputManager.coolerActive = false;
+            cooler.active = false;
             return;
         }
     }
 
     public void vent()
     {
-        if(outputInputManager.ventActive == false)
+        if(gasVent.open == false)
         {
-            outputInputManager.ventActive = true;
+            gasVent.open = true;
             return;
         }
 
-        if(outputInputManager.ventActive == true)
+        if(gasVent.open == true)
         {
-            outputInputManager.ventActive = false;
+            gasVent.open = false;
             return;
         }
     }
-    public void openValve(float rate)
-    {
-        outputInputManager.selfRate = rate;
-    }
-
-    public void closeValve()
-    {
-        outputInputManager.selfRate = 0;
-    }
-    
 }

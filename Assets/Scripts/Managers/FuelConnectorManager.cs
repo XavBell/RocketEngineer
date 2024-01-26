@@ -7,8 +7,8 @@ using UnityEditor;
 
 public class FuelConnectorManager : MonoBehaviour
 {
-    public outputInputManager input;
-    public outputInputManager output;
+    public container input;
+    public container output;
     public GameObject Legend;
     public GameObject connectPopUp;
     public Toggle showToggle;
@@ -147,17 +147,17 @@ public class FuelConnectorManager : MonoBehaviour
 
     public void selectOutput()
     {
-        outputInputManager[] potentialInputsOutputs = FindObjectsOfType<outputInputManager>();
-        List<GameObject> actualOutputInput = new List<GameObject>();
-        foreach(outputInputManager outputInput in potentialInputsOutputs)
+        container[] potentialContainer = FindObjectsOfType<container>();
+        List<GameObject> actualContainer = new List<GameObject>();
+        foreach(container container in potentialContainer)
         {
-            if(outputInput.gameObject.GetComponent<buildingType>() != null)
+            if(container.gameObject.GetComponent<buildingType>() != null)
             {
-                actualOutputInput.Add(outputInput.gameObject);
+                actualContainer.Add(container.gameObject);
             }
         }
 
-        foreach(GameObject building in actualOutputInput)
+        foreach(GameObject building in actualContainer)
         {
             if(building.GetComponent<buildingType>().type == "GSEtank")
             {
@@ -170,10 +170,40 @@ public class FuelConnectorManager : MonoBehaviour
 
     public void Connect()
     {
-        input.inputParent = output;
-        input.inputGuid = output.guid;
-        output.outputParent = input;
-        output.outputGuid = input.guid;
+        //input.inputParent = output;
+        //input.inputGuid = output.guid;
+        //output.outputParent = input;
+        //output.outputGuid = input.guid;
+        if(input.GetComponent<flowControllerStaticFire>())
+        {
+            input.flowController.destination = input;
+            input.flowController.origin = output;
+        }
+
+        if(input.GetComponent<flowControllerForTankStand>())
+        {
+            input.GetComponent<flowControllerForTankStand>().origin = output;
+        }
+
+        if(input.GetComponent<flowControllerForLaunchPads>())
+        {
+            if(input.type == "oxidizer")
+            {
+                input.GetComponent<flowControllerForLaunchPads>().oxidizerContainerOrigin = output;
+            }
+
+            if(input.type == "fuel")
+            {
+                input.GetComponent<flowControllerForLaunchPads>().fuelContainerOrigin = output;
+            }
+
+            if(input.GetComponent<launchPadManager>().ConnectedRocket != null)
+            {
+                input.GetComponent<flowControllerForLaunchPads>().setTankOrigin();
+            }
+            
+        }
+
         connectPopUp.SetActive(true);
         PanelFadeIn(connectPopUp);
         StartCoroutine(ActiveDeactive(1,connectPopUp, false ));

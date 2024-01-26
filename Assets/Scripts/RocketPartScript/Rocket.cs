@@ -88,7 +88,7 @@ public class Rocket : MonoBehaviour
                 rocketMass += part._partMass;
                 if(part._partType == "tank")
                 {
-                    rocketMass += part.GetComponent<outputInputManager>().mass;
+                    rocketMass += part.GetComponent<container>().mass;
                 }
             }
         }

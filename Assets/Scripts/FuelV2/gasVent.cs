@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class gasVent : MonoBehaviour
 {
-    container container;
-    float ventRate; //kg/s
-    bool open;
+    public container container;
+    public float ventRate; //kg/s
+    public bool open;
     TimeManager MyTime;
 
     // Start is called before the first frame update
