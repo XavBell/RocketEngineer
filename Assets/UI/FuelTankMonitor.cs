@@ -49,7 +49,6 @@ public class FuelTankMonitor : MonoBehaviour
 
     public void updateTemp()
     {
-        //targetTemperature.text = target.text.ToString();
         float tryN = 0;
         if(float.TryParse(target.text.ToString(), out tryN))
         {
@@ -58,17 +57,6 @@ public class FuelTankMonitor : MonoBehaviour
         }else{
             cooler.targetTemperature = container.targetTemperature;
         }
-    }
-
-    public void valve()
-    {
-        //if(container.selfRate != 0)
-        //{
-        //    closeValve();
-        //    return;
-        //}else{
-        //    openValve(rate);
-        //}
     }
 
     public void coolActivate()
