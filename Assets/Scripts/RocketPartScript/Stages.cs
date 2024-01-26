@@ -140,9 +140,9 @@ public class Stages
         {
             if(part._partType == "tank")
             {
-                if(part.GetComponent<outputInputManager>().circuit == type)
+                if(part.GetComponent<Tank>().propellantCategory == type)
                 {
-                    qty += part.GetComponent<outputInputManager>().mass;
+                    qty += part.GetComponent<container>().mass;
                 }
             }
         }

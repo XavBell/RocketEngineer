@@ -36,8 +36,11 @@ public class flowController : MonoBehaviour
             float massToTransfer = rate * MyTime.deltaTime * 1000; //value in kg converted to g
             float molesToTransfer = massToTransfer/origin.substance.MolarMass;
 
-            destination.substance = origin.substance;
-            destination.internalTemperature = origin.internalTemperature;
+            if(destination.mass == 0 && origin.mass > 0)
+            {
+                destination.substance = origin.substance;
+                destination.internalTemperature = origin.internalTemperature;
+            }
 
             if(origin.moles - molesToTransfer >= 0)
             {
