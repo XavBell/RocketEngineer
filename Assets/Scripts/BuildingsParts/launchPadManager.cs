@@ -47,9 +47,17 @@ public class launchPadManager : MonoBehaviour
             //(WHY TF IS THAT HERE)
             if(ConnectedRocket.GetComponent<PlanetGravity>().possessed == true)
             {
-                ConnectedRocket.GetComponent<outputInputManager>().inputParent = null;
-                ConnectedRocket = null;
-                GetComponent<outputInputManager>().outputParent = null;
+                foreach(Stages stage in ConnectedRocket.GetComponent<Rocket>().Stages)
+                {
+                    foreach(RocketPart part in stage.Parts)
+                    {
+                        if(part._partType == "tank")
+                        {
+                            part.GetComponent<flowController>().origin = null;
+                            part.GetComponent<flowController>().selfRate = 0;
+                        }
+                    }
+                }
             }
         }
 

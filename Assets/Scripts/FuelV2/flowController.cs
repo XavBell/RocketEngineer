@@ -23,7 +23,7 @@ public class flowController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(destination)
+        if(destination && origin)
         {
             flow(selfRate);
         }
@@ -36,11 +36,12 @@ public class flowController : MonoBehaviour
             float massToTransfer = rate * MyTime.deltaTime * 1000; //value in kg converted to g
             float molesToTransfer = massToTransfer/origin.substance.MolarMass;
 
-            if(destination.mass == 0 && origin.mass > 0)
+            if(origin.mass > 0)
             {
                 destination.substance = origin.substance;
                 destination.internalTemperature = origin.internalTemperature;
             }
+            
 
             if(origin.moles - molesToTransfer >= 0)
             {

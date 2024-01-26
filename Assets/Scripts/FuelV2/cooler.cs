@@ -31,10 +31,7 @@ public class cooler : MonoBehaviour
         if(active == false)
         {
             container.coolerActive = false;
-            container.targetTemperature = targetTemperature;
             return;
         }
     }
-
-
 }

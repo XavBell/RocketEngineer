@@ -56,7 +56,7 @@ public class FuelTankMonitor : MonoBehaviour
             cooler.targetTemperature = tryN;
             return;
         }else{
-            cooler.targetTemperature = container.internalTemperature;
+            cooler.targetTemperature = container.targetTemperature;
         }
     }
 

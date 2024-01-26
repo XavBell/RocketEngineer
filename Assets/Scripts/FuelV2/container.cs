@@ -108,7 +108,7 @@ public class container : MonoBehaviour
         float Q_cond = 0;
         if (temp > internalTemperature)
         {
-            Q_cond = (tankThermalConductivity * tankSurfaceArea * (temp - internalTemperature)) / tankThickness;
+            Q_cond = tankThermalConductivity * tankSurfaceArea * (temp - internalTemperature) / tankThickness;
         }
 
         if (temp < internalTemperature)

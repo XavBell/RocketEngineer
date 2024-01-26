@@ -123,7 +123,7 @@ public class Stages
         {
             if(part._partType == "tank")
             {
-                if(part.GetComponent<outputInputManager>().state != "liquid")
+                if(part.GetComponent<container>().state != "liquid")
                 {
                     return false;
                 }
@@ -157,9 +157,9 @@ public class Stages
         {
             if(part._partType == "tank")
             {
-                if(part.GetComponent<outputInputManager>().circuit == type)
+                if(part.GetComponent<Tank>().propellantCategory == type)
                 {
-                    substance = part.GetComponent<outputInputManager>().substance;
+                    substance = part.GetComponent<container>().substance;
                 }
             }
         }

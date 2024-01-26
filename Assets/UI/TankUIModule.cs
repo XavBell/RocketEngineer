@@ -10,7 +10,7 @@ public class TankUIModule : MonoBehaviour
     [SerializeField]TMP_Text internalTemperature;
     [SerializeField]TMP_Text quantity;
     public container tank;
-    [SerializeField]private TMP_Text targetTemperature;
+    [SerializeField]private TMP_InputField targetTemperature;
     public float rate = 5000;
     // Start is called before the first frame update
     void Start()
@@ -36,22 +36,26 @@ public class TankUIModule : MonoBehaviour
         float tryN = 0;
         if(float.TryParse(targetTemperature.text.ToString(), out tryN))
         {
-            tank.targetTemperature = tryN;
+            tank.GetComponent<cooler>().targetTemperature = tryN;
             return;
         }else{
-            tank.targetTemperature = tank.internalTemperature;
+            tank.GetComponent<cooler>().targetTemperature = tank.internalTemperature;
         }
     }
 
     public void valve()
     {
-        //if(tank.selfRate != 0)
-        //{
-        //    closeValve();
-        //    return;
-        //}else{
-        //    openValve(rate);
-        //}
+        if(tank.GetComponent<flowController>().opened == false)
+        {
+            tank.GetComponent<flowController>().opened = true;
+            return;
+        }
+
+        if(tank.GetComponent<flowController>().opened == true)
+        {
+            tank.GetComponent<flowController>().opened = false;
+            return;
+        }
     }
 
     public void cooler()
@@ -82,14 +86,5 @@ public class TankUIModule : MonoBehaviour
             tank.GetComponent<gasVent>().open  = false;
             return;
         }
-    }
-    public void openValve(float rate)
-    {
-        //tank.selfRate = rate;
-    }
-
-    public void closeValve()
-    {
-        //tank.selfRate = 0;
     }
 }
