@@ -68,7 +68,7 @@ public class container : MonoBehaviour
             volume = mass / substance.Density;
             float ratio = volume / tankVolume;
             float heightLiquid = ratio * tankHeight;
-            internalPressure = substance.Density * 9.8f * heightLiquid;
+            internalPressure =0;
 
             if (internalPressure == float.NaN)
             {

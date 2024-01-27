@@ -205,6 +205,19 @@ public class FloatingOrigin : MonoBehaviour
 
             if (closestPlanet.GetComponent<TypeScript>().type == "sun")
             {
+                Vector2 positionAtTime = new Vector2(0, 0);
+                Vector2 actualPos = closestPlanet.transform.position;
+                Vector2 toAdd = actualPos - positionAtTime;
+                if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.x))
+                {
+                    earth.transform.position = new Vector2(earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + toAdd;
+                    earth.GetComponent<DoubleTransform>().x_pos = earth.transform.position.x;
+                    earth.GetComponent<DoubleTransform>().y_pos = earth.transform.position.y;
+                    moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + new Vector2(earth.transform.position.x, earth.transform.position.y) + toAdd;
+                    moon.GetComponent<DoubleTransform>().x_pos = moon.transform.position.x;
+                    moon.GetComponent<DoubleTransform>().y_pos = moon.transform.position.y;
+                }
+
 
             }
         }
@@ -250,8 +263,8 @@ public class FloatingOrigin : MonoBehaviour
 
                 if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type == "sun")
                 {
-                    //Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().planet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
-                    //masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
+                    masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
                     //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
                 

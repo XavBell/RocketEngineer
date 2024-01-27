@@ -16,8 +16,8 @@ public class staticFireStandManager : MonoBehaviour
     public MasterManager MasterManager;
     public bool Spawned = false;
     public GameObject ConnectedEngine;
-    public outputInputManager oxidizer;
-    public outputInputManager fuel;
+    public container oxidizer;
+    public container fuel;
     public string standName;
     public GameObject button;
     public float ratio;

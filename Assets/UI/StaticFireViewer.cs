@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.ShaderGraph.Serialization;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StaticFireViewer : MonoBehaviour
 {
@@ -9,7 +11,22 @@ public class StaticFireViewer : MonoBehaviour
     public TMP_Text status;
     public TMP_Text oxidizerQty;
     public TMP_Text fuelQty;
+    public TMP_Text oxidizerVolume;
+    public TMP_Text fuelVolume;
     public TMP_Text thrust;
+
+    public Toggle coolerFuel;
+    public Toggle coolerOxidizer;
+
+     public Toggle ventFuel;
+    public Toggle ventOxidizer;
+
+    public Toggle valveFuel;
+    public Toggle valveOxidizer;
+
+    public TMP_InputField targetTempFuel;
+    public TMP_InputField targetTempOxidizer;
+
     public bool previouslyRan = false;
     // Start is called before the first frame update
     void Start()
@@ -51,6 +68,10 @@ public class StaticFireViewer : MonoBehaviour
     {
         oxidizerQty.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.mass.ToString();
         fuelQty.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.mass.ToString();
+
+        oxidizerVolume.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.volume.ToString() + "/" + staticFireStand.GetComponent<staticFireStandManager>().oxidizer.tankVolume.ToString();
+        fuelVolume.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.volume.ToString() + "/" + staticFireStand.GetComponent<staticFireStandManager>().fuel.tankVolume.ToString();
+        
     }
 
     void updateThrust()
@@ -87,5 +108,35 @@ public class StaticFireViewer : MonoBehaviour
         staticFireStand.GetComponent<staticFireStandManager>().failed = false;
         Destroy(staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine);
         this.gameObject.SetActive(false);
+    }
+
+    public void openValve(flowController flowController)
+    {
+        if(flowController.opened == false)
+        {
+            flowController.opened = true;
+            return;
+        }
+
+        if(flowController.opened == true)
+        {
+            flowController.opened = false;
+            return;
+        }
+    }
+
+    public void openVent(gasVent gasVent)
+    {
+        if(gasVent.open == false)
+        {
+            gasVent.open = true;
+            return;
+        }
+
+        if(gasVent.open == true)
+        {
+            gasVent.open = false;
+            return;
+        }
     }
 }

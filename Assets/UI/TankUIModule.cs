@@ -8,6 +8,7 @@ public class TankUIModule : MonoBehaviour
 {
     [SerializeField]TMP_Text internalPressure;
     [SerializeField]TMP_Text internalTemperature;
+    [SerializeField]TMP_Text volume;
     [SerializeField]TMP_Text quantity;
     public container tank;
     [SerializeField]private TMP_InputField targetTemperature;
@@ -28,6 +29,7 @@ public class TankUIModule : MonoBehaviour
     {
         internalPressure.text = tank.internalPressure.ToString();
         internalTemperature.text = tank.internalTemperature.ToString();
+        volume.text = tank.volume.ToString() + "/" + tank.tankVolume.ToString();
         quantity.text = tank.mass.ToString();
     }
 
