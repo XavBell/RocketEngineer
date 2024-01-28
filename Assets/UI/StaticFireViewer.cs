@@ -18,7 +18,7 @@ public class StaticFireViewer : MonoBehaviour
     public Toggle coolerFuel;
     public Toggle coolerOxidizer;
 
-     public Toggle ventFuel;
+    public Toggle ventFuel;
     public Toggle ventOxidizer;
 
     public Toggle valveFuel;
@@ -143,18 +143,142 @@ public class StaticFireViewer : MonoBehaviour
         }
     }
 
-    public void openVent(gasVent gasVent)
+    public void openVent(string type)
     {
-        if(gasVent.open == false)
+        gasVent[] gasVents = GetComponents<gasVent>();
+        gasVent fuelVent = null;
+        gasVent oxidizerVent = null;
+        foreach(gasVent gasVent in gasVents)
         {
-            gasVent.open = true;
-            return;
+            if(gasVent.container.type == "fuel")
+            {
+                fuelVent = gasVent;
+            }
+
+            if(gasVent.container.type == "oxidizer")
+            {
+                oxidizerVent = gasVent;
+            }
         }
 
-        if(gasVent.open == true)
+        if(type == "fuel")
         {
-            gasVent.open = false;
-            return;
+            if(fuelVent.open == false)
+            {
+                fuelVent.open = true;
+                return;
+            }
+
+            if(fuelVent.open == true)
+            {
+                fuelVent.open = false;
+                return;
+            }
+        }
+
+        if(type == "oxidizer")
+        {
+            if(oxidizerVent.open == false)
+            {
+                oxidizerVent.open = true;
+                return;
+            }
+
+            if(oxidizerVent.open == true)
+            {
+                oxidizerVent.open = false;
+                return;
+            }
         }
     }
+
+    public void activateCooler(string type)
+    {
+        cooler[] coolers = GetComponents<cooler>();
+        cooler fuelCooler = null;
+        cooler oxidizerCooler = null;
+        foreach(cooler cooler in coolers)
+        {
+            if(cooler.container.type == "fuel")
+            {
+                fuelCooler = cooler;
+            }
+
+            if(cooler.container.type == "oxidizer")
+            {
+                oxidizerCooler = cooler;
+            }
+        }
+
+        if(type == "fuel")
+        {
+            if(fuelCooler.active == false)
+            {
+                fuelCooler.active = true;
+                return;
+            }
+
+            if(fuelCooler.active == true)
+            {
+                fuelCooler.active = false;
+                return;
+            }
+        }
+
+        if(type == "oxidizer")
+        {
+            if(oxidizerCooler.active == false)
+            {
+                oxidizerCooler.active = true;
+                return;
+            }
+
+            if(oxidizerCooler.active == true)
+            {
+                oxidizerCooler.active = false;
+                return;
+            }
+        }
+    }
+
+    public void updateTemp(string type)
+    {
+        cooler[] coolers = GetComponents<cooler>();
+        cooler fuelCooler = null;
+        cooler oxidizerCooler = null;
+        foreach(cooler cooler in coolers)
+        {
+            if(cooler.container.type == "fuel")
+            {
+                fuelCooler = cooler;
+            }
+
+            if(cooler.container.type == "oxidizer")
+            {
+                oxidizerCooler = cooler;
+            }
+        }
+
+        if(type == "oxidizer")
+        {
+            float tryN = 0;
+            if(float.TryParse(targetTempOxidizer.text.ToString(), out tryN))
+            {   
+                oxidizerCooler.targetTemperature = tryN;
+                return;
+            }
+        }
+
+        if(type == "fuel")
+        {
+            float tryN = 0;
+            if(float.TryParse(targetTempFuel.text.ToString(), out tryN))
+            {   
+                fuelCooler.targetTemperature = tryN;
+                return;
+            }
+            
+        }
+    }
+
 }

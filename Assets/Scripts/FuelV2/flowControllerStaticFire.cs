@@ -25,7 +25,14 @@ public class flowControllerStaticFire : MonoBehaviour
     {
         if(staticFireStandManager.ConnectedEngine != null)
         {
-            CalculateFlowStaticFireEngine(staticFireStandManager.ConnectedEngine.GetComponent<Engine>()._rate, staticFireStandManager.started, staticFireStandManager);
+            if(oxidizerContainer.substance != null && fuelContainer.substance != null)
+            {
+                CalculateFlowStaticFireEngine(staticFireStandManager.ConnectedEngine.GetComponent<Engine>()._rate, staticFireStandManager.started, staticFireStandManager);
+            }else{
+                staticFireStandManager.fuelSufficient = false;
+                staticFireStandManager.oxidizerSufficient = false;
+            }
+            
         }
         
     }

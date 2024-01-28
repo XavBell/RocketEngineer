@@ -427,9 +427,9 @@ RectTransform:
   m_Father: {fileID: 1178832890}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 243.0714, y: -1009.688}
   m_SizeDelta: {x: 376.97, y: 24.0188}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &18575762
@@ -1308,9 +1308,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 116.34, y: -369.28146}
   m_SizeDelta: {x: 232.68, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &34357357
@@ -1359,7 +1359,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1960761027}
+        m_TargetAssemblyTypeName: StaticFireViewer, Assembly-CSharp
+        m_MethodName: openVent
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: fuel
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &35027414
 GameObject:
@@ -3001,9 +3013,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 105.135, y: -316.27875}
   m_SizeDelta: {x: 210.27, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &85736959
@@ -5358,9 +5370,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 80, y: -511.90353}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &193441923
@@ -5442,7 +5454,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1960761027}
+        m_TargetAssemblyTypeName: StaticFireViewer, Assembly-CSharp
+        m_MethodName: updateTemp
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: oxidizer
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5675,10 +5699,10 @@ RectTransform:
   m_Father: {fileID: 1407628121}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 232.6799, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 116.33995, y: -313.88385}
+  m_SizeDelta: {x: 232.6799, y: 627.7677}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &207870690
 MonoBehaviour:
@@ -12841,9 +12865,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 105.135, y: -247.53287}
   m_SizeDelta: {x: 210.27, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &597946786
@@ -16129,9 +16153,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 116.34, y: -83.608536}
   m_SizeDelta: {x: 232.68, y: 26.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &738421478
@@ -17384,9 +17408,9 @@ RectTransform:
   m_Father: {fileID: 1178832890}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 243.0714, y: -807.7327}
   m_SizeDelta: {x: 376.97, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &835098572
@@ -19643,9 +19667,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 116.34, y: -157.47176}
   m_SizeDelta: {x: 232.68, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &921416355
@@ -20946,9 +20970,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 105.135, y: -376.71085}
   m_SizeDelta: {x: 210.27, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &966352517
@@ -20997,7 +21021,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1960761027}
+        m_TargetAssemblyTypeName: StaticFireViewer, Assembly-CSharp
+        m_MethodName: openVent
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: oxidizer
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &967483095
 GameObject:
@@ -22602,9 +22638,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 116.34, y: -577.33563}
   m_SizeDelta: {x: 232.68, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1097303581
@@ -22653,7 +22689,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1960761027}
+        m_TargetAssemblyTypeName: StaticFireViewer, Assembly-CSharp
+        m_MethodName: activateCooler
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: oxidizer
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1097471163
 GameObject:
@@ -23246,9 +23294,9 @@ RectTransform:
   m_Father: {fileID: 1178832890}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 243.0714, y: -41.48466}
   m_SizeDelta: {x: 376.97, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1112398759
@@ -24164,9 +24212,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 105.135, y: -93.41348}
   m_SizeDelta: {x: 210.27, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1157149457
@@ -25031,9 +25079,9 @@ RectTransform:
   m_Father: {fileID: 1178832890}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 243.0714, y: -99.85399}
   m_SizeDelta: {x: 376.97, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1182590598
@@ -25587,9 +25635,9 @@ RectTransform:
   m_Father: {fileID: 1178832890}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 243.0714, y: -866.10205}
   m_SizeDelta: {x: 376.97, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1198896534
@@ -26534,9 +26582,9 @@ RectTransform:
   m_Father: {fileID: 1178832890}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 243.0714, y: -918.167}
   m_SizeDelta: {x: 376.97, y: 24.0188}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1221604461
@@ -26911,9 +26959,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 105.135, y: -17.3338}
   m_SizeDelta: {x: 210.27, y: 34.6676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1234882436
@@ -30288,9 +30336,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 116.34, y: -236.3888}
   m_SizeDelta: {x: 232.68, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1396827279
@@ -30649,9 +30697,9 @@ RectTransform:
   m_Father: {fileID: 1178832890}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 243.0714, y: -453.79337}
   m_SizeDelta: {x: 442.9546, y: 627.7677}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1407628122
@@ -31981,9 +32029,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 100, y: -436.23514}
   m_SizeDelta: {x: 200, y: 29.3285}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1478945620
@@ -32118,9 +32166,9 @@ RectTransform:
   m_Father: {fileID: 1178832890}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 243.0714, y: -963.9275}
   m_SizeDelta: {x: 376.97, y: 24.0188}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1482316199
@@ -35442,9 +35490,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 80, y: -508.18884}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1641682263
@@ -35526,7 +35574,19 @@ MonoBehaviour:
       m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1960761027}
+        m_TargetAssemblyTypeName: StaticFireViewer, Assembly-CSharp
+        m_MethodName: updateTemp
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: fuel
+          m_BoolArgument: 0
+        m_CallState: 2
   m_OnTouchScreenKeyboardStatusChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -36248,10 +36308,10 @@ RectTransform:
   m_Father: {fileID: 1407628121}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 210.27, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 337.81726, y: -313.88385}
+  m_SizeDelta: {x: 210.27, y: 627.7677}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1670255046
 MonoBehaviour:
@@ -37329,9 +37389,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 116.34, y: -14.02955}
   m_SizeDelta: {x: 232.68, y: 28.0591}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1755639088
@@ -38025,9 +38085,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 116.34, y: -575.4783}
   m_SizeDelta: {x: 232.68, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1790887085
@@ -38076,7 +38136,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1960761027}
+        m_TargetAssemblyTypeName: StaticFireViewer, Assembly-CSharp
+        m_MethodName: activateCooler
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: fuel
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1792903828
 GameObject:
@@ -38804,9 +38876,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 105.135, y: -170.47318}
   m_SizeDelta: {x: 210.27, y: 36.6276}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1814970886
@@ -42174,9 +42246,9 @@ RectTransform:
   m_Father: {fileID: 207870689}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 194.42755, y: -306.99203}
   m_SizeDelta: {x: 388.8551, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1948727605
@@ -42390,7 +42462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1960761026
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42428,17 +42500,17 @@ MonoBehaviour:
   status: {fileID: 1182289476}
   oxidizerQty: {fileID: 1152957835}
   fuelQty: {fileID: 730290136}
-  oxidizerVolume: {fileID: 0}
-  fuelVolume: {fileID: 0}
+  oxidizerVolume: {fileID: 597946786}
+  fuelVolume: {fileID: 1396827279}
   thrust: {fileID: 1198896534}
-  coolerFuel: {fileID: 0}
-  coolerOxidizer: {fileID: 0}
-  ventFuel: {fileID: 0}
-  ventOxidizer: {fileID: 0}
-  valveFuel: {fileID: 0}
-  valveOxidizer: {fileID: 0}
-  targetTempFuel: {fileID: 0}
-  targetTempOxidizer: {fileID: 0}
+  coolerFuel: {fileID: 1790887085}
+  coolerOxidizer: {fileID: 1097303581}
+  ventFuel: {fileID: 34357357}
+  ventOxidizer: {fileID: 966352517}
+  valveFuel: {fileID: 1948727605}
+  valveOxidizer: {fileID: 85736959}
+  targetTempFuel: {fileID: 1641682263}
+  targetTempOxidizer: {fileID: 193441923}
   previouslyRan: 0
 --- !u!1 &1962332733
 GameObject:
@@ -43353,9 +43425,9 @@ RectTransform:
   m_Father: {fileID: 1670255045}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 100, y: -441.8072}
   m_SizeDelta: {x: 200, y: 29.3285}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1986365426
