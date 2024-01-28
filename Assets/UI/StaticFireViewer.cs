@@ -110,18 +110,36 @@ public class StaticFireViewer : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void openValve(flowController flowController)
+    public void openValve(string category)
     {
-        if(flowController.opened == false)
+        if(category == "fuel")
         {
-            flowController.opened = true;
-            return;
+            if(staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened == false)
+            {
+                staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened = true;
+                return;
+            }
+
+            if(staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened== true)
+            {
+                staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened = false;
+                return;
+            }
         }
 
-        if(flowController.opened == true)
+        if(category == "oxidizer")
         {
-            flowController.opened = false;
-            return;
+            if(staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened == false)
+            {
+                staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened = true;
+                return;
+            }
+
+            if(staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened== true)
+            {
+                staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened = false;
+                return;
+            }
         }
     }
 

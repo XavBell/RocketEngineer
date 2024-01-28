@@ -3052,7 +3052,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1960761027}
+        m_TargetAssemblyTypeName: StaticFireViewer, Assembly-CSharp
+        m_MethodName: openValve
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: oxidizer
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &90260252
 GameObject:
@@ -41305,7 +41317,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0711eed8d3bfc4e4e843fbf345d270cc, type: 2}
   m_sharedMaterial: {fileID: -3526102991880937006, guid: 0711eed8d3bfc4e4e843fbf345d270cc, type: 2}
@@ -42213,7 +42225,19 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1960761027}
+        m_TargetAssemblyTypeName: StaticFireViewer, Assembly-CSharp
+        m_MethodName: openValve
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: fuel
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 0
 --- !u!1 &1955312481
 GameObject:
@@ -42407,6 +42431,14 @@ MonoBehaviour:
   oxidizerVolume: {fileID: 0}
   fuelVolume: {fileID: 0}
   thrust: {fileID: 1198896534}
+  coolerFuel: {fileID: 0}
+  coolerOxidizer: {fileID: 0}
+  ventFuel: {fileID: 0}
+  ventOxidizer: {fileID: 0}
+  valveFuel: {fileID: 0}
+  valveOxidizer: {fileID: 0}
+  targetTempFuel: {fileID: 0}
+  targetTempOxidizer: {fileID: 0}
   previouslyRan: 0
 --- !u!1 &1962332733
 GameObject:

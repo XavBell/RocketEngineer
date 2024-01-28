@@ -18,6 +18,9 @@ public class staticFireStandManager : MonoBehaviour
     public GameObject ConnectedEngine;
     public container oxidizer;
     public container fuel;
+
+    public flowController oxidizerController;
+    public flowController fuelController;
     public string standName;
     public GameObject button;
     public float ratio;
