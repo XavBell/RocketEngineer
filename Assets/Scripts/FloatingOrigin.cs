@@ -181,8 +181,6 @@ public class FloatingOrigin : MonoBehaviour
                     moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + positionAtTime + toAdd;
                     moon.GetComponent<DoubleTransform>().x_pos = moon.transform.position.x;
                     moon.GetComponent<DoubleTransform>().y_pos = moon.transform.position.y;
-
-                    //Debug.Log(toAdd);
                 }
 
             }
@@ -213,9 +211,10 @@ public class FloatingOrigin : MonoBehaviour
                     earth.transform.position = new Vector2(earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + toAdd;
                     earth.GetComponent<DoubleTransform>().x_pos = earth.transform.position.x;
                     earth.GetComponent<DoubleTransform>().y_pos = earth.transform.position.y;
-                    moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + new Vector2(earth.transform.position.x, earth.transform.position.y) + toAdd;
+                    moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + new Vector2(earth.transform.position.x, earth.transform.position.y);
                     moon.GetComponent<DoubleTransform>().x_pos = moon.transform.position.x;
                     moon.GetComponent<DoubleTransform>().y_pos = moon.transform.position.y;
+                    Debug.Log("hi");
                 }
 
 
@@ -256,16 +255,18 @@ public class FloatingOrigin : MonoBehaviour
                 //Sun to Earth
                 if(closestPlanet.GetComponent<TypeScript>().type == "sun")
                 {
-                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
-                    masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
-                    //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
+                    Debug.Log(masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity.magnitude);
+                    Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
+                    masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity += new Vector2(velocity.x, velocity.y);
+                    Debug.Log(masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity.magnitude);
                 }
 
                 if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type == "sun")
                 {
-                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
-                    masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
-                    //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
+                    Debug.Log(masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity.magnitude);
+                    Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
+                    masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity += new Vector2(velocity.x, velocity.y);
+                    Debug.Log(masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity.magnitude);
                 }
                 
                 closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet();

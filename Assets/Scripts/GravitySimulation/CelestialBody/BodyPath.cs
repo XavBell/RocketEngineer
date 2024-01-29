@@ -74,9 +74,14 @@ public class BodyPath : MonoBehaviour
 
     }
 
-    public void Update()
+    public void CalculateParameters()
     {
-
+        double time = MyTime.time;
+            Vector2 bodyPosition2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_pos, (float)this.GetComponent<PhysicsStats>().y_pos);
+            Vector2 bodyVelocity2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_vel, (float)this.GetComponent<PhysicsStats>().y_vel);
+            DoubleTransform dT = OrbitingBody.GetComponent<DoubleTransform>();
+            Vector2 orbitingBodyPosition2D = new Vector2((float)dT.x_pos, (float)dT.y_pos);
+        DrawLine(time, line, KeplerParams, bodyPosition2D, bodyVelocity2D, orbitingBodyPosition2D, gravityParam);
     }
 
     public void UpdatePos()
@@ -136,14 +141,14 @@ public class BodyPath : MonoBehaviour
         return new Vector3((float)x, (float)y, 0);
     }
 
-    public Vector3 GetVelocityAtTime(double Time)
+    public Vector2 GetVelocityAtTime(double Time)
     {
         double x;
         double y;
         double VX;
         double VY;
         GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
-        return new Vector3((float)VX, (float)VY, 0);
+        return new Vector2((float)VX, (float)VY);
     }
 
     public static void GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, out double X, out double Y, out double VX, out double VY)
