@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SceneManagement;
@@ -7,6 +8,8 @@ public class flowControllerForLaunchPads : MonoBehaviour
 {
     public launchPadManager launchPadManager;
 
+    public Guid oxidizerGuid;
+    public Guid fuelGuid;
     public container oxidizerContainerOrigin;
     public container fuelContainerOrigin;
 
@@ -34,6 +37,19 @@ public class flowControllerForLaunchPads : MonoBehaviour
             Disconnect();
             connected = false;
         }
+    }
+
+    public void updateGuid()
+    {
+        if(oxidizerContainerOrigin)
+        {
+            oxidizerGuid = oxidizerContainerOrigin.guid;
+        } 
+
+        if(fuelContainerOrigin)
+        {
+            fuelGuid = fuelContainerOrigin.guid;
+        }  
     }
 
     public void setTankOrigin()

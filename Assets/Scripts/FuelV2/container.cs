@@ -36,7 +36,7 @@ public class container : MonoBehaviour
     void Start()
     {
         MyTime = FindObjectOfType<TimeManager>();
-        if(guid == null)
+        if(guid == Guid.Empty)
         {
             guid = Guid.NewGuid();
         }

@@ -17,8 +17,6 @@ public class launchPadManager : MonoBehaviour
     public MasterManager MasterManager;
     public bool Spawned = false;
     public GameObject ConnectedRocket;
-    public outputInputManager oxidizer;
-    public outputInputManager fuel;
     public string padName;
     public GameObject button;
     public string operation = "none";

@@ -224,19 +224,17 @@ public class FuelConnectorManager : MonoBehaviour
 
     public void Connect()
     {
-        //input.inputParent = output;
-        //input.inputGuid = output.guid;
-        //output.outputParent = input;
-        //output.outputGuid = input.guid;
         if(input.GetComponent<flowControllerStaticFire>())
         {
             input.flowController.destination = input;
             input.flowController.origin = output;
+            input.GetComponent<flowControllerStaticFire>().updateGuid();
         }
 
         if(input.GetComponent<flowControllerForTankStand>())
         {
             input.GetComponent<flowControllerForTankStand>().origin = output;
+            input.GetComponent<flowControllerForTankStand>().updateGuid();
         }
 
         if(input.GetComponent<flowControllerForLaunchPads>())
@@ -255,6 +253,8 @@ public class FuelConnectorManager : MonoBehaviour
             {
                 input.GetComponent<flowControllerForLaunchPads>().setTankOrigin();
             }
+
+            input.GetComponent<flowControllerForLaunchPads>().updateGuid();
             
         }
 

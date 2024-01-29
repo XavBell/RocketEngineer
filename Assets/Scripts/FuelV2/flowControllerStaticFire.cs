@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +7,8 @@ public class flowControllerStaticFire : MonoBehaviour
 {
     public container fuelContainer;
     public container oxidizerContainer;
+    public Guid fuelGuid;
+    public Guid oxidizerGuid;
     TimeManager MyTime;
     public staticFireStandManager staticFireStandManager;
 
@@ -18,7 +21,20 @@ public class flowControllerStaticFire : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+       
+    }
 
+    public void updateGuid()
+    {
+        if(oxidizerContainer)
+        {
+            oxidizerGuid = oxidizerContainer.guid;
+        } 
+
+        if(fuelContainer)
+        {
+            fuelGuid = fuelContainer.guid;
+        }  
     }
 
     void FixedUpdate()

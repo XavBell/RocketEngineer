@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -5,6 +6,8 @@ using UnityEngine;
 
 public class flowController : MonoBehaviour
 {
+    public Guid originGuid;
+    public Guid destinationGuid;
     public container origin;
     public container destination;
 
@@ -27,6 +30,24 @@ public class flowController : MonoBehaviour
         {
             flow(selfRate);
         }
+
+        if(originGuid == Guid.Empty || destinationGuid == Guid.Empty)
+        {
+            updateGuid();
+        }
+    }
+
+    public void updateGuid()
+    {
+        if(destination)
+        {
+            destinationGuid = destination.guid;
+        } 
+
+        if(origin)
+        {
+            originGuid = origin.guid;
+        }  
     }
 
     void flow(float rate)

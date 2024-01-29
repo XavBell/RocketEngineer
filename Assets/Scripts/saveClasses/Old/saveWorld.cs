@@ -66,17 +66,19 @@ public class saveWorld
     public List<float> buildingRotY = new List<float>();
     public List<float> buildingRotZ = new List<float>();
 
-    public List<Guid> selfGuid = new List<Guid>();
-    public List<Guid> InputGuid = new List<Guid>();
-    public List<Guid> OutputGuid = new List<Guid>();
+    public List<Guid> containerGuid = new List<Guid>();
 
-    public List<float> inputLocX = new List<float>();
-    public List<float> inputLocY = new List<float>();
-    public List<float> inputLocZ = new List<float>();
+    public List<Guid> padFuelGuid = new List<Guid>();
+    public List<Guid> padOxidizerGuid = new List<Guid>();
 
-    public List<float> outputLocX = new List<float>();
-    public List<float> outputLocY = new List<float>();
-    public List<float> outputLocZ = new List<float>();    
+    public List<Guid> staticFireFuelGuid = new List<Guid>();
+    public List<Guid> staticFireOxidizerGuid = new List<Guid>();
+
+    public List<Guid> standGuid = new List<Guid>();
+
+    public List<Guid> originGuid = new List<Guid>();
+    public List<Guid> destinationGuid = new List<Guid>();
+
 
     //Moon
     public float moonLocX;

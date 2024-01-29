@@ -136,74 +136,31 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.buildingRotY.Add(building.transform.eulerAngles.y);
             saveWorld.buildingRotZ.Add(building.transform.eulerAngles.z);
 
-            if (building.GetComponent<buildingType>().type == "designer")
-            {
-                saveWorld.InputGuid.Add(new Guid());
-                saveWorld.OutputGuid.Add(new Guid());
-            }
-
-            if (building.GetComponent<buildingType>().type == "commandCenter")
-            {
-                saveWorld.InputGuid.Add(new Guid());
-                saveWorld.OutputGuid.Add(new Guid());
-            }
-
-            if (building.GetComponent<buildingType>().type == "VAB")
-            {
-                saveWorld.InputGuid.Add(new Guid());
-                saveWorld.OutputGuid.Add(new Guid());
-            }
-
-            if (building.GetComponent<buildingType>().type == "GSEtank")
-            {
-
-                saveWorld.InputGuid.Add(building.GetComponent<outputInputManager>().inputGuid);
-                saveWorld.OutputGuid.Add(building.GetComponent<outputInputManager>().outputGuid);
-            }
-
             if (building.GetComponent<buildingType>().type == "launchPad")
             {
-                outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
-                foreach (outputInputManager outputInputManager in outputInputManagers1)
-                {
-                    saveWorld.InputGuid.Add(outputInputManager.inputGuid);
-                    saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
-                }
                 if (building.GetComponent<launchPadManager>().ConnectedRocket != null)
                 {
                     rocketToExclude.Add(building.GetComponent<launchPadManager>().ConnectedRocket.GetComponent<Rocket>());
                 }
+
+
+                saveWorld.padFuelGuid.Add(building.GetComponent<flowControllerForLaunchPads>().fuelGuid);
+                
+                saveWorld.padOxidizerGuid.Add(building.GetComponent<flowControllerForLaunchPads>().oxidizerGuid);
             }
 
             if (building.GetComponent<buildingType>().type == "staticFireStand")
             {
-                outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
-                foreach (outputInputManager outputInputManager in outputInputManagers1)
-                {
-                    saveWorld.InputGuid.Add(outputInputManager.inputGuid);
-                    saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
-                }
+
+                saveWorld.staticFireFuelGuid.Add(building.GetComponent<flowControllerStaticFire>().fuelGuid);
+
+                saveWorld.staticFireOxidizerGuid.Add(building.GetComponent<flowControllerStaticFire>().oxidizerGuid);
             }
 
             if (building.GetComponent<buildingType>().type == "standTank")
             {
-                outputInputManager[] outputInputManagers1 = building.GetComponents<outputInputManager>();
-                foreach (outputInputManager outputInputManager in outputInputManagers1)
-                {
-                    saveWorld.InputGuid.Add(outputInputManager.inputGuid);
-                    saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
-                }
-            }
-        }
-
-        outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
-        foreach (outputInputManager outputInputManager in outputInputManagers)
-        {
-            if (outputInputManager.gameObject.GetComponent<buildingType>() != null)
-            {
-                saveWorld.selfGuid.Add(outputInputManager.guid);
-                saveWorld.InputGuid.Add(outputInputManager.inputGuid);
-                saveWorld.OutputGuid.Add(outputInputManager.outputGuid);
+                saveWorld.standGuid.Add(building.GetComponent<flowControllerForTankStand>().originGuid);
+                
             }
         }
 
@@ -217,7 +174,24 @@ public class WorldSaveManager : MonoBehaviour
 
         }
 
+        container[] containers = FindObjectsOfType<container>();
+        foreach(container container in containers)
+        {
+            if(container.GetComponent<buildingType>())
+            {
+                saveWorld.containerGuid.Add(container.guid);
+            }
+        }
 
+        flowController[] flowControllers = FindObjectsOfType<flowController>();
+        foreach(flowController flowController in flowControllers)
+        {
+            if(flowController.GetComponent<buildingType>())
+            {
+                saveWorld.destinationGuid.Add(flowController.destinationGuid);
+                saveWorld.originGuid.Add(flowController.originGuid);
+            }
+        }
 
         var jsonString = JsonConvert.SerializeObject(saveWorld);
         System.IO.File.WriteAllText(MasterManager.GetComponent<MasterManager>().worldPath, jsonString);
@@ -303,8 +277,6 @@ public class WorldSaveManager : MonoBehaviour
                     current.transform.localPosition = position;
                     current.transform.eulerAngles = rotation;
                     current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                    current.GetComponent<outputInputManager>().inputGuid = loadedWorld.InputGuid[count];
-                    current.GetComponent<outputInputManager>().outputGuid = loadedWorld.OutputGuid[count];
                 }
 
                 if (buildingType == "launchPad")
@@ -314,12 +286,6 @@ public class WorldSaveManager : MonoBehaviour
                     current.transform.localPosition = position;
                     current.transform.eulerAngles = rotation;
                     current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                    outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
-                    foreach (outputInputManager outputInputManager in outputInputManagers1)
-                    {
-                        outputInputManager.inputGuid = loadedWorld.InputGuid[count];
-                        outputInputManager.outputGuid = loadedWorld.OutputGuid[count];
-                    }
                 }
 
                 if (buildingType == "VAB")
@@ -348,12 +314,6 @@ public class WorldSaveManager : MonoBehaviour
                     current.transform.localPosition = position;
                     current.transform.eulerAngles = rotation;
                     current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                    outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
-                    foreach (outputInputManager outputInputManager in outputInputManagers1)
-                    {
-                        outputInputManager.inputGuid = loadedWorld.InputGuid[count];
-                        outputInputManager.outputGuid = loadedWorld.OutputGuid[count];
-                    }
                 }
 
                 if (buildingType == "staticFireStand")
@@ -363,43 +323,105 @@ public class WorldSaveManager : MonoBehaviour
                     current.transform.localPosition = position;
                     current.transform.eulerAngles = rotation;
                     current.GetComponent<buildingType>().buildingID = loadedWorld.buildingIDs[count];
-                    outputInputManager[] outputInputManagers1 = current.GetComponents<outputInputManager>();
-                    foreach (outputInputManager outputInputManager in outputInputManagers1)
-                    {
-                        outputInputManager.inputGuid = loadedWorld.InputGuid[count];
-                        outputInputManager.outputGuid = loadedWorld.OutputGuid[count];
-                    }
                 }
                 count++;
             }
 
             //loadRocket(loadedWorld);
 
-            outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
-            int x = 0;
-            foreach (outputInputManager outputInputManager in outputInputManagers)
+            int containerIndex = 0;
+            container[] containers = FindObjectsOfType<container>();
+            foreach(container container in containers)
             {
-                outputInputManager.guid = loadedWorld.selfGuid[x];
-                outputInputManager.inputGuid = loadedWorld.InputGuid[x];
-                outputInputManager.outputGuid = loadedWorld.OutputGuid[x];
-                x++;
+                if(container.GetComponent<buildingType>())
+                {
+                    container.guid = loadedWorld.containerGuid[containerIndex];
+                    containerIndex++;
+                }
             }
 
-            foreach (outputInputManager outputInputManager1 in outputInputManagers)
+            int padIndex = 0;
+            flowControllerForLaunchPads[] flowControllersForLaunchPads = FindObjectsOfType<flowControllerForLaunchPads>();
+            foreach(flowControllerForLaunchPads flowControllerForLaunchPads in flowControllersForLaunchPads)
             {
-                foreach (outputInputManager outputInputManager2 in outputInputManagers)
+                flowControllerForLaunchPads.fuelGuid = loadedWorld.padFuelGuid[padIndex];
+                flowControllerForLaunchPads.oxidizerGuid = loadedWorld.padOxidizerGuid[padIndex];
+
+                foreach(container container in containers)
                 {
-                    if (outputInputManager1.guid == outputInputManager2.outputGuid)
+                    if(container.guid == flowControllerForLaunchPads.fuelGuid)
                     {
-                        outputInputManager2.outputParent = outputInputManager1;
-                        outputInputManager1.inputParent = outputInputManager2;
+                        flowControllerForLaunchPads.fuelContainerOrigin = container;
                     }
 
-                    if (outputInputManager2.guid == outputInputManager1.outputGuid)
+                    if(container.guid == flowControllerForLaunchPads.oxidizerGuid)
                     {
-                        outputInputManager1.outputParent = outputInputManager2;
-                        outputInputManager2.inputParent = outputInputManager1;
+                        flowControllerForLaunchPads.oxidizerContainerOrigin = container;
                     }
+                }
+
+                padIndex++;
+            }
+
+            int staticFireStandIndex = 0;
+            flowControllerStaticFire[] flowControllersStaticFire = FindObjectsOfType<flowControllerStaticFire>();
+            foreach(flowControllerStaticFire flowControllerStaticFire in flowControllersStaticFire)
+            {
+                flowControllerStaticFire.fuelGuid = loadedWorld.staticFireFuelGuid[staticFireStandIndex];
+                flowControllerStaticFire.oxidizerGuid = loadedWorld.staticFireOxidizerGuid[staticFireStandIndex];
+
+                foreach(container container in containers)
+                {
+                    if(container.guid == flowControllerStaticFire.fuelGuid)
+                    {
+                        flowControllerStaticFire.fuelContainer = container;
+                    }
+
+                    if(container.guid == flowControllerStaticFire.oxidizerGuid)
+                    {
+                        flowControllerStaticFire.oxidizerContainer = container;
+                    }
+                }
+
+                staticFireStandIndex++;
+            }
+
+            int standIndex = 0;
+            flowControllerForTankStand[] flowControllersForTankStand = FindObjectsOfType<flowControllerForTankStand>();
+            foreach(flowControllerForTankStand flowControllerForTankStand in flowControllersForTankStand)
+            {
+                flowControllerForTankStand.originGuid = loadedWorld.standGuid[standIndex];
+                foreach(container container in containers)
+                {
+                    if(container.guid == flowControllerForTankStand.originGuid)
+                    {
+                        flowControllerForTankStand.origin = container;
+                    }
+                }
+                standIndex++;
+            }
+
+            int flowControllerID = 0;
+            flowController[] flowControllers = FindObjectsOfType<flowController>();
+            foreach(flowController flowController in flowControllers)
+            {
+                if(flowController.GetComponent<buildingType>())
+                {
+                    flowController.originGuid = loadedWorld.originGuid[flowControllerID];
+                    flowController.destinationGuid = loadedWorld.destinationGuid[flowControllerID];
+                    foreach(container container in containers)
+                    {
+                        if(container.guid == flowController.originGuid)
+                        {
+                            flowController.origin = container;
+                        }
+
+                        if(container.guid == flowController.destinationGuid)
+                        {
+                            flowController.destination = container;
+                        }
+                    }
+                    flowControllerID++;
                 }
             }
 
@@ -410,9 +432,6 @@ public class WorldSaveManager : MonoBehaviour
             {
                 worldCamera.transform.position = launchsiteManager.commandCenter.transform.position;
             }
-
-
-
 
             earth.GetComponent<EarthScript>().InitializeEarth();
             moon.GetComponent<MoonScript>().InitializeMoon();
