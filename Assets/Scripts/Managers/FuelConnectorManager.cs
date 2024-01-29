@@ -50,34 +50,88 @@ public class FuelConnectorManager : MonoBehaviour
         if(showToggle.isOn)
         {
             lines.Clear();
-            outputInputManager[] outputInputManagers = FindObjectsOfType<outputInputManager>();
-            foreach(outputInputManager outputInputManager in outputInputManagers)
+            flowController[] flowControllers = FindObjectsOfType<flowController>();
+            foreach(flowController flowController in flowControllers)
             {
-                if(outputInputManager.gameObject.GetComponent<buildingType>())
+                if(flowController.gameObject.GetComponent<buildingType>())
                 {
-                    if(outputInputManager.inputParent != null)
+                    if(flowController.origin != null)
                     {
                         GameObject line = Instantiate(linePrefab);
                         PanelFadeIn(line);
                         linePrefab.GetComponent<LineRenderer>();
                         LineRenderer lr = line.GetComponent<LineRenderer>();
                         lr.positionCount = 2;
-                        lr.SetPosition(0, outputInputManager.transform.position);
-                        lr.SetPosition(1, outputInputManager.inputParent.transform.position);
-                        if(outputInputManager.circuit == "fuel")
+                        lr.SetPosition(0, flowController.transform.position);
+                        lr.SetPosition(1, flowController.origin.transform.position);
+                        if(flowController.destination.type == "fuel")
                         {
                             lr.startColor = orange;
                             lr.endColor = orange;
-                        }
-
-                        if(outputInputManager.circuit == "oxidizer")
+                        }else if(flowController.destination.type == "oxidizer")
                         {
                             lr.startColor = blue;
                             lr.endColor = blue;
+                        }else{
+                            lr.startColor = Color.white;
+                            lr.endColor = Color.white;
                         }
                         lines.Add(lr);
-                        line.transform.parent = outputInputManager.gameObject.transform;
+                        line.transform.parent = flowController.gameObject.transform;
                     }
+                }
+            }
+
+            flowControllerForLaunchPads[] flowControllersLaunchPad = FindObjectsOfType<flowControllerForLaunchPads>();
+            foreach(flowControllerForLaunchPads flowControllerForLaunchPad in flowControllersLaunchPad)
+            {
+                if(flowControllerForLaunchPad.oxidizerContainerOrigin != null)
+                {
+                    GameObject line = Instantiate(linePrefab);
+                    PanelFadeIn(line);
+                    linePrefab.GetComponent<LineRenderer>();
+                    LineRenderer lr = line.GetComponent<LineRenderer>();
+                    lr.positionCount = 2;
+                    lr.SetPosition(0, flowControllerForLaunchPad.transform.position);
+                    lr.SetPosition(1, flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position);
+                    lr.startColor = blue;
+                    lr.endColor = blue;
+                    lines.Add(lr);
+                    line.transform.parent = flowControllerForLaunchPad.gameObject.transform;
+                }
+
+                if(flowControllerForLaunchPad.fuelContainerOrigin != null)
+                {
+                    GameObject line = Instantiate(linePrefab);
+                    PanelFadeIn(line);
+                    linePrefab.GetComponent<LineRenderer>();
+                    LineRenderer lr = line.GetComponent<LineRenderer>();
+                    lr.positionCount = 2;
+                    lr.SetPosition(0, flowControllerForLaunchPad.transform.position);
+                    lr.SetPosition(1, flowControllerForLaunchPad.fuelContainerOrigin.transform.position);
+                    lr.startColor = orange;
+                    lr.endColor = orange;
+                    lines.Add(lr);
+                    line.transform.parent = flowControllerForLaunchPad.gameObject.transform;
+                }
+            }
+
+            flowControllerForTankStand[] flowControllerForTankStands = FindObjectsOfType<flowControllerForTankStand>();
+            foreach(flowControllerForTankStand flowControllerForTankStand in flowControllerForTankStands)
+            {
+                if(flowControllerForTankStand.origin != null)
+                {
+                    GameObject line = Instantiate(linePrefab);
+                    PanelFadeIn(line);
+                    linePrefab.GetComponent<LineRenderer>();
+                    LineRenderer lr = line.GetComponent<LineRenderer>();
+                    lr.positionCount = 2;
+                    lr.SetPosition(0, flowControllerForTankStand.transform.position);
+                    lr.SetPosition(1, flowControllerForTankStand.origin.transform.position);
+                    lr.startColor = Color.white;
+                    lr.endColor = Color.white;
+                    lines.Add(lr);
+                    line.transform.parent = flowControllerForTankStand.gameObject.transform;
                 }
             }
         }
