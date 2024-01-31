@@ -15,7 +15,13 @@ public class engineParticleController : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
+    {
+        
+        updateParticle();
+    }
+
+    void updateParticle()
     {
         if(this.gameObject.transform.parent != null && SceneManager.GetActiveScene().name == "SampleScene")
         {
@@ -30,6 +36,14 @@ public class engineParticleController : MonoBehaviour
                if(this.gameObject.transform.parent.GetComponent<staticFireStandManager>().started == true)
                {
                     throttle = 100;
+                    var em = plume.GetComponent<ParticleSystem>().emission;
+                    em.rateOverTime = (throttle*baseRate)/100; 
+                    if(!EngineSound.isPlaying)
+                    {
+                        EngineSound.Play();
+                        EngineSound.volume = 1;
+                    }
+                    return;
                }
             }
             
@@ -49,20 +63,19 @@ public class engineParticleController : MonoBehaviour
                     if(EngineSound.isPlaying == false)
                     {
                         EngineSound.Play();
+                        EngineSound.volume = throttle/100;
                     }
 
                 }
                 
-            }
-        }else{
-            var em = plume.GetComponent<ParticleSystem>().emission;
-            em.rateOverTime = 0;
-            if(EngineSound.isPlaying == true)
-            {
-                EngineSound.Pause();
-            }
+            }else{
+                var em = plume.GetComponent<ParticleSystem>().emission;
+                em.rateOverTime = (throttle*baseRate)/100; 
+                if(throttle > 0){
+                    EngineSound.Play();
+                }
 
+            }
         }
-        
     }
 }

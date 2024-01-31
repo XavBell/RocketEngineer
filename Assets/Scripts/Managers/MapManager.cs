@@ -31,7 +31,7 @@ public class MapManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (MapOn == true)
         {
@@ -52,9 +52,6 @@ public class MapManager : MonoBehaviour
             {
                 pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
             }
-
-            
-
         }
 
     }

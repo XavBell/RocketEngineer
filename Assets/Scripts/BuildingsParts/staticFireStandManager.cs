@@ -24,13 +24,13 @@ public class staticFireStandManager : MonoBehaviour
     public string standName;
     public GameObject button;
     public float ratio;
-    public bool started;
-    public bool stopped;
+    public bool started = false;
+    public bool stopped = true;
     public bool fuelSufficient = true;
     public bool oxidizerSufficient = true;
     public TimeManager MyTime;
     public EngineStaticFireTracker engineStaticFireTracker;
-    public bool failed;
+    public bool failed = false;
     public float startTime;
     public float minThrust;
     public float maxThrust;
@@ -146,6 +146,13 @@ public class staticFireStandManager : MonoBehaviour
                     oxidizerSufficient = true;
                     fuelSufficient = true;
                 }
+            }
+
+            if(started == false)
+            {
+                stopped = true;
+                oxidizerSufficient = true;
+                fuelSufficient = true;
             }
         }
     }

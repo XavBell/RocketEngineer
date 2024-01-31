@@ -61,6 +61,7 @@ public class flowControllerStaticFire : MonoBehaviour
         {
             ratio = 2.56f; //RP-1
         }
+        
         //Ratio is always oxidizer/fuel
         if (started == true)
         {

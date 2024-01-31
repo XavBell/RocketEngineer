@@ -52,7 +52,7 @@ public class flowController : MonoBehaviour
 
     void flow(float rate)
     {
-        if(opened == true)
+        if(opened == true && origin.substance != null)
         {
             float massToTransfer = rate * MyTime.deltaTime * 1000; //value in kg converted to g
             float molesToTransfer = massToTransfer/origin.substance.MolarMass;
