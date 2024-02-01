@@ -14,6 +14,7 @@ using Newtonsoft.Json;
 
 public class GameManager_Engine : MonoBehaviour
 {
+    public GameObject Engine;
     //Specs Float
     private float mass;
     private float thrust;
@@ -110,9 +111,7 @@ public class GameManager_Engine : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name.ToString() == "EngineDesign")
         {
-
             UpdateValues();
-
         }
 
     }
@@ -206,6 +205,8 @@ public class GameManager_Engine : MonoBehaviour
     public void setNozzle(Nozzle nozzle)
     {
         selectedNozzle = nozzle;
+
+        Engine.GetComponentInChildren<autoSpritePositionner>().nozzle.GetComponent<SpriteRenderer>().sprite = nozzle.sprite;
     }
 
     public void setTurbine(Turbine turbine)

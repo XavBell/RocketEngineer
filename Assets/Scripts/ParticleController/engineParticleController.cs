@@ -63,18 +63,11 @@ public class engineParticleController : MonoBehaviour
                     if(EngineSound.isPlaying == false)
                     {
                         EngineSound.Play();
-                        EngineSound.volume = throttle/100;
                     }
+                    EngineSound.volume = throttle/100;
 
                 }
                 
-            }else{
-                var em = plume.GetComponent<ParticleSystem>().emission;
-                em.rateOverTime = (throttle*baseRate)/100; 
-                if(throttle > 0){
-                    EngineSound.Play();
-                }
-
             }
         }
     }

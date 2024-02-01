@@ -9,4 +9,6 @@ public class Nozzle:ScriptableObject
     public float rateModifier = 1f;
     public float mass = 0f;
     public float cost = 0f;
+
+    public Sprite sprite;
 }
