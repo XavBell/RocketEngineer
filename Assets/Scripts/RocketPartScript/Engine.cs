@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Engine : RocketPart
 { 
+    public List<Nozzle> nozzleReferences = new List<Nozzle>(); 
     public float _thrust;
     public float _rate;
     public float _tvcSpeed;
@@ -33,7 +34,19 @@ public class Engine : RocketPart
 
     void Start()
     {
+        InitializeSprite();
         InitializeFail();
+    }
+
+    public void InitializeSprite()
+    {
+        foreach(Nozzle nozzle in nozzleReferences)
+        {
+            if(nozzle.nozzleName == _nozzleName)
+            {
+                this.GetComponentInChildren<autoSpritePositionner>().nozzle.GetComponent<SpriteRenderer>().sprite = nozzle.sprite;
+            }
+        }
     }
 
     public void InitializeFail()

@@ -35,6 +35,9 @@ public class savecraft
 
     //Engine variables
     public List<string> engineName = new List<string>();
+    public List<string> nozzleName = new List<string>();
+    public List<string> turbineName = new List<string>();
+    public List<string> pumpName = new List<string>();
     public List<float> engineCost = new List<float>();
     public List<float> thrust = new List<float>();
     public List<float> flowRate = new List<float>();

@@ -85,7 +85,13 @@ public class GameManager : MonoBehaviour
             if (Cursor.visible == false)
             {
                 Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                currentPrefab = Instantiate(partToConstruct, position, Quaternion.Euler(customCursor.transform.eulerAngles));
+                currentPrefab = Instantiate(partToConstruct, position, Quaternion.Euler(new Vector3(0, 0, 0)));
+                if(currentPrefab.GetComponentInChildren<autoSpritePositionner>())
+                {
+                    currentPrefab.GetComponentInChildren<autoSpritePositionner>().UpdatePosition();
+                    currentPrefab.GetComponentInChildren<autoSpritePositionner>().bypass = true;
+                }
+                currentPrefab.transform.localRotation = Quaternion.Euler(customCursor.transform.eulerAngles);
                 if (partPath != null)
                 {
                     load(partPath, currentPrefab);
@@ -647,6 +653,7 @@ public class GameManager : MonoBehaviour
                         if (part._partType == "engine")
                         {
                             saveRocket.engineName.Add(part.GetComponent<Engine>()._partName);
+                            saveRocket.nozzleName.Add(part.GetComponent<Engine>()._nozzleName);
                             saveRocket.engineCost.Add(part.GetComponent<Engine>()._partCost);
                             saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
                             saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);

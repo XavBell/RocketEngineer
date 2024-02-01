@@ -233,12 +233,21 @@ public class OnClick : MonoBehaviour
                     if(part.GetComponent<RocketPart>()._partType == "engine")
                     {
                         part.GetComponent<Engine>()._partName = loadedRocket.engineName[engineID];
+                        part.GetComponent<Engine>()._nozzleName = loadedRocket.nozzleName[engineID];
                         part.GetComponent<Engine>()._thrust = loadedRocket.thrust[engineID];
                         part.GetComponent<Engine>()._rate = loadedRocket.flowRate[engineID];
                         part.GetComponent<Engine>().reliability = loadedRocket.reliability[engineID];
                         part.GetComponent<Engine>().maxTime = loadedRocket.maxTime[engineID];
                         part.GetComponent<Engine>()._partCost = loadedRocket.engineCost[engineID];
-                        //part.GetComponent<Engine>().InitializeFail();
+
+                        //For custom textures
+                        Vector3 rotation = part.transform.rotation.eulerAngles;
+                        part.GetComponent<Engine>().InitializeSprite();
+                        part.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        part.GetComponentInChildren<autoSpritePositionner>().UpdatePosition();
+                        part.GetComponentInChildren<autoSpritePositionner>().bypass = true;
+                        part.transform.localRotation = Quaternion.Euler(rotation);
+
                         engineID++;
                     }
                 }
@@ -409,6 +418,7 @@ public class OnClick : MonoBehaviour
         if(type == "engine")
         {
             go = Instantiate(Engine, position, UnityEngine.Quaternion.Euler(0, 0, rotation.z));
+
         }
         if(type == "tank")
         {

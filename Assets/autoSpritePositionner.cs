@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [ExecuteInEditMode]
 public class autoSpritePositionner : MonoBehaviour
@@ -11,20 +12,26 @@ public class autoSpritePositionner : MonoBehaviour
     public GameObject turbine;
     public GameObject pump;
     public GameObject nozzle;
-    
+    public bool bypass = false;
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(SceneManager.GetActiveScene().name != "EngineDesign" && bypass == false)
+        {
+            UpdatePosition();
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        UpdatePosition();
+        if(SceneManager.GetActiveScene().name == "EngineDesign")
+        {
+            UpdatePosition();
+        }
     }
 
-    void UpdatePosition()
+    public void UpdatePosition()
     {
         float yMaxTurbine = turbine.GetComponent<SpriteRenderer>().bounds.max.y - turbine.GetComponent<SpriteRenderer>().bounds.min.y;
         turbine.transform.position = topAttach.transform.position - new Vector3(0, yMaxTurbine/2, 0);
