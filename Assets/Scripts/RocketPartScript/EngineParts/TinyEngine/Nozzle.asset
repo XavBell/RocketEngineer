@@ -9,11 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e206806a1304b3bb69eb06079c43ef, type: 3}
-  m_Name: PumpSmall
+  m_Script: {fileID: 11500000, guid: 75b95e33015a6466e83810c7e8c65edc, type: 3}
+  m_Name: Nozzle
   m_EditorClassIdentifier: 
-  pumpName: PumpSmall
-  thrust: 50600
-  mass: 100
-  cost: 2
-  sprite: {fileID: 21300000, guid: 5b761a00189d846368730f5dd0dd5344, type: 3}
+  nozzleName: TinyEngine
+  thrustModifier: 0.2
+  rateModifier: 0.1
+  mass: 50
+  cost: 0.2
+  sprite: {fileID: 21300000, guid: ff8a90b95247d4244bc640542a0aeb90, type: 3}

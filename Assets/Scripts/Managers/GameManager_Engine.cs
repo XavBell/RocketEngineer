@@ -212,11 +212,13 @@ public class GameManager_Engine : MonoBehaviour
     public void setTurbine(Turbine turbine)
     {
         selectedTurbine = turbine;
+        Engine.GetComponentInChildren<autoSpritePositionner>().turbine.GetComponent<SpriteRenderer>().sprite = turbine.sprite;
     }
 
     public void setPump(Pump pump)
     {
         selectedPump = pump;
+        Engine.GetComponentInChildren<autoSpritePositionner>().pump.GetComponent<SpriteRenderer>().sprite = pump.sprite;
     }
 
     public void setTVC(TVC tvc)

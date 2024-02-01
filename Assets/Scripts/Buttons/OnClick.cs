@@ -234,6 +234,8 @@ public class OnClick : MonoBehaviour
                     {
                         part.GetComponent<Engine>()._partName = loadedRocket.engineName[engineID];
                         part.GetComponent<Engine>()._nozzleName = loadedRocket.nozzleName[engineID];
+                        part.GetComponent<Engine>()._turbineName = loadedRocket.turbineName[engineID];
+                        part.GetComponent<Engine>()._pumpName = loadedRocket.pumpName[engineID];
                         part.GetComponent<Engine>()._thrust = loadedRocket.thrust[engineID];
                         part.GetComponent<Engine>()._rate = loadedRocket.flowRate[engineID];
                         part.GetComponent<Engine>().reliability = loadedRocket.reliability[engineID];

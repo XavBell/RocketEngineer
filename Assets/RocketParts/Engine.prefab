@@ -4935,6 +4935,10 @@ MonoBehaviour:
   <_attachLeft>k__BackingField: {fileID: 0}
   nozzleReferences:
   - {fileID: 11400000, guid: 9b6414a5704854d5aa30162805b795ea, type: 2}
+  turbineReferences:
+  - {fileID: 11400000, guid: f85528d6008ce4150bf396611900cd63, type: 2}
+  pumpReferences:
+  - {fileID: 11400000, guid: 68cd3e57644214293a4a52f10b9a6976, type: 2}
   _thrust: 0
   _rate: 0
   _tvcSpeed: 0
@@ -5199,8 +5203,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5018022124775737825}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.005, y: 0.34782118, z: 0}
-  m_LocalScale: {x: 0.051025897, y: 0.029751936, z: 0}
+  m_LocalPosition: {x: -0.005, y: 0.39862496, z: 0}
+  m_LocalScale: {x: 0.125, y: 0.125, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 242687444847893887}
@@ -5247,8 +5251,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: eb10aee410d804378844f02f98f7f9f2, type: 3}
-  m_Color: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 1}
+  m_Sprite: {fileID: 21300000, guid: fcc95da7a1cdf43ba8661413c3f3f72b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5273,9 +5277,9 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.06, y: 0.06, z: 0.06, w: 0.06}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10, y: 10}
+    oldSize: {x: 7.8, y: 2.13}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -5310,8 +5314,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5374762625071775897}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.005, y: 0.6453405, z: 0}
-  m_LocalScale: {x: 0.118153535, y: 0.030531898, z: 0}
+  m_LocalPosition: {x: -0.005, y: 0.664875, z: 0}
+  m_LocalScale: {x: 0.125, y: 0.125, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 242687444847893887}
@@ -5358,8 +5362,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: eb10aee410d804378844f02f98f7f9f2, type: 3}
-  m_Color: {r: 0.18867922, g: 0.18867922, b: 0.18867922, a: 1}
+  m_Sprite: {fileID: 21300000, guid: fcc95da7a1cdf43ba8661413c3f3f72b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -5384,9 +5388,9 @@ BoxCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
-    border: {x: 0.06, y: 0.06, z: 0.06, w: 0.06}
+    border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 10, y: 10}
+    oldSize: {x: 7.8, y: 2.13}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -5528,6 +5532,7 @@ MonoBehaviour:
   turbine: {fileID: 5374762625071775897}
   pump: {fileID: 5018022124775737825}
   nozzle: {fileID: 8404881303628639225}
+  bypass: 0
 --- !u!1 &8404881303628639225
 GameObject:
   m_ObjectHideFlags: 0
@@ -5554,7 +5559,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8404881303628639225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.005, y: 0.082811505, z: 0}
+  m_LocalPosition: {x: -0.005, y: 0.14924994, z: 0}
   m_LocalScale: {x: 0.125, y: 0.125, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10657,7 +10662,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3180017098855079596, guid: de80f39a63e00ec4f84d0638d81f57bd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.033438504
+      value: 0.032999933
       objectReference: {fileID: 0}
     - target: {fileID: 3180017098855079596, guid: de80f39a63e00ec4f84d0638d81f57bd, type: 3}
       propertyPath: m_LocalPosition.z

@@ -1,5 +1,4 @@
 using System.Net.Mime;
-using System.Diagnostics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -86,16 +85,17 @@ public class GameManager : MonoBehaviour
             {
                 Vector2 position = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 currentPrefab = Instantiate(partToConstruct, position, Quaternion.Euler(new Vector3(0, 0, 0)));
-                if(currentPrefab.GetComponentInChildren<autoSpritePositionner>())
-                {
-                    currentPrefab.GetComponentInChildren<autoSpritePositionner>().UpdatePosition();
-                    currentPrefab.GetComponentInChildren<autoSpritePositionner>().bypass = true;
-                }
-                currentPrefab.transform.localRotation = Quaternion.Euler(customCursor.transform.eulerAngles);
                 if (partPath != null)
                 {
                     load(partPath, currentPrefab);
                 }
+                if(currentPrefab.GetComponentInChildren<autoSpritePositionner>())
+                {
+                    currentPrefab.GetComponent<Engine>().InitializeSprite();
+                    currentPrefab.GetComponentInChildren<autoSpritePositionner>().UpdatePosition();
+                    currentPrefab.GetComponentInChildren<autoSpritePositionner>().bypass = true;
+                }
+                currentPrefab.transform.localRotation = Quaternion.Euler(customCursor.transform.eulerAngles);
                 Vector2 prefabPos = new Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
@@ -654,6 +654,8 @@ public class GameManager : MonoBehaviour
                         {
                             saveRocket.engineName.Add(part.GetComponent<Engine>()._partName);
                             saveRocket.nozzleName.Add(part.GetComponent<Engine>()._nozzleName);
+                            saveRocket.turbineName.Add(part.GetComponent<Engine>()._turbineName);
+                            saveRocket.pumpName.Add(part.GetComponent<Engine>()._pumpName);
                             saveRocket.engineCost.Add(part.GetComponent<Engine>()._partCost);
                             saveRocket.thrust.Add(part.GetComponent<Engine>()._thrust);
                             saveRocket.flowRate.Add(part.GetComponent<Engine>()._rate);

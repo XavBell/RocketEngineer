@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class Engine : RocketPart
 { 
-    public List<Nozzle> nozzleReferences = new List<Nozzle>(); 
+    public List<Nozzle> nozzleReferences = new List<Nozzle>();
+    public List<Turbine> turbineReferences = new List<Turbine>();
+    public List<Pump> pumpReferences = new List<Pump>();
     public float _thrust;
     public float _rate;
     public float _tvcSpeed;
@@ -47,6 +49,22 @@ public class Engine : RocketPart
                 this.GetComponentInChildren<autoSpritePositionner>().nozzle.GetComponent<SpriteRenderer>().sprite = nozzle.sprite;
             }
         }
+
+        foreach(Pump pump in pumpReferences)
+        {
+            if(pump.pumpName == _pumpName)
+            {
+                this.GetComponentInChildren<autoSpritePositionner>().pump.GetComponent<SpriteRenderer>().sprite = pump.sprite;
+            }
+        }
+
+        foreach(Turbine turbine in turbineReferences)
+        {
+            if(turbine.turbineName == _turbineName)
+            {
+                this.GetComponentInChildren<autoSpritePositionner>().turbine.GetComponent<SpriteRenderer>().sprite = turbine.sprite;
+            }
+        }    
     }
 
     public void InitializeFail()

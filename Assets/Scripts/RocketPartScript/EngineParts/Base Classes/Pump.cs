@@ -8,4 +8,5 @@ public class Pump:ScriptableObject
     public float thrust = 0f;
     public float mass = 0f;
     public float cost = 0f;
+    public Sprite sprite;
 }

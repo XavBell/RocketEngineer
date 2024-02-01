@@ -10,4 +10,5 @@ public class Turbine:ScriptableObject
     public float rate = 0f;
     public float mass = 0f;
     public float cost = 0f;
+    public Sprite sprite;
 }
