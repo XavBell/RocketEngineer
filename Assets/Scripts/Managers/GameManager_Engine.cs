@@ -68,9 +68,13 @@ public class GameManager_Engine : MonoBehaviour
     [SerializeField]
     private GameObject[] panels;
 
+    [SerializeField]
     private Turbine selectedTurbine;
+    [SerializeField]
     private Pump selectedPump;
+    [SerializeField]
     private Nozzle selectedNozzle;
+    [SerializeField]
     private TVC selectedTVC;
 
 

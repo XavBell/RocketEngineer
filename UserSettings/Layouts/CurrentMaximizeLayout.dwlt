@@ -23,7 +23,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 8039
+  controlID: 5824
 --- !u!114 &2
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -142,7 +142,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 8040
+  controlID: 5825
 --- !u!114 &4
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -167,7 +167,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 200}
   m_MaxSize: {x: 16192, y: 16192}
   vertical: 1
-  controlID: 8041
+  controlID: 5826
 --- !u!114 &5
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -192,7 +192,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 8042
+  controlID: 5827
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -250,10 +250,10 @@ MonoBehaviour:
     m_SaveData: []
   m_SceneHierarchy:
     m_TreeViewState:
-      scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: 34c2feffe6c3feff6cf0feff44f8feff9efafeffc8fbfefff2fbfeff1cfcfeff46fcfeff50fcfeff1458ffff4ebeffffb4bfffff84c6ffff84ddffff2afbffffd6a9000066aa0000acaa000002bf000092bf0000d8bf000076c4000006c500004cc50000c06d0100506e0100966e0100
+      scrollPos: {x: 0, y: 245}
+      m_SelectedIDs: 8af6feffaef8feff4cfafeff
+      m_LastClickedID: -66996
+      m_ExpandedIDs: d2f5feff1410ffff4c75ffffd076ffff8877ffff767bffff607cffffeca4ffff72b0ffffa0f7ffffbaf8ffff8cf9ffff2afbffffb2710000e8710000007200001a7200002872000042720000cc7200004a7300003ed80000ced8000014d90000d4220100e62201002a2301003023010096230100a6230100e42301006824010070240100ba240100f824010010250100462501005e250100662501007825010086250100a0250100fa250100042601002a2601004a2601008426010094260100ba260100dc2601000a360100a037010092380100
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -625,9 +625,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 42.393124, y: 32.209423, z: 0.0016675007}
+    m_Target: {x: 42.2018, y: 32.227776, z: -0.0022887439}
     speed: 2
-    m_Value: {x: 42.393124, y: 32.209423, z: 0.0016675007}
+    m_Value: {x: 42.2018, y: 32.227776, z: -0.0022887439}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -678,9 +678,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 0.1191436
+    m_Target: 0.25823945
     speed: 2
-    m_Value: 0.1191436
+    m_Value: 0.25823945
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -774,22 +774,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Textures/Parts/Engines
+    - Assets/Scripts/Managers
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 60
   m_LastFolders:
-  - Assets/Textures/Parts/Engines
+  - Assets/Scripts/Managers
   m_LastFoldersGridSize: 60
   m_LastProjectPath: /Users/xavierbelleville/Documents/GitHub.noSync/RocketEngineer
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 415}
-    m_SelectedIDs: 8e6f0000
-    m_LastClickedID: 28558
-    m_ExpandedIDs: 00000000ce6e0000d06e0000d26e0000d46e0000d66e0000186f000000ca9a3bffffff7f
+    m_SelectedIDs: ce730000
+    m_LastClickedID: 29646
+    m_ExpandedIDs: 00000000d66e0000d86e0000da6e0000dc6e0000de6e0000126f000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -817,7 +817,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000ce6e0000d06e0000d26e0000d46e0000d66e000000ca9a3bffffff7f
+    m_ExpandedIDs: 00000000d66e0000d86e0000da6e0000dc6e0000de6e000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -842,8 +842,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 
-    m_LastClickedInstanceID: 0
+    m_SelectedInstanceIDs: 8af6feffaef8feff4cfafeff
+    m_LastClickedInstanceID: -67958
     m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c6230000ec6d0000a2730000000000009c6c0000
     m_RenameOverlay:
@@ -957,8 +957,8 @@ MonoBehaviour:
     y: 0
     width: 554.5
     height: 761
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 16}
