@@ -56,6 +56,19 @@ public class Prediction : MonoBehaviour
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         MyTime = FindObjectOfType<TimeManager>();
         G = FindObjectOfType<SolarSystemManager>().G;
+        TypeScript[] planets = FindObjectsOfType<TypeScript>();
+        foreach(TypeScript planet in planets)
+        {
+            if(planet.GetComponent<TypeScript>().type == "moon")
+            {
+                Moon = planet.gameObject;
+            }
+
+            if(planet.GetComponent<TypeScript>().type == "earth")
+            {
+                Earth = planet.gameObject;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -388,6 +401,9 @@ public class Prediction : MonoBehaviour
         double H = Ho;
         double[] times = new double[maxStep];
 
+        List<Vector3> potentialPos = new List<Vector3>();
+        List<double> potentialTimes = new List<double>();
+
         for (int ia = 0; ia < maxStep; ia++)
         {
             //Calculate mean anomaly
@@ -402,13 +418,19 @@ public class Prediction : MonoBehaviour
             {
                 positions[ia] = new UnityEngine.Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i))) + planetPosition2D;
                 times[ia] = (ia) * timeStep - time + time;
+
+                if(positions[ia].magnitude >= 300000)
+                {
+                    potentialPos.Add(positions[ia]);
+                    potentialTimes.Add(times[ia]);
+                }
             }
 
         }
 
         if (subPrediction == false)
         {
-            //DetectIntercept(positions, times, Earth, potentialBody, orbitMarker);
+            //DetectIntercept(potentialPos.ToArray(), potentialTimes.ToArray(), Earth, Moon, orbitMarker);
         }
 
         line.positionCount = maxStep;
