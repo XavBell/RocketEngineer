@@ -2540,7 +2540,10 @@ MonoBehaviour:
   MenuThrust: 10
   MenuRocket: {fileID: 585405802}
   rocketActive: 0
-  partType: []
+  partType:
+  - Engine
+  - Tank
+  - Rocket
   partName: []
   count: 
   turbineUnlocked: []

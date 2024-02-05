@@ -50,44 +50,46 @@ public class DetectClick : MonoBehaviour
 
                     if (type == "GSEtank")
                     {
+                        buildingUI.SetActive(false);
                         if (fuelTankUI.active == false)
                         {
                             fuelTankUI.SetActive(true);
                             fuelTankUI.GetComponent<FuelTankMonitor>().container = current.GetComponent<container>();
                             fuelTankUI.GetComponent<FuelTankMonitor>().gasVent = current.GetComponent<gasVent>();
                             fuelTankUI.GetComponent<FuelTankMonitor>().cooler = current.GetComponent<cooler>();
-                            //PanelFadeIn(current.GetComponent<buildingType>().UI);
+                            PanelFadeIn(fuelTankUI);
                             return;
                         }
                         else
                         {
                             if(current.GetComponent<container>() == fuelTankUI.GetComponent<FuelTankMonitor>().container)
                             {
-                                fuelTankUI.SetActive(false);
+                                //Close panel
+                                PanelFadeOut(fuelTankUI);
+                                StartCoroutine(ActiveDeactive(0.1f, fuelTankUI, false));
                             }else{
+                                //Update data for new tank
                                 fuelTankUI.GetComponent<FuelTankMonitor>().container = current.GetComponent<container>();
                                 fuelTankUI.GetComponent<FuelTankMonitor>().gasVent = current.GetComponent<gasVent>();
                                 fuelTankUI.GetComponent<FuelTankMonitor>().cooler = current.GetComponent<cooler>();
                             }
-                            //PanelFadeOut(current.GetComponent<buildingType>().UI);
-                            //StartCoroutine(ActiveDeactive(0.1f, current.GetComponent<buildingType>().UI, false));
                             return;
                         }
                     }
 
                     if (type == "VAB")
                     {
+                        fuelTankUI.SetActive(false);
                         if (buildingUI.active == false)
                         {
                             buildingUI.SetActive(true);
-                            //PanelFadeIn(current.GetComponent<buildingType>().UI);
+                            PanelFadeIn(buildingUI);
                             return;
                         }
                         else
                         {
-                            buildingUI.SetActive(false);
-                            //PanelFadeOut(current.GetComponent<buildingType>().UI);
-                            //StartCoroutine(ActiveDeactive(0.1f, current.GetComponent<buildingType>().UI, false));
+                            PanelFadeOut(buildingUI);
+                            StartCoroutine(ActiveDeactive(0.1f, buildingUI, false));
                             return;
                         }
                     }

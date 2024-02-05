@@ -453,7 +453,6 @@ public class VABManager : MonoBehaviour
                 List<int> indexEngines = new List<int>();
                 foreach (string tank in loadedRocket.tankName)
                 {
-                    //Debug.Log("tank");
                     if (!tanks.Contains(tank))
                     {
                         tanks.Add(tank);
@@ -579,7 +578,7 @@ public class VABManager : MonoBehaviour
                     {
                         typeCorrespondinFinal.Add(i3);
                     }
-                    i++;
+                    i3++;
                 }
 
                 int indexFinalRocket = -1;
