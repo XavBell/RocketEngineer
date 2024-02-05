@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class EngineUIModule : MonoBehaviour
 {
     public Engine engine;
+    public TMP_Text buttonText;
     public Color color1;
     public Color color2;
     public Color color3;
@@ -27,12 +29,14 @@ public class EngineUIModule : MonoBehaviour
         if(engine.active == true)
         {
             engine.active = false;
+            buttonText.text = "Activate";
             return;
         }
 
         if(engine.active == false)
         {
             engine.active = true;
+            buttonText.text = "Deactivate";
             return;
         }
     }

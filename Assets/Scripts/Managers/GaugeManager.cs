@@ -20,6 +20,7 @@ public class GaugeManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        container = GetComponentInParent<FuelTankMonitor>().container;
         if(container.mass != 0)
         {
             calculateIndicatorRotation();

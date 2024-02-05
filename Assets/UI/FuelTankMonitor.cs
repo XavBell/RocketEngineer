@@ -18,9 +18,9 @@ public class FuelTankMonitor : MonoBehaviour
     [SerializeField]private float rate;
 
     [SerializeField]private TMP_InputField target;
-    [SerializeField]private container container;
-    [SerializeField]private gasVent gasVent;
-    [SerializeField]private cooler cooler;
+    [SerializeField]public container container;
+    [SerializeField]public gasVent gasVent;
+    [SerializeField]public cooler cooler;
     // Start is called before the first frame update
     void Start()
     {
