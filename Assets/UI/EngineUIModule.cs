@@ -24,7 +24,17 @@ public class EngineUIModule : MonoBehaviour
 
     public void activate()
     {
-        engine.active = true;
+        if(engine.active == true)
+        {
+            engine.active = false;
+            return;
+        }
+
+        if(engine.active == false)
+        {
+            engine.active = true;
+            return;
+        }
     }
 
     public void changeColorGreen()
