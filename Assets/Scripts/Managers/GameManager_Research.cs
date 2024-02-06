@@ -22,13 +22,24 @@ public class GameManager_Research : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
-    public void basic()
+    public void research(Node node)
     { 
-        masterManager.nodeUnlocked.Add("basic");
+        masterManager.nodeUnlocked.Add(node.NodeName);
 
-        masterManager.nozzleUnlocked.Add("NozzleSmall");
-        masterManager.turbineUnlocked.Add("TurbineSmall");
-        masterManager.pumpUnlocked.Add("PumpSmall");
+        foreach(Nozzle nozzle in node.unlockedNozzle)
+        {
+            masterManager.nozzleUnlocked.Add(nozzle);
+        }
+
+        foreach(Turbine turbine in node.unlockedTurbine)
+        {
+            masterManager.turbineUnlocked.Add(turbine);
+        }
+
+        foreach(Pump pump in node.unlockedPump)
+        {
+            masterManager.pumpUnlocked.Add(pump);
+        }
 
         masterManager.tankMaterialUnlocked.Add("stainlessSteel");
         masterManager.maxTankBuildSizeX = 1;

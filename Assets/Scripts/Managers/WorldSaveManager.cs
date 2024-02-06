@@ -106,10 +106,6 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.count = MasterManager.GetComponent<MasterManager>().count;
         saveWorld.partType = MasterManager.GetComponent<MasterManager>().partType;
 
-        saveWorld.turbineUnlocked = MasterManager.GetComponent<MasterManager>().turbineUnlocked;
-        saveWorld.pumpUnlocked = MasterManager.GetComponent<MasterManager>().pumpUnlocked;
-        saveWorld.nozzleUnlocked = MasterManager.GetComponent<MasterManager>().nozzleUnlocked;
-        saveWorld.tvcUnlocked = MasterManager.GetComponent<MasterManager>().tvcUnlocked;
         saveWorld.tankMaterialUnlocked = MasterManager.GetComponent<MasterManager>().tankMaterialUnlocked;
 
         saveWorld.maxRocketBuildSizeX = MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeX;
@@ -233,10 +229,7 @@ public class WorldSaveManager : MonoBehaviour
 
                 if (loadedWorld.nodeUnlocked.Count > MasterManager.GetComponent<MasterManager>().nodeUnlocked.Count)
                 {
-                    MasterManager.GetComponent<MasterManager>().turbineUnlocked = loadedWorld.turbineUnlocked;
-                    MasterManager.GetComponent<MasterManager>().pumpUnlocked = loadedWorld.pumpUnlocked;
-                    MasterManager.GetComponent<MasterManager>().nozzleUnlocked = loadedWorld.nozzleUnlocked;
-                    MasterManager.GetComponent<MasterManager>().tvcUnlocked = loadedWorld.tvcUnlocked;
+
                     MasterManager.GetComponent<MasterManager>().tankMaterialUnlocked = loadedWorld.tankMaterialUnlocked;
 
                     MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeX = loadedWorld.maxRocketBuildSizeX;

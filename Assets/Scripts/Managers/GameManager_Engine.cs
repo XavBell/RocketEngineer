@@ -79,22 +79,10 @@ public class GameManager_Engine : MonoBehaviour
 
 
     //Buttons for tech tree and parts
-    [SerializeField]
-    private GameObject NozzleSmallBtn;
-    [SerializeField]
-    private GameObject PumpSmallBtn;
-    [SerializeField]
-    private GameObject TurbineSmallBtn;
-    [SerializeField]
-    private GameObject TVCSmallBtn;
-    [SerializeField]
-    private GameObject NozzleRaptorBtn;
-    [SerializeField]
-    private GameObject PumpRaptorBtn;
-    [SerializeField]
-    private GameObject TurbineRaptorBtn;
-    [SerializeField]
-    private GameObject TVCRaptorBtn;
+    public List<GameObject> TurbineBtn;
+    public List<GameObject> NozzleBtn;
+    public List<GameObject> PumpBtn;
+    public List<GameObject> TVCBtn;
 
 
     // Start is called before the first frame update
@@ -106,7 +94,6 @@ public class GameManager_Engine : MonoBehaviour
             MasterManager = GMM.GetComponent<MasterManager>();
             initializeEngineInFolder();
         }
-        updateAvailableParts();
     }
 
     // Update is called once per frame
@@ -118,50 +105,6 @@ public class GameManager_Engine : MonoBehaviour
             UpdateValues();
         }
 
-    }
-
-    void updateAvailableParts()
-    {
-        //Update activated buttons
-        if (MasterManager.tvcUnlocked.Contains("TVCSmall"))
-        {
-            TVCSmallBtn.SetActive(true);
-        }
-
-        if (MasterManager.nozzleUnlocked.Contains("NozzleSmall"))
-        {
-            NozzleSmallBtn.SetActive(true);
-        }
-
-        if (MasterManager.pumpUnlocked.Contains("PumpSmall"))
-        {
-            PumpSmallBtn.SetActive(true);
-        }
-
-        if (MasterManager.turbineUnlocked.Contains("TurbineSmall"))
-        {
-            TurbineSmallBtn.SetActive(true);
-        }
-
-        if (MasterManager.tvcUnlocked.Contains("TVCRaptor"))
-        {
-            TVCRaptorBtn.SetActive(true);
-        }
-
-        if (MasterManager.nozzleUnlocked.Contains("NozzleRaptor"))
-        {
-            NozzleRaptorBtn.SetActive(true);
-        }
-
-        if (MasterManager.turbineUnlocked.Contains("PumpRaptor"))
-        {
-            PumpRaptorBtn.SetActive(true);
-        }
-
-        if (MasterManager.turbineUnlocked.Contains("TurbineRaptor"))
-        {
-            TurbineRaptorBtn.SetActive(true);
-        }
     }
 
 
