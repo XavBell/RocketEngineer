@@ -41763,6 +41763,16 @@ MonoBehaviour:
   Decoupler: {fileID: 1120019584567089529, guid: 3ffda7662d024d84a8cd5a8cd4c4be2d, type: 3}
   Tank: {fileID: 9057782884087415771, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
   rocketToExclude: []
+  nozzleReferences:
+  - {fileID: 11400000, guid: 9b6414a5704854d5aa30162805b795ea, type: 2}
+  - {fileID: 11400000, guid: 5e2f0057dbb9f4d298f86fdb280bb9b0, type: 2}
+  turbineReferences:
+  - {fileID: 11400000, guid: f85528d6008ce4150bf396611900cd63, type: 2}
+  pumpReferences:
+  - {fileID: 11400000, guid: 68cd3e57644214293a4a52f10b9a6976, type: 2}
+  tvcReferences:
+  - {fileID: 11400000, guid: 933dffb15f4fe4921b7cdc959fba9913, type: 2}
+  - {fileID: 11400000, guid: 68d3a679d02ee4796801aecd870f9964, type: 2}
 --- !u!4 &1533443822
 Transform:
   m_ObjectHideFlags: 0

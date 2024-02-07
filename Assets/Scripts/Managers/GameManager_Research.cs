@@ -47,5 +47,11 @@ public class GameManager_Research : MonoBehaviour
 
         masterManager.maxRocketBuildSizeX = 5;
         masterManager.maxRocketBuildSizeY = 10;
+
+        researchButton[] researchButtons = FindObjectsOfType<researchButton>();
+        foreach(researchButton researchButton in researchButtons)
+        {
+            researchButton.setVisibility();
+        }
     }
 }

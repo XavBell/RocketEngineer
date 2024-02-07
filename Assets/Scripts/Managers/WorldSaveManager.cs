@@ -46,6 +46,11 @@ public class WorldSaveManager : MonoBehaviour
     public GameObject Tank;
     public List<Rocket> rocketToExclude = new List<Rocket>();
 
+    public List<Nozzle> nozzleReferences;
+    public List<Turbine> turbineReferences;
+    public List<Pump> pumpReferences;
+    public List<TVC> tvcReferences;
+
 
     // Start is called before the first frame update
     void Start()
@@ -105,6 +110,26 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.partName = MasterManager.GetComponent<MasterManager>().partName;
         saveWorld.count = MasterManager.GetComponent<MasterManager>().count;
         saveWorld.partType = MasterManager.GetComponent<MasterManager>().partType;
+
+        foreach(Turbine turbine in MasterManager.GetComponent<MasterManager>().turbineUnlocked)
+        {
+            saveWorld.turbineUnlocked.Add(turbine.turbineName);
+        }
+
+        foreach(Nozzle nozzle in MasterManager.GetComponent<MasterManager>().nozzleUnlocked)
+        {
+            saveWorld.nozzleUnlocked.Add(nozzle.nozzleName);
+        }
+
+        foreach(Pump pump in MasterManager.GetComponent<MasterManager>().pumpUnlocked)
+        {
+            saveWorld.pumpUnlocked.Add(pump.pumpName);
+        }
+
+        foreach(TVC tvc in MasterManager.GetComponent<MasterManager>().tvcUnlocked)
+        {
+            saveWorld.tvcUnlocked.Add(tvc.TVCName);
+        }
 
         saveWorld.tankMaterialUnlocked = MasterManager.GetComponent<MasterManager>().tankMaterialUnlocked;
 
@@ -229,6 +254,49 @@ public class WorldSaveManager : MonoBehaviour
 
                 if (loadedWorld.nodeUnlocked.Count > MasterManager.GetComponent<MasterManager>().nodeUnlocked.Count)
                 {
+                    foreach(Nozzle nozzle in nozzleReferences)
+                    {
+                        foreach(string nozzle1 in loadedWorld.nozzleUnlocked)
+                        {
+                            if(nozzle1 == nozzle.nozzleName && !MasterManager.GetComponent<MasterManager>().nozzleUnlocked.Contains(nozzle))
+                            {
+                                MasterManager.GetComponent<MasterManager>().nozzleUnlocked.Add(nozzle);
+                            }
+                        }
+                    }
+
+                    foreach(Turbine turbine in turbineReferences)
+                    {
+                        foreach(string turbine1 in loadedWorld.turbineUnlocked)
+                        {
+                            if(turbine1 == turbine.turbineName && !MasterManager.GetComponent<MasterManager>().turbineUnlocked.Contains(turbine)) 
+                            {
+                                MasterManager.GetComponent<MasterManager>().turbineUnlocked.Add(turbine);
+                            }
+                        }
+                    }
+
+                    foreach(Pump pump in pumpReferences)
+                    {
+                        foreach(string pump1 in loadedWorld.pumpUnlocked)
+                        {
+                            if(pump1 == pump.pumpName && !MasterManager.GetComponent<MasterManager>().pumpUnlocked.Contains(pump))
+                            {
+                                MasterManager.GetComponent<MasterManager>().pumpUnlocked.Add(pump);
+                            }
+                        }
+                    }
+
+                    foreach(TVC tvc in tvcReferences)
+                    {
+                        foreach(string tvc1 in loadedWorld.tvcUnlocked)
+                        {
+                            if(tvc1 == tvc.TVCName && !MasterManager.GetComponent<MasterManager>().tvcUnlocked.Contains(tvc))
+                            {
+                                MasterManager.GetComponent<MasterManager>().tvcUnlocked.Add(tvc);
+                            }
+                        }
+                    }
 
                     MasterManager.GetComponent<MasterManager>().tankMaterialUnlocked = loadedWorld.tankMaterialUnlocked;
 
