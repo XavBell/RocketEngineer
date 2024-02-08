@@ -11,6 +11,7 @@ public class StageViewer : MonoBehaviour
     public GameObject EngineUI;
     public GameObject DecouplerUI;
     public GameObject TankUI;
+    public GameObject CapsuleUI;
     public GameObject Content;
     public TMP_Text altitude;
     
