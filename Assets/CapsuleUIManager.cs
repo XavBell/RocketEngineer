@@ -26,10 +26,7 @@ public class CapsuleUIManager : MonoBehaviour
     {
         satellite.chuteDeployed = true;
         changeColorNormal();
-        if(stageViewer != null)
-        {
-            //stageViewer.resetDropdown();
-        }
+        satellite.chute.SetActive(true);
     }
 
     public void changeColorGreen()

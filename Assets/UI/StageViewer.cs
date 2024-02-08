@@ -123,6 +123,12 @@ public class StageViewer : MonoBehaviour
                 GameObject tankUI = Instantiate(TankUI, Content.transform);
                 tankUI.GetComponent<TankUIModule>().tank = part.GetComponent<container>();
             }
+
+            if(part._partType == "satellite")
+            {
+                GameObject satUI = Instantiate(CapsuleUI, Content.transform);
+                satUI.GetComponent<CapsuleUIManager>().satellite = part.GetComponent<Satellite>();
+            }
         }
     }
 

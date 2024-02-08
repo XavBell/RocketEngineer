@@ -61,7 +61,7 @@ public class PlanetGravity : MonoBehaviour
     //Leaving rocket mass public too because it is used in another script for increment
     public float rocketMass;
     //Aerodynamic coefficient
-    private float baseCoefficient = 0.75f;
+    public float baseCoefficient = 0.75f;
 
     //This is public bcs it makes sense, everything should be able to quickly change that
     public bool possessed = false;
