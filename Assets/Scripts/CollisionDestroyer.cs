@@ -4,18 +4,12 @@ using UnityEngine;
 
 public class CollisionDestroyer : MonoBehaviour
 {
-    public Collision collision;
-    void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.relativeVelocity.magnitude > 30)
+        if(collision.relativeVelocity.magnitude > 40)
         {
-            Destroy(collision.collider.gameObject);
+            Destroy(this.gameObject);
         }
-        if(this.transform.parent.GetComponent<Rocket>() != null)
-        {
-            Destroy(this.gameObject.transform.parent);
-        }
-        Destroy(this.gameObject);
-        
+
     }
 }
