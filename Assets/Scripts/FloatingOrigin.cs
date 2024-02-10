@@ -90,21 +90,15 @@ public class FloatingOrigin : MonoBehaviour
 
             recalculateParameters = true;
 
-            Prediction[] predictions = FindObjectsOfType<Prediction>();
-            foreach(Prediction pred in predictions)
+            LineRenderer[] lines = FindObjectsOfType<LineRenderer>();
+            foreach(LineRenderer pred in lines)
             {
-                if(pred != null)
+                for (int i = 0; i < pred.positionCount; i++)
                 {
-                    LineRenderer lr = pred.GetComponent<LineRenderer>();
-                for (int i = 0; i < lr.positionCount; i++)
-                {
-                    lr.SetPosition(i, lr.GetPosition(i) + difference);
+                    pred.SetPosition(i, pred.GetPosition(i) + difference);
                 }
-
-                }
-
-
             }
+            
             
 
         }
@@ -176,6 +170,7 @@ public class FloatingOrigin : MonoBehaviour
                 if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.x))
                 {
                     sun.transform.position = toAdd;
+                    Vector3 add = new Vector3(toAdd.x, toAdd.y, 0);
                     sun.GetComponent<DoubleTransform>().x_pos = toAdd.x;
                     sun.GetComponent<DoubleTransform>().y_pos = toAdd.y;
                     moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + positionAtTime + toAdd;

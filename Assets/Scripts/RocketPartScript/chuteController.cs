@@ -8,6 +8,7 @@ public class chuteController : MonoBehaviour
     
     float rocketCD = 0;
     public float chuteCD = 2;
+    public GameObject anchor;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +27,17 @@ public class chuteController : MonoBehaviour
             if(this.GetComponentInParent<Satellite>().chuteDeployed == true)
             {
                 grav.baseCoefficient = chuteCD + rocketCD;
+            }
+
+            if(Mathf.Round(grav.GetComponent<Rigidbody2D>().velocity.magnitude) != 0)
+            {
+            
+                float angle = Mathf.Rad2Deg*Mathf.Atan(grav.GetComponent<Rigidbody2D>().velocity.y/grav.GetComponent<Rigidbody2D>().velocity.x);
+                if(grav.GetComponent<Rigidbody2D>().velocity.x < 0)
+                {
+                    angle += 180;
+                }
+                anchor.transform.rotation = Quaternion.Euler(0, 0, (angle+270)+180);
             }
         }
     }
