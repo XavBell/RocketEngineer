@@ -71,7 +71,7 @@ public class PlanetGravity : MonoBehaviour
     private MasterManager MasterManager;
     private StageViewer stageViewer;
 
-    private SolarSystemManager SolarSystemManager;
+    public SolarSystemManager SolarSystemManager;
     private Camera cam;
     public Camera getCamera()
     {

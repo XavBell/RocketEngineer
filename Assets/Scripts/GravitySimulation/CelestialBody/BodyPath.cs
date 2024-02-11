@@ -97,7 +97,7 @@ public class BodyPath : MonoBehaviour
                 double VY;
                 GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
                 Vector3 transform2 = new Vector3((float)x, (float)y, 0) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
-                this.transform.position = transform2;
+                this.gameObject.transform.position = transform2;
                 this.GetComponent<DoubleTransform>().x_pos = transform2.x;
                 this.GetComponent<DoubleTransform>().y_pos = transform2.y;
                 updated = true;
