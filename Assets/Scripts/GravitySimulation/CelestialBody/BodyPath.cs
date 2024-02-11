@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public class BodyPath : MonoBehaviour
 {
@@ -77,10 +78,10 @@ public class BodyPath : MonoBehaviour
     public void CalculateParameters()
     {
         double time = MyTime.time;
-            Vector2 bodyPosition2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_pos, (float)this.GetComponent<PhysicsStats>().y_pos);
-            Vector2 bodyVelocity2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_vel, (float)this.GetComponent<PhysicsStats>().y_vel);
-            DoubleTransform dT = OrbitingBody.GetComponent<DoubleTransform>();
-            Vector2 orbitingBodyPosition2D = new Vector2((float)dT.x_pos, (float)dT.y_pos);
+        Vector2 bodyPosition2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_pos, (float)this.GetComponent<PhysicsStats>().y_pos);
+        Vector2 bodyVelocity2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_vel, (float)this.GetComponent<PhysicsStats>().y_vel);
+        DoubleTransform dT = OrbitingBody.GetComponent<DoubleTransform>();
+        Vector2 orbitingBodyPosition2D = new Vector2((float)dT.x_pos, (float)dT.y_pos);
         DrawLine(time, line, KeplerParams, bodyPosition2D, bodyVelocity2D, orbitingBodyPosition2D, gravityParam);
     }
 
@@ -121,9 +122,34 @@ public class BodyPath : MonoBehaviour
                 line.positionCount = numPoints;
                 line.SetPositions(positions);
             }
-        }
+        }  
+    }
 
-        
+    void UpdateLine(Vector2 rocketVelocity2D, double time, Vector2 planetPosition2D, KeplerParams keplerParams)
+    {
+        int numPoints = 1000;
+        double[] times = new double[numPoints];
+        Vector3[] positions = new Vector3[numPoints];
+        if(rocketVelocity2D.magnitude != 0)
+        {
+            CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
+            line.positionCount = numPoints;
+            List<Vector3> newPos = new List<Vector3>();
+            foreach(Vector3 pos in positions)
+            {
+                newPos.Add(pos + OrbitingBody.transform.position);
+            }
+            line.SetPositions(newPos.ToArray());
+        }
+    }
+
+    public void ReDraw()
+    {
+        double time = MyTime.time;
+        Vector2 bodyPosition2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_pos, (float)this.GetComponent<PhysicsStats>().y_pos);
+        Vector2 bodyVelocity2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_vel, (float)this.GetComponent<PhysicsStats>().y_vel);
+        DoubleTransform dT = OrbitingBody.GetComponent<DoubleTransform>();
+        UpdateLine(bodyVelocity2D, time, bodyPosition2D, KeplerParams);
     }
 
     /// <summary>
@@ -345,7 +371,7 @@ public class BodyPath : MonoBehaviour
             double VX;
             double VY;
             GetOrbitPositionKepler(gravityParam, time, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
-            Vector3 pos = new Vector3((float)x, (float)y, 0)+ new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
+            Vector3 pos = new Vector3((float)x, (float)y, 0);
             times[count] = time;
             positions[count] = pos;
 

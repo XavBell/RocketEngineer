@@ -47,7 +47,7 @@ public class engineParticleController : MonoBehaviour
                }
             }
             
-            if(throttle == 0 || transform.parent.GetComponent<Engine>().active == false)
+            if(throttle == 0 || GetComponent<Engine>().active == false)
             {
                 var em = plume.GetComponent<ParticleSystem>().emission;
                 em.rateOverTime = 0; 

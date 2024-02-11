@@ -18,6 +18,7 @@ public class MapManager : MonoBehaviour
     public List<GameObject> icons = new List<GameObject>();
     public List<PlanetGravity> rockets = new List<PlanetGravity>();
     public List<GameObject> prediction = new List<GameObject>();
+    public List<GameObject> paths = new List<GameObject>();
     public bool MapOn = false;
     public GameObject cursor;
 
@@ -52,6 +53,11 @@ public class MapManager : MonoBehaviour
             {
                 pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
             }
+
+            foreach(GameObject path in paths)
+            {
+                path.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
+            }
         }
 
     }
@@ -76,6 +82,13 @@ public class MapManager : MonoBehaviour
                 prediction.Add(prediction1);
 
             }
+
+            BodyPath[] bodyPaths = FindObjectsOfType<BodyPath>();
+            foreach(BodyPath bodyPath in bodyPaths)
+            {
+                bodyPath.GetComponent<LineRenderer>().enabled = true;
+                paths.Add(bodyPath.GetComponent<LineRenderer>().gameObject);
+            }
             MapOn = true;
             return;
 
@@ -96,6 +109,13 @@ public class MapManager : MonoBehaviour
             {
                 Destroy(pred);
             }
+
+            foreach(GameObject path in paths)
+            {
+                path.GetComponent<LineRenderer>().enabled = false;
+            }
+
+            paths.Clear();
             prediction.Clear();
             MapOn = false;
             return;

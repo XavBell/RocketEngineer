@@ -93,10 +93,21 @@ public class FloatingOrigin : MonoBehaviour
             LineRenderer[] lines = FindObjectsOfType<LineRenderer>();
             foreach(LineRenderer pred in lines)
             {
-                for (int i = 0; i < pred.positionCount; i++)
+                if(!pred.GetComponent<BodyPath>())
                 {
-                    pred.SetPosition(i, pred.GetPosition(i) + difference);
+                    for (int i = 0; i < pred.positionCount; i++)
+                    {
+                        pred.SetPosition(i, pred.GetPosition(i) + difference);
+                    }
+                }else{
+                    for (int i = 0; i < pred.positionCount; i++)
+                    {
+                        pred.SetPosition(i, pred.GetPosition(i) + difference);
+                    }
                 }
+
+        
+                
             }
             
             
@@ -176,8 +187,9 @@ public class FloatingOrigin : MonoBehaviour
                     moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + positionAtTime + toAdd;
                     moon.GetComponent<DoubleTransform>().x_pos = moon.transform.position.x;
                     moon.GetComponent<DoubleTransform>().y_pos = moon.transform.position.y;
+                    earth.GetComponent<BodyPath>().ReDraw();
+                    moon.GetComponent<BodyPath>().ReDraw();
                 }
-
             }
 
             if (closestPlanet.GetComponent<TypeScript>().type == "moon")
@@ -193,6 +205,8 @@ public class FloatingOrigin : MonoBehaviour
                     earth.transform.position = new Vector2(earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + toAdd;
                     earth.GetComponent<DoubleTransform>().x_pos = earth.transform.position.x;
                     earth.GetComponent<DoubleTransform>().y_pos = earth.transform.position.y;
+                    earth.GetComponent<BodyPath>().ReDraw();
+                    moon.GetComponent<BodyPath>().ReDraw();
                 }
             }
 
@@ -282,6 +296,8 @@ public class FloatingOrigin : MonoBehaviour
                     moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + positionAtTime + toAdd;
                     moon.GetComponent<DoubleTransform>().x_pos = moon.transform.position.x;
                     moon.GetComponent<DoubleTransform>().y_pos = moon.transform.position.y;
+                    earth.GetComponent<BodyPath>().ReDraw();
+                    moon.GetComponent<BodyPath>().ReDraw();
                 }
             }
 
@@ -298,6 +314,8 @@ public class FloatingOrigin : MonoBehaviour
                     earth.transform.position = new Vector2(earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + toAdd;
                     earth.GetComponent<DoubleTransform>().x_pos = earth.transform.position.x;
                     earth.GetComponent<DoubleTransform>().y_pos = earth.transform.position.y;
+                    earth.GetComponent<BodyPath>().ReDraw();
+                    moon.GetComponent<BodyPath>().ReDraw();
                 }
             }
 
