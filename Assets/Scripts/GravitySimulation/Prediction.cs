@@ -10,6 +10,7 @@ using UnityEngine.Timeline;
 using JetBrains.Annotations;
 using System.Threading.Tasks;
 using UnityEngine.TextCore.Text;
+using Unity.Burst;
 
 public class Prediction : MonoBehaviour
 {
@@ -55,9 +56,12 @@ public class Prediction : MonoBehaviour
     double i;
     public float startTime;
 
+    public bool DO = true;
+
     // Start is called before the first frame update
     void Start()
     {
+        DO = true;
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         MyTime = FindObjectOfType<TimeManager>();
         G = FindObjectOfType<SolarSystemManager>().G;
@@ -95,23 +99,23 @@ public class Prediction : MonoBehaviour
             gravityParam = G * (planetGravity.getMass() + rocketMass);
         }
 
-        if (planetGravity != null && subPrediction == false)
+        if (planetGravity != null)
         {
             double time = MyTime.time;
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
             UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
-            DrawLine(time, line, KeplerParams, rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam);
-        }
-
-        if (subPrediction == true)
-        {
-            DrawLine(newInitialTime, line, KeplerParams, newInitialPosition, newInitialVelocity, moonPosition, newGravityParam);
+            if(DO == true)
+            {
+                DO = false;
+                Debug.Log("HERE");
+                StartCoroutine(DrawLine(time, line, KeplerParams, rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam));
+            }   
         }
 
     }
 
-    void DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)
+    public IEnumerator DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)
     {
         int numPoints = 1000;
         double[] times = new double[numPoints];
@@ -147,20 +151,19 @@ public class Prediction : MonoBehaviour
             updated = true;
         }
 
-
+        yield return new WaitForSeconds(0.01f);
+        DO = true;
     }
 
     //Much more optimized
     void checkForIntercept(int numPoints, double[] times, Vector3[] positions, LineRenderer line)
     {
-        poss.Clear();
         poss = ListPositions(Moon, times);
         bool found = false;
-        List<Vector3> newPos = new List<Vector3>();
         Vector3 earthPos = Earth.transform.position;
         for (int i = 0; i < numPoints; i++)
         {
-            if (Vector2.Distance(poss[i], positions[i]) < (planetGravity.SolarSystemManager.moonSOI - 100) && Vector2.Distance(earthPos, positions[i]) < planetGravity.SolarSystemManager.earthSOI)
+            if (Vector3.Distance(poss[i], positions[i]) < (planetGravity.SolarSystemManager.moonSOI - 100) && Vector3.Distance(earthPos, positions[i]) < planetGravity.SolarSystemManager.earthSOI)
             {
                 if(interceptIndicator != null)
                 {
@@ -172,7 +175,11 @@ public class Prediction : MonoBehaviour
                 found = true;
             }
         }
-        line.SetPositions(positions);
+    
+        if(found == true)
+        {
+            line.SetPositions(positions);
+        }
     }
 
     public static void GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, out double X, out double Y, out double VX, out double VY)
