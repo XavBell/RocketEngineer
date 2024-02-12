@@ -43,7 +43,7 @@ public class Prediction : MonoBehaviour
     public Vector2 moonPosition;
     public float newGravityParam;
     public GameObject indicatorPrefab;
-    public GameObject interceptIndicator;                                               
+    public GameObject interceptIndicator = null;                                               
 
     public List<Vector3> poss = new List<Vector3>();
 
@@ -108,7 +108,6 @@ public class Prediction : MonoBehaviour
             if(DO == true)
             {
                 DO = false;
-                Debug.Log("HERE");
                 StartCoroutine(DrawLine(time, line, KeplerParams, rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam));
             }   
         }
@@ -253,11 +252,11 @@ public class Prediction : MonoBehaviour
 
         double EA = MA;
 
-        for (int count = 0; count < 10; count++)
+        for (int count = 0; count < 2000; count++)
         {
             double dE = (EA - eccentricity * Math.Sin(EA) - MA) / (1 - eccentricity * Math.Cos(EA));
             EA -= dE;
-            if (Math.Abs(dE) < 1e-12)
+            if (Math.Abs(dE) < 1e-50)
             {
                 break;
             }
@@ -461,12 +460,11 @@ public class Prediction : MonoBehaviour
             H = H + (M - e * Math.Sinh(H) + H) / (e * Math.Cosh(H) - 1);
 
             //Raw position vector
-            UnityEngine.Vector2 rawP = new UnityEngine.Vector2((float)(a * (e - Math.Cosh(H))), (float)(a * Math.Sqrt(Math.Pow(e, 2) - 1) * Math.Sinh(H)));
-            if ((new UnityEngine.Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i))) - planetPosition2D).magnitude < SOI)
-            {
-                positions[ia] = new UnityEngine.Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i))) + planetPosition2D;
-                times[ia] = (ia) * timeStep - time + time;
-            }
+            Vector2 rawP = new UnityEngine.Vector2((float)(a * (e - Math.Cosh(H))), (float)(a * Math.Sqrt(Math.Pow(e, 2) - 1) * Math.Sinh(H)));
+
+            positions[ia] = new UnityEngine.Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i))) + planetPosition2D;
+            times[ia] = (ia) * timeStep - time + time;
+            
 
         }
 
