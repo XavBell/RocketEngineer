@@ -52,6 +52,7 @@ public class MapManager : MonoBehaviour
             foreach(GameObject pred in prediction)
             {
                 pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
+                pred.GetComponent<Prediction>().interceptIndicator.transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1);
             }
 
             foreach(GameObject path in paths)

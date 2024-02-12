@@ -41,7 +41,8 @@ public class Prediction : MonoBehaviour
     public Vector2 newInitialPosition;
     public Vector2 moonPosition;
     public float newGravityParam;
-    public GameObject indicator;
+    public GameObject indicatorPrefab;
+    public GameObject interceptIndicator;                                               
 
     public List<Vector3> poss = new List<Vector3>();
 
@@ -134,7 +135,15 @@ public class Prediction : MonoBehaviour
                 startTime = (float)MyTime.time;
                 line.loop = false;
             }
-            checkForIntercept(numPoints, times, positions, line);
+
+            if(planetGravity.getPlanet() == Earth)
+            {
+                checkForIntercept(numPoints, times, positions, line);
+            }else if(interceptIndicator != null)
+            {
+                Destroy(interceptIndicator);
+            }
+            
             updated = true;
         }
 
@@ -153,8 +162,13 @@ public class Prediction : MonoBehaviour
         {
             if (Vector2.Distance(poss[i], positions[i]) < (planetGravity.SolarSystemManager.moonSOI - 100) && Vector2.Distance(earthPos, positions[i]) < planetGravity.SolarSystemManager.earthSOI)
             {
-                Debug.Log(Vector2.Distance(poss[i], positions[i]));
-                positions.ToList().RemoveAt(i);
+                if(interceptIndicator != null)
+                {
+                    interceptIndicator.transform.position = positions[i];
+                }else{
+                    interceptIndicator = Instantiate(indicatorPrefab, this.transform);
+                    interceptIndicator.transform.position = positions[i];
+                }
                 found = true;
             }
         }
