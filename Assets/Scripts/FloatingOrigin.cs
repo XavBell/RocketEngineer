@@ -94,13 +94,8 @@ public class FloatingOrigin : MonoBehaviour
             LineRenderer[] lines = FindObjectsOfType<LineRenderer>();
             foreach(LineRenderer pred in lines)
             {
-                if(!pred.GetComponent<BodyPath>())
+                if(!pred.GetComponent<soiLineRenderer>())
                 {
-                    for (int i = 0; i < pred.positionCount; i++)
-                    {
-                        pred.SetPosition(i, pred.GetPosition(i) + difference);
-                    }
-                }else{
                     for (int i = 0; i < pred.positionCount; i++)
                     {
                         pred.SetPosition(i, pred.GetPosition(i) + difference);
