@@ -94,6 +94,13 @@ public class MapManager : MonoBehaviour
                 bodyPath.GetComponent<LineRenderer>().enabled = true;
                 paths.Add(bodyPath.GetComponent<LineRenderer>().gameObject);
             }
+
+            soiLineRenderer[] soiLineRenderers = FindObjectsOfType<soiLineRenderer>();
+            foreach(soiLineRenderer soi in soiLineRenderers)
+            {
+                soi.GetComponent<LineRenderer>().enabled = true;
+                paths.Add(soi.GetComponent<LineRenderer>().gameObject);
+            }
             MapOn = true;
             return;
 

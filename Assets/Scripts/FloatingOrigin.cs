@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 public class FloatingOrigin : MonoBehaviour
 {
     public float threshold = 0;
+    public float floatingFPS = 0.1f;
     public GameObject sun;
     public GameObject earth;
     public GameObject moon;
@@ -113,7 +114,7 @@ public class FloatingOrigin : MonoBehaviour
             
 
         }
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(floatingFPS);
         DO = true;
     }
 
@@ -223,6 +224,8 @@ public class FloatingOrigin : MonoBehaviour
                     moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + new Vector2(earth.transform.position.x, earth.transform.position.y);
                     moon.GetComponent<DoubleTransform>().x_pos = moon.transform.position.x;
                     moon.GetComponent<DoubleTransform>().y_pos = moon.transform.position.y;
+                    earth.GetComponent<BodyPath>().ReDraw();
+                    moon.GetComponent<BodyPath>().ReDraw();
                 }
 
 
@@ -333,6 +336,8 @@ public class FloatingOrigin : MonoBehaviour
                     moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + new Vector2(earth.transform.position.x,earth.transform.position.y); 
                     moon.GetComponent<DoubleTransform>().x_pos = moon.transform.position.x;
                     moon.GetComponent<DoubleTransform>().y_pos = moon.transform.position.y;
+                    earth.GetComponent<BodyPath>().ReDraw();
+                    moon.GetComponent<BodyPath>().ReDraw();
                 }
             }
             

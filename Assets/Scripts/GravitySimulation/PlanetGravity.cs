@@ -6,6 +6,7 @@ using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using UnityEngine.UI;
+using UnityEngine.Localization.SmartFormat.Utilities;
 
 
 public class PlanetGravity : MonoBehaviour

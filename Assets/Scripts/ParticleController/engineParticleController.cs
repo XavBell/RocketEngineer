@@ -47,7 +47,7 @@ public class engineParticleController : MonoBehaviour
                }
             }
             
-            if(throttle == 0 || GetComponent<Engine>().active == false)
+            if(throttle == 0 || this.GetComponent<Engine>().active == false)
             {
                 var em = plume.GetComponent<ParticleSystem>().emission;
                 em.rateOverTime = 0; 
@@ -56,7 +56,7 @@ public class engineParticleController : MonoBehaviour
                     EngineSound.Pause();
                 }
             }else if(this.gameObject.transform.parent.GetComponent<Rocket>() != null){
-                if(this.gameObject.transform.parent.GetComponent<Rocket>().throttle > 0 && transform.parent.GetComponent<Engine>().active == true)
+                if(this.gameObject.transform.parent.GetComponent<Rocket>().throttle > 0 && this.GetComponent<Engine>().active == true)
                 {
                     var em = plume.GetComponent<ParticleSystem>().emission;
                     em.rateOverTime = (throttle*baseRate)/100;
