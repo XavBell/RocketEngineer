@@ -53,12 +53,13 @@ public class FloatingOrigin : MonoBehaviour
         {
             DO = false;
             StartCoroutine(updateFloatReference());
+            Physics.SyncTransforms();
         }   
     
         UpdateReferenceBody();
         
         bypass = false;
-        //Physics.SyncTransforms();
+        
          
 
     }
