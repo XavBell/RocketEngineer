@@ -57,9 +57,8 @@ public class FloatingOrigin : MonoBehaviour
     
         UpdateReferenceBody();
         
-        
         bypass = false;
-        Physics.SyncTransforms();
+        //Physics.SyncTransforms();
          
 
     }
@@ -246,15 +245,15 @@ public class FloatingOrigin : MonoBehaviour
                 if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type == "moon")
                 {
                     Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
-                    //masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
                     //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
 
                 //Moon to Earth
                 if(closestPlanet.GetComponent<TypeScript>().type == "moon")
                 {
-                    Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
-                    //masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity += new Vector2(velocity.x, velocity.y);
+                    Vector3 velocity = closestPlanet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
+                    masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity += new Vector2(velocity.x, velocity.y);
                     //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
 

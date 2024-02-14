@@ -462,8 +462,12 @@ public class Prediction : MonoBehaviour
             //Raw position vector
             Vector2 rawP = new UnityEngine.Vector2((float)(a * (e - Math.Cosh(H))), (float)(a * Math.Sqrt(Math.Pow(e, 2) - 1) * Math.Sinh(H)));
 
-            positions[ia] = new UnityEngine.Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i))) + planetPosition2D;
-            times[ia] = (ia) * timeStep - time + time;
+            if((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)) != float.NaN &&  (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i)) != float.NaN)
+            {
+                positions[ia] = new UnityEngine.Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i))) + planetPosition2D;
+                times[ia] = (ia) * timeStep - time + time;
+            }
+            
             
 
         }
