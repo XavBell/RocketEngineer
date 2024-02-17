@@ -21,12 +21,15 @@ public class rocketCursorManager : MonoBehaviour
 
     public void clicked()
     {
+        Debug.Log("clicked");
         if(masterManager.ActiveRocket != null)
         {
+            Debug.Log("found");
             masterManager.ActiveRocket.GetComponent<Rocket>().throttle = 0;
             masterManager.ActiveRocket.GetComponent<PlanetGravity>().possessed = false;
         }
 
+        Debug.Log("here");
         masterManager.ActiveRocket = rocket;
         rocket.GetComponent<PlanetGravity>().possessed = true;
     }

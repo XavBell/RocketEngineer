@@ -32,7 +32,7 @@ public class MapManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (MapOn == true)
         {
@@ -41,12 +41,7 @@ public class MapManager : MonoBehaviour
             MoonIcon.transform.position = mapCam.WorldToScreenPoint(Moon.transform.position);
             foreach(GameObject icon in icons)
             {
-                if(icon != null)
-                {
-
-                    icon.transform.localScale = new Vector2(mapCam.orthographicSize,mapCam.orthographicSize)/100;
-                }
-                
+                icon.transform.localScale = new Vector2(mapCam.orthographicSize,mapCam.orthographicSize)/100;
             }
 
             foreach(GameObject pred in prediction)
