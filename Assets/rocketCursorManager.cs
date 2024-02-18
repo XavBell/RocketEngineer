@@ -5,11 +5,13 @@ using UnityEngine;
 public class rocketCursorManager : MonoBehaviour
 {
     MasterManager masterManager = null;
+    FloatingOrigin floatingOrigin = null;
     GameObject rocket = null;
     // Start is called before the first frame update
     void Start()
     {
         masterManager = FindObjectOfType<MasterManager>();
+        floatingOrigin = FindObjectOfType<FloatingOrigin>();
         rocket = this.transform.parent.gameObject;
     }
 
@@ -21,16 +23,13 @@ public class rocketCursorManager : MonoBehaviour
 
     public void clicked()
     {
-        Debug.Log("clicked");
         if(masterManager.ActiveRocket != null)
         {
-            Debug.Log("found");
             masterManager.ActiveRocket.GetComponent<Rocket>().throttle = 0;
             masterManager.ActiveRocket.GetComponent<PlanetGravity>().possessed = false;
         }
-
-        Debug.Log("here");
         masterManager.ActiveRocket = rocket;
+        floatingOrigin.closestPlanet = rocket.GetComponent<PlanetGravity>().getPlanet();
         rocket.GetComponent<PlanetGravity>().possessed = true;
     }
 }
