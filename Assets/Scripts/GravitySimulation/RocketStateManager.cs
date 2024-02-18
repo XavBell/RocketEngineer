@@ -79,7 +79,7 @@ public class RocketStateManager : MonoBehaviour
             return;
         }
 
-        if(MyTime.scaler > 1 && previousState == "simulate")
+        if(previousState == "simulate")
         {
             state = "rail";
             if(previousState != state)
