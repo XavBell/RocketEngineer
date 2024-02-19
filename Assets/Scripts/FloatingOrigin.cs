@@ -21,6 +21,7 @@ public class FloatingOrigin : MonoBehaviour
     public List<GameObject> planets = new List<GameObject>();
     public TimeManager MyTime;
     public MasterManager masterManager;
+    public MapManager mapManager;
 
     public bool recalculateParameters;
 
@@ -32,6 +33,7 @@ public class FloatingOrigin : MonoBehaviour
     void Start()
     {
         masterManager = FindObjectOfType<MasterManager>();
+        mapManager = FindObjectOfType<MapManager>();
         planets.Add(sun);
         planets.Add(earth);
         planets.Add(moon);
@@ -343,6 +345,11 @@ public class FloatingOrigin : MonoBehaviour
                 toRecalculate = false;
             }
             
+        }
+
+        foreach(Prediction prediction1 in mapManager.prediction)
+        {
+            prediction1.updated = false;
         }
 
     }

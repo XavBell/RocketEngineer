@@ -17,7 +17,7 @@ public class MapManager : MonoBehaviour
     public Camera mapCam;
     public List<GameObject> icons = new List<GameObject>();
     public List<PlanetGravity> rockets = new List<PlanetGravity>();
-    public List<GameObject> prediction = new List<GameObject>();
+    public List<Prediction> prediction = new List<Prediction>();
     public List<GameObject> paths = new List<GameObject>();
     public bool MapOn = false;
     public GameObject cursor;
@@ -44,12 +44,12 @@ public class MapManager : MonoBehaviour
                 icon.transform.localScale = new Vector2(mapCam.orthographicSize,mapCam.orthographicSize)/100;
             }
 
-            foreach(GameObject pred in prediction)
+            foreach(Prediction pred in prediction)
             {
                 pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
-                if(pred.GetComponent<Prediction>().interceptIndicator)
+                if(pred.interceptIndicator)
                 {
-                    pred.GetComponent<Prediction>().interceptIndicator.transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5;
+                    pred.interceptIndicator.transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5;
                 }
                 
             }
@@ -79,7 +79,7 @@ public class MapManager : MonoBehaviour
 
                 GameObject prediction1 = Instantiate(predictionPrefab);
                 prediction1.GetComponent<Prediction>().planetGravity = planetGravity1;
-                prediction.Add(prediction1);
+                prediction.Add(prediction1.GetComponent<Prediction>());
 
             }
 
@@ -112,9 +112,9 @@ public class MapManager : MonoBehaviour
             }
             icons.Clear();
 
-            foreach(GameObject pred in prediction)
+            foreach(Prediction pred in prediction)
             {
-                Destroy(pred);
+                Destroy(pred.gameObject);
             }
 
             foreach(GameObject path in paths)

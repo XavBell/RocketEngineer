@@ -173,18 +173,14 @@ public class BodyPath : MonoBehaviour
 
     public static void GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, out double X, out double Y)
     {
-        // Compute MA (Mean Anomaly)
-        // n = 2pi / T (T = time for one orbit)
-        // M = n (t)
-        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); // TODO (Mean Angular Motion can be computed at build/run time once)
-        double timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
+        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); // TODO (Mean Angular Motion can be computed once)
+        double timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity); //Same for timeoffset
         double MA = timeWithOffset * meanAngularMotion;
         
 
         // Compute EA (Eccentric Anomaly)
         double EA = MA;
         
-
         for (int count = 0; count < 3; count++)
         {
             double dE = (EA - eccentricity * Math.Sin(EA) - MA) / (1 - eccentricity * Math.Cos(EA));
@@ -200,14 +196,10 @@ public class BodyPath : MonoBehaviour
 
         // Compute r (radius)
         double r = semiMajorAxis * (1 - eccentricity * Math.Cos(EA));
-        
-        //Compute h and p for velocity
-        double h = Math.Sqrt(gravityParam * semiMajorAxis * (1- Math.Pow(eccentricity, 2)));
-        double p = semiMajorAxis*(1-Math.Pow(eccentricity,2));
 
         // Compute XYZ positions
         X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
-        double Z = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
+        //double Z = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
         Y = r * (Math.Sin(inclination) * Math.Sin(argPeriapsis + TA));
     }
 
@@ -216,7 +208,7 @@ public class BodyPath : MonoBehaviour
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
         // M = n (t)
-        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); // TODO (Mean Angular Motion can be computed at build/run time once)
+        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); //As for position, can be calculated at runtime once
         double timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
         double MA = timeWithOffset * meanAngularMotion;
         
@@ -306,7 +298,7 @@ public class BodyPath : MonoBehaviour
     }
 
     public static double GetTimeOffsetFromTrueAnomaly(double trueAnomaly, double meanAngularMotion, double eccentricity)
-        {
+    {
         // Offset by Mathf.Pi so 0 TA lines up with default start position from GetOrbitPositionKepler.
         // Wrap into -pi to +pi range.
         double TA_Clean = Modulo((trueAnomaly + Math.PI), (Math.PI * 2)) - Math.PI;
