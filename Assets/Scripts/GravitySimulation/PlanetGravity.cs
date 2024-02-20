@@ -71,6 +71,7 @@ public class PlanetGravity : MonoBehaviour
     private TimeManager TimeManager;
     private MasterManager MasterManager;
     private StageViewer stageViewer;
+    private pointManager pointManager;
 
     public SolarSystemManager SolarSystemManager;
     private Camera cam;
@@ -82,9 +83,10 @@ public class PlanetGravity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SolarSystemManager = GameObject.FindObjectOfType<SolarSystemManager>();
+        SolarSystemManager = FindObjectOfType<SolarSystemManager>();
         rb = GetComponent<Rigidbody2D>();
         core.GetComponent<Rocket>().updateMass();
+        pointManager = FindObjectOfType<pointManager>();
         rb.mass = core.GetComponent<Rocket>().rocketMass;
         if (SceneManager.GetActiveScene().name == "SampleScene")
         {
@@ -102,6 +104,7 @@ public class PlanetGravity : MonoBehaviour
         {
             initializeRocket();
             updateReferenceBody();
+            gainPoints();
             if (possessed == true)
             {
                 MasterManager.ActiveRocket = core;
@@ -115,16 +118,26 @@ public class PlanetGravity : MonoBehaviour
         //Rocket controls
         if (possessed == true)
         {
-            MasterManager.ActiveRocket = core;
+            MasterManager.ActiveRocket = core; //Line should be able to be removed
             core.GetComponent<Rocket>().controlThrust();
             core.GetComponent<Rocket>()._orientation();
         }
+        gainPoints();
     }
 
     //To be called from RocketStateManager
     public void simulate()
     {
         simulateGravity();
+    }
+
+    //Gain points if rocket is active
+    void gainPoints()
+    {
+        if(rb.velocity.magnitude > 2)
+        {
+            pointManager.nPoints += 0.1f*TimeManager.deltaTime;
+        }
     }
 
     void simulateGravity()
