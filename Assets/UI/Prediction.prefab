@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4468450867335054348}
   - component: {fileID: 4468450867335054338}
   - component: {fileID: 4468450867335054339}
+  - component: {fileID: 7839196642024705633}
   m_Layer: 0
   m_Name: Prediction
   m_TagString: Untagged
@@ -70,6 +71,7 @@ MonoBehaviour:
   interceptIndicator: {fileID: 0}
   poss: []
   startTime: 0
+  DO: 1
 --- !u!120 &4468450867335054339
 LineRenderer:
   m_ObjectHideFlags: 0
@@ -169,3 +171,27 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
+--- !u!114 &7839196642024705633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4468450867335054349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08d7344508bb14ef688008125aeeef39, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prediction: {fileID: 0}
+  Earth: {fileID: 0}
+  Moon: {fileID: 0}
+  Sun: {fileID: 0}
+  EarthPath: {fileID: 0}
+  MoonPath: {fileID: 0}
+  activeBodyGO: {fileID: 0}
+  targetBodyGO: {fileID: 0}
+  activeBodyBP: {fileID: 0}
+  targetBodyBP: {fileID: 0}
+  rocket: {fileID: 0}
+  endTimeStep: 2

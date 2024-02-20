@@ -137,8 +137,8 @@ public class RocketPath : MonoBehaviour
             }
         }
         return rb.position;
-        
     }
+
     public Vector2 updateVelocity()
     {
         if(MyTime != null)
@@ -188,6 +188,16 @@ public class RocketPath : MonoBehaviour
             }
         }
         return rb.velocity;
+    }
+
+    public Vector3 GetPositionAtTime(double Time)
+    {
+        double x;
+        double y;
+        double VX;
+        double VY;
+        GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
+        return new Vector3((float)x, (float)y, 0);
     }
 
     public static void GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, out double X, out double Y, out double VX, out double VY)

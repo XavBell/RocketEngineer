@@ -17,6 +17,7 @@ public class BodyPath : MonoBehaviour
     public SolarSystemManager solarSystemManager;
     public double G;
     public double gravityParam = 0;
+    public double orbitalPeriod;
 
     public KeplerParams KeplerParams =  new KeplerParams();
 
@@ -69,20 +70,11 @@ public class BodyPath : MonoBehaviour
             DoubleTransform dT = OrbitingBody.GetComponent<DoubleTransform>();
             Vector2 orbitingBodyPosition2D = new Vector2((float)dT.x_pos, (float)dT.y_pos);
             DrawLine(time, line, KeplerParams, bodyPosition2D, bodyVelocity2D, orbitingBodyPosition2D, gravityParam);
+            orbitalPeriod = GetOrbitalPeriod(gravityParam, KeplerParams.semiMajorAxis);
             calculate = false;
             start = true;
         }
 
-    }
-
-    public void CalculateParameters()
-    {
-        double time = MyTime.time;
-        Vector2 bodyPosition2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_pos, (float)this.GetComponent<PhysicsStats>().y_pos);
-        Vector2 bodyVelocity2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_vel, (float)this.GetComponent<PhysicsStats>().y_vel);
-        DoubleTransform dT = OrbitingBody.GetComponent<DoubleTransform>();
-        Vector2 orbitingBodyPosition2D = new Vector2((float)dT.x_pos, (float)dT.y_pos);
-        DrawLine(time, line, KeplerParams, bodyPosition2D, bodyVelocity2D, orbitingBodyPosition2D, gravityParam);
     }
 
     public void UpdatePos()

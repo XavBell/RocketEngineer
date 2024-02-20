@@ -181,6 +181,16 @@ public class Prediction : MonoBehaviour
         }
     }
 
+    public Vector3 GetPositionAtTime(double Time)
+    {
+        double x;
+        double y;
+        double VX;
+        double VY;
+        GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
+        return new Vector3((float)x, (float)y, 0);
+    }
+
     public static void GetOrbitPositionKepler(double gravityParam, double time, double semiMajorAxis, double eccentricity, double argPeriapsis, double LAN, double inclination, double trueAnomalyAtEpoch, out double X, out double Y, out double VX, out double VY)
     {
         // Compute MA (Mean Anomaly)
@@ -214,7 +224,7 @@ public class Prediction : MonoBehaviour
 
         // Compute XYZ positions
         X = r * (Math.Cos(LAN) * Math.Cos(argPeriapsis + TA) - Math.Sin(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
-        double Z = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
+        //double Z = r * (Math.Sin(LAN) * Math.Cos(argPeriapsis + TA) + Math.Cos(LAN) * Math.Sin(argPeriapsis + TA) * Math.Cos(inclination));
         Y = r * (Math.Sin(inclination) * Math.Sin(argPeriapsis + TA));
 
         //Compute h and p for velocity
