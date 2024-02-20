@@ -119,9 +119,12 @@ public class RocketStateManager : MonoBehaviour
             curr_Y = transform.y;
             Vector2 velocity = prediction.updateVelocity();
             planetGravity.rb.velocity = velocity;
+            //Check for potential collision
+            if((this.transform.position - planetGravity.getPlanet().transform.position).magnitude < planetGravity.getPlanetRadius())
+            {
+                Destroy(planetGravity.gameObject);
+            }
             return;
         }
-
-
     }
 }
