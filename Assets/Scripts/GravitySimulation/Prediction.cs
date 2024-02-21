@@ -58,6 +58,8 @@ public class Prediction : MonoBehaviour
 
     public bool DO = true;
 
+    private interceptDetector interceptDetector;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -65,6 +67,8 @@ public class Prediction : MonoBehaviour
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
         MyTime = FindObjectOfType<TimeManager>();
         G = FindObjectOfType<SolarSystemManager>().G;
+        interceptDetector = GetComponent<interceptDetector>();
+
         TypeScript[] planets = FindObjectsOfType<TypeScript>();
         foreach (TypeScript planet in planets)
         {
@@ -141,7 +145,7 @@ public class Prediction : MonoBehaviour
 
             if(planetGravity.getPlanet() == Earth)
             {
-                checkForIntercept(numPoints, times, positions, line);
+                interceptDetector.DetectIntercept();
             }else if(interceptIndicator != null)
             {
                 Destroy(interceptIndicator);

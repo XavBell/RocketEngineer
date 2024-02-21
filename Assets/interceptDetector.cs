@@ -48,12 +48,12 @@ public class interceptDetector : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //DetectIntercept();
+       
     }
 
     //Idea is to get 4 times on target body orbit and then check which one is the closer, taking in account time
     //FirstVersion only work if rocket is in orbit of Earth toward Moon
-    void DetectIntercept()
+    public void DetectIntercept()
     {
         double orbitalPeriod = MoonPath.orbitalPeriod;
         double startTime = timeManager.time;
@@ -88,11 +88,26 @@ public class interceptDetector : MonoBehaviour
                 distances.Add(distance);
             }
 
-            foundDistance = distances.OrderBy(x => Math.Abs(moonSOI - x)).First();
+            bool found = false;
+            foreach(float distance in distances)
+            {
+                if(distance < moonSOI)
+                {
+                    foundDistance = distance;
+                    found = true;
+                    break;
+                }
+            }
+
+            if(found == false)
+            {
+                foundDistance = distances.OrderBy(x => Math.Abs(moonSOI - x)).First();
+            }
+            
             int timeIndex = distances.IndexOf(foundDistance);
             foundTime = timeToCheck[timeIndex];
-            startTime = timeToCheck[timeIndex] - initialTimeStep/2;
-            endTime = timeToCheck[timeIndex] + initialTimeStep/2;
+            startTime = foundTime - initialTimeStep;
+            endTime = foundTime + initialTimeStep;
 
             initialTimeStep = (endTime - startTime)/numberOfPointsPerStep;
 
@@ -105,7 +120,7 @@ public class interceptDetector : MonoBehaviour
             }
         }
 
-        if(foundDistance <= moonSOI)
+        if(foundDistance <= moonSOI + 500)
         {
             if (interceptIndicator != null)
             {
