@@ -34,6 +34,9 @@ public class CameraControl : MonoBehaviour
     public GameObject EarthSprite;
     public GameObject Prediction;
     public launchsiteManager launchsiteManager;
+
+    public TimeManager timeManager;
+    public FloatingOrigin floatingOrigin;
     
 
     public float threshold = 5000;
@@ -41,6 +44,8 @@ public class CameraControl : MonoBehaviour
     void Start()
     {
         targetZoom = cam.orthographicSize;
+        timeManager = FindObjectOfType<TimeManager>();
+        floatingOrigin = FindObjectOfType<FloatingOrigin>();
         if(MasterManager == null)
         {  
             MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
@@ -67,10 +72,6 @@ public class CameraControl : MonoBehaviour
             UpdateToRocketPosition();
             reOrient();
         }
-        
-
-
-
     }
 
 
@@ -171,7 +172,8 @@ public class CameraControl : MonoBehaviour
     void UpdateToRocketPosition()
     {
 
-        cam.transform.position = MasterManager.GetComponent<MasterManager>().ActiveRocket.transform.position;
+            cam.transform.position = MasterManager.GetComponent<MasterManager>().ActiveRocket.transform.position;
+        
             
     }
 

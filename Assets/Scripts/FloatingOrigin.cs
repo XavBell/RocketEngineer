@@ -103,9 +103,6 @@ public class FloatingOrigin : MonoBehaviour
                         pred.SetPosition(i, pred.GetPosition(i) + difference);
                     }
                 }
-
-        
-                
             }
             
             

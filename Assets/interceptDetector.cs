@@ -27,6 +27,9 @@ public class interceptDetector : MonoBehaviour
 
     public float moonSOI = 600000f; //TO BE REMOVED
 
+    public GameObject indicatorPrefab;
+    public GameObject interceptIndicator = null;   
+
     // Start is called before the first frame update
     void Start()
     {
@@ -45,7 +48,7 @@ public class interceptDetector : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        //DetectIntercept();
+        DetectIntercept();
     }
 
     //Idea is to get 4 times on target body orbit and then check which one is the closer, taking in account time
@@ -85,7 +88,7 @@ public class interceptDetector : MonoBehaviour
                 distances.Add(distance);
             }
 
-            foundDistance = distances.Min();
+            foundDistance = distances.OrderBy(x => Math.Abs(moonSOI - x)).First();
             int timeIndex = distances.IndexOf(foundDistance);
             foundTime = timeToCheck[timeIndex];
             startTime = timeToCheck[timeIndex] - initialTimeStep/2;
@@ -102,11 +105,19 @@ public class interceptDetector : MonoBehaviour
             }
         }
 
-        Debug.Log(foundDistance);
         if(foundDistance <= moonSOI)
         {
-            Debug.Log("FOUND");
-            //prediction.interceptIndicator.transform.position = rocket.GetPositionAtTime(foundTime);
+            if (interceptIndicator != null)
+            {
+                interceptIndicator.transform.position = prediction.GetPositionAtTime(foundTime) + prediction.planetGravity.getPlanet().transform.position;
+            }
+            else
+            {
+                interceptIndicator = Instantiate(indicatorPrefab, this.transform);
+                interceptIndicator.transform.position = prediction.GetPositionAtTime(foundTime) + prediction.planetGravity.getPlanet().transform.position;
+            }
+        }else{
+            Destroy(interceptIndicator);
         }
 
         

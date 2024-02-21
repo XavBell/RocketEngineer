@@ -109,6 +109,11 @@ public class RocketStateManager : MonoBehaviour
 
         if(state == "rail")
         {
+            //Check for potential collision
+            if((this.transform.position - planetGravity.getPlanet().transform.position).magnitude < planetGravity.getPlanetRadius())
+            {
+                Destroy(planetGravity.gameObject);
+            }
             Vector2 transform = prediction.updatePosition();
             this.transform.position = transform;
             doublePos.x_pos = transform.x;
@@ -119,11 +124,6 @@ public class RocketStateManager : MonoBehaviour
             curr_Y = transform.y;
             Vector2 velocity = prediction.updateVelocity();
             planetGravity.rb.velocity = velocity;
-            //Check for potential collision
-            if((this.transform.position - planetGravity.getPlanet().transform.position).magnitude < planetGravity.getPlanetRadius())
-            {
-                Destroy(planetGravity.gameObject);
-            }
             return;
         }
     }

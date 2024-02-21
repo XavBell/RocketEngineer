@@ -13066,6 +13066,8 @@ MonoBehaviour:
   EarthSprite: {fileID: 0}
   Prediction: {fileID: 0}
   launchsiteManager: {fileID: 1494031408}
+  timeManager: {fileID: 0}
+  floatingOrigin: {fileID: 0}
   threshold: 5000
 --- !u!114 &519420034
 MonoBehaviour:
@@ -18725,6 +18727,7 @@ MonoBehaviour:
   solarSystemManager: {fileID: 1182590599}
   G: 0
   gravityParam: 0
+  orbitalPeriod: 0
   updated: 0
   calculate: 0
   start: 0
@@ -45452,6 +45455,7 @@ MonoBehaviour:
   MoonIcon: {fileID: 542871970}
   Moon: {fileID: 680244244}
   mapCam: {fileID: 519420031}
+  floatingOrigin: {fileID: 0}
   icons: []
   rockets: []
   prediction: []
@@ -58549,7 +58553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   threshold: 2000
-  floatingFPS: 0.02
+  floatingFPS: 0.04
   sun: {fileID: 1877019593}
   earth: {fileID: 2121345929}
   moon: {fileID: 680244244}
@@ -61251,6 +61255,7 @@ MonoBehaviour:
   solarSystemManager: {fileID: 1182590599}
   G: 0
   gravityParam: 0
+  orbitalPeriod: 0
   updated: 0
   calculate: 0
   start: 0

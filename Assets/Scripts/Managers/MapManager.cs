@@ -15,6 +15,7 @@ public class MapManager : MonoBehaviour
     public GameObject Moon;
 
     public Camera mapCam;
+    public FloatingOrigin floatingOrigin;
     public List<GameObject> icons = new List<GameObject>();
     public List<PlanetGravity> rockets = new List<PlanetGravity>();
     public List<Prediction> prediction = new List<Prediction>();
@@ -29,35 +30,50 @@ public class MapManager : MonoBehaviour
     void Start()
     {
         mapCam.GetComponent<Camera>();
+        floatingOrigin = FindObjectOfType<FloatingOrigin>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        float previousSize = 0;
         if (MapOn == true)
         {
+
             EarthIcon.transform.position = mapCam.WorldToScreenPoint(Earth.transform.position);
             SunIcon.transform.position = mapCam.WorldToScreenPoint(Sun.transform.position);
             MoonIcon.transform.position = mapCam.WorldToScreenPoint(Moon.transform.position);
-            foreach(GameObject icon in icons)
+            
+            if(mapCam.orthographicSize != previousSize)
             {
-                icon.transform.localScale = new Vector2(mapCam.orthographicSize,mapCam.orthographicSize)/100;
+                updateScale();
+            }
+            previousSize = mapCam.orthographicSize;
+            
+        }
+
+    }
+
+    public void updateScale()
+    {
+        foreach (GameObject icon in icons)
+        {
+            icon.transform.localScale = new Vector2(mapCam.orthographicSize, mapCam.orthographicSize) / 100;
+        }
+
+        foreach (Prediction pred in prediction)
+        {
+            pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
+            if (pred.GetComponent<interceptDetector>().interceptIndicator)
+            {
+                pred.GetComponent<interceptDetector>().transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5;
             }
 
-            foreach(Prediction pred in prediction)
-            {
-                pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
-                if(pred.interceptIndicator)
-                {
-                    pred.interceptIndicator.transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5;
-                }
-                
-            }
+        }
 
-            foreach(GameObject path in paths)
-            {
-                path.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
-            }
+        foreach (GameObject path in paths)
+        {
+            path.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
         }
 
     }
