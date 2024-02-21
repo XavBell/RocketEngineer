@@ -141,7 +141,7 @@ public class Prediction : MonoBehaviour
 
             if(planetGravity.getPlanet() == Earth)
             {
-                //checkForIntercept(numPoints, times, positions, line);
+                checkForIntercept(numPoints, times, positions, line);
             }else if(interceptIndicator != null)
             {
                 Destroy(interceptIndicator);

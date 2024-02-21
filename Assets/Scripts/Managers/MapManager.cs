@@ -38,12 +38,7 @@ public class MapManager : MonoBehaviour
     {
         float previousSize = 0;
         if (MapOn == true)
-        {
-
-            EarthIcon.transform.position = mapCam.WorldToScreenPoint(Earth.transform.position);
-            SunIcon.transform.position = mapCam.WorldToScreenPoint(Sun.transform.position);
-            MoonIcon.transform.position = mapCam.WorldToScreenPoint(Moon.transform.position);
-            
+        {   
             if(mapCam.orthographicSize != previousSize)
             {
                 updateScale();
@@ -56,6 +51,9 @@ public class MapManager : MonoBehaviour
 
     public void updateScale()
     {
+        EarthIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/EarthIcon.transform.parent.localScale.x;
+        MoonIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/MoonIcon.transform.parent.localScale.x;
+        SunIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/SunIcon.transform.parent.localScale.x;
         foreach (GameObject icon in icons)
         {
             icon.transform.localScale = new Vector2(mapCam.orthographicSize, mapCam.orthographicSize) / 100;
@@ -64,9 +62,9 @@ public class MapManager : MonoBehaviour
         foreach (Prediction pred in prediction)
         {
             pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
-            if (pred.GetComponent<interceptDetector>().interceptIndicator)
+            if (pred.interceptIndicator)
             {
-                pred.GetComponent<interceptDetector>().transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5;
+                pred.interceptIndicator.transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5;
             }
 
         }

@@ -48,7 +48,7 @@ public class interceptDetector : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        DetectIntercept();
+        //DetectIntercept();
     }
 
     //Idea is to get 4 times on target body orbit and then check which one is the closer, taking in account time
