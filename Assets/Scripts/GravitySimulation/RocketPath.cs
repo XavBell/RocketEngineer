@@ -23,12 +23,14 @@ public class RocketPath : MonoBehaviour
     public TimeManager MyTime;
 
     double Ho;
+    double H;
     double Mo;
     double n;
     double a;
     double e;
     double i;
     public double startTime;
+    public double lastUpdatedTime;
     public bool bypass = false;
     
     // Start is called before the first frame update
@@ -70,8 +72,6 @@ public class RocketPath : MonoBehaviour
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
             UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
         }
-
-
     }
 
     public void CalculateParameters()
@@ -101,8 +101,8 @@ public class RocketPath : MonoBehaviour
 
             if(KeplerParams.eccentricity > 1)
             {
-                double x = 0;
-                double y = 0;
+                double x;
+                double y;
                 double vX;
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
@@ -131,7 +131,7 @@ public class RocketPath : MonoBehaviour
                 double y = 0;
                 double vX;
                 double vY;
-                GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
+                GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho,  e, a, i, n, startTime, out x, out y, out vX, out vY);
                 Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
                 return transformV;
             }
@@ -379,6 +379,7 @@ public class RocketPath : MonoBehaviour
 
     public void CalculateParametersHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam, double time)
     {
+        startTime = MyTime.time;
         //Calculate rocket position in 3D and transform it for Kepler
         UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, rocketPosition2D.y, 0);
         UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0); 
@@ -393,13 +394,14 @@ public class RocketPath : MonoBehaviour
         double v = rocketVelocity3D.magnitude;
 
         //Calculate specific angular momentum
-        UnityEngine.Vector3 h_bar = UnityEngine.Vector3.Cross(rocketPosition3D, rocketVelocity3D);
-        double h = h_bar.magnitude;
+        Vector3 h_bar = UnityEngine.Vector3.Cross(rocketPosition3D, rocketVelocity3D);
+        double h = rocketPosition3D.x * rocketVelocity3D.y - rocketPosition3D.y * rocketVelocity3D.x;
 
         //Calculate eccentricity vector
-        UnityEngine.Vector3 eccentricity_bar = UnityEngine.Vector3.Cross(rocketVelocity3D, h_bar)/gravityParam - rocketPosition3D/(float)r;
+        UnityEngine.Vector3 eccentricity_bar = Vector3.Cross(rocketVelocity3D, h_bar)/gravityParam - rocketPosition3D/(float)r;
         e = eccentricity_bar.magnitude;
         
+
         //Calculate inclination
         i = Math.Atan2(-eccentricity_bar.y, -eccentricity_bar.x);
 
@@ -411,8 +413,9 @@ public class RocketPath : MonoBehaviour
         //Moon.transform.position = p;
 
         //Calculate Hyperbolic anomaly
-        Ho = Math.Atanh(p.y/(a*Math.Sqrt(Math.Pow(e, 2)-1))/(e-p.x/a));
-
+        Ho = Math.Atanh(p.y/(a*Math.Sqrt(Math.Pow(e, 2)-1)) / (e-(p.x/a)));
+        H = Ho;
+        lastUpdatedTime = MyTime.time;
         
         Mo = Math.Sinh(Ho)*e-Ho;
 
@@ -422,20 +425,23 @@ public class RocketPath : MonoBehaviour
         double det = rocketPosition3D.x*rocketVelocity3D.y - rocketVelocity3D.x * rocketPosition3D.y;
 
         double angle = Math.Atan2(det, dot);
+
         //Calculate mean velocity
-        n = Math.Sqrt(gravityParam/Math.Abs(Math.Pow(a, 3)))*Math.Sign(angle);
+        n = Math.Sqrt(gravityParam/Math.Abs(Math.Pow(a, 3)))*Math.Sign(h);
     }
 
-    public static void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double e, double a, double i, double n, double startTime, out double x, out double y, out double VX, out double VY)
+    public void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double e, double a, double i, double n, double startTime, out double x, out double y, out double VX, out double VY)
     {
         //SEE COMMENT IN PREDICTION
         //Calculate mean anomaly
         double M = Mo + (time - startTime)*n;
-        double H = Ho;
-
         //Calculate current hyperbolic anomaly
-        H = H + (M - e*Math.Sinh(H) + H)/(e*Math.Cosh(H)-1);
-
+        if(lastUpdatedTime != time)
+        {
+            H = H + ((M - e*Math.Sinh(H) + H) / (e*Math.Cosh(H)-1));
+            lastUpdatedTime = time;
+        }
+        
         double rawX = a*(e - Math.Cosh(H));
         double rawY = a*Math.Sqrt(Math.Pow(e, 2)-1)*Math.Sinh(H);
         
