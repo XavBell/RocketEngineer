@@ -85,6 +85,10 @@ public class interceptDetector : MonoBehaviour
                 nIterations += 2;
 
                 float distance = Vector3.Distance(moonPos, rocketPos);
+                if(initialTimeStep < 100)
+                {
+                    print(distance);
+                }
                 distances.Add(distance);
             }
 

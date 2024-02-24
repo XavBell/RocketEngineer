@@ -162,11 +162,19 @@ public class Prediction : MonoBehaviour
     //Should only be used for Intercept Detector
     public Vector3 GetPositionAtTime(double Time)
     {
-        double x;
-        double y;
+        double x = rb.position.x;
+        double y = rb.position.y;
         double VX;
         double VY;
-        GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
+        if(KeplerParams.eccentricity > 1)
+        {
+            GetOrbitalPositionHyperbolic(Mo, Time, Ho, H, e, a, i, n, startTime, out x, out y, out VX, out VY);
+        }
+
+        if(KeplerParams.eccentricity < 1)
+        {
+            GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out VX, out VY);
+        }
         return new Vector3((float)x, (float)y, 0);
     }
 
@@ -465,7 +473,6 @@ public class Prediction : MonoBehaviour
 
         line.positionCount = positions.Count();
         line.SetPositions(positions);
-
     }
 
     public void CalculateParameterHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam, double time)
@@ -520,17 +527,32 @@ public class Prediction : MonoBehaviour
 
     }
 
+    //ONLY FOR ROCKETPATHs
     public static void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double H, double e, double a, double i, double n, double startTime, out double x, out double y, out double VX, out double VY)
     {
-        //SEE COMMENT ABOVE FUNCTION
         //Calculate mean anomaly
-        double M = Mo + (time - startTime) * n;
+        double M;
         H = Ho;
-        //Calculate current hyperbolic anomaly
-        H = H + (M - e * Math.Sinh(H) + H) / (e * Math.Cosh(H) - 1);
+        double timeStep = (time-startTime)/500;
+        double targetTime = time;
+        time = startTime;
+        int k = 0;
 
-        double rawX = a * (-e + Math.Cosh(H));
-        double rawY = -a * Math.Sqrt(Math.Pow(e, 2) - 1) * Math.Sinh(H);
+        while (time <= targetTime)
+        {
+            M = Mo + (time - startTime) * n;
+
+            // Calculate current hyperbolic anomaly with initial guess H
+            H = H + ((M - e * Math.Sinh(H) + H) / (e * Math.Cosh(H) - 1));
+
+            time += timeStep;
+            k++;
+        }
+
+        //print("This is H" + H + " this is Ho" + Ho);
+
+        double rawX = a * (e - Math.Cosh(H));
+        double rawY = a * Math.Sqrt(Math.Pow(e, 2) - 1) * Math.Sinh(H);
 
         x = rawX * Math.Cos(i) - rawY * Math.Sin(i);
         y = rawX * Math.Sin(i) + rawY * Math.Cos(i);
