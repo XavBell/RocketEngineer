@@ -61,18 +61,6 @@ public class FloatingOrigin : MonoBehaviour
         UpdateReferenceBody();
         
         bypass = false;
-        
-         
-
-    }
-
-    // Update is called once per frame
-    void LateUpdate()
-    {
-        
-        
-         
-    
     }
 
 
@@ -246,7 +234,6 @@ public class FloatingOrigin : MonoBehaviour
                 {
                     Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
-                    //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
 
                 //Moon to Earth
@@ -254,7 +241,6 @@ public class FloatingOrigin : MonoBehaviour
                 {
                     Vector3 velocity = closestPlanet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity += new Vector2(velocity.x, velocity.y);
-                    //masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
                 }
 
                 //Sun to Earth

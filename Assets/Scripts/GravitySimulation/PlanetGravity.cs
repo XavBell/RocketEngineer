@@ -256,15 +256,6 @@ public class PlanetGravity : MonoBehaviour
 
     void setPlanetProperty(GameObject bestPlanet, float bestDistance, GameObject Earth)
     {
-        if (bestPlanet.GetComponent<TypeScript>().type == "earth")
-        {
-            Mass = SolarSystemManager.earthMass;
-            atmoAlt = SolarSystemManager.earthAlt;
-            planetDensity = SolarSystemManager.earthDensitySlvl;
-            planetRadius = SolarSystemManager.earthRadius;
-            planet = bestPlanet;
-        }
-
         if (bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < SolarSystemManager.moonSOI)
         {
             Mass = SolarSystemManager.moonMass;

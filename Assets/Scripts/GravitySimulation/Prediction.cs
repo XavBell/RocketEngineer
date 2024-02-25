@@ -131,17 +131,15 @@ public class Prediction : MonoBehaviour
             if (rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)
             {
                 CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
-                line.positionCount = numPoints;
+                line.positionCount = positions.Count();
                 line.SetPositions(positions);
-                line.loop = true;
             }
 
-            if (rb.velocity.magnitude != 0 && keplerParams.eccentricity > 1)
+            if (rb.velocity.magnitude != 0 && keplerParams.eccentricity >= 1)
             {
+                startTime = (float)MyTime.time;
                 CalculateParametersHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, time, line);
                 CalculateParameterHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, MyTime.time);
-                startTime = (float)MyTime.time;
-                line.loop = false;
             }
 
             if(planetGravity.getPlanet() == Earth)
@@ -162,13 +160,13 @@ public class Prediction : MonoBehaviour
     //Should only be used for Intercept Detector
     public Vector3 GetPositionAtTime(double Time)
     {
-        double x = rb.position.x;
-        double y = rb.position.y;
+        double x = 0;
+        double y = 0;
         double VX;
         double VY;
         if(KeplerParams.eccentricity > 1)
         {
-            GetOrbitalPositionHyperbolic(Mo, Time, Ho, H, e, a, i, n, startTime, out x, out y, out VX, out VY);
+            GetOrbitalPositionHyperbolic(Mo, Time, Ho, H, e, a, i, n, startTime, out x, out y);
         }
 
         if(KeplerParams.eccentricity < 1)
@@ -363,7 +361,17 @@ public class Prediction : MonoBehaviour
     {
         double period = GetOrbitalPeriod(gravityParam, keplerParams.semiMajorAxis);
         double timeIncrement = period / numPoints;
+        List<Vector3> newPos = new List<Vector3>();
+        double SOI = Mathf.Infinity;
+        if(planetGravity.getPlanet() == Earth)
+        {
+            SOI = planetGravity.SolarSystemManager.earthSOI;
+        }
 
+        if(planetGravity.getPlanet() == Moon)
+        {
+            SOI = planetGravity.SolarSystemManager.moonSOI;
+        }
         for (int count = 0; count < numPoints; count++)
         {
             double X;
@@ -371,13 +379,22 @@ public class Prediction : MonoBehaviour
             double VX;
             double VY;
             GetOrbitPositionKepler(gravityParam, time + timeIncrement, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out X, out Y, out VX, out VY);
-            Vector3 pos = new Vector3((float)X, (float)Y) + new Vector3(planetPosition2D.x, planetPosition2D.y, 0);
+            Vector2 pos = new Vector3((float)X, (float)Y) + new Vector3(planetPosition2D.x, planetPosition2D.y, 0);
+            if((pos - planetPosition2D).magnitude < SOI)
+            {
+                newPos.Add(pos);
+            }else{
+                positions = newPos.ToArray();
+                return;
+            }
             times[count] = time;
             positions[count] = pos;
 
             time += timeIncrement;
 
         }
+
+        positions = newPos.ToArray();
     }
 
     public void CalculateParametersHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, double gravityParam, double time, LineRenderer line)
@@ -430,11 +447,10 @@ public class Prediction : MonoBehaviour
         double n = Math.Sqrt(gravityParam / Math.Abs(Math.Pow(a, 3))) * Math.Sign(angle);
 
         //Plot positions
-        int timeStep = 10;
-        int maxStep = 3000;
-        UnityEngine.Vector3[] positions = new UnityEngine.Vector3[maxStep];
+        int timeStep = 1;
+        int maxStep = 1000;
+        List<Vector3> positions = new List<Vector3>();
         double H = Ho;
-        double[] times = new double[maxStep];
 
         double SOI = Mathf.Infinity;
         if(planetGravity.getPlanet() == Earth)
@@ -447,11 +463,11 @@ public class Prediction : MonoBehaviour
             SOI = planetGravity.SolarSystemManager.moonSOI;
         }
 
-
+        bool enteredSOI = false;
         for (int ia = 0; ia < maxStep; ia++)
         {
             //Calculate mean anomaly
-            double M = Mo + (((ia - maxStep/2) * timeStep - time) + time) * n;
+            double M = Mo + ((time + timeStep*ia) - startTime) * n;
 
             //Calculate current hyperbolic anomaly
             H = H + (M - e * Math.Sinh(H) + H) / (e * Math.Cosh(H) - 1);
@@ -460,19 +476,32 @@ public class Prediction : MonoBehaviour
             Vector2 rawP = new UnityEngine.Vector2((float)(a * (e - Math.Cosh(H))), (float)(a * Math.Sqrt(Math.Pow(e, 2) - 1) * Math.Sinh(H)));
             Vector2 pos = new Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i)));
 
+            pos += planetPosition2D;
             if(pos.magnitude != float.NaN)
-            {
-                pos += planetPosition2D;
+            {   
                 if((pos - planetPosition2D).magnitude < SOI)
                 {
-                    positions[ia] = pos;
+                    enteredSOI = true;
+                    positions.Add(pos);
+                    timeStep += 10;
+                }else if(enteredSOI == true)
+                {
+                    line.positionCount = positions.Count();
+                    line.SetPositions(positions.ToArray());
+                    return;
                 }
-                times[ia] = (ia) * timeStep - time + time;
             }
         }
 
+        if(maxStep > 5000)
+        {
+            line.positionCount = positions.Count();
+            line.SetPositions(positions.ToArray());
+            return;
+        }
+
         line.positionCount = positions.Count();
-        line.SetPositions(positions);
+        line.SetPositions(positions.ToArray());
     }
 
     public void CalculateParameterHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam, double time)
@@ -528,7 +557,7 @@ public class Prediction : MonoBehaviour
     }
 
     //ONLY FOR ROCKETPATHs
-    public static void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double H, double e, double a, double i, double n, double startTime, out double x, out double y, out double VX, out double VY)
+    public static void GetOrbitalPositionHyperbolic(double Mo, double time, double Ho, double H, double e, double a, double i, double n, double startTime, out double x, out double y)
     {
         //Calculate mean anomaly
         double M;
@@ -556,11 +585,5 @@ public class Prediction : MonoBehaviour
 
         x = rawX * Math.Cos(i) - rawY * Math.Sin(i);
         y = rawX * Math.Sin(i) + rawY * Math.Cos(i);
-
-        double t = (e * Math.Cosh(H) - 1) / n;
-        double rawVX = (-a * Math.Sinh(H)) / t;
-        double rawVY = Math.Sqrt(Math.Pow(e, 2) - 1) * a * Math.Cosh(H) / t;
-        VX = rawVX * Math.Cos(i) - rawVY * Math.Sin(i);
-        VY = rawVX * Math.Sin(i) + rawVY * Math.Cos(i);
     }
 }
