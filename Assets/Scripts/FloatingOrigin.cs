@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -156,7 +155,7 @@ public class FloatingOrigin : MonoBehaviour
                 }
             }
 
-            if (closestPlanet.GetComponent<TypeScript>().type == "earth")
+            if (closestPlanet == earth)
             {
                 Vector2 positionAtTime = closestPlanet.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time);
                 Vector2 actualPos = closestPlanet.transform.position;
@@ -164,7 +163,6 @@ public class FloatingOrigin : MonoBehaviour
                 if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.x))
                 {
                     sun.transform.position = toAdd;
-                    Vector3 add = new Vector3(toAdd.x, toAdd.y, 0);
                     sun.GetComponent<DoubleTransform>().x_pos = toAdd.x;
                     sun.GetComponent<DoubleTransform>().y_pos = toAdd.y;
                     moon.transform.position = new Vector2(moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, moon.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + positionAtTime + toAdd;
@@ -175,7 +173,7 @@ public class FloatingOrigin : MonoBehaviour
                 }
             }
 
-            if (closestPlanet.GetComponent<TypeScript>().type == "moon")
+            if (closestPlanet == moon)
             {
                 Vector2 positionAtTime = closestPlanet.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time) + earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time);
                 Vector2 actualPos = closestPlanet.transform.position;
@@ -193,7 +191,7 @@ public class FloatingOrigin : MonoBehaviour
                 }
             }
 
-            if (closestPlanet.GetComponent<TypeScript>().type == "sun")
+            if (closestPlanet == sun)
             {
                 Vector2 positionAtTime = new Vector2(0, 0);
                 Vector2 actualPos = closestPlanet.transform.position;
@@ -230,28 +228,28 @@ public class FloatingOrigin : MonoBehaviour
 
                 bypass = true;
                 //Earth to Moon
-                if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type == "moon")
+                if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet() == moon && closestPlanet == earth)
                 {
                     Vector3 velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
                 }
 
                 //Moon to Earth
-                if(closestPlanet.GetComponent<TypeScript>().type == "moon")
+                if(closestPlanet == moon && masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet() == earth)
                 {
                     Vector3 velocity = closestPlanet.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity += new Vector2(velocity.x, velocity.y);
                 }
 
                 //Sun to Earth
-                if(closestPlanet.GetComponent<TypeScript>().type == "sun")
+                if(closestPlanet == sun && masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet() == earth)
                 {
                     Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity -= new Vector2(velocity.x, velocity.y);
                 }
 
                 //EarthToSun
-                if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type == "sun")
+                if(masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet() == sun && closestPlanet == earth)
                 {
                     Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(MyTime.time);
                     masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity += new Vector2(velocity.x, velocity.y);
@@ -266,12 +264,12 @@ public class FloatingOrigin : MonoBehaviour
                 toRecalculate = true;
             }
             
-            if (closestPlanet.GetComponent<TypeScript>().type == "earth")
+            if (closestPlanet == earth)
             {
                 Vector2 positionAtTime = closestPlanet.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time);
                 Vector2 actualPos = closestPlanet.transform.position;
                 Vector2 toAdd = actualPos - positionAtTime;
-                if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.x))
+                if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.y))
                 {
                     sun.transform.position = toAdd;
                     sun.GetComponent<DoubleTransform>().x_pos = toAdd.x;
@@ -284,12 +282,12 @@ public class FloatingOrigin : MonoBehaviour
                 }
             }
 
-            if (closestPlanet.GetComponent<TypeScript>().type == "moon")
+            if (closestPlanet == moon)
             {
                 Vector2 positionAtTime = closestPlanet.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time) + earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time);
                 Vector2 actualPos = closestPlanet.transform.position;
                 Vector2 toAdd = actualPos - positionAtTime;
-                if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.x))
+                if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.y))
                 {
                     sun.transform.position = new Vector2(toAdd.x, toAdd.y);
                     sun.GetComponent<DoubleTransform>().x_pos = toAdd.x;
@@ -302,13 +300,13 @@ public class FloatingOrigin : MonoBehaviour
                 }
             }
 
-            if (closestPlanet.GetComponent<TypeScript>().type == "sun")
+            if (closestPlanet == sun)
             {
                 Vector2 positionAtTime = new Vector2(0,0);
                 Vector2 actualPos = closestPlanet.transform.position;
                 Vector2 toAdd = actualPos - positionAtTime;
 
-                if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.x))
+                if (!float.IsNaN(toAdd.x) && !float.IsNaN(toAdd.y))
                 {
                     earth.transform.position = new Vector2(earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).x, earth.GetComponent<BodyPath>().GetPositionAtTime(MyTime.time).y) + toAdd;
                     earth.GetComponent<DoubleTransform>().x_pos = earth.transform.position.x;

@@ -1,12 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
-using UnityEngine.UI;
-using UnityEngine.Localization.SmartFormat.Utilities;
 
 
 public class PlanetGravity : MonoBehaviour
@@ -134,7 +131,7 @@ public class PlanetGravity : MonoBehaviour
     //Gain points if rocket is active
     void gainPoints()
     {
-        if(rb.velocity.magnitude > 2)
+        if(rb.velocity.magnitude > 20)
         {
             pointManager.nPoints += 0.1f*TimeManager.deltaTime;
         }
@@ -156,10 +153,15 @@ public class PlanetGravity : MonoBehaviour
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
-
-
-
-        rb.AddForce(ResultVector);
+        if(Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity )
+        {
+            rb.AddForce(ResultVector);
+        }else
+        {
+            //Leave that here until we find why
+            print("Bypassed infinite force. " + "Distance was: " + Dist + " Force Dir was: " + forceDir + " Force Vector was: " + ForceVector + " Rocket mass was " + rb.mass + " Thrust was: " + Thrust + " Planet Radius was: " + planetRadius + " Current planet is " + planet.GetComponent<TypeScript>().type);
+            updateReferenceBody();
+        }
         GetComponent<DoubleTransform>().x_pos = rb.position.x;
         GetComponent<DoubleTransform>().y_pos = rb.position.y;
     }
@@ -202,46 +204,14 @@ public class PlanetGravity : MonoBehaviour
 
     public void updateReferenceBody()
     {
-        planets = GameObject.FindGameObjectsWithTag("Planet");
-        float bestDistance = Mathf.Infinity;
-        GameObject bestPlanet = null;
         GameObject previous = planet;
+        setPlanetProperty();
 
-        GameObject Earth = null;
-        GameObject Moon = null;
-
-        foreach (GameObject go in planets)
+        //If there's a SOI change during timewarp we must be safe and exit timewarp
+        //Code HAS to be there 
+        if (previous != planet)
         {
-            UnityEngine.Vector3 distance = go.transform.position - transform.position;
-            float distMag = distance.magnitude;
-
-            if (distMag < bestDistance)
-            {
-                bestDistance = distMag;
-                bestPlanet = go;
-            }
-
-            if (go.GetComponent<TypeScript>().type == "earth")
-            {
-                Earth = go;
-            }
-
-            if (go.GetComponent<TypeScript>().type == "moon")
-            {
-                Moon = go;
-            }
-        }
-
-        if (bestPlanet != null)
-        {
-            setPlanetProperty(bestPlanet, bestDistance, Earth);
-
-            //If there's a SOI change during timewarp we must be safe and exit timewarp
-            //Code HAS to be there 
-            if (previous != planet)
-            {
-                exitTimewarp();
-            }
+            exitTimewarp();
         }
     }
 
@@ -254,24 +224,25 @@ public class PlanetGravity : MonoBehaviour
         }
     }
 
-    void setPlanetProperty(GameObject bestPlanet, float bestDistance, GameObject Earth)
+    void setPlanetProperty()
     {
-        if (bestPlanet.GetComponent<TypeScript>().type == "moon" && bestDistance < SolarSystemManager.moonSOI)
+        if(Vector2.Distance(rb.position, FindObjectOfType<MoonScript>().gameObject.transform.position)< SolarSystemManager.moonSOI)
         {
             Mass = SolarSystemManager.moonMass;
             atmoAlt = 0.0f;
             aeroCoefficient = 0.0f;
             planetRadius = SolarSystemManager.moonRadius;
-            planet = bestPlanet;
+            planet = FindObjectOfType<MoonScript>().gameObject;
+            return;
         }
-        else if ((this.transform.position - Earth.transform.position).magnitude < SolarSystemManager.earthSOI)
+        if (Vector2.Distance(rb.position, FindObjectOfType<EarthScript>().gameObject.transform.position) < SolarSystemManager.earthSOI)
         {
             Mass = SolarSystemManager.earthMass;
             atmoAlt = SolarSystemManager.earthAlt;
             aeroCoefficient = SolarSystemManager.earthDensitySlvl;
-            planetDensity = SolarSystemManager.earthRadius;
-            planet = Earth;
-
+            planetRadius = SolarSystemManager.earthRadius;
+            planet =  FindObjectOfType<EarthScript>().gameObject;
+            return;
         }
         else
         {

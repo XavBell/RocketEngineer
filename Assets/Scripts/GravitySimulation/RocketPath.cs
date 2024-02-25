@@ -5,9 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
-using TMPro;
-using Unity.Mathematics;
-
 public class RocketPath : MonoBehaviour
 {
     public PlanetGravity planetGravity;

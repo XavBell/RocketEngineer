@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
-using TMPro;
-using UnityEngine.Timeline;
 using JetBrains.Annotations;
 using System.Threading.Tasks;
 using UnityEngine.TextCore.Text;
