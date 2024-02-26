@@ -19,6 +19,9 @@ public class RocketStateManager : MonoBehaviour
     public float previous_Y = 0f;
     public TimeManager MyTime;
 
+    public GameObject savedPlanet;
+    public Vector2 savedOffset;
+
     public bool ran = false;
 
     // Start is called before the first frame update
@@ -54,12 +57,16 @@ public class RocketStateManager : MonoBehaviour
 
     public void StateUpdater()
     {
-        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && planetGravity.rb.velocity.magnitude < 1 && previousState == "simulate" && (planetGravity.getCamera().transform.position - transform.position).magnitude > 100)
+        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && planetGravity.rb.velocity.magnitude < 1 && (planetGravity.getCamera().transform.position - transform.position).magnitude >= 100)
         {
             state = "landed";
             if(previousState != state)
             {
                 planetGravity.rb.simulated = false;
+                savedPlanet = planetGravity.getPlanet();
+                this.transform.parent = savedPlanet.transform;
+                doublePos.x_pos = this.transform.localPosition.x;
+                doublePos.y_pos = this.transform.localPosition.y;
             }
             previousState = state;
             return;
@@ -70,8 +77,15 @@ public class RocketStateManager : MonoBehaviour
             state = "simulate";
             if(previousState != state)
             {
-                planetGravity.updateReferenceBody();
                 planetGravity.rb.simulated = true;
+                if(savedPlanet != null)
+                {
+                    this.transform.parent = null;
+                    doublePos.x_pos = this.transform.position.x;
+                    doublePos.y_pos = this.transform.position.y;
+                    savedPlanet = null;
+                }
+                planetGravity.updateReferenceBody();
                 prediction.startTime = prediction.MyTime.time;
                 prediction.CalculateParameters();
                 
@@ -80,11 +94,17 @@ public class RocketStateManager : MonoBehaviour
             return;
         }
 
-        if(planetGravity.possessed == false || MyTime.scaler != 1)
+        if((planetGravity.possessed == false || MyTime.scaler != 1) && previousState != "landed" & planetGravity.rb.velocity.magnitude > 1)
         {
             state = "rail";
+            print("switched to path");
             if(previousState != state)
             {
+                if(savedPlanet != null)
+                {
+                    this.transform.parent = null;
+                    savedPlanet = null;
+                }
                 planetGravity.updateReferenceBody();
                 planetGravity.rb.simulated = false;
                 prediction.startTime = prediction.MyTime.time;
@@ -105,10 +125,12 @@ public class RocketStateManager : MonoBehaviour
             {
                 prediction.CalculateParameters();
             }
-            curr_X = this.transform.position.x;
-            curr_Y = this.transform.position.y;
+            doublePos.x_pos = this.transform.position.x;
+            doublePos.y_pos = this.transform.position.y;
             previous_X = curr_X;
             previous_Y = curr_Y;
+            curr_X = this.transform.position.x;
+            curr_Y = this.transform.position.y;
             return;
         }
 
@@ -131,6 +153,12 @@ public class RocketStateManager : MonoBehaviour
             Vector2 velocity = prediction.updateVelocity();
             planetGravity.rb.velocity = velocity;
             return;
+        }
+
+        if(state == "landed")
+        {
+            //this.transform.parent = savedPlanet.transform;
+            this.transform.localPosition = new Vector3((float)doublePos.x_pos, (float)doublePos.y_pos, 0);
         }
     }
 }

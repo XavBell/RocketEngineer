@@ -206,6 +206,9 @@ public class FloatingOrigin : MonoBehaviour
 
             if (closestPlanet != masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet())
             {
+                //THIS PART OF THE CODE SHOULD BE IN PLANET GRAVITY!!!! FOR ReAL WHY TF IS IT THERE IT SHOULD NO BE HERE
+                //FURTHER MORE MAKE SURE IT IS IN FIXEDUPDATE
+                //maybe the change in time scale could even be removed
                 MyTime.setScaler(1);
 
                 bypass = true;
