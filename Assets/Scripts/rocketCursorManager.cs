@@ -60,19 +60,22 @@ public class rocketCursorManager : MonoBehaviour
             Rocket[] rockets = FindObjectsOfType<Rocket>();
             foreach (Rocket rp1 in rockets)
             {
-                rp1.GetComponent<RocketStateManager>().state = "rail";
-                rp1.GetComponent<PlanetGravity>().rb.simulated = false;
-                rp1.GetComponent<RocketPath>().startTime = MyTime.time;
-                rp1.GetComponent<RocketPath>().CalculateParameters();
-                rp1.GetComponent<RocketStateManager>().previousState = "rail";
-                rp1.GetComponent<RocketStateManager>().UpdatePosition();
+                if(rp1.GetComponent<RocketStateManager>().state != "landed")
+                {
+                    rp1.GetComponent<RocketStateManager>().state = "rail";
+                    rp1.GetComponent<PlanetGravity>().rb.simulated = false;
+                    rp1.GetComponent<RocketPath>().startTime = MyTime.time;
+                    rp1.GetComponent<RocketPath>().CalculateParameters();
+                    rp1.GetComponent<RocketStateManager>().previousState = "rail";
+                    rp1.GetComponent<RocketStateManager>().UpdatePosition();
+                }
             }
 
             masterManager.ActiveRocket = null;
             CameraControl camera = FindObjectOfType<CameraControl>();
             camera.cam.transform.position = rocket.transform.position;
-            rocket.GetComponent<PlanetGravity>().possessed = true;
             buildingManager.enterFlightMode();
+            rocket.GetComponent<PlanetGravity>().possessed = true;
             stageViewer.rocket = rocket;
             stageViewer.updateStagesView(false);
             stageViewer.updateInfoPerStage(false);

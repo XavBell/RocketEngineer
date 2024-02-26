@@ -177,12 +177,16 @@ public class StageViewer : MonoBehaviour
             Rocket[] rockets = FindObjectsOfType<Rocket>();
             foreach (Rocket rp1 in rockets)
             {
-                rp1.GetComponent<RocketStateManager>().state = "rail";
-                rp1.GetComponent<PlanetGravity>().rb.simulated = false;
-                rp1.GetComponent<RocketPath>().startTime = MyTime.time;
-                rp1.GetComponent<RocketPath>().CalculateParameters();
-                rp1.GetComponent<RocketStateManager>().previousState = "rail";
-                rp1.GetComponent<RocketStateManager>().UpdatePosition();
+                if (rp1.GetComponent<RocketStateManager>().state != "landed")
+                {
+                    rp1.GetComponent<RocketStateManager>().state = "rail";
+                    rp1.GetComponent<PlanetGravity>().rb.simulated = false;
+                    rp1.GetComponent<RocketPath>().startTime = MyTime.time;
+                    rp1.GetComponent<RocketPath>().CalculateParameters();
+                    rp1.GetComponent<RocketStateManager>().previousState = "rail";
+                    rp1.GetComponent<RocketStateManager>().UpdatePosition();
+                }
+
 
             }
 
