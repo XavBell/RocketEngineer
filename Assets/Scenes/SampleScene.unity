@@ -12247,6 +12247,7 @@ MonoBehaviour:
   - {fileID: 1608825479}
   flightUI:
   - {fileID: 1269784186}
+  - {fileID: 1106656737}
   planetRadius: 63710
   localMode: none
   IDMax: 0
@@ -28755,6 +28756,10 @@ MonoBehaviour:
   CapsuleUI: {fileID: 6914386055600145497, guid: 307af4fe2fb2d4fed8e94fb24024f69f, type: 3}
   Content: {fileID: 1873809099}
   altitude: {fileID: 0}
+  floatingOrigin: {fileID: 0}
+  MyTime: {fileID: 0}
+  buildingManager: {fileID: 0}
+  runStopDelay: 0
 --- !u!1 &1106747255
 GameObject:
   m_ObjectHideFlags: 0
@@ -58631,10 +58636,12 @@ MonoBehaviour:
   MyTime: {fileID: 1757857673}
   masterManager: {fileID: 0}
   mapManager: {fileID: 0}
+  StageViewer: {fileID: 1106656739}
   recalculateParameters: 0
   closestPlanet: {fileID: 0}
   bypass: 0
   DO: 1
+  fixedRan: 0
 --- !u!4 &2071063436
 Transform:
   m_ObjectHideFlags: 0

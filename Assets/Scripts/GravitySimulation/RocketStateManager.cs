@@ -9,6 +9,7 @@ public class RocketStateManager : MonoBehaviour
     public string previousState = "landed";
     public bool switched = false;
     public PlanetGravity planetGravity;
+    public FloatingOrigin floatingOrigin;
     public RocketPath prediction;
     public DoubleTransform doublePos;
     public BodySwitcher bodySwitcher;
@@ -18,7 +19,7 @@ public class RocketStateManager : MonoBehaviour
     public float previous_Y = 0f;
     public TimeManager MyTime;
 
-    bool ran = false;
+    public bool ran = false;
 
     // Start is called before the first frame update
     void Start()
@@ -28,28 +29,30 @@ public class RocketStateManager : MonoBehaviour
         doublePos = this.GetComponent<DoubleTransform>();
         bodySwitcher = this.GetComponent<BodySwitcher>();
         MyTime = FindObjectOfType<TimeManager>();
+        floatingOrigin = FindObjectOfType<FloatingOrigin>();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        //StateUpdater();
-        //UpdatePosition();
+        StateUpdater();
+        UpdatePosition();
+        Physics.SyncTransforms();
         ran = false;
     }
 
-    void LateUpdate()
+    void Update()
     {
-        if(ran == false)
+        if(ran == false && floatingOrigin.waitingForShipTransfer == false)
         {
-            StateUpdater();
-            UpdatePosition();
+            //StateUpdater();
+            //UpdatePosition();
             ran = true;
         }
     }
 
 
-    void StateUpdater()
+    public void StateUpdater()
     {
         if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && planetGravity.rb.velocity.magnitude < 1 && previousState == "simulate" && (planetGravity.getCamera().transform.position - transform.position).magnitude > 100)
         {
@@ -69,24 +72,22 @@ public class RocketStateManager : MonoBehaviour
             {
                 planetGravity.updateReferenceBody();
                 planetGravity.rb.simulated = true;
-                if(this.GetComponent<Rocket>().throttle > 0)
-                {
-                    prediction.CalculateParameters();
-                }
+                prediction.startTime = prediction.MyTime.time;
+                prediction.CalculateParameters();
                 
             }
             previousState = state;
             return;
         }
 
-        if(previousState == "simulate")
+        if(planetGravity.possessed == false || MyTime.scaler != 1)
         {
             state = "rail";
             if(previousState != state)
             {
                 planetGravity.updateReferenceBody();
                 planetGravity.rb.simulated = false;
-                prediction.startTime = (float)prediction.MyTime.time;
+                prediction.startTime = prediction.MyTime.time;
                 prediction.CalculateParameters();
             }
             previousState = state;
@@ -100,6 +101,10 @@ public class RocketStateManager : MonoBehaviour
         if(state == "simulate")
         {
             planetGravity.simulate();
+            if(this.GetComponent<Rocket>().throttle > 0)
+            {
+                prediction.CalculateParameters();
+            }
             curr_X = this.transform.position.x;
             curr_Y = this.transform.position.y;
             previous_X = curr_X;
@@ -110,8 +115,9 @@ public class RocketStateManager : MonoBehaviour
         if(state == "rail")
         {
             //Check for potential collision
-            if((this.transform.position - planetGravity.getPlanet().transform.position).magnitude < planetGravity.getPlanetRadius())
+            if((this.transform.position - planetGravity.getPlanet().transform.position).magnitude < planetGravity.getPlanetRadius() - 100 && planetGravity.possessed == true) //100 is a threshold IDEALLY REMOVE POSSESSED CONDITION
             {
+                print("Destroyed bcs near planet");
                 Destroy(planetGravity.gameObject);
             }
             Vector2 transform = prediction.updatePosition();

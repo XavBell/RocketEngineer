@@ -156,11 +156,6 @@ public class PlanetGravity : MonoBehaviour
         if(Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity )
         {
             rb.AddForce(ResultVector);
-        }else
-        {
-            //Leave that here until we find why
-            print("Bypassed infinite force. " + "Distance was: " + Dist + " Force Dir was: " + forceDir + " Force Vector was: " + ForceVector + " Rocket mass was " + rb.mass + " Thrust was: " + Thrust + " Planet Radius was: " + planetRadius + " Current planet is " + planet.GetComponent<TypeScript>().type);
-            updateReferenceBody();
         }
         GetComponent<DoubleTransform>().x_pos = rb.position.x;
         GetComponent<DoubleTransform>().y_pos = rb.position.y;
@@ -219,14 +214,13 @@ public class PlanetGravity : MonoBehaviour
     {
         if (this.GetComponent<RocketStateManager>() != null && TimeManager != null)
         {
-            this.GetComponent<RocketStateManager>().state = "simulate";
             TimeManager.setScaler(1);
         }
     }
 
     void setPlanetProperty()
     {
-        if(Vector2.Distance(rb.position, FindObjectOfType<MoonScript>().gameObject.transform.position)< SolarSystemManager.moonSOI)
+        if(Vector2.Distance(rb.position, FindObjectOfType<MoonScript>().gameObject.transform.position) < SolarSystemManager.moonSOI)
         {
             Mass = SolarSystemManager.moonMass;
             atmoAlt = 0.0f;

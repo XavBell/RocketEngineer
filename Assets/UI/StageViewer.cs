@@ -14,13 +14,19 @@ public class StageViewer : MonoBehaviour
     public GameObject CapsuleUI;
     public GameObject Content;
     public TMP_Text altitude;
-    
+    public FloatingOrigin floatingOrigin;
+    public TimeManager MyTime;
+    public BuildingManager buildingManager;
+    public bool runStopDelay = false;
+
     private int nStages = -1;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        floatingOrigin = FindObjectOfType<FloatingOrigin>();
+        MyTime = FindObjectOfType<TimeManager>();
+        buildingManager = FindObjectOfType<BuildingManager>();
     }
 
     // Update is called once per frame
@@ -34,6 +40,14 @@ public class StageViewer : MonoBehaviour
                 nStages = rocket.GetComponent<Rocket>().Stages.Count;
             }
             //altitude.text = (Vector2.Distance(rocket.GetComponent<PlanetGravity>().planet.transform.position, rocket.transform.position)-63710f).ToString();
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if(runStopDelay == true)
+        {
+            stopDelayed();
         }
     }
 
@@ -145,16 +159,42 @@ public class StageViewer : MonoBehaviour
 
     public void Stop()
     {
-        rocket.GetComponent<PlanetGravity>().possessed = false;
-        MasterManager masterManager = FindObjectOfType<MasterManager>();
-        masterManager.gameState = "Building";
-        BuildingManager buildingManager = FindObjectOfType<BuildingManager>();
-        buildingManager.exitFlightMode();
-        CameraControl camera = FindObjectOfType<CameraControl>();
-        launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
-        camera.transform.position = launchsiteManager.commandCenter.transform.position;
-        masterManager.ActiveRocket = null;
-        camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
+        runStopDelay = true;
+    }
+
+    public void stopDelayed()
+    {
+        if (runStopDelay == true)
+        {
+            rocket.GetComponent<PlanetGravity>().possessed = false;
+            MasterManager masterManager = FindObjectOfType<MasterManager>();
+            masterManager.gameState = "Building";
+            BuildingManager buildingManager = FindObjectOfType<BuildingManager>();
+            CameraControl camera = FindObjectOfType<CameraControl>();
+            launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
+
+            //FORCE BRUTE SWITCH TO ON RAIL
+            Rocket[] rockets = FindObjectsOfType<Rocket>();
+            foreach (Rocket rp1 in rockets)
+            {
+                rp1.GetComponent<RocketStateManager>().state = "rail";
+                rp1.GetComponent<PlanetGravity>().rb.simulated = false;
+                rp1.GetComponent<RocketPath>().startTime = MyTime.time;
+                rp1.GetComponent<RocketPath>().CalculateParameters();
+                rp1.GetComponent<RocketStateManager>().previousState = "rail";
+                rp1.GetComponent<RocketStateManager>().UpdatePosition();
+
+            }
+
+            masterManager.ActiveRocket = null;
+            floatingOrigin.closestPlanet = null;
+            buildingManager.exitFlightMode();
+            camera.transform.position = launchsiteManager.commandCenter.transform.position;
+            camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
+            floatingOrigin.bypass = true;
+            runStopDelay = false;
+            Physics.SyncTransforms();
+        }
     }
 
     public void Terminate()

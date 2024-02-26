@@ -258,7 +258,6 @@ public class OnClick : MonoBehaviour
             spawnedRocket = core;
             filePath = null;
             DestroyImmediate(temp);
-            
         }
 
         if (fileTypePath == savePathRef.engineFolder)

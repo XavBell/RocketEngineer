@@ -8,6 +8,7 @@ public class CollisionDestroyer : MonoBehaviour
     {
         if(collision.relativeVelocity.magnitude > 40)
         {
+            print("Destroyed because of collision with collider");
             Destroy(this.gameObject);
         }
 
