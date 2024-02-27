@@ -72,7 +72,11 @@ public class RocketPath : MonoBehaviour
     public void CalculateParameters()
     {
         startTime = MyTime.time;
-        gravityParam = G*(planetGravity.getMass() + rocketMass);
+        if(planetGravity.getPlanet() != null)
+        {
+            gravityParam = G*(planetGravity.getMass() + rocketMass);
+        }
+
         UnityEngine.Vector2 rocketPosition2D = rb.position;
         UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
         UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;

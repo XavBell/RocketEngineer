@@ -210,7 +210,7 @@ public class PlanetGravity : MonoBehaviour
         GameObject earth = FindObjectOfType<EarthScript>().gameObject;
         GameObject sun = FindObjectOfType<SunScript>().gameObject;
 
-        if (previous != planet && possessed == true)
+        if (previous != planet && possessed == true && previous != null)
         {
             exitTimewarp();
 
@@ -245,7 +245,7 @@ public class PlanetGravity : MonoBehaviour
             GetComponent<RocketPath>().CalculateParameters();
         }
 
-        if(previous != planet && possessed == false)
+        if(previous != planet && possessed == false && previous != null)
         {
             //Earth to Moon
             if (planet == moon && previous == earth)

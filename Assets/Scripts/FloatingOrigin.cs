@@ -201,10 +201,8 @@ public class FloatingOrigin : MonoBehaviour
         {
             bool toRecalculate = false;
             double bestDistance = Mathf.Infinity;
-            if (closestPlanet == null)
-            {
-                closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet();
-            }
+
+            closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet();
 
             if (closestPlanet == earth)
             {
