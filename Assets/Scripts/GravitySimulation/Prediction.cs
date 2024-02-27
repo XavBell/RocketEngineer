@@ -128,6 +128,7 @@ public class Prediction : MonoBehaviour
             SetKeplerParams(keplerParams, rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, time);
             if (rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)
             {
+                line.loop = true;
                 CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
                 line.positionCount = positions.Count();
                 line.SetPositions(positions);
@@ -135,6 +136,7 @@ public class Prediction : MonoBehaviour
 
             if (rb.velocity.magnitude != 0 && keplerParams.eccentricity >= 1)
             {
+                line.loop = false;
                 startTime = (float)MyTime.time;
                 CalculateParametersHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, time, line);
                 CalculateParameterHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, MyTime.time);
@@ -162,7 +164,7 @@ public class Prediction : MonoBehaviour
         double y = 0;
         double VX;
         double VY;
-        if(KeplerParams.eccentricity > 1)
+        if(KeplerParams.eccentricity >= 1)
         {
             GetOrbitalPositionHyperbolic(Mo, Time, Ho, H, e, a, i, n, startTime, out x, out y);
         }
@@ -383,6 +385,7 @@ public class Prediction : MonoBehaviour
                 newPos.Add(pos);
             }else{
                 positions = newPos.ToArray();
+                line.loop = false;
                 return;
             }
             times[count] = time;

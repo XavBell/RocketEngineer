@@ -16,7 +16,6 @@ public class RocketPath : MonoBehaviour
     public float gravityParam = 0;
 
     public KeplerParams KeplerParams =  new KeplerParams();
-    public bool updated;
     public TimeManager MyTime;
 
     double Ho;
@@ -41,7 +40,7 @@ public class RocketPath : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if(MasterManager == null)
         {
@@ -63,8 +62,7 @@ public class RocketPath : MonoBehaviour
         }
 
         if(planetGravity != null)
-        {
-            double time = MyTime.time;
+        {  
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
             UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
@@ -74,6 +72,10 @@ public class RocketPath : MonoBehaviour
     public void CalculateParameters()
     {
         startTime = MyTime.time;
+        gravityParam = G*(planetGravity.getMass() + rocketMass);
+        UnityEngine.Vector2 rocketPosition2D = rb.position;
+        UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
+        UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
         SetKeplerParams(KeplerParams, rb.position, planetGravity.getPlanet().transform.position, rb.velocity, gravityParam, startTime);
         if(KeplerParams.eccentricity > 1)
         {

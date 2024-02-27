@@ -53,6 +53,9 @@ public class rocketCursorManager : MonoBehaviour
                 masterManager.ActiveRocket.GetComponent<Rocket>().throttle = 0;
                 masterManager.ActiveRocket.GetComponent<PlanetGravity>().possessed = false;
             }
+
+            //Must absolutely be before changing state for the landed rockets to not change of position since the landed state
+            //is dependant on the distance from the camera
             CameraControl camera = FindObjectOfType<CameraControl>();
             camera.cam.transform.position = rocket.transform.position;
 

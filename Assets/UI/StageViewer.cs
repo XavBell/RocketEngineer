@@ -173,6 +173,8 @@ public class StageViewer : MonoBehaviour
             CameraControl camera = FindObjectOfType<CameraControl>();
             launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
 
+            //Must absolutely be before changing state for the landed rockets to not change of position since the landed state
+            //is dependant on the distance from the camera
             camera.transform.position = launchsiteManager.commandCenter.transform.position;
             camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
 

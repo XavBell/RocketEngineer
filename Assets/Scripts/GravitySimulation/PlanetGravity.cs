@@ -203,9 +203,79 @@ public class PlanetGravity : MonoBehaviour
 
         //If there's a SOI change during timewarp we must be safe and exit timewarp
         //Code HAS to be there 
-        if (previous != planet)
+
+        //For now, unpossessed rocket won't transfer
+        //Probably just need to update everyone velocity if a rocket switches of planet but will need more thought
+        GameObject moon = FindObjectOfType<MoonScript>().gameObject;
+        GameObject earth = FindObjectOfType<EarthScript>().gameObject;
+        GameObject sun = FindObjectOfType<SunScript>().gameObject;
+
+        if (previous != planet && possessed == true)
         {
             exitTimewarp();
+
+            
+            //Earth to Moon
+            if (planet == moon && previous == earth)
+            {
+                Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                rb.velocity -= new Vector2(velocity.x, velocity.y);
+            }
+
+            //Moon to Earth
+            if (previous == moon && planet == earth)
+            {
+                Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                rb.velocity += new Vector2(velocity.x, velocity.y);
+            }
+
+            //Sun to Earth
+            if (previous == sun && planet == earth)
+            {
+                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                rb.velocity -= new Vector2(velocity.x, velocity.y);
+            }
+
+            //EarthToSun
+            if (planet == sun && previous == earth)
+            {
+                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                rb.velocity += new Vector2(velocity.x, velocity.y);
+            }
+            GetComponent<RocketPath>().CalculateParameters();
+        }
+
+        if(previous != planet && possessed == false)
+        {
+            //Earth to Moon
+            if (planet == moon && previous == earth)
+            {
+                Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                rb.velocity -= new Vector2(velocity.x, velocity.y);
+            }
+
+            //Moon to Earth
+            if (previous == moon && planet == earth)
+            {
+                Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                rb.velocity += new Vector2(velocity.x, velocity.y);
+            }
+
+            //Sun to Earth
+            if (previous == sun && planet == earth)
+            {
+                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                rb.velocity -= new Vector2(velocity.x, velocity.y);
+            }
+
+            //EarthToSun
+            if (planet == sun && previous == earth)
+            {
+                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                rb.velocity += new Vector2(velocity.x, velocity.y);
+            }
+            GetComponent<RocketPath>().CalculateParameters();
+
         }
     }
 
