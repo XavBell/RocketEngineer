@@ -85,10 +85,7 @@ public class RocketStateManager : MonoBehaviour
                     doublePos.y_pos = this.transform.position.y;
                     savedPlanet = null;
                 }
-                planetGravity.updateReferenceBody();
-                prediction.startTime = prediction.MyTime.time;
-                prediction.CalculateParameters();
-                
+                planetGravity.updateReferenceBody();                
             }
             previousState = state;
             return;

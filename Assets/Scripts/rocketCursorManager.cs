@@ -25,10 +25,7 @@ public class rocketCursorManager : MonoBehaviour
 
     void Update()
     {
-        if(runClickDelay == false && stageViewer.runStopDelay == false)
-        {
-            //floatingOrigin.enabled = true;
-        }
+
     }
 
     // Update is called once per frame
@@ -56,6 +53,8 @@ public class rocketCursorManager : MonoBehaviour
                 masterManager.ActiveRocket.GetComponent<Rocket>().throttle = 0;
                 masterManager.ActiveRocket.GetComponent<PlanetGravity>().possessed = false;
             }
+            CameraControl camera = FindObjectOfType<CameraControl>();
+            camera.cam.transform.position = rocket.transform.position;
 
             Rocket[] rockets = FindObjectsOfType<Rocket>();
             foreach (Rocket rp1 in rockets)
@@ -74,11 +73,11 @@ public class rocketCursorManager : MonoBehaviour
             }
 
             masterManager.ActiveRocket = null;
-            CameraControl camera = FindObjectOfType<CameraControl>();
-            camera.cam.transform.position = rocket.transform.position;
             buildingManager.enterFlightMode();
             rocket.GetComponent<PlanetGravity>().possessed = true;
+            stageViewer = FindObjectOfType<StageViewer>();
             stageViewer.rocket = rocket;
+            masterManager.gameState = "Flight";
             stageViewer.updateStagesView(false);
             stageViewer.updateInfoPerStage(false);
             floatingOrigin.bypass = true;
