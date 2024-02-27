@@ -119,7 +119,6 @@ public class PlanetGravity : MonoBehaviour
             core.GetComponent<Rocket>().controlThrust();
             core.GetComponent<Rocket>()._orientation();
         }
-        gainPoints();
     }
 
     //To be called from RocketStateManager

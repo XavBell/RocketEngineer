@@ -60,7 +60,7 @@ public class rocketCursorManager : MonoBehaviour
             Rocket[] rockets = FindObjectsOfType<Rocket>();
             foreach (Rocket rp1 in rockets)
             {
-                if(rp1.GetComponent<RocketStateManager>().state != "landed")
+                if((rp1.GetComponent<RocketStateManager>().curr_X != rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y != rp1.GetComponent<RocketStateManager>().previous_Y))
                 {
                     rp1.GetComponent<RocketStateManager>().state = "rail";
                     rp1.GetComponent<PlanetGravity>().rb.simulated = false;
@@ -68,6 +68,8 @@ public class rocketCursorManager : MonoBehaviour
                     rp1.GetComponent<RocketPath>().CalculateParameters();
                     rp1.GetComponent<RocketStateManager>().previousState = "rail";
                     rp1.GetComponent<RocketStateManager>().UpdatePosition();
+                }else if((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y)){
+                    rp1.GetComponent<RocketStateManager>().StateUpdater();
                 }
             }
 

@@ -57,7 +57,7 @@ public class RocketStateManager : MonoBehaviour
 
     public void StateUpdater()
     {
-        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && planetGravity.rb.velocity.magnitude < 1 && (planetGravity.getCamera().transform.position - transform.position).magnitude >= 100)
+        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && this.planetGravity.rb.velocity.magnitude < 1 && (planetGravity.getCamera().transform.position - transform.position).magnitude >= 100)
         {
             state = "landed";
             if(previousState != state)
@@ -97,7 +97,6 @@ public class RocketStateManager : MonoBehaviour
         if((planetGravity.possessed == false || MyTime.scaler != 1) && previousState != "landed" & planetGravity.rb.velocity.magnitude > 1)
         {
             state = "rail";
-            print("switched to path");
             if(previousState != state)
             {
                 if(savedPlanet != null)

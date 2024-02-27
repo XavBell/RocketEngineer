@@ -173,11 +173,14 @@ public class StageViewer : MonoBehaviour
             CameraControl camera = FindObjectOfType<CameraControl>();
             launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
 
+            camera.transform.position = launchsiteManager.commandCenter.transform.position;
+            camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
+
             //FORCE BRUTE SWITCH TO ON RAIL
             Rocket[] rockets = FindObjectsOfType<Rocket>();
             foreach (Rocket rp1 in rockets)
             {
-                if (rp1.GetComponent<RocketStateManager>().state != "landed")
+                if((rp1.GetComponent<RocketStateManager>().curr_X != rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y != rp1.GetComponent<RocketStateManager>().previous_Y))
                 {
                     rp1.GetComponent<RocketStateManager>().state = "rail";
                     rp1.GetComponent<PlanetGravity>().rb.simulated = false;
@@ -185,16 +188,14 @@ public class StageViewer : MonoBehaviour
                     rp1.GetComponent<RocketPath>().CalculateParameters();
                     rp1.GetComponent<RocketStateManager>().previousState = "rail";
                     rp1.GetComponent<RocketStateManager>().UpdatePosition();
+                }else if((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y)){
+                    rp1.GetComponent<RocketStateManager>().StateUpdater();
                 }
-
-
             }
 
             masterManager.ActiveRocket = null;
             floatingOrigin.closestPlanet = null;
             buildingManager.exitFlightMode();
-            camera.transform.position = launchsiteManager.commandCenter.transform.position;
-            camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
             floatingOrigin.bypass = true;
             runStopDelay = false;
             Physics.SyncTransforms();
