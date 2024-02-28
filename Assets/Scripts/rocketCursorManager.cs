@@ -70,7 +70,7 @@ public class rocketCursorManager : MonoBehaviour
                     rp1.GetComponent<RocketPath>().CalculateParameters();
                     rp1.GetComponent<RocketStateManager>().previousState = "rail";
                     rp1.GetComponent<RocketStateManager>().UpdatePosition();
-                }else if((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y)){
+                }else if((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y) && rp1 != rocket){
                     rp1.GetComponent<RocketStateManager>().StateUpdater();
                 }
             }
