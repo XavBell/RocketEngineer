@@ -37,16 +37,6 @@ public class flightUIManager : MonoBehaviour
         rocketUI.transform.rotation = stageViewer.rocket.transform.rotation;
         velocity.text = Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude).ToString() + " m/s";
         altitude.text = Mathf.Round((stageViewer.rocket.transform.position - stageViewer.rocket.GetComponent<PlanetGravity>().getPlanet().transform.position).magnitude - stageViewer.rocket.GetComponent<PlanetGravity>().getPlanetRadius()).ToString() + " m";
-        RocketPath rocketPath = stageViewer.rocket.GetComponent<RocketPath>();
-        if(rocketPath.KeplerParams != null)
-        {
-            
-            if(rocketPath.KeplerParams.eccentricity < 1)
-            {
-                apopasis.text = rocketPath.KeplerParams.semiMajorAxis.ToString();
-                periapsis.text = (rocketPath.KeplerParams.semiMajorAxis*(Math.Sqrt(1-Math.Pow(rocketPath.KeplerParams.eccentricity, 2)))).ToString();
-            }
-        }
 
         if(Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude) != 0)
         {
@@ -60,6 +50,20 @@ public class flightUIManager : MonoBehaviour
         }
 
         throttleBar.sizeDelta = new Vector2(stageViewer.rocket.GetComponent<Rocket>().throttle*3, throttleBar.sizeDelta.y);
+
+        if(stageViewer.rocket.GetComponent<RocketPath>().e < 1)
+        {
+            RocketPath rp = stageViewer.rocket.GetComponent<RocketPath>();
+            apopasis.text = (Math.Round(rp.KeplerParams.semiMajorAxis*(1 + rp.KeplerParams.eccentricity) - rp.GetComponent<PlanetGravity>().getPlanetRadius())).ToString();
+            periapsis.text = (Math.Round(rp.KeplerParams.semiMajorAxis*(1 - rp.KeplerParams.eccentricity) - rp.GetComponent<PlanetGravity>().getPlanetRadius())).ToString();
+        }
+
+        if(stageViewer.rocket.GetComponent<RocketPath>().e > 1)
+        {
+            RocketPath rp = stageViewer.rocket.GetComponent<RocketPath>();
+            apopasis.text = "Infinity";
+            periapsis.text = (Math.Round(rp.a*(1 - rp.e) - rp.GetComponent<PlanetGravity>().getPlanetRadius())).ToString();
+        }
         
     }
 }

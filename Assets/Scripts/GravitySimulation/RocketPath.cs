@@ -22,8 +22,8 @@ public class RocketPath : MonoBehaviour
     double H;
     double Mo;
     double n;
-    double a;
-    double e;
+    public double a;
+    public double e;
     double i;
     public double startTime;
     public double lastUpdatedTime;

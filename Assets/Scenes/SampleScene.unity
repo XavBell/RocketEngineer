@@ -42548,7 +42548,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1556443537
 RectTransform:
   m_ObjectHideFlags: 0
@@ -42570,7 +42570,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -869, y: 6.0998535}
+  m_AnchoredPosition: {x: -885.0001, y: -9.810425}
   m_SizeDelta: {x: -641.23773, y: -6.261791}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1556443538
@@ -58641,7 +58641,9 @@ MonoBehaviour:
   closestPlanet: {fileID: 0}
   bypass: 0
   DO: 1
+  LOCK: 0
   fixedRan: 0
+  waitingForShipTransfer: 0
 --- !u!4 &2071063436
 Transform:
   m_ObjectHideFlags: 0
