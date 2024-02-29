@@ -29,6 +29,11 @@ public class chuteController : MonoBehaviour
                 grav.baseCoefficient = chuteCD + rocketCD;
             }
 
+            if(this.GetComponentInParent<Satellite>().chuteDeployed == false)
+            {
+                grav.baseCoefficient = rocketCD;
+            }
+
             if(Mathf.Round(grav.GetComponent<Rigidbody2D>().velocity.magnitude) != 0)
             {
             
@@ -38,6 +43,12 @@ public class chuteController : MonoBehaviour
                     angle += 180;
                 }
                 anchor.transform.rotation = Quaternion.Euler(0, 0, (angle+270)+180);
+            }
+
+            if(this.GetComponentInParent<Satellite>().chuteDeployed == true && grav.GetComponent<Rigidbody2D>().velocity.magnitude < 1 && (this.transform.position - grav.getPlanet().transform.position).magnitude <= grav.getPlanetRadius() + grav.getAtmoAlt() && grav.GetComponent<RocketStateManager>().curr_X == grav.GetComponent<RocketStateManager>().previous_X && grav.GetComponent<RocketStateManager>().curr_Y == grav.GetComponent<RocketStateManager>().previous_Y)
+            {
+                this.GetComponentInParent<Satellite>().chuteDeployed = false;
+                this.GetComponentInParent<Satellite>().chute.SetActive(false);
             }
         }
     }

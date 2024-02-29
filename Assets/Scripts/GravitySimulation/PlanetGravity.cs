@@ -44,6 +44,10 @@ public class PlanetGravity : MonoBehaviour
         return atmoAlt;
     }
     private float aeroCoefficient = 0f;
+    public float getAeroCoefficient()
+    {
+        return aeroCoefficient;
+    }
     private float planetRadius = 0f; //Planet radius in m
     public float getPlanetRadius()
     {

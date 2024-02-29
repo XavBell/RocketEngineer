@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization.Pseudo;
 
 public class CapsuleUIManager : MonoBehaviour
 {
@@ -24,9 +25,30 @@ public class CapsuleUIManager : MonoBehaviour
 
     public void deployChute()
     {
-        satellite.chuteDeployed = true;
-        changeColorNormal();
-        satellite.chute.SetActive(true);
+        if(Vector2.Distance(satellite.GetComponent<PlanetGravity>().getPlanet().gameObject.transform.position, satellite.transform.position) <= satellite.GetComponent<PlanetGravity>().getPlanetRadius() + satellite.GetComponent<PlanetGravity>().getAtmoAlt() && satellite.chuteDeployed == false)
+        {
+            print("Deploying chute");
+            satellite.chuteDeployed = true;
+            changeColorNormal();
+            satellite.chute.SetActive(true);
+            return;
+        }
+        
+        if(satellite.chuteDeployed == false && Vector2.Distance(satellite.GetComponent<PlanetGravity>().getPlanet().transform.position, satellite.transform.position) > satellite.GetComponent<PlanetGravity>().getPlanetRadius() + satellite.GetComponent<PlanetGravity>().getAtmoAlt())
+        {
+            Debug.Log("You can't deploy the chute in space");
+            //TODO add a message to the player
+            return;
+        }
+        
+        if(satellite.chuteDeployed == true)
+        {
+            print("Retracting chute");
+            satellite.chuteDeployed = false;
+            changeColorNormal();
+            satellite.chute.SetActive(false);
+            return;
+        }
     }
 
     public void changeColorGreen()

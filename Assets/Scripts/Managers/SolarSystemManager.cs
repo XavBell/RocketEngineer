@@ -12,20 +12,20 @@ public class SolarSystemManager : MonoBehaviour
     public float earthRadius = 63710.0f;
     public float earthSOI = 9000000;
     public float earthMass = 0f;
-    public float earthAlt = 1000;
+    public float earthAlt = 1000f;
     public float earthDensitySlvl = 0.006f;
 
     //Moon Values
     public float moongSlvl = 16.0f;
     public float moonRadius = 17000.0f;
     public float moonMass = 0f;
-    public float moonAlt = 500;
+    public float moonAlt = 500f;
     public float moonSOI = 600000f;
 
     //Sun Values
     public float sunSlvl = 274.4f;
     public float sunRadius = 6957.0E6f;
-    public float sunSOI = 10000000;
+    public float sunSOI = 10000000f;
     public float sunMass = 0f;
     public bool needUpdate = false;
 
