@@ -7,6 +7,7 @@ public class CapsuleUIManager : MonoBehaviour
 {
     public Satellite satellite;
     public Rocket rocket;
+    public PlanetGravity pg;
     public StageViewer stageViewer;
     public Color satelliteColor;
     // Start is called before the first frame update
@@ -15,6 +16,7 @@ public class CapsuleUIManager : MonoBehaviour
         stageViewer = FindObjectOfType<StageViewer>();
         satelliteColor = satellite.GetComponent<SpriteRenderer>().color;
         rocket = satellite.GetComponentInParent<Rocket>();
+        pg = satellite.GetComponent<PlanetGravity>();
     }
 
     // Update is called once per frame
@@ -25,7 +27,7 @@ public class CapsuleUIManager : MonoBehaviour
 
     public void deployChute()
     {
-        if(Vector2.Distance(satellite.GetComponent<PlanetGravity>().getPlanet().gameObject.transform.position, satellite.transform.position) <= satellite.GetComponent<PlanetGravity>().getPlanetRadius() + satellite.GetComponent<PlanetGravity>().getAtmoAlt() && satellite.chuteDeployed == false)
+        if(Vector2.Distance(pg.getPlanet().gameObject.transform.position, satellite.transform.position) <= pg.getPlanetRadius() + pg.getAtmoAlt() && satellite.chuteDeployed == false)
         {
             print("Deploying chute");
             satellite.chuteDeployed = true;
@@ -34,7 +36,7 @@ public class CapsuleUIManager : MonoBehaviour
             return;
         }
         
-        if(satellite.chuteDeployed == false && Vector2.Distance(satellite.GetComponent<PlanetGravity>().getPlanet().transform.position, satellite.transform.position) > satellite.GetComponent<PlanetGravity>().getPlanetRadius() + satellite.GetComponent<PlanetGravity>().getAtmoAlt())
+        if(satellite.chuteDeployed == false && Vector2.Distance(pg.getPlanet().transform.position, satellite.transform.position) > pg.getPlanetRadius() + pg.getAtmoAlt())
         {
             Debug.Log("You can't deploy the chute in space");
             //TODO add a message to the player

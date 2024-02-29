@@ -206,15 +206,19 @@ public class StageViewer : MonoBehaviour
 
     public void Terminate()
     {
-        rocket.GetComponent<PlanetGravity>().possessed = false;
+        if(rocket != null)
+        {
+            rocket.GetComponent<PlanetGravity>().possessed = false;
+            Destroy(rocket);   
+        }
         MasterManager masterManager = FindObjectOfType<MasterManager>();
         masterManager.gameState = "Building";
         CameraControl camera = FindObjectOfType<CameraControl>();
         launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
         camera.transform.position = launchsiteManager.commandCenter.transform.position;
-        Destroy(rocket);
         this.gameObject.SetActive(false);
         masterManager.ActiveRocket = null;
         camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
+        buildingManager.exitFlightMode();
     }
 }
