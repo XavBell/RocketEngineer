@@ -70,6 +70,9 @@ public class FloatingOrigin : MonoBehaviour
 
 
 
+    /// <summary>
+    /// Updates the floating origin reference point based on the camera position.
+    /// </summary>
     public void updateFloatReference()
     {
         if (Camera.transform.position.magnitude > threshold)
@@ -100,9 +103,15 @@ public class FloatingOrigin : MonoBehaviour
 
             Physics.SyncTransforms();
         }
-    
     }
 
+    /// <summary>
+    /// Updates the position of a GameObject by applying the specified difference vector.
+    /// If the GameObject has a DoubleTransform component, the position will be updated using its x, y, and z positions.
+    /// If the GameObject does not have a DoubleTransform component, the position will be updated directly.
+    /// </summary>
+    /// <param name="g">The GameObject to update the position of.</param>
+    /// <param name="difference">The difference vector to apply to the position.</param>
     public void UpdatePosition(GameObject g, Vector3 difference)
     {
         DoubleTransform dt = g.GetComponent<DoubleTransform>();
@@ -121,9 +130,13 @@ public class FloatingOrigin : MonoBehaviour
                 g.transform.position += difference;
             }
         }
-
     }
 
+    /// <summary>
+    /// Updates the reference body based on the active rocket's position.
+    /// If there is no active rocket, it finds the closest planet and adjusts the positions of the sun, earth, and moon accordingly.
+    /// If there is an active rocket, it adjusts the positions of the sun, earth, and moon based on the active rocket's position.
+    /// </summary>
     public void UpdateReferenceBody()
     {
         if (masterManager.ActiveRocket == null)

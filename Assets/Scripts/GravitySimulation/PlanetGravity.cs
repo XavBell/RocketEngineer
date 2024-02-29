@@ -145,9 +145,9 @@ public class PlanetGravity : MonoBehaviour
         Vector3 ForceVector = forceDir * (G * (Mass * rb.mass) / (float)(Dist * Dist));
         Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
         Vector3 DragVector = new Vector3(0, 0, 0);
-        if (Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 5)
+        if (Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 5 && aeroCoefficient > 0)
         {
-            double airPressure = 5*Math.Pow(Math.E, (-(Dist-planetRadius)*0.006));
+            double airPressure = 5*Math.Pow(Math.E, (-(Dist-planetRadius)*aeroCoefficient));
             double drag = baseCoefficient * airPressure * rb.velocity.magnitude / 2;
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
@@ -292,9 +292,9 @@ public class PlanetGravity : MonoBehaviour
         if(Vector2.Distance(rb.position, FindObjectOfType<MoonScript>().gameObject.transform.position) < SolarSystemManager.moonSOI)
         {
             Mass = SolarSystemManager.moonMass;
-            atmoAlt = 0.0f;
             aeroCoefficient = 0.0f;
             planetRadius = SolarSystemManager.moonRadius;
+            atmoAlt = SolarSystemManager.moonAlt;
             planet = FindObjectOfType<MoonScript>().gameObject;
             return;
         }

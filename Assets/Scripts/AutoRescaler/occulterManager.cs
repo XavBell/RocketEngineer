@@ -48,6 +48,9 @@ public class occulterManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Hides the engine based on the attachment status of the bottom and top attachments.
+    /// </summary>
     void hideEngine()
     {
         if(bottomAttach.attachedBody != null && topAttach.attachedBody != null)

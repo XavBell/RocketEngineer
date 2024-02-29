@@ -32,6 +32,9 @@ public class DetectClick : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Checks for a right click on a building and performs the corresponding actions based on the building type.
+    /// </summary>
     void CheckForRightClickOnBuilding()
     {
         if (Input.GetMouseButtonDown(1))
@@ -101,6 +104,9 @@ public class DetectClick : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Checks if the building can be destroyed and handles the destruction logic.
+    /// </summary>
     void CheckForDestroy()
     {
         if (buildingManager.CanDestroy == true)

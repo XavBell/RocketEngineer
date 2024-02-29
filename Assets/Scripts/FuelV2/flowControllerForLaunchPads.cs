@@ -77,20 +77,26 @@ public class flowControllerForLaunchPads : MonoBehaviour
 
     void Disconnect()
     {
-        foreach(Stages stage in rocket.Stages)
+        if(rocket != null)
         {
-            foreach(RocketPart part in stage.Parts)
+            foreach(Stages stage in rocket.Stages)
             {
-                if(part._partType == "tank")
+                foreach(RocketPart part in stage.Parts)
                 {
-                    if(part.GetComponent<Tank>().propellantCategory == "oxidizer")
+                    if(part.gameObject != null)
                     {
-                        part.GetComponent<flowController>().origin = null;
-                    }
+                        if(part._partType == "tank")
+                        {
+                            if(part.GetComponent<Tank>().propellantCategory == "oxidizer")
+                            {
+                                part.GetComponent<flowController>().origin = null;
+                            }
 
-                    if(part.GetComponent<Tank>().propellantCategory == "fuel")
-                    {
-                        part.GetComponent<flowController>().origin = null;
+                            if(part.GetComponent<Tank>().propellantCategory == "fuel")
+                            {
+                                part.GetComponent<flowController>().origin = null;
+                            }
+                        }
                     }
                 }
             }

@@ -19,6 +19,9 @@ public class ShadowRescaler : MonoBehaviour
         UpdatePositionScale();
     }
 
+    /// <summary>
+    /// Updates the position and scale of the shadow based on the size of the box collider.
+    /// </summary>
     void UpdatePositionScale()
     {
         //Update pos of shadow

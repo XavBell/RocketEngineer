@@ -54,9 +54,21 @@ public class MapManager : MonoBehaviour
         EarthIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/EarthIcon.transform.parent.localScale.x;
         MoonIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/MoonIcon.transform.parent.localScale.x;
         SunIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/SunIcon.transform.parent.localScale.x;
+
+        List<GameObject> iconToRemove = new List<GameObject>();
         foreach (GameObject icon in icons)
         {
-            icon.transform.localScale = new Vector2(mapCam.orthographicSize, mapCam.orthographicSize) / 100;
+            if(icon != null)
+            {
+                icon.transform.localScale = new Vector2(mapCam.orthographicSize, mapCam.orthographicSize) / 100;
+            }else{
+                iconToRemove.Add(icon);
+            }
+        }
+
+        foreach(GameObject icon in iconToRemove)
+        {
+            icons.Remove(icon);
         }
 
         foreach (Prediction pred in prediction)

@@ -51,14 +51,12 @@ public class flightUIManager : MonoBehaviour
 
         throttleBar.sizeDelta = new Vector2(stageViewer.rocket.GetComponent<Rocket>().throttle*3, throttleBar.sizeDelta.y);
 
-        if(stageViewer.rocket.GetComponent<RocketPath>().e < 1)
+        if(stageViewer.rocket.GetComponent<RocketPath>().KeplerParams.eccentricity < 1)
         {
             RocketPath rp = stageViewer.rocket.GetComponent<RocketPath>();
             apopasis.text = (Math.Round(rp.KeplerParams.semiMajorAxis*(1 + rp.KeplerParams.eccentricity) - rp.GetComponent<PlanetGravity>().getPlanetRadius())).ToString();
             periapsis.text = (Math.Round(rp.KeplerParams.semiMajorAxis*(1 - rp.KeplerParams.eccentricity) - rp.GetComponent<PlanetGravity>().getPlanetRadius())).ToString();
-        }
-
-        if(stageViewer.rocket.GetComponent<RocketPath>().e > 1)
+        }else if(stageViewer.rocket.GetComponent<RocketPath>().e >= 1)
         {
             RocketPath rp = stageViewer.rocket.GetComponent<RocketPath>();
             apopasis.text = "Infinity";

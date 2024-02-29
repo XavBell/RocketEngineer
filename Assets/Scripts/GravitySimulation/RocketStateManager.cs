@@ -132,12 +132,6 @@ public class RocketStateManager : MonoBehaviour
 
         if(state == "rail")
         {
-            //Check for potential collision
-            if((this.transform.position - planetGravity.getPlanet().transform.position).magnitude < planetGravity.getPlanetRadius() - 100 && planetGravity.possessed == true) //100 is a threshold IDEALLY REMOVE POSSESSED CONDITION
-            {
-                print("Destroyed bcs near planet");
-                Destroy(planetGravity.gameObject);
-            }
             Vector2 transform = prediction.updatePosition();
             this.transform.position = transform;
             doublePos.x_pos = transform.x;
