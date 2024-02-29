@@ -45,7 +45,7 @@ public class PressureTestViewer : MonoBehaviour
 
     void updateQuantity()
     {
-        quantity.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<outputInputManager>().mass.ToString();
+        quantity.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().mass.ToString();
     }
 
     public void startTest()

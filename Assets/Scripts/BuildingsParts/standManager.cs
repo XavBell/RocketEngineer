@@ -17,7 +17,7 @@ public class standManager : MonoBehaviour
     public MasterManager MasterManager;
     public bool Spawned = false;
     public GameObject ConnectedTank;
-    public outputInputManager output;
+    public container output;
     public string standName;
     public GameObject button;
     public float ratio;
@@ -42,12 +42,7 @@ public class standManager : MonoBehaviour
     {
         if(ConnectedTank != null)
         {
-            Substance substanceType = output.substance;
-            ConnectedTank.GetComponent<outputInputManager>().inputParent = output.inputParent;
-            if(output.inputParent != null)
-            {
-                output.inputParent.outputParent = ConnectedTank.GetComponent<outputInputManager>();
-            }
+            //ConnectedTank.GetComponent<flowController>().origin = this.GetComponent<flowController>().origin;
 
             if(started == true)
             {
@@ -64,15 +59,10 @@ public class standManager : MonoBehaviour
                     Tank tank = ConnectedTank.GetComponent<Tank>();
 
                     tankStatusTracker.times.Add((float)(MyTime.time - startTime));
-                    tankStatusTracker.Quantity.Add(tank.GetComponent<outputInputManager>().mass);
-                    tankStatusTracker.Pressure.Add(tank.GetComponent<outputInputManager>().internalPressure);
-                    tankStatusTracker.Volume.Add(tank.GetComponent<outputInputManager>().volume);
-                    tankStatusTracker.state.Add(tank.GetComponent<outputInputManager>().state);
-
-                    if(tank.GetComponent<outputInputManager>().tankState == "broken")
-                    {
-                        failed = true;
-                    }
+                    tankStatusTracker.Quantity.Add(tank.GetComponent<container>().mass);
+                    tankStatusTracker.Pressure.Add(tank.GetComponent<container>().internalPressure);
+                    tankStatusTracker.Volume.Add(tank.GetComponent<container>().volume);
+                    tankStatusTracker.state.Add(tank.GetComponent<container>().state);
                 }
 
                 if(failed == true && tankStatusTracker != null)
