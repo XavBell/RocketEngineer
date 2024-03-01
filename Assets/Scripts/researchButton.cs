@@ -36,20 +36,26 @@ public class researchButton : MonoBehaviour
 
     public void setVisibility()
     {
-        List<GameObject> obtained = new List<GameObject>();
-        foreach(GameObject node in dependencies)
+        if(masterManager.nodeUnlocked.Contains(node.NodeName))
         {
-            if(masterManager.nodeUnlocked.Contains(node.GetComponent<researchButton>().node.NodeName))
-            {
-                obtained.Add(node);
-            }
-        }
-
-        if(dependencies.Count == obtained.Count)
-        {
-            this.GetComponent<Button>().interactable  = true;
-        }else{
             this.GetComponent<Button>().interactable = false;
+            this.GetComponent<Image>().color = Color.green;
+            return;
+        }
+        else
+        {
+            foreach(GameObject dependency in dependencies)
+            {
+                if(masterManager.nodeUnlocked.Contains(dependency.GetComponent<researchButton>().node.NodeName))
+                {
+                    this.GetComponent<Button>().interactable = true;
+                    return;
+                }
+                else
+                {
+                    this.GetComponent<Button>().interactable = false;
+                }
+            }
         }
     }
 }

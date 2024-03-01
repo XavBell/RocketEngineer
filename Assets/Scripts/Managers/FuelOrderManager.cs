@@ -5,11 +5,17 @@ using UnityEngine;
 using TMPro;
 using System.Linq;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class FuelOrderManager : MonoBehaviour
 {
     [SerializeField]private TMP_InputField quantityText;
     [SerializeField]private TMP_Dropdown substanceDropdown;
+    [SerializeField]private Slider temperatureSlider;
+    [SerializeField]private TMP_Text temperatureText;
+    [SerializeField]private GameObject  liquidIcon;
+    [SerializeField]private GameObject  gasIcon;
+    [SerializeField]private GameObject  solidIcon;
     public GameObject selectedDestination;
 
     public string quantity;
@@ -22,7 +28,7 @@ public class FuelOrderManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        updateTemperatureText();
     }
 
     // Update is called once per frame
@@ -61,7 +67,7 @@ public class FuelOrderManager : MonoBehaviour
                 float moles = float.Parse(quantityText.text.ToString())/substanceMolarMass * 1000;
                 selectedDestination.GetComponent<container>().substance = kerosene;
                 selectedDestination.GetComponent<container>().moles = moles;
-                selectedDestination.GetComponent<container>().internalTemperature = selectedDestination.GetComponent<container>().externalTemperature;
+                selectedDestination.GetComponent<container>().internalTemperature = temperatureSlider.value;
             }
 
             if(substanceDropdown.value == 1)
@@ -71,9 +77,65 @@ public class FuelOrderManager : MonoBehaviour
                 float moles = float.Parse(quantityText.text.ToString())/substanceMolarMass * 1000;
                 selectedDestination.GetComponent<container>().substance = LOX;
                 selectedDestination.GetComponent<container>().moles = moles;
-                selectedDestination.GetComponent<container>().internalTemperature = selectedDestination.GetComponent<container>().externalTemperature;
+                selectedDestination.GetComponent<container>().internalTemperature = temperatureSlider.value;
             }
         }
         selectedDestination = null;
     }
+
+    public void updateTemperatureText()
+    {
+        temperatureText.text = temperatureSlider.value.ToString() + "K";
+
+        if(substanceDropdown.value == 0)
+        {
+            //Kerosene
+            if(temperatureSlider.value <= kerosene.SolidTemperature)
+            {
+                liquidIcon.SetActive(false);
+                gasIcon.SetActive(false);
+                solidIcon.SetActive(true);
+            }
+
+            if(temperatureSlider.value > kerosene.SolidTemperature && temperatureSlider.value < kerosene.GaseousTemperature)
+            {
+                liquidIcon.SetActive(true);
+                gasIcon.SetActive(false);
+                solidIcon.SetActive(false);
+            }
+
+            if(temperatureSlider.value >= kerosene.GaseousTemperature)
+            {
+                liquidIcon.SetActive(false);
+                gasIcon.SetActive(true);
+                solidIcon.SetActive(false);
+            }
+        }
+
+        if(substanceDropdown.value == 1)
+        {
+            //Kerosene
+            if(temperatureSlider.value <= LOX.SolidTemperature)
+            {
+                liquidIcon.SetActive(false);
+                gasIcon.SetActive(false);
+                solidIcon.SetActive(true);
+            }
+
+            if(temperatureSlider.value > LOX.SolidTemperature && temperatureSlider.value < LOX.GaseousTemperature)
+            {
+                liquidIcon.SetActive(true);
+                gasIcon.SetActive(false);
+                solidIcon.SetActive(false);
+            }
+
+            if(temperatureSlider.value >= LOX.GaseousTemperature)
+            {
+                liquidIcon.SetActive(false);
+                gasIcon.SetActive(true);
+                solidIcon.SetActive(false);
+            }
+        }
+    }
 }
+

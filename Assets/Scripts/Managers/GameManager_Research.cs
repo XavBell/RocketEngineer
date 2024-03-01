@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 public class GameManager_Research : MonoBehaviour
 {
     MasterManager masterManager;
+    bool updatedLines = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +15,17 @@ public class GameManager_Research : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (updatedLines == false)
+        {
+            LineRenderer[] lineRenderers = FindObjectsOfType<LineRenderer>();
+            foreach (LineRenderer lineRenderer in lineRenderers)
+            {
+                lineRenderer.widthMultiplier = 10f;
+                lineRenderer.sortingOrder = -1;
+                updatedLines = true;
+            }
+        }
+
     }
 
     public void Back()
