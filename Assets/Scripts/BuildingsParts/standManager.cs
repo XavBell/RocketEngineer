@@ -42,7 +42,6 @@ public class standManager : MonoBehaviour
     {
         if(ConnectedTank != null)
         {
-            //ConnectedTank.GetComponent<flowController>().origin = this.GetComponent<flowController>().origin;
 
             if(started == true)
             {

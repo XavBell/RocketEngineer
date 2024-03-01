@@ -13,6 +13,8 @@ public class StaticFireViewer : MonoBehaviour
     public TMP_Text fuelQty;
     public TMP_Text oxidizerVolume;
     public TMP_Text fuelVolume;
+    public TMP_Text fuelTemperature;
+    public TMP_Text oxidizerTemperature;
     public TMP_Text thrust;
 
     public Toggle coolerFuel;
@@ -71,6 +73,9 @@ public class StaticFireViewer : MonoBehaviour
 
         oxidizerVolume.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.volume.ToString() + "/" + staticFireStand.GetComponent<staticFireStandManager>().oxidizer.tankVolume.ToString();
         fuelVolume.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.volume.ToString() + "/" + staticFireStand.GetComponent<staticFireStandManager>().fuel.tankVolume.ToString();
+
+        fuelTemperature.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.internalTemperature.ToString();
+        oxidizerTemperature.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.internalTemperature.ToString();
 
     }
 

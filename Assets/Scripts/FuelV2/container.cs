@@ -151,14 +151,14 @@ public class container : MonoBehaviour
         {
             if (this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
             {
-                GameObject toDestroy = this.gameObject.transform.parent.gameObject;
-                Destroy(toDestroy);
+                //GameObject toDestroy = this.gameObject.transform.parent.gameObject;
+                //Destroy(toDestroy);
             }
             else if (explosion != null)
             {
-                explosion.transform.parent = null;
-                explosion.Play();
-                Destroy(this.gameObject);
+                //explosion.transform.parent = null;
+                //explosion.Play();
+                //Destroy(this.gameObject);
             }
             return;
         }
