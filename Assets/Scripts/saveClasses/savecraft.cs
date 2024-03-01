@@ -32,6 +32,7 @@ public class savecraft
     public List<string> propellantType = new List<string>();
     public List<string> tankMaterial = new List<string>();
     public List<float> volume = new List<float>();
+    public List<bool> tested = new List<bool>();
 
     //Engine variables
     public List<string> engineName = new List<string>();

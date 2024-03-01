@@ -247,6 +247,7 @@ public class GameManager : MonoBehaviour
             tank.x_scale = loadedTank.tankSizeX;
             tank.y_scale = loadedTank.tankSizeY;
             tank._partCost = loadedTank.cost;
+            tank.tested = loadedTank.tested;
             int value = propellantLine.value;
             if (value == 0)
             {

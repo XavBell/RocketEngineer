@@ -11,6 +11,7 @@ public class Tank : RocketPart
     public string tankMaterial;
     public string propellantCategory;
     public float conductivity = 10;
+    public bool tested = false;
 
     void Start()
     {

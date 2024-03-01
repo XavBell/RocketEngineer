@@ -57,7 +57,7 @@ public class FuelOrderManager : MonoBehaviour
             if(substanceDropdown.value == 0)
             {
                 //Kerosene
-                float substanceMolarMass = 170f;
+                float substanceMolarMass = kerosene.MolarMass;
                 float moles = float.Parse(quantityText.text.ToString())/substanceMolarMass * 1000;
                 selectedDestination.GetComponent<container>().substance = kerosene;
                 selectedDestination.GetComponent<container>().moles = moles;
@@ -67,7 +67,7 @@ public class FuelOrderManager : MonoBehaviour
             if(substanceDropdown.value == 1)
             {
                 //Oxygen
-                float substanceMolarMass = 32f;
+                float substanceMolarMass = LOX.MolarMass;
                 float moles = float.Parse(quantityText.text.ToString())/substanceMolarMass * 1000;
                 selectedDestination.GetComponent<container>().substance = LOX;
                 selectedDestination.GetComponent<container>().moles = moles;

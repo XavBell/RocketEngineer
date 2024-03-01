@@ -12,6 +12,7 @@ public class TankUIModule : MonoBehaviour
     [SerializeField]TMP_Text quantity;
     public container tank;
     [SerializeField]private TMP_InputField targetTemperature;
+    
     public float rate = 5000;
     // Start is called before the first frame update
     void Start()
@@ -30,7 +31,20 @@ public class TankUIModule : MonoBehaviour
         internalPressure.text = tank.internalPressure.ToString();
         internalTemperature.text = tank.internalTemperature.ToString();
         volume.text = tank.volume.ToString() + "/" + tank.tankVolume.ToString();
-        quantity.text = tank.mass.ToString();
+        if(tank.GetComponent<Tank>().tested == false)
+        {
+            quantity.text = tank.mass.ToString();
+        }else if(tank.GetComponent<Tank>().tested == true)
+        {
+            if(tank.substance != null)
+            {
+                //mass = volume * density
+                float maxQuantity = tank.tankVolume * tank.substance.Density;
+                quantity.text = tank.mass.ToString() + "/" + maxQuantity.ToString();
+            }else{
+                quantity.text = tank.mass.ToString();
+            }
+        }
     }
 
     public void updateTemp()

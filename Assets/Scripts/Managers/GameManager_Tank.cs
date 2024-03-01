@@ -72,6 +72,13 @@ public class GameManager_Tank : MonoBehaviour
     public TMP_Text maxRecPressure;
     public TMP_Text thermalConductivityViz;
     public TMP_Text volumeViz;
+    public GameObject maxMassShower;
+    public TMP_Dropdown substanceDropdown;
+    public TMP_Text maxMass;
+    public bool tested = false;
+
+    [SerializeField]private Substance kerosene;
+    [SerializeField]private Substance LOX;
 
     // Start is called before the first frame update
     void Start()
@@ -302,6 +309,31 @@ public class GameManager_Tank : MonoBehaviour
         volumeViz.text = loadedTank.volume.ToString();
         thermalConductivityViz.text = loadedTank.thermalConductivity.ToString();
         maxRecPressure.text = loadedTank.maxRecPressure.ToString();
+        tested = loadedTank.tested;
+        if(tested == false)
+        {
+            maxMassShower.SetActive(false);
+        }
+
+        if(tested == true)
+        {
+            maxMassShower.SetActive(true);
+        
+        }
+    }
+
+    public void updateMaxMass()
+    {
+        if(substanceDropdown.options[substanceDropdown.value].text.ToString() == "Kerosene")
+        {
+            maxMass.text = (volume * kerosene.Density).ToString();
+        }
+
+        if (substanceDropdown.options[substanceDropdown.value].text.ToString() == "LOX")
+        {
+            maxMass.text = (volume * LOX.Density).ToString();
+        }
+        
     }
 
 }

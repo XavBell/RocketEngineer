@@ -227,6 +227,7 @@ public class OnClick : MonoBehaviour
                         part.GetComponent<Tank>().x_scale = loadedRocket.x_scale[tankID];
                         part.GetComponent<Tank>().y_scale = loadedRocket.y_scale[tankID];
                         part.GetComponent<Tank>()._partCost = loadedRocket.tankCost[tankID];
+                        part.GetComponent<Tank>().tested = loadedRocket.tested[tankID];
                         tankID++;
                     }
 
@@ -311,6 +312,7 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<Tank>()._volume = loadedTank.volume;
             spawnedRocket.GetComponent<Tank>().tankMaterial = loadedTank.tankMaterial;
             spawnedRocket.GetComponent<Tank>()._partCost = loadedTank.cost;
+            spawnedRocket.GetComponent<Tank>().tested = loadedTank.tested;
             if(launchPad.GetComponent<buildingType>().anchor != null)
             {
                 spawnedRocket.transform.position = launchPad.GetComponent<buildingType>().anchor.transform.position;
@@ -442,29 +444,6 @@ public class OnClick : MonoBehaviour
         currentPrefab.transform.position = attachPoint.transform.position + difference;
         currentPrefab.transform.SetParent(capsule.transform);
         capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
-    }
-
-    public void AddFuel(GameObject tank)
-    {
-        tank.GetComponent<outputInputManager>().substance = kerosene;
-        tank.GetComponent<outputInputManager>().moles = 50;
-        tank.GetComponent<outputInputManager>().internalTemperature = 298f;
-        tank.GetComponent<outputInputManager>().internalPressure = 100f;
-    }
-
-    public void OpenValve(GameObject tank)
-    {
-        if(tank.GetComponent<outputInputManager>().selfRate == 0)
-        {
-            tank.GetComponent<outputInputManager>().selfRate = 10;
-            return;
-        }
-
-        if(tank.GetComponent<outputInputManager>().selfRate > 0)
-        {
-            tank.GetComponent<outputInputManager>().selfRate = 0;
-            return;
-        }
     }
 
     public void selectLaunchpad()

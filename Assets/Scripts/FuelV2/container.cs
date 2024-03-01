@@ -153,6 +153,7 @@ public class container : MonoBehaviour
             {
                 //GameObject toDestroy = this.gameObject.transform.parent.gameObject;
                 //Destroy(toDestroy);
+                FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to overpressure");
             }
             else if (explosion != null)
             {
@@ -165,16 +166,25 @@ public class container : MonoBehaviour
 
         if (volume > tankVolume)
         {
+            if(this.GetComponentInParent<standManager>() != null)
+            {
+                this.GetComponentInParent<standManager>().logData();
+            }
+            
             if (this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
             {
+                print("hi");
                 GameObject toDestroy = this.gameObject.transform.parent.gameObject;
-                DestroyImmediate(toDestroy);
+                FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to overfilling");
+                Destroy(toDestroy);
             }
             else if (explosion != null)
             {
+                print("hi");
+                FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to overfilling");
                 explosion.transform.parent = null;
                 explosion.Play();
-                DestroyImmediate(this.gameObject);
+                Destroy(this.gameObject);
             }
             return;
         }

@@ -81,6 +81,10 @@ public class Engine : RocketPart
                 willExplode = true;
             }
             timeOfFail = maxTime * percentageOfThrust;
+            if(timeOfFail < 2)
+            {
+                timeOfFail = 2;
+            }
         }else{
             willFail = false;
         }
@@ -106,10 +110,12 @@ public class Engine : RocketPart
                 if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
                 {
                     GameObject toDestroy = this.gameObject.transform.parent.gameObject;
+                    FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to engine failure");
                     Destroy(toDestroy);
                 }else if(explosion != null){
                     explosion.transform.parent = null;
                     explosion.Play();
+                    FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to engine failure");
                     Destroy(this.gameObject);
                 }
             }

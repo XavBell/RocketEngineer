@@ -57,7 +57,21 @@ public class PressureTestViewer : MonoBehaviour
 
     void updateQuantity()
     {
-        quantity.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().mass.ToString();
+        if(Stand.GetComponent<standManager>().ConnectedTank.GetComponent<Tank>().tested == false)
+        {
+            quantity.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().mass.ToString();
+        }else if(Stand.GetComponent<standManager>().ConnectedTank.GetComponent<Tank>().tested == true)
+        {
+            if(Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().substance != null)
+            {
+                //mass = volume * density
+                float maxQuantity = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().tankVolume * Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().substance.Density; 
+                quantity.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().mass.ToString() + "/" + maxQuantity.ToString();
+            }else{
+                quantity.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().mass.ToString();   
+            }
+        }
+        
         volume.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().volume.ToString() + "/" + Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().tankVolume.ToString();
         temperature.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().internalTemperature.ToString();
     }

@@ -100,7 +100,7 @@ public class RocketPath : MonoBehaviour
                 GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
                 if(new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                 {
-                    print("Destroyed bcs near planet");
+                    FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
                     Destroy(planetGravity.gameObject);
                 }
                 Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
@@ -116,7 +116,7 @@ public class RocketPath : MonoBehaviour
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
                 if(new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                 {
-                    print("Destroyed bcs near planet");
+                    FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
                     Destroy(planetGravity.gameObject);
                 }
                 Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
@@ -136,7 +136,7 @@ public class RocketPath : MonoBehaviour
                 GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
                 if(new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                 {
-                    print("Destroyed bcs near planet");
+                    FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
                     Destroy(planetGravity.gameObject);
                 }
                 Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
@@ -152,7 +152,7 @@ public class RocketPath : MonoBehaviour
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho,  e, a, i, n, startTime, out x, out y, out vX, out vY);
                 if(new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                 {
-                    print("Destroyed bcs near planet");
+                    FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
                     Destroy(planetGravity.gameObject);
                 }
                 Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
