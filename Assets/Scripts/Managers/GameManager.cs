@@ -648,6 +648,7 @@ public class GameManager : MonoBehaviour
                             saveRocket.volume.Add(part.GetComponent<Tank>()._volume);
                             saveRocket.propellantType.Add(part.GetComponent<Tank>().propellantCategory);
                             saveRocket.tankMaterial.Add(part.GetComponent<Tank>().tankMaterial);
+                            saveRocket.tested.Add(part.GetComponent<Tank>().tested);
                         }
 
                         //Set Engine

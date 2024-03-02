@@ -190,11 +190,11 @@ public class Prediction : MonoBehaviour
         double EA = MA;
 
 
-        for (int count = 0; count < 500; count++)
+        for (int count = 0; count < 2000; count++)
         {
             double dE = (EA - eccentricity * Math.Sin(EA) - MA) / (1 - eccentricity * Math.Cos(EA));
             EA -= dE;
-            if (Math.Abs(dE) < 1e-10)
+            if (Math.Abs(dE) < 1e-5)
             {
                 break;
             }
