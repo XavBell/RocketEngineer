@@ -87,6 +87,12 @@ public class saveWorld
     public float moonVX;
     public float moonVY;
 
+    //Sun
+    public float sunLocX;
+    public float sunLocY;
+    public float sunLocZ;
+    
+
     public List<int> childrenNumber = new List<int>();
     public List<string> types = new List<string>();
 

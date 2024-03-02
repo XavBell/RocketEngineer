@@ -79,6 +79,7 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld saveWorld = new saveWorld();
 
         saveWorld.time = FindObjectOfType<TimeManager>().time;
+        double time = FindObjectOfType<TimeManager>().time;
 
         saveWorld.cameraLocX = worldCamera.transform.localPosition.x;
         saveWorld.cameraLocY = worldCamera.transform.localPosition.y;
@@ -88,19 +89,21 @@ public class WorldSaveManager : MonoBehaviour
         saveWorld.cameraRotY = worldCamera.transform.eulerAngles.y;
         saveWorld.cameraRotZ = worldCamera.transform.eulerAngles.z;
 
-        saveWorld.earthLocX = earth.transform.localPosition.x;
-        saveWorld.earthLocY = earth.transform.localPosition.y;
+        saveWorld.earthLocX = (float)earth.GetComponent<DoubleTransform>().x_pos;
+        saveWorld.earthLocY = (float)earth.GetComponent<DoubleTransform>().y_pos;
         saveWorld.earthLocZ = earth.transform.localPosition.z;
 
         saveWorld.earthRotX = earth.transform.eulerAngles.x;
         saveWorld.earthRotY = earth.transform.eulerAngles.y;
         saveWorld.earthRotZ = earth.transform.eulerAngles.z;
 
-        saveWorld.moonLocX = moon.transform.localPosition.x;
-        saveWorld.moonLocY = moon.transform.localPosition.y;
+        saveWorld.moonLocX = (float)moon.GetComponent<DoubleTransform>().x_pos;
+        saveWorld.moonLocY = (float)moon.GetComponent<DoubleTransform>().y_pos;
         saveWorld.moonLocZ = moon.transform.localPosition.z;
+        
+        saveWorld.sunLocX = (float)sun.GetComponent<DoubleTransform>().x_pos;
+        saveWorld.sunLocY = (float)sun.GetComponent<DoubleTransform>().y_pos;
 
-        double time = FindObjectOfType<TimeManager>().time;
         saveWorld.moonVX = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
         saveWorld.moonVY = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
         saveWorld.earthVX = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
@@ -240,6 +243,7 @@ public class WorldSaveManager : MonoBehaviour
                 FindObjectOfType<TimeManager>().bypass = true;
                 earth.transform.position = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
                 moon.transform.position = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
+                sun.transform.position = new Vector3(loadedWorld.sunLocX, loadedWorld.sunLocY, 0);
 
                 earth.GetComponent<PhysicsStats>().x_vel = loadedWorld.earthVX;
                 earth.GetComponent<PhysicsStats>().y_vel = loadedWorld.earthVY;
@@ -494,9 +498,9 @@ public class WorldSaveManager : MonoBehaviour
                 worldCamera.transform.position = launchsiteManager.commandCenter.transform.position;
             }
 
+            sun.GetComponent<SunScript>().InitializeSun();
             earth.GetComponent<EarthScript>().InitializeEarth();
             moon.GetComponent<MoonScript>().InitializeMoon();
-            sun.GetComponent<SunScript>().InitializeSun();
 
             loaded = true;
         }
