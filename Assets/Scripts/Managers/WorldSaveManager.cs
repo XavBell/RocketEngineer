@@ -54,6 +54,7 @@ public class WorldSaveManager : MonoBehaviour
     public List<TVC> tvcReferences;
     public saveWorld worldToLoad = null;
     public bool rocketloaded = false;
+    public bool pendingStopDelayed = false;
 
 
     // Start is called before the first frame update
@@ -65,12 +66,12 @@ public class WorldSaveManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(loaded == true && rocketloaded == false)
+        if (loaded == true && rocketloaded == false)
         {
             FindObjectOfType<FloatingOrigin>().UpdateReferenceBody();
             rocketloaded = true;
         }
-        if(loaded == false)
+        if (loaded == false)
         {
             loadWorld();
             loadRocket(worldToLoad);
@@ -85,155 +86,171 @@ public class WorldSaveManager : MonoBehaviour
         {
             loadWorld();
         }
+
+        if(pendingStopDelayed == true)
+        {
+            if(MasterManager.GetComponent<MasterManager>().ActiveRocket == null)
+            {
+                saveTheWorld();
+            }
+            pendingStopDelayed = false;
+        }
     }
 
 
     public void saveTheWorld()
     {
-        saveWorld saveWorld = new saveWorld();
-
-        saveWorld.time = FindObjectOfType<TimeManager>().time;
-        double time = FindObjectOfType<TimeManager>().time;
-
-        saveWorld.cameraLocX = worldCamera.transform.localPosition.x;
-        saveWorld.cameraLocY = worldCamera.transform.localPosition.y;
-        saveWorld.cameraLocZ = worldCamera.transform.localPosition.z;
-
-        saveWorld.cameraRotX = worldCamera.transform.eulerAngles.x;
-        saveWorld.cameraRotY = worldCamera.transform.eulerAngles.y;
-        saveWorld.cameraRotZ = worldCamera.transform.eulerAngles.z;
-
-        saveWorld.earthLocX = (float)earth.GetComponent<DoubleTransform>().x_pos;
-        saveWorld.earthLocY = (float)earth.GetComponent<DoubleTransform>().y_pos;
-        saveWorld.earthLocZ = earth.transform.localPosition.z;
-
-        saveWorld.earthRotX = earth.transform.eulerAngles.x;
-        saveWorld.earthRotY = earth.transform.eulerAngles.y;
-        saveWorld.earthRotZ = earth.transform.eulerAngles.z;
-
-        saveWorld.moonLocX = (float)moon.GetComponent<DoubleTransform>().x_pos;
-        saveWorld.moonLocY = (float)moon.GetComponent<DoubleTransform>().y_pos;
-        saveWorld.moonLocZ = moon.transform.localPosition.z;
-        
-        saveWorld.sunLocX = (float)sun.GetComponent<DoubleTransform>().x_pos;
-        saveWorld.sunLocY = (float)sun.GetComponent<DoubleTransform>().y_pos;
-
-        saveWorld.moonVX = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
-        saveWorld.moonVY = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
-        saveWorld.earthVX = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
-        saveWorld.earthVY = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
-
-        saveWorld.nPoints = MasterManager.GetComponent<pointManager>().nPoints;
-        saveWorld.partName = MasterManager.GetComponent<MasterManager>().partName;
-        saveWorld.count = MasterManager.GetComponent<MasterManager>().count;
-        saveWorld.partType = MasterManager.GetComponent<MasterManager>().partType;
-
-        foreach(Turbine turbine in MasterManager.GetComponent<MasterManager>().turbineUnlocked)
+        if (MasterManager.GetComponent<MasterManager>().ActiveRocket == null)
         {
-            saveWorld.turbineUnlocked.Add(turbine.turbineName);
-        }
+            saveWorld saveWorld = new saveWorld();
 
-        foreach(Nozzle nozzle in MasterManager.GetComponent<MasterManager>().nozzleUnlocked)
-        {
-            saveWorld.nozzleUnlocked.Add(nozzle.nozzleName);
-        }
+            saveWorld.time = FindObjectOfType<TimeManager>().time;
+            double time = FindObjectOfType<TimeManager>().time;
 
-        foreach(Pump pump in MasterManager.GetComponent<MasterManager>().pumpUnlocked)
-        {
-            saveWorld.pumpUnlocked.Add(pump.pumpName);
-        }
+            saveWorld.cameraLocX = worldCamera.transform.localPosition.x;
+            saveWorld.cameraLocY = worldCamera.transform.localPosition.y;
+            saveWorld.cameraLocZ = worldCamera.transform.localPosition.z;
 
-        foreach(TVC tvc in MasterManager.GetComponent<MasterManager>().tvcUnlocked)
-        {
-            saveWorld.tvcUnlocked.Add(tvc.TVCName);
-        }
+            saveWorld.cameraRotX = worldCamera.transform.eulerAngles.x;
+            saveWorld.cameraRotY = worldCamera.transform.eulerAngles.y;
+            saveWorld.cameraRotZ = worldCamera.transform.eulerAngles.z;
 
-        saveWorld.tankMaterialUnlocked = MasterManager.GetComponent<MasterManager>().tankMaterialUnlocked;
+            saveWorld.earthLocX = (float)earth.GetComponent<DoubleTransform>().x_pos;
+            saveWorld.earthLocY = (float)earth.GetComponent<DoubleTransform>().y_pos;
+            saveWorld.earthLocZ = earth.transform.localPosition.z;
 
-        saveWorld.maxRocketBuildSizeX = MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeX;
-        saveWorld.maxRocketBuildSizeY = MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeY;
-        saveWorld.maxTankBuildSizeX = MasterManager.GetComponent<MasterManager>().maxTankBuildSizeX;
-        saveWorld.maxTankBuildSizeY = MasterManager.GetComponent<MasterManager>().maxTankBuildSizeY;
-        saveWorld.nodeUnlocked = MasterManager.GetComponent<MasterManager>().nodeUnlocked;
+            saveWorld.earthRotX = earth.transform.eulerAngles.x;
+            saveWorld.earthRotY = earth.transform.eulerAngles.y;
+            saveWorld.earthRotZ = earth.transform.eulerAngles.z;
 
+            saveWorld.moonLocX = (float)moon.GetComponent<DoubleTransform>().x_pos;
+            saveWorld.moonLocY = (float)moon.GetComponent<DoubleTransform>().y_pos;
+            saveWorld.moonLocZ = moon.transform.localPosition.z;
 
-        saveWorld.IDMax = BuildingManager.GetComponent<BuildingManager>().IDMax;
+            saveWorld.sunLocX = (float)sun.GetComponent<DoubleTransform>().x_pos;
+            saveWorld.sunLocY = (float)sun.GetComponent<DoubleTransform>().y_pos;
 
-        saveWorld.previouslyLoaded = true;
+            saveWorld.moonVX = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
+            saveWorld.moonVY = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
+            saveWorld.earthVX = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
+            saveWorld.earthVY = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
 
-        GameObject[] buildings = GameObject.FindGameObjectsWithTag("building");
-        foreach (GameObject building in buildings)
-        {
-            saveWorld.buildingTypes.Add(building.GetComponent<buildingType>().type);
-            saveWorld.buildingIDs.Add(building.GetComponent<buildingType>().buildingID);
-            saveWorld.buildingLocX.Add(building.transform.localPosition.x);
-            saveWorld.buildingLocY.Add(building.transform.localPosition.y);
-            saveWorld.buildingLocZ.Add(building.transform.localPosition.z);
+            saveWorld.nPoints = MasterManager.GetComponent<pointManager>().nPoints;
+            saveWorld.partName = MasterManager.GetComponent<MasterManager>().partName;
+            saveWorld.count = MasterManager.GetComponent<MasterManager>().count;
+            saveWorld.partType = MasterManager.GetComponent<MasterManager>().partType;
 
-            saveWorld.buildingRotX.Add(building.transform.eulerAngles.x);
-            saveWorld.buildingRotY.Add(building.transform.eulerAngles.y);
-            saveWorld.buildingRotZ.Add(building.transform.eulerAngles.z);
-
-            if (building.GetComponent<buildingType>().type == "launchPad")
+            foreach (Turbine turbine in MasterManager.GetComponent<MasterManager>().turbineUnlocked)
             {
-                if (building.GetComponent<launchPadManager>().ConnectedRocket != null)
+                saveWorld.turbineUnlocked.Add(turbine.turbineName);
+            }
+
+            foreach (Nozzle nozzle in MasterManager.GetComponent<MasterManager>().nozzleUnlocked)
+            {
+                saveWorld.nozzleUnlocked.Add(nozzle.nozzleName);
+            }
+
+            foreach (Pump pump in MasterManager.GetComponent<MasterManager>().pumpUnlocked)
+            {
+                saveWorld.pumpUnlocked.Add(pump.pumpName);
+            }
+
+            foreach (TVC tvc in MasterManager.GetComponent<MasterManager>().tvcUnlocked)
+            {
+                saveWorld.tvcUnlocked.Add(tvc.TVCName);
+            }
+
+            saveWorld.tankMaterialUnlocked = MasterManager.GetComponent<MasterManager>().tankMaterialUnlocked;
+
+            saveWorld.maxRocketBuildSizeX = MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeX;
+            saveWorld.maxRocketBuildSizeY = MasterManager.GetComponent<MasterManager>().maxRocketBuildSizeY;
+            saveWorld.maxTankBuildSizeX = MasterManager.GetComponent<MasterManager>().maxTankBuildSizeX;
+            saveWorld.maxTankBuildSizeY = MasterManager.GetComponent<MasterManager>().maxTankBuildSizeY;
+            saveWorld.nodeUnlocked = MasterManager.GetComponent<MasterManager>().nodeUnlocked;
+
+
+            saveWorld.IDMax = BuildingManager.GetComponent<BuildingManager>().IDMax;
+
+            saveWorld.previouslyLoaded = true;
+
+            GameObject[] buildings = GameObject.FindGameObjectsWithTag("building");
+            foreach (GameObject building in buildings)
+            {
+                saveWorld.buildingTypes.Add(building.GetComponent<buildingType>().type);
+                saveWorld.buildingIDs.Add(building.GetComponent<buildingType>().buildingID);
+                saveWorld.buildingLocX.Add(building.transform.localPosition.x);
+                saveWorld.buildingLocY.Add(building.transform.localPosition.y);
+                saveWorld.buildingLocZ.Add(building.transform.localPosition.z);
+
+                saveWorld.buildingRotX.Add(building.transform.eulerAngles.x);
+                saveWorld.buildingRotY.Add(building.transform.eulerAngles.y);
+                saveWorld.buildingRotZ.Add(building.transform.eulerAngles.z);
+
+                if (building.GetComponent<buildingType>().type == "launchPad")
                 {
-                    rocketToExclude.Add(building.GetComponent<launchPadManager>().ConnectedRocket.GetComponent<Rocket>());
+                    if (building.GetComponent<launchPadManager>().ConnectedRocket != null)
+                    {
+                        rocketToExclude.Add(building.GetComponent<launchPadManager>().ConnectedRocket.GetComponent<Rocket>());
+                    }
+
+
+                    saveWorld.padFuelGuid.Add(building.GetComponent<flowControllerForLaunchPads>().fuelGuid);
+
+                    saveWorld.padOxidizerGuid.Add(building.GetComponent<flowControllerForLaunchPads>().oxidizerGuid);
                 }
 
+                if (building.GetComponent<buildingType>().type == "staticFireStand")
+                {
 
-                saveWorld.padFuelGuid.Add(building.GetComponent<flowControllerForLaunchPads>().fuelGuid);
-                
-                saveWorld.padOxidizerGuid.Add(building.GetComponent<flowControllerForLaunchPads>().oxidizerGuid);
+                    saveWorld.staticFireFuelGuid.Add(building.GetComponent<flowControllerStaticFire>().fuelGuid);
+
+                    saveWorld.staticFireOxidizerGuid.Add(building.GetComponent<flowControllerStaticFire>().oxidizerGuid);
+                }
+
+                if (building.GetComponent<buildingType>().type == "standTank")
+                {
+                    saveWorld.standGuid.Add(building.GetComponent<flowControllerForTankStand>().originGuid);
+
+                }
             }
 
-            if (building.GetComponent<buildingType>().type == "staticFireStand")
+            Rocket[] Rockets = FindObjectsOfType<Rocket>();
+            foreach (Rocket rocket in Rockets)
             {
+                if (!rocketToExclude.Contains(rocket))
+                {
+                    print("saving rocket");
+                    saveRocket(rocket, saveWorld);
+                }
 
-                saveWorld.staticFireFuelGuid.Add(building.GetComponent<flowControllerStaticFire>().fuelGuid);
-
-                saveWorld.staticFireOxidizerGuid.Add(building.GetComponent<flowControllerStaticFire>().oxidizerGuid);
             }
 
-            if (building.GetComponent<buildingType>().type == "standTank")
+            container[] containers = FindObjectsOfType<container>();
+            foreach (container container in containers)
             {
-                saveWorld.standGuid.Add(building.GetComponent<flowControllerForTankStand>().originGuid);
-                
+                if (container.GetComponent<buildingType>())
+                {
+                    saveWorld.containerGuid.Add(container.guid);
+                }
             }
+
+            flowController[] flowControllers = FindObjectsOfType<flowController>();
+            foreach (flowController flowController in flowControllers)
+            {
+                if (flowController.GetComponent<buildingType>())
+                {
+                    saveWorld.destinationGuid.Add(flowController.destinationGuid);
+                    saveWorld.originGuid.Add(flowController.originGuid);
+                }
+            }
+
+            var jsonString = JsonConvert.SerializeObject(saveWorld);
+            System.IO.File.WriteAllText(MasterManager.GetComponent<MasterManager>().worldPath, jsonString);
         }
-
-        Rocket[] Rockets = FindObjectsOfType<Rocket>();
-        foreach (Rocket rocket in Rockets)
-        {
-            if (!rocketToExclude.Contains(rocket))
-            {
-                print("saving rocket");
-                saveRocket(rocket, saveWorld);
-            }
-
+        else{
+            FindObjectOfType<StageViewer>().Stop();
+            pendingStopDelayed = true;
         }
-
-        container[] containers = FindObjectsOfType<container>();
-        foreach(container container in containers)
-        {
-            if(container.GetComponent<buildingType>())
-            {
-                saveWorld.containerGuid.Add(container.guid);
-            }
-        }
-
-        flowController[] flowControllers = FindObjectsOfType<flowController>();
-        foreach(flowController flowController in flowControllers)
-        {
-            if(flowController.GetComponent<buildingType>())
-            {
-                saveWorld.destinationGuid.Add(flowController.destinationGuid);
-                saveWorld.originGuid.Add(flowController.originGuid);
-            }
-        }
-
-        var jsonString = JsonConvert.SerializeObject(saveWorld);
-        System.IO.File.WriteAllText(MasterManager.GetComponent<MasterManager>().worldPath, jsonString);
     }
 
     public void loadWorld()
@@ -273,44 +290,44 @@ public class WorldSaveManager : MonoBehaviour
 
                 if (loadedWorld.nodeUnlocked.Count > MasterManager.GetComponent<MasterManager>().nodeUnlocked.Count)
                 {
-                    foreach(Nozzle nozzle in nozzleReferences)
+                    foreach (Nozzle nozzle in nozzleReferences)
                     {
-                        foreach(string nozzle1 in loadedWorld.nozzleUnlocked)
+                        foreach (string nozzle1 in loadedWorld.nozzleUnlocked)
                         {
-                            if(nozzle1 == nozzle.nozzleName && !MasterManager.GetComponent<MasterManager>().nozzleUnlocked.Contains(nozzle))
+                            if (nozzle1 == nozzle.nozzleName && !MasterManager.GetComponent<MasterManager>().nozzleUnlocked.Contains(nozzle))
                             {
                                 MasterManager.GetComponent<MasterManager>().nozzleUnlocked.Add(nozzle);
                             }
                         }
                     }
 
-                    foreach(Turbine turbine in turbineReferences)
+                    foreach (Turbine turbine in turbineReferences)
                     {
-                        foreach(string turbine1 in loadedWorld.turbineUnlocked)
+                        foreach (string turbine1 in loadedWorld.turbineUnlocked)
                         {
-                            if(turbine1 == turbine.turbineName && !MasterManager.GetComponent<MasterManager>().turbineUnlocked.Contains(turbine)) 
+                            if (turbine1 == turbine.turbineName && !MasterManager.GetComponent<MasterManager>().turbineUnlocked.Contains(turbine))
                             {
                                 MasterManager.GetComponent<MasterManager>().turbineUnlocked.Add(turbine);
                             }
                         }
                     }
 
-                    foreach(Pump pump in pumpReferences)
+                    foreach (Pump pump in pumpReferences)
                     {
-                        foreach(string pump1 in loadedWorld.pumpUnlocked)
+                        foreach (string pump1 in loadedWorld.pumpUnlocked)
                         {
-                            if(pump1 == pump.pumpName && !MasterManager.GetComponent<MasterManager>().pumpUnlocked.Contains(pump))
+                            if (pump1 == pump.pumpName && !MasterManager.GetComponent<MasterManager>().pumpUnlocked.Contains(pump))
                             {
                                 MasterManager.GetComponent<MasterManager>().pumpUnlocked.Add(pump);
                             }
                         }
                     }
 
-                    foreach(TVC tvc in tvcReferences)
+                    foreach (TVC tvc in tvcReferences)
                     {
-                        foreach(string tvc1 in loadedWorld.tvcUnlocked)
+                        foreach (string tvc1 in loadedWorld.tvcUnlocked)
                         {
-                            if(tvc1 == tvc.TVCName && !MasterManager.GetComponent<MasterManager>().tvcUnlocked.Contains(tvc))
+                            if (tvc1 == tvc.TVCName && !MasterManager.GetComponent<MasterManager>().tvcUnlocked.Contains(tvc))
                             {
                                 MasterManager.GetComponent<MasterManager>().tvcUnlocked.Add(tvc);
                             }
@@ -409,9 +426,9 @@ public class WorldSaveManager : MonoBehaviour
 
             int containerIndex = 0;
             container[] containers = FindObjectsOfType<container>();
-            foreach(container container in containers)
+            foreach (container container in containers)
             {
-                if(container.GetComponent<buildingType>())
+                if (container.GetComponent<buildingType>())
                 {
                     container.guid = loadedWorld.containerGuid[containerIndex];
                     containerIndex++;
@@ -420,19 +437,19 @@ public class WorldSaveManager : MonoBehaviour
 
             int padIndex = 0;
             flowControllerForLaunchPads[] flowControllersForLaunchPads = FindObjectsOfType<flowControllerForLaunchPads>();
-            foreach(flowControllerForLaunchPads flowControllerForLaunchPads in flowControllersForLaunchPads)
+            foreach (flowControllerForLaunchPads flowControllerForLaunchPads in flowControllersForLaunchPads)
             {
                 flowControllerForLaunchPads.fuelGuid = loadedWorld.padFuelGuid[padIndex];
                 flowControllerForLaunchPads.oxidizerGuid = loadedWorld.padOxidizerGuid[padIndex];
 
-                foreach(container container in containers)
+                foreach (container container in containers)
                 {
-                    if(container.guid == flowControllerForLaunchPads.fuelGuid)
+                    if (container.guid == flowControllerForLaunchPads.fuelGuid)
                     {
                         flowControllerForLaunchPads.fuelContainerOrigin = container;
                     }
 
-                    if(container.guid == flowControllerForLaunchPads.oxidizerGuid)
+                    if (container.guid == flowControllerForLaunchPads.oxidizerGuid)
                     {
                         flowControllerForLaunchPads.oxidizerContainerOrigin = container;
                     }
@@ -443,19 +460,19 @@ public class WorldSaveManager : MonoBehaviour
 
             int staticFireStandIndex = 0;
             flowControllerStaticFire[] flowControllersStaticFire = FindObjectsOfType<flowControllerStaticFire>();
-            foreach(flowControllerStaticFire flowControllerStaticFire in flowControllersStaticFire)
+            foreach (flowControllerStaticFire flowControllerStaticFire in flowControllersStaticFire)
             {
                 flowControllerStaticFire.fuelGuid = loadedWorld.staticFireFuelGuid[staticFireStandIndex];
                 flowControllerStaticFire.oxidizerGuid = loadedWorld.staticFireOxidizerGuid[staticFireStandIndex];
 
-                foreach(container container in containers)
+                foreach (container container in containers)
                 {
-                    if(container.guid == flowControllerStaticFire.fuelGuid)
+                    if (container.guid == flowControllerStaticFire.fuelGuid)
                     {
                         flowControllerStaticFire.fuelContainer = container;
                     }
 
-                    if(container.guid == flowControllerStaticFire.oxidizerGuid)
+                    if (container.guid == flowControllerStaticFire.oxidizerGuid)
                     {
                         flowControllerStaticFire.oxidizerContainer = container;
                     }
@@ -466,12 +483,12 @@ public class WorldSaveManager : MonoBehaviour
 
             int standIndex = 0;
             flowControllerForTankStand[] flowControllersForTankStand = FindObjectsOfType<flowControllerForTankStand>();
-            foreach(flowControllerForTankStand flowControllerForTankStand in flowControllersForTankStand)
+            foreach (flowControllerForTankStand flowControllerForTankStand in flowControllersForTankStand)
             {
                 flowControllerForTankStand.originGuid = loadedWorld.standGuid[standIndex];
-                foreach(container container in containers)
+                foreach (container container in containers)
                 {
-                    if(container.guid == flowControllerForTankStand.originGuid)
+                    if (container.guid == flowControllerForTankStand.originGuid)
                     {
                         flowControllerForTankStand.origin = container;
                     }
@@ -481,20 +498,20 @@ public class WorldSaveManager : MonoBehaviour
 
             int flowControllerID = 0;
             flowController[] flowControllers = FindObjectsOfType<flowController>();
-            foreach(flowController flowController in flowControllers)
+            foreach (flowController flowController in flowControllers)
             {
-                if(flowController.GetComponent<buildingType>())
+                if (flowController.GetComponent<buildingType>())
                 {
                     flowController.originGuid = loadedWorld.originGuid[flowControllerID];
                     flowController.destinationGuid = loadedWorld.destinationGuid[flowControllerID];
-                    foreach(container container in containers)
+                    foreach (container container in containers)
                     {
-                        if(container.guid == flowController.originGuid)
+                        if (container.guid == flowController.originGuid)
                         {
                             flowController.origin = container;
                         }
 
-                        if(container.guid == flowController.destinationGuid)
+                        if (container.guid == flowController.destinationGuid)
                         {
                             flowController.destination = container;
                         }
@@ -531,11 +548,13 @@ public class WorldSaveManager : MonoBehaviour
         saveWorldRocket.state.Add(rocket.GetComponent<RocketStateManager>().state);
         saveWorldRocket.x_pos.Add(rocket.GetComponent<DoubleTransform>().x_pos);
         saveWorldRocket.y_pos.Add(rocket.GetComponent<DoubleTransform>().y_pos);
-        if(rocket.GetComponent<RocketStateManager>().state == "landed")
+        if (rocket.GetComponent<RocketStateManager>().state == "landed")
         {
             saveWorldRocket.x_pos.Add(rocket.transform.position.x);
             saveWorldRocket.y_pos.Add(rocket.transform.position.y);
-        }else{
+        }
+        else
+        {
             saveWorldRocket.x_pos.Add(rocket.GetComponent<DoubleTransform>().x_pos);
             saveWorldRocket.y_pos.Add(rocket.GetComponent<DoubleTransform>().y_pos);
         }
@@ -561,40 +580,48 @@ public class WorldSaveManager : MonoBehaviour
                 savePart.posX = part.transform.localPosition.x;
                 savePart.posY = part.transform.localPosition.y;
                 savePart.cost = part._partCost;
-                if(part._attachBottom != null)
+                if (part._attachBottom != null)
                 {
-                    if(part._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                    if (part._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                     {
                         savePart.guidBottom = part._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID;
                     }
-                }else{
+                }
+                else
+                {
                     savePart.guidBottom = Guid.Empty;
                 }
-                if(part._attachTop != null)
+                if (part._attachTop != null)
                 {
-                    if(part._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+                    if (part._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                     {
                         savePart.guidTop = part._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID;
                     }
-                }else{ 
+                }
+                else
+                {
                     savePart.guidTop = Guid.Empty;
                 }
-                if(part._attachLeft != null)
+                if (part._attachLeft != null)
                 {
-                    if(part._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                    if (part._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
                     {
                         savePart.guidLeft = part._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID;
                     }
-                }else{
+                }
+                else
+                {
                     savePart.guidLeft = Guid.Empty;
                 }
-                if(part._attachRight != null)
+                if (part._attachRight != null)
                 {
-                    if(part._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                    if (part._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
                     {
                         savePart.guidRight = part._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID;
                     }
-                }else{
+                }
+                else
+                {
                     savePart.guidRight = Guid.Empty;
                 }
 
@@ -642,7 +669,7 @@ public class WorldSaveManager : MonoBehaviour
         foreach (saveWorldRocket saveRocket in load.rockets)
         {
             print(i);
-            int stageID = 0; 
+            int stageID = 0;
             savePart core = new savePart();
             //Find core
             foreach (saveStage saveStage in saveRocket.stages)
@@ -816,7 +843,7 @@ public class WorldSaveManager : MonoBehaviour
                         }
                     }
 
-                    if(savePart == core)
+                    if (savePart == core)
                     {
                         stage.Parts.Add(root.GetComponent<RocketPart>());
                     }
@@ -825,13 +852,13 @@ public class WorldSaveManager : MonoBehaviour
 
             //Connect all parts
             int checkID = 0;
-            foreach(GameObject part in parts)
+            foreach (GameObject part in parts)
             {
                 if (guidRefTop[checkID] != Guid.Empty)
                 {
-                    foreach(GameObject part2 in parts)
+                    foreach (GameObject part2 in parts)
                     {
-                        if(part2.GetComponent<RocketPart>()._partID == guidRefTop[checkID])
+                        if (part2.GetComponent<RocketPart>()._partID == guidRefTop[checkID])
                         {
                             part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = part2;
                         }
@@ -840,9 +867,9 @@ public class WorldSaveManager : MonoBehaviour
 
                 if (guidRefBottom[checkID] != Guid.Empty)
                 {
-                    foreach(GameObject part2 in parts)
+                    foreach (GameObject part2 in parts)
                     {
-                        if(part2.GetComponent<RocketPart>()._partID == guidRefBottom[checkID])
+                        if (part2.GetComponent<RocketPart>()._partID == guidRefBottom[checkID])
                         {
                             part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody = part2;
                         }
@@ -851,9 +878,9 @@ public class WorldSaveManager : MonoBehaviour
 
                 if (guidRefLeft[checkID] != Guid.Empty)
                 {
-                    foreach(GameObject part2 in parts)
+                    foreach (GameObject part2 in parts)
                     {
-                        if(part2.GetComponent<RocketPart>()._partID == guidRefLeft[checkID])
+                        if (part2.GetComponent<RocketPart>()._partID == guidRefLeft[checkID])
                         {
                             part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody = part2;
                         }
@@ -862,9 +889,9 @@ public class WorldSaveManager : MonoBehaviour
 
                 if (guidRefRight[checkID] != Guid.Empty)
                 {
-                    foreach(GameObject part2 in parts)
+                    foreach (GameObject part2 in parts)
                     {
-                        if(part2.GetComponent<RocketPart>()._partID == guidRefRight[checkID])
+                        if (part2.GetComponent<RocketPart>()._partID == guidRefRight[checkID])
                         {
                             part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody = part2;
                         }
@@ -895,22 +922,22 @@ public class WorldSaveManager : MonoBehaviour
                 root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];
                 root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[0];
                 root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[0];
-                if(saveRocket.planetName[0] == "moon")
+                if (saveRocket.planetName[0] == "moon")
                 {
                     root.transform.parent = moon.transform;
                     root.GetComponent<RocketStateManager>().savedPlanet = moon;
                 }
-                if(saveRocket.planetName[0] == "earth")
+                if (saveRocket.planetName[0] == "earth")
                 {
                     root.transform.parent = earth.transform;
                     root.GetComponent<RocketStateManager>().savedPlanet = earth;
-                    
+
                 }
                 i++;
                 continue;
             }
 
-            if(saveRocket.state[0] == "simulate")
+            if (saveRocket.state[0] == "simulate")
             {
                 root.GetComponent<RocketStateManager>().state = "simulate";
                 root.GetComponent<RocketStateManager>().previousState = "simulate";
@@ -922,7 +949,7 @@ public class WorldSaveManager : MonoBehaviour
                 i++;
                 continue;
             }
-            i++;                
+            i++;
         }
 
     }
