@@ -18,13 +18,13 @@ public class RocketPath : MonoBehaviour
     public KeplerParams KeplerParams = new KeplerParams();
     public TimeManager MyTime;
 
-    double Ho;
-    double H;
-    double Mo;
-    double n;
+    public double Ho;
+    public double H;
+    public double Mo;
+    public double n;
     public double a;
     public double e;
-    double i;
+    public double i;
     public double startTime;
     public double lastUpdatedTime;
     public bool bypass = false;
@@ -71,7 +71,8 @@ public class RocketPath : MonoBehaviour
 
     public void CalculateParameters()
     {
-        startTime = MyTime.time;
+            startTime = MyTime.time;
+        
         if (planetGravity != null)
         {
             if (planetGravity.getPlanet() != null)
@@ -91,7 +92,7 @@ public class RocketPath : MonoBehaviour
                 CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.getPlanet().transform.position, gravityParam, startTime);
             }
         }
-        bypass = true;
+        bypass = false;
 
     }
 
@@ -99,7 +100,7 @@ public class RocketPath : MonoBehaviour
     {
         if (MyTime != null)
         {
-            if (KeplerParams.eccentricity < 1)
+            if (KeplerParams.eccentricity < 1 && KeplerParams.eccentricity != 0)
             {
                 double x = 0;
                 double y = 0;
@@ -118,14 +119,14 @@ public class RocketPath : MonoBehaviour
                 return transformV;
             }
 
-            if (KeplerParams.eccentricity > 1)
+            if (KeplerParams.eccentricity >= 1)
             {
                 double x;
                 double y;
                 double vX;
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
-
+                print(x.ToString() + y);
                 if(bypass == true)
                 {
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
@@ -142,7 +143,7 @@ public class RocketPath : MonoBehaviour
         if (MyTime == null)
         {
             MyTime = FindObjectOfType<TimeManager>();
-            if (KeplerParams.eccentricity < 1)
+            if (KeplerParams.eccentricity < 1 && KeplerParams.eccentricity != 0)
             {
                 double x = 0;
                 double y = 0;
@@ -162,13 +163,14 @@ public class RocketPath : MonoBehaviour
                 return transformV;
             }
 
-            if (KeplerParams.eccentricity > 1)
+            if (KeplerParams.eccentricity >= 1)
             {
                 double x = 0;
                 double y = 0;
                 double vX;
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
+                print(x.ToString() + y);
                 if(bypass == true)
                 {
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
@@ -181,14 +183,14 @@ public class RocketPath : MonoBehaviour
                 return transformV;
             }
         }
-        return rb.position;
+        return new Vector2(0, 0);
     }
 
     public Vector2 updateVelocity()
     {
         if (MyTime != null)
         {
-            if (KeplerParams.eccentricity < 1)
+            if (KeplerParams.eccentricity < 1 && KeplerParams.eccentricity != 0)
             {
                 double x1 = 0;
                 double y1 = 0;
@@ -212,7 +214,7 @@ public class RocketPath : MonoBehaviour
         if (MyTime == null)
         {
             MyTime = FindObjectOfType<TimeManager>();
-            if (KeplerParams.eccentricity < 1)
+            if (KeplerParams.eccentricity < 1  && KeplerParams.eccentricity != 0)
             {
                 double x1 = 0;
                 double y1 = 0;
@@ -424,7 +426,10 @@ public class RocketPath : MonoBehaviour
 
     public void CalculateParametersHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam, double time)
     {
+
         startTime = MyTime.time;
+        
+        
         //Calculate rocket position in 3D and transform it for Kepler
         UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, rocketPosition2D.y, 0);
         UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);

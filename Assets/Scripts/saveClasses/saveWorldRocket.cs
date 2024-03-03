@@ -17,6 +17,15 @@ public class saveWorldRocket
     public List<double> prev_Y = new List<double>();
     public List<double> v_x = new List<double>();
     public List<double> v_y =  new List<double>();
+    public double Ho;
+    public double H;
+    public double Mo;
+    public double n;
+    public double e;
+    public double a;
+    public double i;
+    public double lastUpdatedTime;
+    public double startTime;
     public Guid coreID;
     
 }

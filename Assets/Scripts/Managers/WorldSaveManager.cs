@@ -244,12 +244,6 @@ public class WorldSaveManager : MonoBehaviour
         FileVersionManger version = new FileVersionManger();
         if (loadedWorld.version == version.currentVersion)
         {
-            int alreadyUsed = 0;
-            int capsuleID = 0;
-
-            int engineCount = 0;
-            int tankCount = 0;
-            int decouplerCount = 0;
 
             if (loadedWorld.previouslyLoaded == true)
             {
@@ -540,6 +534,15 @@ public class WorldSaveManager : MonoBehaviour
         saveWorldRocket.prev_X.Add(rocket.GetComponent<RocketStateManager>().previous_X);
         saveWorldRocket.prev_Y.Add(rocket.GetComponent<RocketStateManager>().previous_Y);
         saveWorldRocket.keplerParams.Add(rocket.GetComponent<RocketPath>().KeplerParams);
+        saveWorldRocket.Ho = rocket.GetComponent<RocketPath>().Ho;
+        saveWorldRocket.H = rocket.GetComponent<RocketPath>().H;
+        saveWorldRocket.Mo = rocket.GetComponent<RocketPath>().Mo;
+        saveWorldRocket.n = rocket.GetComponent<RocketPath>().n;
+        saveWorldRocket.e = rocket.GetComponent<RocketPath>().e;
+        saveWorldRocket.a = rocket.GetComponent<RocketPath>().a;
+        saveWorldRocket.i = rocket.GetComponent<RocketPath>().i;
+        saveWorldRocket.lastUpdatedTime = rocket.GetComponent<RocketPath>().lastUpdatedTime;
+        saveWorldRocket.startTime = rocket.GetComponent<RocketPath>().startTime;
         saveWorldRocket.planetName.Add(rocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type);
 
         saveWorldRocket.coreID = rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
@@ -895,8 +898,23 @@ public class WorldSaveManager : MonoBehaviour
                 {
                     root.GetComponent<PlanetGravity>().setPlanet(sun);
                 }
+
                 root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[0];
+                root.GetComponent<RocketPath>().Ho = saveRocket.Ho;
+                root.GetComponent<RocketPath>().H = saveRocket.H;
+                root.GetComponent<RocketPath>().Mo = saveRocket.Mo;
+                root.GetComponent<RocketPath>().n = saveRocket.n;
+                root.GetComponent<RocketPath>().e = saveRocket.e;
+                root.GetComponent<RocketPath>().a = saveRocket.a;
+                root.GetComponent<RocketPath>().i = saveRocket.i;
+                UnityEngine.Debug.Log(root.GetComponent<RocketPath>().e.ToString() + root.GetComponent<RocketPath>().KeplerParams.eccentricity.ToString());
+                root.GetComponent<RocketPath>().lastUpdatedTime = saveRocket.lastUpdatedTime;
+                root.GetComponent<RocketPath>().startTime = saveRocket.startTime;
+
+                root.GetComponent<RocketPath>().bypass = true;
+                
                 root.GetComponent<RocketPath>().planetGravity = root.GetComponent<PlanetGravity>();
+                root.GetComponent<RocketPath>().rb = root.GetComponent<Rigidbody2D>();
                 root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[0];
                 root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];
                 root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[0];
@@ -908,13 +926,19 @@ public class WorldSaveManager : MonoBehaviour
 
             if (saveRocket.state[0] == "landed")
             {
+                print("landed");
                 root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[0];
                 root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];
                 root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[0];
                 root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[0];
+                root.GetComponent<RocketStateManager>().previousState = "none";
+                
                 if (saveRocket.planetName[0] == "moon")
                 {
                     root.transform.parent = moon.transform;
+                    root.transform.localPosition = new Vector3((float)saveRocket.x_pos[0], (float)saveRocket.y_pos[0], 0);
+                    root.GetComponent<DoubleTransform>().x_pos = root.transform.position.x;
+                    root.GetComponent<DoubleTransform>().y_pos = root.transform.position.y;
                     root.GetComponent<RocketStateManager>().savedPlanet = moon;
                 }
                 if (saveRocket.planetName[0] == "earth")
