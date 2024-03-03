@@ -944,6 +944,9 @@ public class WorldSaveManager : MonoBehaviour
                 if (saveRocket.planetName[0] == "earth")
                 {
                     root.transform.parent = earth.transform;
+                    root.transform.localPosition = new Vector3((float)saveRocket.x_pos[0], (float)saveRocket.y_pos[0], 0);
+                    root.GetComponent<DoubleTransform>().x_pos = root.transform.position.x;
+                    root.GetComponent<DoubleTransform>().y_pos = root.transform.position.y;
                     root.GetComponent<RocketStateManager>().savedPlanet = earth;
 
                 }
