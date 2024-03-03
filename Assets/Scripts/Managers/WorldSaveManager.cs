@@ -638,8 +638,10 @@ public class WorldSaveManager : MonoBehaviour
     public void loadRocket(saveWorld load)
     {
         int i = 0;
+        print(load.rockets.Count);
         foreach (saveWorldRocket saveRocket in load.rockets)
         {
+            print(i);
             int stageID = 0; 
             savePart core = new savePart();
             //Find core
@@ -725,7 +727,7 @@ public class WorldSaveManager : MonoBehaviour
                 root.GetComponent<PlanetGravity>().setCore(root);
                 root.GetComponent<Rocket>().core = root;
                 root.AddComponent<RocketStateManager>();
-                root.GetComponent<RocketStateManager>().state = saveRocket.state[i];
+                root.GetComponent<RocketStateManager>().state = saveRocket.state[0];
                 root.AddComponent<RocketPath>();
                 root.AddComponent<BodySwitcher>();
 
@@ -872,52 +874,55 @@ public class WorldSaveManager : MonoBehaviour
                 checkID++;
             }
 
-            root.GetComponent<Rigidbody2D>().velocity = new Vector2((float)saveRocket.v_x[i], (float)saveRocket.v_y[i]);
-            if (saveRocket.state[i] == "rail")
+            root.GetComponent<Rigidbody2D>().velocity = new Vector2((float)saveRocket.v_x[0], (float)saveRocket.v_y[0]);
+            if (saveRocket.state[0] == "rail")
             {
                 //Tricking state manager
                 root.GetComponent<RocketStateManager>().state = "simulate";
                 root.GetComponent<RocketStateManager>().previousState = "simulate";
-                root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[i];
-                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[i];
-                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[i];
-                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[i];
-                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[i];
+                root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[0];
+                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[0];
+                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];
+                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[0];
+                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[0];
+                i++;
+                continue;
             }
 
-            if (saveRocket.state[i] == "landed")
+            if (saveRocket.state[0] == "landed")
             {
-                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[i];
-                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[i];
-                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[i];
-                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[i];
-                if(saveRocket.planetName[i] == "moon")
+                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[0];
+                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];
+                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[0];
+                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[0];
+                if(saveRocket.planetName[0] == "moon")
                 {
                     root.transform.parent = moon.transform;
                     root.GetComponent<RocketStateManager>().savedPlanet = moon;
                 }
-                if(saveRocket.planetName[i] == "earth")
+                if(saveRocket.planetName[0] == "earth")
                 {
                     root.transform.parent = earth.transform;
                     root.GetComponent<RocketStateManager>().savedPlanet = earth;
+                    
                 }
+                i++;
+                continue;
             }
 
-            if(saveRocket.state[i] == "simulate")
+            if(saveRocket.state[0] == "simulate")
             {
                 root.GetComponent<RocketStateManager>().state = "simulate";
                 root.GetComponent<RocketStateManager>().previousState = "simulate";
-                root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[i];
-                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[i];
-                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[i];
-                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[i];
-                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[i];
+                root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[0];
+                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[0];
+                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];
+                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[0];
+                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[0];
+                i++;
+                continue;
             }
-
-
-
-            i++;
-                            
+            i++;                
         }
 
     }
