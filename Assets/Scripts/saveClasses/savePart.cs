@@ -43,4 +43,9 @@ public class savePart
     public string tankMaterial;
     public string propellantCategory;
     public bool tested;
+    public bool coolerActive;
+    public float targetTemp;
+    public float internalTemp;
+    public float quantity;
+    public string type;
 }
