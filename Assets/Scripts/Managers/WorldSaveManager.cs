@@ -68,13 +68,12 @@ public class WorldSaveManager : MonoBehaviour
     {
         if (loaded == true && rocketloaded == false)
         {
-            FindObjectOfType<FloatingOrigin>().UpdateReferenceBody();
+            loadRocket(worldToLoad);
             rocketloaded = true;
         }
         if (loaded == false)
         {
             loadWorld();
-            loadRocket(worldToLoad);
             loaded = true;
         }
         if (Input.GetKey(KeyCode.J))
@@ -92,8 +91,8 @@ public class WorldSaveManager : MonoBehaviour
             if(MasterManager.GetComponent<MasterManager>().ActiveRocket == null)
             {
                 saveTheWorld();
+                pendingStopDelayed = false;
             }
-            pendingStopDelayed = false;
         }
     }
 
@@ -115,26 +114,9 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.cameraRotY = worldCamera.transform.eulerAngles.y;
             saveWorld.cameraRotZ = worldCamera.transform.eulerAngles.z;
 
-            saveWorld.earthLocX = (float)earth.GetComponent<DoubleTransform>().x_pos;
-            saveWorld.earthLocY = (float)earth.GetComponent<DoubleTransform>().y_pos;
-            saveWorld.earthLocZ = earth.transform.localPosition.z;
-
-            saveWorld.earthRotX = earth.transform.eulerAngles.x;
-            saveWorld.earthRotY = earth.transform.eulerAngles.y;
-            saveWorld.earthRotZ = earth.transform.eulerAngles.z;
-
-            saveWorld.moonLocX = (float)moon.GetComponent<DoubleTransform>().x_pos;
-            saveWorld.moonLocY = (float)moon.GetComponent<DoubleTransform>().y_pos;
-            saveWorld.moonLocZ = moon.transform.localPosition.z;
-
-            saveWorld.sunLocX = (float)sun.GetComponent<DoubleTransform>().x_pos;
-            saveWorld.sunLocY = (float)sun.GetComponent<DoubleTransform>().y_pos;
-
-            saveWorld.moonVX = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
-            saveWorld.moonVY = moon.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
-            saveWorld.earthVX = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).x;
-            saveWorld.earthVY = earth.GetComponent<BodyPath>().GetVelocityAtTime(time).y;
-
+            saveWorld.earthK = earth.GetComponent<BodyPath>().KeplerParams;
+            saveWorld.moonK = moon.GetComponent<BodyPath>().KeplerParams;
+            
             saveWorld.nPoints = MasterManager.GetComponent<pointManager>().nPoints;
             saveWorld.partName = MasterManager.GetComponent<MasterManager>().partName;
             saveWorld.count = MasterManager.GetComponent<MasterManager>().count;
@@ -273,15 +255,10 @@ public class WorldSaveManager : MonoBehaviour
             {
                 FindObjectOfType<TimeManager>().time = loadedWorld.time;
                 FindObjectOfType<TimeManager>().bypass = true;
-                earth.transform.position = new Vector3(loadedWorld.earthLocX, loadedWorld.earthLocY, loadedWorld.earthLocZ);
-                moon.transform.position = new Vector3(loadedWorld.moonLocX, loadedWorld.moonLocY, loadedWorld.moonLocZ);
-                sun.transform.position = new Vector3(loadedWorld.sunLocX, loadedWorld.sunLocY, 0);
-
-                earth.GetComponent<PhysicsStats>().x_vel = loadedWorld.earthVX;
-                earth.GetComponent<PhysicsStats>().y_vel = loadedWorld.earthVY;
-
-                moon.GetComponent<PhysicsStats>().x_vel = loadedWorld.moonVX;
-                moon.GetComponent<PhysicsStats>().y_vel = loadedWorld.moonVY;
+                earth.GetComponent<BodyPath>().KeplerParams = loadedWorld.earthK;
+                moon.GetComponent<BodyPath>().KeplerParams = loadedWorld.moonK;
+                earth.GetComponent<BodyPath>().bypass = true;
+                moon.GetComponent<BodyPath>().bypass = true;
 
                 MasterManager.GetComponent<pointManager>().nPoints = loadedWorld.nPoints;
                 MasterManager.GetComponent<MasterManager>().partName = loadedWorld.partName;
@@ -668,7 +645,6 @@ public class WorldSaveManager : MonoBehaviour
         print(load.rockets.Count);
         foreach (saveWorldRocket saveRocket in load.rockets)
         {
-            print(i);
             int stageID = 0;
             savePart core = new savePart();
             //Find core
@@ -907,11 +883,25 @@ public class WorldSaveManager : MonoBehaviour
                 //Tricking state manager
                 root.GetComponent<RocketStateManager>().state = "simulate";
                 root.GetComponent<RocketStateManager>().previousState = "simulate";
+                if(saveRocket.planetName[0] == "moon")
+                {
+                    root.GetComponent<PlanetGravity>().setPlanet(moon);
+                }
+                if (saveRocket.planetName[0] == "earth")
+                {
+                    root.GetComponent<PlanetGravity>().setPlanet(earth);
+                }
+                if(saveRocket.planetName[0] == "sun")
+                {
+                    root.GetComponent<PlanetGravity>().setPlanet(sun);
+                }
                 root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[0];
+                root.GetComponent<RocketPath>().planetGravity = root.GetComponent<PlanetGravity>();
                 root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[0];
                 root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];
                 root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[0];
                 root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[0];
+                root.GetComponent<RocketPath>().updatePosition();
                 i++;
                 continue;
             }
@@ -941,6 +931,19 @@ public class WorldSaveManager : MonoBehaviour
             {
                 root.GetComponent<RocketStateManager>().state = "simulate";
                 root.GetComponent<RocketStateManager>().previousState = "simulate";
+                if(saveRocket.planetName[0] == "moon")
+                {
+                    root.GetComponent<PlanetGravity>().setPlanet(moon);
+                }
+                if (saveRocket.planetName[0] == "earth")
+                {
+                    root.GetComponent<PlanetGravity>().setPlanet(earth);
+                }
+                if(saveRocket.planetName[0] == "sun")
+                {
+                    root.GetComponent<PlanetGravity>().setPlanet(sun);
+                }
+                   
                 root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[0];
                 root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[0];
                 root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];

@@ -29,6 +29,7 @@ public class BodyPath : MonoBehaviour
     public Rigidbody2D rb;
 
     bool udated = false;
+    public bool bypass = false;
 
 
     
@@ -105,7 +106,10 @@ public class BodyPath : MonoBehaviour
 
         if(true == true)
         {
-            SetKeplerParams(keplerParams, rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, (float)time);
+            if(bypass == false)
+            {
+                SetKeplerParams(keplerParams, rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, (float)time);
+            }
             if(rocketVelocity2D.magnitude != 0)
             {
                 CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
@@ -373,6 +377,7 @@ public class BodyPath : MonoBehaviour
     public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time)
     {
         KtoCfromC(rocketPosition2D, planetPosition2D,rocketVelocity2D, gravityParam, time, out keplerParams.semiMajorAxis, out keplerParams.eccentricity, out keplerParams.argumentOfPeriapsis, out keplerParams.longitudeOfAscendingNode, out keplerParams.inclination, out keplerParams.timeToPeriapsis, out keplerParams.trueAnomalyAtEpoch);
+        bypass = true;
     }
 
     public static void CalculatePoints(double time, int numPoints, double gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref double[] times, ref UnityEngine.Vector3[] positions)

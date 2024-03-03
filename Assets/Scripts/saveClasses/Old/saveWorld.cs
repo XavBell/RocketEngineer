@@ -40,17 +40,7 @@ public class saveWorld
     public float nPoints;
 
     //SolarSystem
-    //Earth
-    public float earthLocX;
-    public float earthLocY;
-    public float earthLocZ;
 
-    public float earthVX;
-    public float earthVY;
-
-    public float earthRotX;
-    public float earthRotY;
-    public float earthRotZ;
 
     //Buildings
     public List<string> buildingTypes = new List<string>();
@@ -81,16 +71,9 @@ public class saveWorld
 
 
     //Moon
-    public float moonLocX;
-    public float moonLocY;
-    public float moonLocZ;
-    public float moonVX;
-    public float moonVY;
-
-    //Sun
-    public float sunLocX;
-    public float sunLocY;
-    public float sunLocZ;
+    public KeplerParams moonK;
+    public KeplerParams earthK;
+    
     
 
     public List<int> childrenNumber = new List<int>();

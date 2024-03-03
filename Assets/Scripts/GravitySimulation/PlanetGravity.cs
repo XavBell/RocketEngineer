@@ -200,8 +200,6 @@ public class PlanetGravity : MonoBehaviour
             G = SolarSystemManager.G;
         }
 
-        GetComponent<RocketStateManager>().StateUpdater();
-
         
     }
 

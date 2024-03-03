@@ -155,6 +155,15 @@ public class StageViewer : MonoBehaviour
         buildingManager.enterFlightMode();
         masterManager.ActiveRocket = rocket;
         masterManager.GetComponent<pointManager>().nPoints += 2f;
+        launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
+            foreach(launchPadManager launchPadManager in launchPadManagers)
+            {
+                if(launchPadManager.ConnectedRocket == rocket)
+                {
+                    launchPadManager.ConnectedRocket = null;
+                    return;
+                }
+            }
     }
 
     public void Stop()
