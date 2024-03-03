@@ -10,6 +10,8 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using UnityEditor.SceneManagement;
+using UnityEditor.Tilemaps;
 
 public class WorldSaveManager : MonoBehaviour
 {
@@ -50,18 +52,30 @@ public class WorldSaveManager : MonoBehaviour
     public List<Turbine> turbineReferences;
     public List<Pump> pumpReferences;
     public List<TVC> tvcReferences;
+    public saveWorld worldToLoad = null;
+    public bool rocketloaded = false;
 
 
     // Start is called before the first frame update
     void Start()
     {
         MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
-        loadWorld();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
+        if(loaded == true && rocketloaded == false)
+        {
+            FindObjectOfType<FloatingOrigin>().UpdateReferenceBody();
+            rocketloaded = true;
+        }
+        if(loaded == false)
+        {
+            loadWorld();
+            loadRocket(worldToLoad);
+            loaded = true;
+        }
         if (Input.GetKey(KeyCode.J))
         {
             saveTheWorld();
@@ -193,6 +207,7 @@ public class WorldSaveManager : MonoBehaviour
         {
             if (!rocketToExclude.Contains(rocket))
             {
+                print("saving rocket");
                 saveRocket(rocket, saveWorld);
             }
 
@@ -392,8 +407,6 @@ public class WorldSaveManager : MonoBehaviour
                 count++;
             }
 
-            //loadRocket(loadedWorld);
-
             int containerIndex = 0;
             container[] containers = FindObjectsOfType<container>();
             foreach(container container in containers)
@@ -501,7 +514,7 @@ public class WorldSaveManager : MonoBehaviour
             sun.GetComponent<SunScript>().InitializeSun();
             earth.GetComponent<EarthScript>().InitializeEarth();
             moon.GetComponent<MoonScript>().InitializeMoon();
-
+            worldToLoad = loadedWorld;
             loaded = true;
         }
         else if (loadedWorld.version != version.currentVersion)
@@ -513,10 +526,26 @@ public class WorldSaveManager : MonoBehaviour
     public void saveRocket(Rocket rocket, saveWorld save)
     {
         saveWorldRocket saveWorldRocket = new saveWorldRocket();
-        saveWorldRocket.x_pos.Add(rocket.GetComponent<DoubleTransform>().x_pos);
-        saveWorldRocket.y_pos.Add(rocket.GetComponent<DoubleTransform>().y_pos);
         saveWorldRocket.v_x.Add(rocket.GetComponent<Rigidbody2D>().velocity.x);
         saveWorldRocket.v_y.Add(rocket.GetComponent<Rigidbody2D>().velocity.y);
+        saveWorldRocket.state.Add(rocket.GetComponent<RocketStateManager>().state);
+        saveWorldRocket.x_pos.Add(rocket.GetComponent<DoubleTransform>().x_pos);
+        saveWorldRocket.y_pos.Add(rocket.GetComponent<DoubleTransform>().y_pos);
+        if(rocket.GetComponent<RocketStateManager>().state == "landed")
+        {
+            saveWorldRocket.x_pos.Add(rocket.transform.position.x);
+            saveWorldRocket.y_pos.Add(rocket.transform.position.y);
+        }else{
+            saveWorldRocket.x_pos.Add(rocket.GetComponent<DoubleTransform>().x_pos);
+            saveWorldRocket.y_pos.Add(rocket.GetComponent<DoubleTransform>().y_pos);
+        }
+        saveWorldRocket.curr_X.Add(rocket.GetComponent<RocketStateManager>().curr_X);
+        saveWorldRocket.curr_Y.Add(rocket.GetComponent<RocketStateManager>().curr_Y);
+        saveWorldRocket.prev_X.Add(rocket.GetComponent<RocketStateManager>().previous_X);
+        saveWorldRocket.prev_Y.Add(rocket.GetComponent<RocketStateManager>().previous_Y);
+        saveWorldRocket.keplerParams.Add(rocket.GetComponent<RocketPath>().KeplerParams);
+        saveWorldRocket.planetName.Add(rocket.GetComponent<PlanetGravity>().getPlanet().GetComponent<TypeScript>().type);
+
         saveWorldRocket.coreID = rocket.GetComponent<Rocket>().core.GetComponent<RocketPart>()._partID;
         foreach (Stages stage in rocket.Stages)
         {
@@ -532,6 +561,44 @@ public class WorldSaveManager : MonoBehaviour
                 savePart.posX = part.transform.localPosition.x;
                 savePart.posY = part.transform.localPosition.y;
                 savePart.cost = part._partCost;
+                if(part._attachBottom != null)
+                {
+                    if(part._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                    {
+                        savePart.guidBottom = part._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID;
+                    }
+                }else{
+                    savePart.guidBottom = Guid.Empty;
+                }
+                if(part._attachTop != null)
+                {
+                    if(part._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+                    {
+                        savePart.guidTop = part._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID;
+                    }
+                }else{ 
+                    savePart.guidTop = Guid.Empty;
+                }
+                if(part._attachLeft != null)
+                {
+                    if(part._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                    {
+                        savePart.guidLeft = part._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID;
+                    }
+                }else{
+                    savePart.guidLeft = Guid.Empty;
+                }
+                if(part._attachRight != null)
+                {
+                    if(part._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                    {
+                        savePart.guidRight = part._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>()._partID;
+                    }
+                }else{
+                    savePart.guidRight = Guid.Empty;
+                }
+
+
                 if (part._partType == "engine")
                 {
                     Engine engine = part.gameObject.GetComponent<Engine>();
@@ -559,6 +626,7 @@ public class WorldSaveManager : MonoBehaviour
                     savePart.y_scale = tank.gameObject.GetComponent<SpriteRenderer>().size.y;
                     savePart.tankMaterial = tank.tankMaterial;
                     savePart.propellantCategory = tank.propellantCategory;
+                    savePart.tested = tank.tested;
                 }
                 saveStage.Parts.Add(savePart);
             }
@@ -572,22 +640,17 @@ public class WorldSaveManager : MonoBehaviour
         int i = 0;
         foreach (saveWorldRocket saveRocket in load.rockets)
         {
-            int stageID = 0;
-            int partID = 0;
-            int corePosStage = 0;
-            int corePosPart = 0;
+            int stageID = 0; 
             savePart core = new savePart();
             //Find core
             foreach (saveStage saveStage in saveRocket.stages)
             {
-                partID = 0;
                 foreach (savePart savePart in saveStage.Parts)
                 {
                     if (savePart.guid == saveRocket.coreID)
                     {
                         core = savePart;
                     }
-                    partID++;
                 }
                 stageID++;
             }
@@ -599,7 +662,56 @@ public class WorldSaveManager : MonoBehaviour
             {
                 root = Instantiate(Satellite);
                 root.AddComponent<Rocket>();
+
             }
+
+            if (core.type == "engine")
+            {
+                root = Instantiate(Engine);
+                root.AddComponent<Rocket>();
+                Engine engine = root.gameObject.GetComponent<Engine>();
+                engine._thrust = core.thrust;
+                engine._tvcSpeed = core.tvcSpeed;
+                engine._rate = core.rate;
+                engine.reliability = core.reliability;
+                engine._turbineName = core.turbineName;
+                engine._nozzleName = core.nozzleName;
+                engine._pumpName = core.pumpName;
+                engine._tvcName = core.tvcName;
+                engine._maxAngle = core.maxAngle;
+                engine.maxTime = core.maxTime;
+                engine.willExplode = core.willExplode;
+                engine.willFail = core.willFail;
+                engine.timeOfFail = core.timeOfFail;
+                engine.operational = core.operational;
+            }
+
+            if (core.type == "tank")
+            {
+                root = Instantiate(Tank);
+                root.AddComponent<Rocket>();
+                Tank tank = root.gameObject.GetComponent<Tank>();
+                tank._volume = core._volume;
+                tank.gameObject.GetComponent<SpriteRenderer>().size = new Vector2(core.x_scale, core.y_scale);
+                tank.tankMaterial = core.tankMaterial;
+                tank.propellantCategory = core.propellantCategory;
+                tank.transform.localScale = new Vector3(1, 1, 0);
+                tank.x_scale = core.x_scale;
+                tank.y_scale = core.y_scale;
+                tank.tested = core.tested;
+            }
+
+            if (core.type == "decoupler")
+            {
+                root = Instantiate(Decoupler);
+                root.AddComponent<Rocket>();
+            }
+
+            List<GameObject> parts = new List<GameObject>();
+            List<Guid> guidRefTop = new List<Guid>();
+            List<Guid> guidRefBottom = new List<Guid>();
+            List<Guid> guidRefLeft = new List<Guid>();
+            List<Guid> guidRefRight = new List<Guid>();
 
             if (root != null)
             {
@@ -613,13 +725,28 @@ public class WorldSaveManager : MonoBehaviour
                 root.GetComponent<PlanetGravity>().setCore(root);
                 root.GetComponent<Rocket>().core = root;
                 root.AddComponent<RocketStateManager>();
+                root.GetComponent<RocketStateManager>().state = saveRocket.state[i];
                 root.AddComponent<RocketPath>();
                 root.AddComponent<BodySwitcher>();
+
+                root.GetComponent<RocketPart>()._partMass = core.mass;
+                root.GetComponent<RocketPart>()._partID = core.guid;
+                root.GetComponent<RocketPart>()._partCost = core.cost;
+                root.GetComponent<RocketPart>()._partName = core.name;
+                root.GetComponent<RocketPart>()._path = core.path;
+
+                parts.Add(root);
+                guidRefTop.Add(core.guidTop);
+                guidRefBottom.Add(core.guidBottom);
+                guidRefLeft.Add(core.guidLeft);
+                guidRefRight.Add(core.guidRight);
             }
 
             //Load all parts
             foreach (saveStage saveStage in saveRocket.stages)
             {
+                Stages stage = new Stages();
+                root.GetComponent<Rocket>().Stages.Add(stage);
                 foreach (savePart savePart in saveStage.Parts)
                 {
                     GameObject currentPart = null;
@@ -659,6 +786,9 @@ public class WorldSaveManager : MonoBehaviour
                             tank.tankMaterial = savePart.tankMaterial;
                             tank.propellantCategory = savePart.propellantCategory;
                             tank.transform.localScale = new Vector3(1, 1, 0);
+                            tank.x_scale = savePart.x_scale;
+                            tank.y_scale = savePart.y_scale;
+                            tank.tested = savePart.tested;
                         }
 
                         if (savePart.type == "decoupler")
@@ -672,13 +802,124 @@ public class WorldSaveManager : MonoBehaviour
                             currentPart.GetComponent<RocketPart>()._partMass = savePart.mass;
                             currentPart.GetComponent<RocketPart>()._partID = savePart.guid;
                             currentPart.GetComponent<RocketPart>()._partCost = savePart.cost;
+                            currentPart.GetComponent<RocketPart>()._partName = savePart.name;
+                            currentPart.GetComponent<RocketPart>()._partType = savePart.type;
+                            currentPart.GetComponent<RocketPart>()._path = savePart.path;
+                            parts.Add(currentPart);
+                            guidRefTop.Add(savePart.guidTop);
+                            guidRefBottom.Add(savePart.guidBottom);
+                            guidRefLeft.Add(savePart.guidLeft);
+                            guidRefRight.Add(savePart.guidRight);
+                            stage.Parts.Add(currentPart.GetComponent<RocketPart>());
                         }
+                    }
+
+                    if(savePart == core)
+                    {
+                        stage.Parts.Add(root.GetComponent<RocketPart>());
                     }
                 }
             }
 
+            //Connect all parts
+            int checkID = 0;
+            foreach(GameObject part in parts)
+            {
+                if (guidRefTop[checkID] != Guid.Empty)
+                {
+                    foreach(GameObject part2 in parts)
+                    {
+                        if(part2.GetComponent<RocketPart>()._partID == guidRefTop[checkID])
+                        {
+                            part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = part2;
+                        }
+                    }
+                }
+
+                if (guidRefBottom[checkID] != Guid.Empty)
+                {
+                    foreach(GameObject part2 in parts)
+                    {
+                        if(part2.GetComponent<RocketPart>()._partID == guidRefBottom[checkID])
+                        {
+                            part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody = part2;
+                        }
+                    }
+                }
+
+                if (guidRefLeft[checkID] != Guid.Empty)
+                {
+                    foreach(GameObject part2 in parts)
+                    {
+                        if(part2.GetComponent<RocketPart>()._partID == guidRefLeft[checkID])
+                        {
+                            part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody = part2;
+                        }
+                    }
+                }
+
+                if (guidRefRight[checkID] != Guid.Empty)
+                {
+                    foreach(GameObject part2 in parts)
+                    {
+                        if(part2.GetComponent<RocketPart>()._partID == guidRefRight[checkID])
+                        {
+                            part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody = part2;
+                        }
+                    }
+                }
+
+                checkID++;
+            }
+
+            root.GetComponent<Rigidbody2D>().velocity = new Vector2((float)saveRocket.v_x[i], (float)saveRocket.v_y[i]);
+            if (saveRocket.state[i] == "rail")
+            {
+                //Tricking state manager
+                root.GetComponent<RocketStateManager>().state = "simulate";
+                root.GetComponent<RocketStateManager>().previousState = "simulate";
+                root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[i];
+                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[i];
+                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[i];
+                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[i];
+                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[i];
+            }
+
+            if (saveRocket.state[i] == "landed")
+            {
+                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[i];
+                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[i];
+                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[i];
+                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[i];
+                if(saveRocket.planetName[i] == "moon")
+                {
+                    root.transform.parent = moon.transform;
+                    root.GetComponent<RocketStateManager>().savedPlanet = moon;
+                }
+                if(saveRocket.planetName[i] == "earth")
+                {
+                    root.transform.parent = earth.transform;
+                    root.GetComponent<RocketStateManager>().savedPlanet = earth;
+                }
+            }
+
+            if(saveRocket.state[i] == "simulate")
+            {
+                root.GetComponent<RocketStateManager>().state = "simulate";
+                root.GetComponent<RocketStateManager>().previousState = "simulate";
+                root.GetComponent<RocketPath>().KeplerParams = saveRocket.keplerParams[i];
+                root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[i];
+                root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[i];
+                root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[i];
+                root.GetComponent<RocketStateManager>().previous_Y = (float)saveRocket.prev_Y[i];
+            }
+
+
+
             i++;
+                            
         }
+
     }
 
 }

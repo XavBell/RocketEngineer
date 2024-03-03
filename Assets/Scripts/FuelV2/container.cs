@@ -49,6 +49,7 @@ public class container : MonoBehaviour
         {
             calculateInternalConditions();
             checkBreak();
+            
         }
         
     }

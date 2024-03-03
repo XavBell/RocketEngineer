@@ -45,8 +45,10 @@ public class rocketCursorManager : MonoBehaviour
 
     public void clickDelayed()
     {
+        print("here");
         if (runClickDelay == true)
         {
+            runClickDelay = false;
             floatingOrigin.closestPlanet = null;
             if (masterManager.ActiveRocket != null)
             {
@@ -84,7 +86,6 @@ public class rocketCursorManager : MonoBehaviour
             stageViewer.updateStagesView(false);
             stageViewer.updateInfoPerStage(false);
             floatingOrigin.bypass = true;
-            runClickDelay = false;
             Physics.SyncTransforms();
         }
 

@@ -24,8 +24,32 @@ public class RocketStateManager : MonoBehaviour
 
     public bool ran = false;
 
+    public bool initialized = false;
+
     // Start is called before the first frame update
     void Start()
+    {
+        Initialize();
+    }
+
+    // Update is called once per frame
+    void FixedUpdate()
+    {
+        if(GetComponent<PlanetGravity>().getCamera() != null)
+        {
+            Initialize();
+        }
+        if(initialized == true)
+        {
+            StateUpdater();
+        UpdatePosition();
+        Physics.SyncTransforms();
+        }
+        
+        ran = false;
+    }
+
+    public void Initialize()
     {
         planetGravity = this.GetComponent<PlanetGravity>();
         prediction = this.GetComponent<RocketPath>();
@@ -33,15 +57,8 @@ public class RocketStateManager : MonoBehaviour
         bodySwitcher = this.GetComponent<BodySwitcher>();
         MyTime = FindObjectOfType<TimeManager>();
         floatingOrigin = FindObjectOfType<FloatingOrigin>();
-    }
+        initialized = true;
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        StateUpdater();
-        UpdatePosition();
-        Physics.SyncTransforms();
-        ran = false;
     }
 
     void Update()
@@ -69,6 +86,7 @@ public class RocketStateManager : MonoBehaviour
                 doublePos.y_pos = this.transform.localPosition.y;
             }
             previousState = state;
+
             return;
         }
 
@@ -88,10 +106,11 @@ public class RocketStateManager : MonoBehaviour
                 planetGravity.updateReferenceBody();                
             }
             previousState = state;
+
             return;
         }
 
-        if((planetGravity.possessed == false || MyTime.scaler != 1) && previousState != "landed" & planetGravity.rb.velocity.magnitude > 1)
+        if(((planetGravity.possessed == false || MyTime.scaler != 1) && previousState != "landed" & planetGravity.rb.velocity.magnitude > 1))
         {
             state = "rail";
             if(previousState != state)
@@ -113,6 +132,7 @@ public class RocketStateManager : MonoBehaviour
 
     public void UpdatePosition()
     {
+
 
         if(state == "simulate")
         {

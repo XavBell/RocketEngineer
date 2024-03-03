@@ -42,4 +42,5 @@ public class savePart
     public float y_scale;
     public string tankMaterial;
     public string propellantCategory;
+    public bool tested;
 }

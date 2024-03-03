@@ -21,9 +21,12 @@ public class GaugeManager : MonoBehaviour
     void Update()
     {
         container = GetComponentInParent<FuelTankMonitor>().container;
-        if(container.mass != 0)
+        if (container != null)
         {
-            calculateIndicatorRotation();
+            if (container.mass != 0)
+            {
+                calculateIndicatorRotation();
+            }
         }
     }
 

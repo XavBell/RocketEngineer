@@ -13,6 +13,11 @@ public class externalTemperatureController : MonoBehaviour
     {
         Planets = FindObjectsOfType<TypeScript>();
         solarSystemManager = FindObjectOfType<SolarSystemManager>();
+        updateExternalTemp();
+        if(container.internalTemperature == 0)
+        {
+            container.internalTemperature = container.externalTemperature;
+        }
     }
 
     // Update is called once per frame

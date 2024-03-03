@@ -200,6 +200,15 @@ public class StageViewer : MonoBehaviour
             buildingManager.exitFlightMode();
             floatingOrigin.bypass = true;
             runStopDelay = false;
+            launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
+            foreach(launchPadManager launchPadManager in launchPadManagers)
+            {
+                if(launchPadManager.ConnectedRocket == rocket)
+                {
+                    launchPadManager.ConnectedRocket = null;
+                    return;
+                }
+            }
             Physics.SyncTransforms();
         }
     }
@@ -219,6 +228,15 @@ public class StageViewer : MonoBehaviour
         this.gameObject.SetActive(false);
         masterManager.ActiveRocket = null;
         camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
+        launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
+        foreach (launchPadManager launchPadManager in launchPadManagers)
+        {
+            if (launchPadManager.ConnectedRocket == rocket)
+            {
+                launchPadManager.ConnectedRocket = null;
+                return;
+            }
+        }
         buildingManager.exitFlightMode();
     }
 }

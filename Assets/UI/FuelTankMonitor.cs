@@ -30,9 +30,12 @@ public class FuelTankMonitor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(container.substance != null)
+        if(container != null)
         {
-            updateValues();
+            if(container.substance != null)
+            {
+                updateValues();
+            }
         }
     }
 

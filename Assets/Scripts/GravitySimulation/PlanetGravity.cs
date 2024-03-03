@@ -75,7 +75,7 @@ public class PlanetGravity : MonoBehaviour
     private pointManager pointManager;
 
     public SolarSystemManager SolarSystemManager;
-    private Camera cam;
+    public Camera cam;
     public Camera getCamera()
     {
         return cam;
@@ -84,24 +84,15 @@ public class PlanetGravity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SolarSystemManager = FindObjectOfType<SolarSystemManager>();
-        rb = GetComponent<Rigidbody2D>();
-        core.GetComponent<Rocket>().updateMass();
-        pointManager = FindObjectOfType<pointManager>();
-        rb.mass = core.GetComponent<Rocket>().rocketMass;
-        if (SceneManager.GetActiveScene().name == "SampleScene")
-        {
-            cam = GameObject.FindObjectOfType<Camera>();
-            G = SolarSystemManager.G;
-        }
-
+        
+        
     }
 
     void FixedUpdate()
     {
         checkManager();
 
-        if (SceneManager.GetActiveScene().name == "SampleScene" && cam != null)
+        if (SceneManager.GetActiveScene().name == "SampleScene")
         {
             initializeRocket();
             updateReferenceBody();
@@ -195,9 +186,23 @@ public class PlanetGravity : MonoBehaviour
     {
         if (initialized == false)
         {
+            SolarSystemManager = FindObjectOfType<SolarSystemManager>();
             rb = GetComponent<Rigidbody2D>();
+            core.GetComponent<Rocket>().updateMass();
+            pointManager = FindObjectOfType<pointManager>();
+            rb.mass = core.GetComponent<Rocket>().rocketMass;
             initialized = true;
         }
+        
+        if (SceneManager.GetActiveScene().name == "SampleScene")
+        {
+            cam = GameObject.FindObjectOfType<Camera>();
+            G = SolarSystemManager.G;
+        }
+
+        GetComponent<RocketStateManager>().StateUpdater();
+
+        
     }
 
     public void updateReferenceBody()
