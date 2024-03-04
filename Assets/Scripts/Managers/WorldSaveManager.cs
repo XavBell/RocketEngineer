@@ -56,6 +56,9 @@ public class WorldSaveManager : MonoBehaviour
     public bool rocketloaded = false;
     public bool pendingStopDelayed = false;
 
+    public Substance kerosene;
+    public Substance LOX;
+
 
     // Start is called before the first frame update
     void Start()
@@ -213,6 +216,22 @@ public class WorldSaveManager : MonoBehaviour
                 if (container.GetComponent<buildingType>())
                 {
                     saveWorld.containerGuid.Add(container.guid);
+                    saveWorld.quantity.Add(container.moles);
+                    if(container.GetComponent<cooler>() != null)
+                    {
+                        saveWorld.coolerActive.Add(container.GetComponent<cooler>().active);
+                        saveWorld.targetTemp.Add(container.GetComponent<cooler>().targetTemperature);
+                    }else{
+                        saveWorld.coolerActive.Add(false);
+                        saveWorld.targetTemp.Add(0);
+                    }
+                    saveWorld.internalTemp.Add(container.internalTemperature);
+                    if(container.substance != null)
+                    {
+                        saveWorld.fuelType.Add(container.substance.Name);
+                    }else{
+                        saveWorld.fuelType.Add("none");
+                    }
                 }
             }
 
@@ -402,6 +421,21 @@ public class WorldSaveManager : MonoBehaviour
                 if (container.GetComponent<buildingType>())
                 {
                     container.guid = loadedWorld.containerGuid[containerIndex];
+                    container.moles = loadedWorld.quantity[containerIndex];
+                    if(container.GetComponent<cooler>() != null)
+                    {
+                        container.GetComponent<cooler>().active = loadedWorld.coolerActive[containerIndex];
+                        container.GetComponent<cooler>().targetTemperature = loadedWorld.targetTemp[containerIndex];
+                    }
+                    container.internalTemperature = loadedWorld.internalTemp[containerIndex];
+                    if(loadedWorld.fuelType[containerIndex] == "kerosene")
+                    {
+                        container.substance = kerosene;
+                    }
+                    if(loadedWorld.fuelType[containerIndex] == "LOX")
+                    {
+                        container.substance = LOX;
+                    }
                     containerIndex++;
                 }
             }
@@ -634,6 +668,16 @@ public class WorldSaveManager : MonoBehaviour
                     savePart.tankMaterial = tank.tankMaterial;
                     savePart.propellantCategory = tank.propellantCategory;
                     savePart.tested = tank.tested;
+                    savePart.coolerActive = tank.GetComponent<cooler>().active;
+                    savePart.targetTemp = tank.GetComponent<cooler>().targetTemperature;
+                    savePart.internalTemp = tank.GetComponent<container>().internalTemperature;
+                    savePart.quantity = tank.GetComponent<container>().moles;
+                    if(tank.GetComponent<container>().substance != null)
+                    {
+                        savePart.fuelType = tank.GetComponent<container>().substance.Name;
+                    }else{
+                        savePart.fuelType = "none";
+                    }
                 }
                 saveStage.Parts.Add(savePart);
             }
@@ -707,6 +751,18 @@ public class WorldSaveManager : MonoBehaviour
                 tank.x_scale = core.x_scale;
                 tank.y_scale = core.y_scale;
                 tank.tested = core.tested;
+                tank.GetComponent<cooler>().active = core.coolerActive;
+                tank.GetComponent<cooler>().targetTemperature = core.targetTemp;
+                tank.GetComponent<container>().internalTemperature = core.internalTemp;
+                tank.GetComponent<container>().moles = core.quantity;
+                if(core.fuelType == "kerosene")
+                {
+                    tank.GetComponent<container>().substance = kerosene;
+                }
+                if(core.fuelType == "LOX")
+                {
+                    tank.GetComponent<container>().substance = LOX;
+                }
             }
 
             if (core.type == "decoupler")
@@ -797,6 +853,18 @@ public class WorldSaveManager : MonoBehaviour
                             tank.x_scale = savePart.x_scale;
                             tank.y_scale = savePart.y_scale;
                             tank.tested = savePart.tested;
+                            tank.GetComponent<cooler>().active = savePart.coolerActive;
+                            tank.GetComponent<cooler>().targetTemperature = savePart.targetTemp;
+                            tank.GetComponent<container>().internalTemperature = savePart.internalTemp;
+                            tank.GetComponent<container>().moles = savePart.quantity;
+                            if(savePart.fuelType == "kerosene")
+                            {
+                                tank.GetComponent<container>().substance = kerosene;
+                            }
+                            if(savePart.fuelType == "LOX")
+                            {
+                                tank.GetComponent<container>().substance = LOX;
+                            }
                         }
 
                         if (savePart.type == "decoupler")

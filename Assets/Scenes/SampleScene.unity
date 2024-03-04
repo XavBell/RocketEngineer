@@ -18582,6 +18582,7 @@ MonoBehaviour:
   start: 0
   MyTime: {fileID: 0}
   rb: {fileID: 0}
+  bypass: 0
 --- !u!114 &680244252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43112,6 +43113,52 @@ MonoBehaviour:
   tvcReferences:
   - {fileID: 11400000, guid: 933dffb15f4fe4921b7cdc959fba9913, type: 2}
   - {fileID: 11400000, guid: 68d3a679d02ee4796801aecd870f9964, type: 2}
+  worldToLoad:
+    version: 0.0.4
+    previouslyLoaded: 0
+    time: 0
+    IDMax: 0
+    cameraLocX: 0
+    cameraLocY: 0
+    cameraLocZ: 0
+    cameraRotX: 0
+    cameraRotY: 0
+    cameraRotZ: 0
+    partType: []
+    partName: []
+    count: 
+    turbineUnlocked: []
+    pumpUnlocked: []
+    nozzleUnlocked: []
+    tvcUnlocked: []
+    tankMaterialUnlocked: []
+    maxTankBuildSizeX: 0
+    maxTankBuildSizeY: 0
+    maxRocketBuildSizeX: 0
+    maxRocketBuildSizeY: 0
+    nodeUnlocked: []
+    nPoints: 0
+    buildingTypes: []
+    buildingIDs: 
+    buildingLocX: []
+    buildingLocY: []
+    buildingLocZ: []
+    buildingScaleX: []
+    buildingScaleY: []
+    buildingRotX: []
+    buildingRotY: []
+    buildingRotZ: []
+    quantity: []
+    coolerActive: 
+    targetTemp: []
+    internalTemp: []
+    fuelType: []
+    childrenNumber: 
+    types: []
+  rocketloaded: 0
+  pendingStopDelayed: 0
+  kerosene: {fileID: 11400000, guid: 05ae07b033cc5440e859c85851a178f9, type: 2}
+  LOX: {fileID: 11400000, guid: 70e88540e073b4b8a83b9437ba75511d, type: 2}
 --- !u!4 &1533443822
 Transform:
   m_ObjectHideFlags: 0
@@ -61801,6 +61848,7 @@ MonoBehaviour:
   start: 0
   MyTime: {fileID: 0}
   rb: {fileID: 0}
+  bypass: 0
 --- !u!1001 &6067550310254388866
 PrefabInstance:
   m_ObjectHideFlags: 0

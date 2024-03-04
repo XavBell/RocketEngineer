@@ -56,7 +56,13 @@ public class saveWorld
     public List<float> buildingRotY = new List<float>();
     public List<float> buildingRotZ = new List<float>();
 
+    //Container
     public List<Guid> containerGuid = new List<Guid>();
+    public List<float> quantity = new List<float>();
+    public List<bool> coolerActive = new List<bool>();
+    public List<float> targetTemp = new List<float>();
+    public List<float> internalTemp = new List<float>();
+    public List<string> fuelType = new List<string>();
 
     public List<Guid> padFuelGuid = new List<Guid>();
     public List<Guid> padOxidizerGuid = new List<Guid>();

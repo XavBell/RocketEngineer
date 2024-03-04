@@ -9,6 +9,7 @@ public class CollisionDestroyer : MonoBehaviour
         if(collision.relativeVelocity.magnitude > 40)
         {
             FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destruction due to collision with another object");
+            Destroy(gameObject);
         }
 
     }

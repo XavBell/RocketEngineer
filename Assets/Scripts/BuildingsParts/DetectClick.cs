@@ -58,6 +58,7 @@ public class DetectClick : MonoBehaviour
                         {
                             fuelTankUI.SetActive(true);
                             buildingManager.hidePanels(fuelTankUI);
+                            fuelTankUI.GetComponent<FuelTankMonitor>().target.text = "";
                             fuelTankUI.GetComponent<FuelTankMonitor>().container = current.GetComponent<container>();
                             fuelTankUI.GetComponent<FuelTankMonitor>().gasVent = current.GetComponent<gasVent>();
                             fuelTankUI.GetComponent<FuelTankMonitor>().cooler = current.GetComponent<cooler>();
@@ -73,6 +74,7 @@ public class DetectClick : MonoBehaviour
                                 StartCoroutine(ActiveDeactive(0.1f, fuelTankUI, false));
                             }else{
                                 //Update data for new tank
+                                fuelTankUI.GetComponent<FuelTankMonitor>().target.text = "";
                                 fuelTankUI.GetComponent<FuelTankMonitor>().container = current.GetComponent<container>();
                                 fuelTankUI.GetComponent<FuelTankMonitor>().gasVent = current.GetComponent<gasVent>();
                                 fuelTankUI.GetComponent<FuelTankMonitor>().cooler = current.GetComponent<cooler>();

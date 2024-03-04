@@ -47,5 +47,5 @@ public class savePart
     public float targetTemp;
     public float internalTemp;
     public float quantity;
-    public string type;
+    public string fuelType;
 }

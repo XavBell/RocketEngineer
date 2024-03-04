@@ -17,7 +17,7 @@ public class FuelTankMonitor : MonoBehaviour
     [SerializeField]private TMP_Text targetTemperature;
     [SerializeField]private float rate;
 
-    [SerializeField]private TMP_InputField target;
+    [SerializeField]public TMP_InputField target;
     [SerializeField]public container container;
     [SerializeField]public gasVent gasVent;
     [SerializeField]public cooler cooler;
