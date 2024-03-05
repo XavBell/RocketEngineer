@@ -107,7 +107,7 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
-                if(bypass == true)
+                if(bypass == false)
                 {
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                     {
@@ -126,7 +126,7 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
-                if(bypass == true)
+                if(bypass == false)
                 {
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                     {
@@ -149,7 +149,7 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y, out vX, out vY);
-                if (bypass == true)
+                if (bypass == false)
                 {
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                     {
@@ -170,7 +170,7 @@ public class RocketPath : MonoBehaviour
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
                 print(x.ToString() + y);
-                if(bypass == true)
+                if(bypass == false)
                 {
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                     {
