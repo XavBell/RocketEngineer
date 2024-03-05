@@ -779,7 +779,7 @@ public class WorldSaveManager : MonoBehaviour
 
             if (root != null)
             {
-                root.transform.position = new Vector3((float)saveRocket.x_pos[i], (float)saveRocket.y_pos[i], 0);
+                root.transform.position = new Vector3((float)saveRocket.x_pos[0], (float)saveRocket.y_pos[0], 0);
                 root.AddComponent<Rigidbody2D>();
                 root.GetComponent<Rigidbody2D>().angularDrag = 0;
                 root.GetComponent<Rigidbody2D>().freezeRotation = true;
@@ -948,7 +948,10 @@ public class WorldSaveManager : MonoBehaviour
                 checkID++;
             }
 
-            root.GetComponent<Rigidbody2D>().velocity = new Vector2((float)saveRocket.v_x[0], (float)saveRocket.v_y[0]);
+            if((float)saveRocket.v_x[0] != float.NaN && (float)saveRocket.v_y[0] != float.NaN)
+            {
+                root.GetComponent<Rigidbody2D>().velocity = new Vector2((float)saveRocket.v_x[0], (float)saveRocket.v_y[0]);
+            }
             if (saveRocket.state[0] == "rail")
             {
                 //Tricking state manager

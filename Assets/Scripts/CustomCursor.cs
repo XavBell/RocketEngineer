@@ -36,21 +36,14 @@ public class CustomCursor : MonoBehaviour
 
         if(sp != null && SceneManager.GetActiveScene().name == "SampleScene")
         {
-            if(true)
-            {
-                Vector2 position = this.transform.position;
-                Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
-                float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
-                position = (v.normalized*-(planetRadius + sp.size.y/2));
-                position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
-                this.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
-                this.transform.position = position;
-            }
-
-
+            Vector2 position = this.transform.position;
+            Vector2 v = new Vector2(earth.transform.position.x, earth.transform.position.y) - position;
+            float lookAngle = 90 + Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+            position = (v.normalized*-(planetRadius + sp.size.y/2));
+            position+= new Vector2(earth.transform.position.x, earth.transform.position.y);
+            this.transform.rotation = Quaternion.Euler(0f, 0f, lookAngle);
+            this.transform.position = position;
         }
-
-        
     }
 
     void OnTriggerStay2D(Collider2D other)

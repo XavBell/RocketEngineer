@@ -30,7 +30,7 @@ public class PlanetGravity : MonoBehaviour
     {
         this.planet = _planet;
     }
-    
+
     private float Mass = 0f; //Planet mass in kg
     public float getMass()
     {
@@ -84,8 +84,8 @@ public class PlanetGravity : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        
+
+
     }
 
     void FixedUpdate()
@@ -125,9 +125,9 @@ public class PlanetGravity : MonoBehaviour
     //Gain points if rocket is active
     void gainPoints()
     {
-        if(rb.velocity.magnitude > 20)
+        if (rb.velocity.magnitude > 20)
         {
-            pointManager.nPoints += 0.1f*TimeManager.deltaTime;
+            pointManager.nPoints += 0.1f * TimeManager.deltaTime;
         }
     }
 
@@ -142,12 +142,12 @@ public class PlanetGravity : MonoBehaviour
         Vector3 DragVector = new Vector3(0, 0, 0);
         if (Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 5 && aeroCoefficient > 0)
         {
-            double airPressure = 5*Math.Pow(Math.E, (-(Dist-planetRadius)*aeroCoefficient));
+            double airPressure = 5 * Math.Pow(Math.E, (-(Dist - planetRadius) * aeroCoefficient));
             double drag = baseCoefficient * airPressure * rb.velocity.magnitude / 2;
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
-        if(Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity )
+        if (Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity)
         {
             rb.AddForce(ResultVector);
         }
@@ -188,19 +188,23 @@ public class PlanetGravity : MonoBehaviour
         {
             SolarSystemManager = FindObjectOfType<SolarSystemManager>();
             rb = GetComponent<Rigidbody2D>();
-            core.GetComponent<Rocket>().updateMass();
-            pointManager = FindObjectOfType<pointManager>();
-            rb.mass = core.GetComponent<Rocket>().rocketMass;
-            initialized = true;
+            if (core != null)
+            {
+                core.GetComponent<Rocket>().updateMass();
+                pointManager = FindObjectOfType<pointManager>();
+                rb.mass = core.GetComponent<Rocket>().rocketMass;
+                initialized = true;
+            }
+
         }
-        
+
         if (SceneManager.GetActiveScene().name == "SampleScene")
         {
             cam = GameObject.FindObjectOfType<Camera>();
             G = SolarSystemManager.G;
         }
 
-        
+
     }
 
     public void updateReferenceBody()
@@ -217,69 +221,93 @@ public class PlanetGravity : MonoBehaviour
         GameObject earth = FindObjectOfType<EarthScript>().gameObject;
         GameObject sun = FindObjectOfType<SunScript>().gameObject;
 
-        if (previous != planet && possessed == true && previous != null)
+        if (previous != planet && possessed == true && previous != null && rb.velocity.magnitude != float.NaN)
         {
             exitTimewarp();
 
-            
+
             //Earth to Moon
             if (planet == moon && previous == earth)
             {
                 Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
-                rb.velocity -= new Vector2(velocity.x, velocity.y);
+                if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
+                {
+                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                }
             }
 
             //Moon to Earth
             if (previous == moon && planet == earth)
             {
                 Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
-                rb.velocity += new Vector2(velocity.x, velocity.y);
+                if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
+                {
+                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                }
             }
 
             //Sun to Earth
             if (previous == sun && planet == earth)
             {
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
-                rb.velocity -= new Vector2(velocity.x, velocity.y);
+                if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
+                {
+                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                }
             }
 
             //EarthToSun
             if (planet == sun && previous == earth)
             {
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
-                rb.velocity += new Vector2(velocity.x, velocity.y);
+                if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
+                {
+                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                }
             }
             GetComponent<RocketPath>().CalculateParameters();
         }
 
-        if(previous != planet && possessed == false && previous != null)
+        if (previous != planet && possessed == false && previous != null && rb.velocity.magnitude != float.NaN)
         {
             //Earth to Moon
             if (planet == moon && previous == earth)
             {
                 Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
-                rb.velocity -= new Vector2(velocity.x, velocity.y);
+                if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
+                {
+                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                }
             }
 
             //Moon to Earth
             if (previous == moon && planet == earth)
             {
                 Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
-                rb.velocity += new Vector2(velocity.x, velocity.y);
+                if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
+                {
+                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                }
             }
 
             //Sun to Earth
             if (previous == sun && planet == earth)
             {
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
-                rb.velocity -= new Vector2(velocity.x, velocity.y);
+                if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
+                {
+                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                }
             }
 
             //EarthToSun
             if (planet == sun && previous == earth)
             {
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
-                rb.velocity += new Vector2(velocity.x, velocity.y);
+                if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
+                {
+                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                }
             }
             GetComponent<RocketPath>().CalculateParameters();
 
@@ -296,7 +324,7 @@ public class PlanetGravity : MonoBehaviour
 
     void setPlanetProperty()
     {
-        if(Vector2.Distance(rb.position, FindObjectOfType<MoonScript>().gameObject.transform.position) < SolarSystemManager.moonSOI)
+        if (Vector2.Distance(rb.position, FindObjectOfType<MoonScript>().gameObject.transform.position) < SolarSystemManager.moonSOI)
         {
             Mass = SolarSystemManager.moonMass;
             aeroCoefficient = 0.0f;
@@ -311,7 +339,7 @@ public class PlanetGravity : MonoBehaviour
             atmoAlt = SolarSystemManager.earthAlt;
             aeroCoefficient = SolarSystemManager.earthDensitySlvl;
             planetRadius = SolarSystemManager.earthRadius;
-            planet =  FindObjectOfType<EarthScript>().gameObject;
+            planet = FindObjectOfType<EarthScript>().gameObject;
             return;
         }
         else

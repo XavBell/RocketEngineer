@@ -175,7 +175,11 @@ public class StageViewer : MonoBehaviour
     {
         if (runStopDelay == true)
         {
-            rocket.GetComponent<PlanetGravity>().possessed = false;
+            if(rocket != null)
+            {
+                rocket.GetComponent<PlanetGravity>().possessed = false;
+            }
+            
             MasterManager masterManager = FindObjectOfType<MasterManager>();
             masterManager.gameState = "Building";
             BuildingManager buildingManager = FindObjectOfType<BuildingManager>();

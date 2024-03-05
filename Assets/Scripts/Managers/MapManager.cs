@@ -73,10 +73,13 @@ public class MapManager : MonoBehaviour
 
         foreach (Prediction pred in prediction)
         {
-            pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
-            if (pred.GetComponent<interceptDetector>().interceptIndicator)
+            if(pred != null)
             {
-                pred.GetComponent<interceptDetector>().interceptIndicator.transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5;
+                pred.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
+                if (pred.GetComponent<interceptDetector>().interceptIndicator)
+                {
+                    pred.GetComponent<interceptDetector>().interceptIndicator.transform.localScale = mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5;
+                }
             }
 
         }

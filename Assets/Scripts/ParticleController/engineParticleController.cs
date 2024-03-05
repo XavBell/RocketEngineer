@@ -41,7 +41,18 @@ public class engineParticleController : MonoBehaviour
                     if(!EngineSound.isPlaying)
                     {
                         EngineSound.Play();
+                    }
+                    if(EngineSound.isPlaying == false)
+                    {
+                        EngineSound.Play();
+                    }
+                    if(1 - FindObjectOfType<Camera>().orthographicSize/5000 < 0)
+                    {
+                        EngineSound.volume = 0;
+                    }else if(1 - FindObjectOfType<Camera>().orthographicSize/5000 > 1){
                         EngineSound.volume = 1;
+                    }else{
+                        EngineSound.volume = 1 - FindObjectOfType<Camera>().orthographicSize/5000;
                     }
                     return;
                }
@@ -64,10 +75,27 @@ public class engineParticleController : MonoBehaviour
                     {
                         EngineSound.Play();
                     }
-                    EngineSound.volume = throttle/100;
+                    if(1 - FindObjectOfType<Camera>().orthographicSize/5000 < 0)
+                    {
+                        EngineSound.volume = 0;
+                    }else if(1 - FindObjectOfType<Camera>().orthographicSize/5000 > 1){
+                        EngineSound.volume = 1;
+                    }else{
+                        EngineSound.volume = 1 - FindObjectOfType<Camera>().orthographicSize/5000;
+                    }
 
                 }
                 
+            }
+        }
+
+        if(SceneManager.GetActiveScene().name != "SampleScene")
+        {
+            var em = plume.GetComponent<ParticleSystem>().emission;
+            em.rateOverTime = 0; 
+            if(EngineSound.isPlaying == true)
+            {
+                EngineSound.Pause();
             }
         }
     }

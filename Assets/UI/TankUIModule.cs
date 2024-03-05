@@ -23,7 +23,11 @@ public class TankUIModule : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        updateValues();
+        if(tank != null)
+        {
+            updateValues();    
+        }
+        
     }
 
     void updateValues()

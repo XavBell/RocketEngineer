@@ -421,8 +421,8 @@ public class Rocket : MonoBehaviour
 
                 rp.gameObject.transform.parent = null;
                 rp.GetComponent<Rocket>().updateMass();
-                rp.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(1, 1));
-                this.GetComponent<Rigidbody2D>().AddForce(new UnityEngine.Vector2(1, 1));
+                rp.GetComponent<Rigidbody2D>().AddForce(rp.transform.up * 200);
+                this.GetComponent<Rigidbody2D>().AddForce(rp.transform.up * -200);
                 this.updateMass();
                 rp.gameObject.GetComponent<PlanetGravity>().stageViewerForceCall();
             }

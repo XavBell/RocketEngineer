@@ -85,7 +85,7 @@ public class container : MonoBehaviour
             ConvertMass();
             CalculateTemperature();
 
-            internalPressure = (moles * 8.314f * internalTemperature) / tankVolume; //Not sure about 8.314
+            internalPressure = (moles * 8.314f * internalTemperature) / (tankVolume*1000); //Not sure about 8.314
         }
 
         if (state == "solid")
@@ -152,15 +152,15 @@ public class container : MonoBehaviour
         {
             if (this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
             {
-                //GameObject toDestroy = this.gameObject.transform.parent.gameObject;
-                //Destroy(toDestroy);
+                GameObject toDestroy = this.gameObject.transform.parent.gameObject;
+                Destroy(toDestroy);
                 FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to overpressure");
             }
             else if (explosion != null)
             {
-                //explosion.transform.parent = null;
-                //explosion.Play();
-                //Destroy(this.gameObject);
+                explosion.transform.parent = null;
+                explosion.Play();
+                Destroy(this.gameObject);
             }
             return;
         }

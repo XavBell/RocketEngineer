@@ -8,7 +8,7 @@ public class flowControllerForTankStand : MonoBehaviour
     public container origin;
     public Guid originGuid;
     public standManager standManager;
-    bool connected  = false;
+    public bool connected  = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,10 +18,9 @@ public class flowControllerForTankStand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(standManager.ConnectedTank != null && connected == false)
+        if(standManager.ConnectedTank != null && connected == false && origin != null)
         {
             connectTank();
-            connected = true;
         }
     }
 
@@ -36,6 +35,7 @@ public class flowControllerForTankStand : MonoBehaviour
     void connectTank()
     {
         standManager.ConnectedTank.GetComponent<flowController>().origin = origin;
+        connected = true;
     }
 
 }

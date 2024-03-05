@@ -126,7 +126,6 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
-                print(x.ToString() + y);
                 if(bypass == true)
                 {
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)

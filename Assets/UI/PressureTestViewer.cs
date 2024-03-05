@@ -153,8 +153,13 @@ public class PressureTestViewer : MonoBehaviour
 
     public void Terminate()
     {
-        Stand.GetComponent<standManager>().failed = true;
+        Stand.GetComponent<standManager>().failed = false;
+        Stand.GetComponent<standManager>().started = false;
+        previouslyRan = false;
+        Stand.GetComponent<standManager>().tankStatusTracker = null;
         Destroy(Stand.GetComponent<standManager>().ConnectedTank);
         this.gameObject.SetActive(false);
+        Stand.GetComponent<standManager>().ConnectedTank = null;
+        Stand.GetComponent<flowControllerForTankStand>().connected = false;
     }
 }

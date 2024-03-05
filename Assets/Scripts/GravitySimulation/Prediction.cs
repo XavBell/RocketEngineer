@@ -115,6 +115,11 @@ public class Prediction : MonoBehaviour
             }   
         }
 
+        if(planetGravity == null)
+        {
+            Destroy(this.gameObject);
+        }
+
     }
 
     public IEnumerator DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)

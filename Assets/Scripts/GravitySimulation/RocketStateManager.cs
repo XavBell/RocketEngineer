@@ -161,7 +161,10 @@ public class RocketStateManager : MonoBehaviour
             curr_X = transform.x;
             curr_Y = transform.y;
             Vector2 velocity = prediction.updateVelocity();
-            planetGravity.rb.velocity = velocity;
+            if(velocity.x != float.NaN && velocity.y != float.NaN)
+            {
+                planetGravity.rb.velocity = velocity;
+            }
             return;
         }
 
