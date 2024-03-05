@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using TMPro;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public class BodyPath : MonoBehaviour
 {

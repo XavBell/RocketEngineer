@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using TMPro;
-using UnityEditor.Localization.Plugins.XLIFF.V20;
 
 public class TimeManager : MonoBehaviour
 {

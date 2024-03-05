@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
-using UnityEditor;
 
 public class FuelConnectorManager : MonoBehaviour
 {

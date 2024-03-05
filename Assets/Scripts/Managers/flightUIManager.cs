@@ -44,7 +44,7 @@ public class flightUIManager : MonoBehaviour
             float angle = Mathf.Rad2Deg*Mathf.Atan(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.y/stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.x);
             if(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.x < 0)
             {
-                angle += 180 - FindObjectOfType<Camera>().transform.rotation.eulerAngles.z;
+                angle += 180;
             }
             progradeUI.transform.rotation = Quaternion.Euler(0, 0, angle);
         }
