@@ -72,6 +72,7 @@ public class WorldSaveManager : MonoBehaviour
         if (loaded == true && rocketloaded == false)
         {
             loadRocket(worldToLoad);
+
             rocketloaded = true;
         }
         if (loaded == false)

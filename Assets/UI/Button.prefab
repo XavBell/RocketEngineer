@@ -59,6 +59,16 @@ MonoBehaviour:
   Decoupler: {fileID: 1120019584567089529, guid: 3ffda7662d024d84a8cd5a8cd4c4be2d, type: 3}
   path: 
   filePath: 
+  spawnedRocket: {fileID: 0}
+  op: {fileID: 0}
+  savedLaunchpad: {fileID: 0}
+  oxidizerInput: {fileID: 0}
+  fuelInput: {fileID: 0}
+  output: {fileID: 0}
+  fcm: {fileID: 0}
+  inputUI: {fileID: 0}
+  outputUI: {fileID: 0}
+  selectUI: {fileID: 0}
 --- !u!1 &3921047363275646254
 GameObject:
   m_ObjectHideFlags: 0
@@ -274,8 +284,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 0711eed8d3bfc4e4e843fbf345d270cc, type: 2}
+  m_sharedMaterial: {fileID: -3526102991880937006, guid: 0711eed8d3bfc4e4e843fbf345d270cc, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -299,7 +309,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 79.85
+  m_fontSize: 73.4
   m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 1

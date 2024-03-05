@@ -1,4 +1,3 @@
-using System.Numerics;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -65,8 +64,6 @@ public class Engine : RocketPart
                 this.GetComponentInChildren<autoSpritePositionner>().turbine.GetComponent<SpriteRenderer>().sprite = turbine.sprite;
             }
         }
-
-          
     }
 
     public void InitializeFail()
