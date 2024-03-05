@@ -10,6 +10,9 @@ public class TankUIModule : MonoBehaviour
     [SerializeField]TMP_Text internalTemperature;
     [SerializeField]TMP_Text volume;
     [SerializeField]TMP_Text quantity;
+    [SerializeField]Toggle coolerToggle;
+    [SerializeField]Toggle ventToggle;
+    [SerializeField]Toggle valveToggle;
     public container tank;
     [SerializeField]private TMP_InputField targetTemperature;
     
@@ -35,6 +38,9 @@ public class TankUIModule : MonoBehaviour
         internalPressure.text = tank.internalPressure.ToString();
         internalTemperature.text = tank.internalTemperature.ToString();
         volume.text = tank.volume.ToString() + "/" + tank.tankVolume.ToString();
+        coolerToggle.isOn = tank.GetComponent<cooler>().active;
+        ventToggle.isOn = tank.GetComponent<gasVent>().open;
+        valveToggle.isOn = tank.GetComponent<flowController>().opened;
         if(tank.GetComponent<Tank>().tested == false)
         {
             quantity.text = tank.mass.ToString();

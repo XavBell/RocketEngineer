@@ -76,6 +76,15 @@ public class StaticFireViewer : MonoBehaviour
         fuelTemperature.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.internalTemperature.ToString();
         oxidizerTemperature.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.internalTemperature.ToString();
 
+        coolerFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<cooler>().active;
+        coolerOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<cooler>().active;
+
+        ventFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<gasVent>().open;
+        ventOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<gasVent>().open;
+
+        valveFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<flowController>().opened;
+        valveOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<flowController>().opened;
+
     }
 
     void updateThrust()

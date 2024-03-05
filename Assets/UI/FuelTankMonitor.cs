@@ -15,6 +15,8 @@ public class FuelTankMonitor : MonoBehaviour
     [SerializeField]private TMP_Text substance;
     [SerializeField]private TMP_Text state;
     [SerializeField]private TMP_Text targetTemperature;
+    [SerializeField]private Toggle coolerToggle;
+    [SerializeField]private Toggle ventToggle;
     [SerializeField]private float rate;
 
     [SerializeField]public TMP_InputField target;
@@ -24,7 +26,7 @@ public class FuelTankMonitor : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+    
     }
 
     // Update is called once per frame
@@ -47,6 +49,16 @@ public class FuelTankMonitor : MonoBehaviour
         quantity.text = container.mass.ToString();
         substance.text = container.substance.ToString();
         state.text = container.state.ToString();
+        if(container.GetComponent<gasVent>() != null)
+        {
+            ventToggle.isOn = container.GetComponent<gasVent>().open;
+        }else{
+            ventToggle.isOn = false;
+        }
+        if(container.GetComponent<cooler>() != null)
+        {
+            coolerToggle.isOn = container.GetComponent<cooler>().active;
+        }
         updateTemp();
     }
 
