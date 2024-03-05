@@ -67,6 +67,7 @@ public class operationManager : MonoBehaviour
             staticFireRocketPanel.SetActive(false);
             tankPressurePanel.SetActive(false);
             WDRPanel.SetActive(false);
+            retrieveRocketSaved();
         }
 
         if (operationDropdown.options[operationDropdown.value].text == "Static Fire (Engine)")
@@ -76,6 +77,7 @@ public class operationManager : MonoBehaviour
             staticFireRocketPanel.SetActive(false);
             tankPressurePanel.SetActive(false);
             WDRPanel.SetActive(false);
+            retrieveEngineSaved();
         }
 
         if (operationDropdown.options[operationDropdown.value].text == "Static Fire (Rocket)")
@@ -85,6 +87,7 @@ public class operationManager : MonoBehaviour
             staticFireRocketPanel.SetActive(true);
             tankPressurePanel.SetActive(false);
             WDRPanel.SetActive(false);
+            retrieveRocketSaved();
         }
 
         if (operationDropdown.options[operationDropdown.value].text == "Pressure Test (Tank)")
@@ -94,6 +97,7 @@ public class operationManager : MonoBehaviour
             staticFireRocketPanel.SetActive(false);
             tankPressurePanel.SetActive(true);
             WDRPanel.SetActive(false);
+            retrieveTankSaved();
         }
 
         if (operationDropdown.options[operationDropdown.value].text == "Wet Dress Rehearsal")
@@ -103,6 +107,7 @@ public class operationManager : MonoBehaviour
             staticFireRocketPanel.SetActive(false);
             tankPressurePanel.SetActive(false);
             WDRPanel.SetActive(true);
+            retrieveRocketSaved();
         }
     }
 
@@ -125,6 +130,9 @@ public class operationManager : MonoBehaviour
         {
             options.Add(Path.GetFileName(file.ToString()));
         }
+        vehicleLaunchDropdown.ClearOptions();
+        vehicleStaticFireDropdown.ClearOptions();
+        vehicleWDRDropdown.ClearOptions();
         vehicleLaunchDropdown.AddOptions(options);
         vehicleStaticFireDropdown.AddOptions(options);
         vehicleWDRDropdown.AddOptions(options);
@@ -149,6 +157,7 @@ public class operationManager : MonoBehaviour
         {
             options.Add(Path.GetFileName(file.ToString()));
         }
+        engineDropdown.ClearOptions();
         engineDropdown.AddOptions(options);
     }
 
@@ -171,6 +180,7 @@ public class operationManager : MonoBehaviour
         {
             options.Add(Path.GetFileName(file.ToString()));
         }
+        tankDropdown.ClearOptions();
         tankDropdown.AddOptions(options);
     }
 

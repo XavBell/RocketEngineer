@@ -532,7 +532,6 @@ public class WorldSaveManager : MonoBehaviour
             {
                 worldCamera.transform.position = launchsiteManager.commandCenter.transform.position;
             }
-
             sun.GetComponent<SunScript>().InitializeSun();
             earth.GetComponent<EarthScript>().InitializeEarth();
             moon.GetComponent<MoonScript>().InitializeMoon();
