@@ -32,7 +32,17 @@ public class StaticFireViewer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        coolerFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<cooler>().active;
+        coolerOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<cooler>().active;
 
+        ventFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<gasVent>().open;
+        ventOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<gasVent>().open;
+
+        valveFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<flowController>().opened;
+        valveOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<flowController>().opened;
+
+        targetTempFuel.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<cooler>().targetTemperature.ToString();
+        targetTempOxidizer.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<cooler>().targetTemperature.ToString();
     }
 
     // Update is called once per frame
@@ -76,14 +86,7 @@ public class StaticFireViewer : MonoBehaviour
         fuelTemperature.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.internalTemperature.ToString();
         oxidizerTemperature.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.internalTemperature.ToString();
 
-        coolerFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<cooler>().active;
-        coolerOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<cooler>().active;
-
-        ventFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<gasVent>().open;
-        ventOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<gasVent>().open;
-
-        valveFuel.isOn = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<flowController>().opened;
-        valveOxidizer.isOn = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<flowController>().opened;
+        
 
     }
 
@@ -131,13 +134,13 @@ public class StaticFireViewer : MonoBehaviour
     {
         if (category == "fuel")
         {
-            if (staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened == false)
+            if (valveFuel.isOn == true)
             {
                 staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened = true;
                 return;
             }
 
-            if (staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened == true)
+            if (valveFuel.isOn == false)
             {
                 staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened = false;
                 return;
@@ -146,13 +149,13 @@ public class StaticFireViewer : MonoBehaviour
 
         if (category == "oxidizer")
         {
-            if (staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened == false)
+            if (valveOxidizer.isOn == true)
             {
                 staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened = true;
                 return;
             }
 
-            if (staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened == true)
+            if (valveOxidizer.isOn == false)
             {
                 staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened = false;
                 return;
@@ -180,30 +183,30 @@ public class StaticFireViewer : MonoBehaviour
 
         if (type == "fuel")
         {
-            if (fuelVent.open == false)
+            if (ventFuel.isOn == false)
             {
-                fuelVent.open = true;
+                fuelVent.open = false;
                 return;
             }
 
-            if (fuelVent.open == true)
+            if (ventFuel.isOn == true)
             {
-                fuelVent.open = false;
+                fuelVent.open = true;
                 return;
             }
         }
 
         if (type == "oxidizer")
         {
-            if (oxidizerVent.open == false)
+            if (ventOxidizer.isOn == false)
             {
-                oxidizerVent.open = true;
+                oxidizerVent.open = false;
                 return;
             }
 
-            if (oxidizerVent.open == true)
+            if (ventOxidizer.isOn == true)
             {
-                oxidizerVent.open = false;
+                oxidizerVent.open = true;
                 return;
             }
         }
@@ -231,15 +234,15 @@ public class StaticFireViewer : MonoBehaviour
         {
             if (type == "fuel")
             {
-                if (fuelCooler.active == false)
+                if (coolerFuel.isOn == false)
                 {
-                    fuelCooler.active = true;
+                    fuelCooler.active = false;
                     return;
                 }
 
-                if (fuelCooler.active == true)
+                if (coolerFuel.isOn == true)
                 {
-                    fuelCooler.active = false;
+                    fuelCooler.active = true;
                     return;
                 }
             }
@@ -249,15 +252,15 @@ public class StaticFireViewer : MonoBehaviour
         {
             if (type == "oxidizer")
             {
-                if (oxidizerCooler.active == false)
+                if (coolerOxidizer.isOn == false)
                 {
-                    oxidizerCooler.active = true;
+                    oxidizerCooler.active = false;
                     return;
                 }
 
-                if (oxidizerCooler.active == true)
+                if (coolerOxidizer.isOn == true)
                 {
-                    oxidizerCooler.active = false;
+                    oxidizerCooler.active = true;
                     return;
                 }
             }

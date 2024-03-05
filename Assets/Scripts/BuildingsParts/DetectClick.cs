@@ -62,6 +62,14 @@ public class DetectClick : MonoBehaviour
                             fuelTankUI.GetComponent<FuelTankMonitor>().container = current.GetComponent<container>();
                             fuelTankUI.GetComponent<FuelTankMonitor>().gasVent = current.GetComponent<gasVent>();
                             fuelTankUI.GetComponent<FuelTankMonitor>().cooler = current.GetComponent<cooler>();
+                            if (fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<gasVent>() != null)
+                            {
+                               fuelTankUI.GetComponent<FuelTankMonitor>().ventToggle.isOn = fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<gasVent>().open;
+                            }
+                            if (fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<cooler>() != null)
+                            {
+                                fuelTankUI.GetComponent<FuelTankMonitor>().coolerToggle.isOn = fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<cooler>().active;
+                            }
                             PanelFadeIn(fuelTankUI);
                             return;
                         }
@@ -78,6 +86,14 @@ public class DetectClick : MonoBehaviour
                                 fuelTankUI.GetComponent<FuelTankMonitor>().container = current.GetComponent<container>();
                                 fuelTankUI.GetComponent<FuelTankMonitor>().gasVent = current.GetComponent<gasVent>();
                                 fuelTankUI.GetComponent<FuelTankMonitor>().cooler = current.GetComponent<cooler>();
+                                if (fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<gasVent>() != null)
+                                {
+                                    fuelTankUI.GetComponent<FuelTankMonitor>().ventToggle.isOn = fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<gasVent>().open;
+                                }
+                                if (fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<cooler>() != null)
+                                {
+                                    fuelTankUI.GetComponent<FuelTankMonitor>().coolerToggle.isOn = fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<cooler>().active;
+                                }
                             }
                             return;
                         }

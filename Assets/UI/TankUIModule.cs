@@ -20,7 +20,10 @@ public class TankUIModule : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        coolerToggle.isOn = tank.GetComponent<cooler>().active;
+        ventToggle.isOn = tank.GetComponent<gasVent>().open;
+        valveToggle.isOn = tank.GetComponent<flowController>().opened;
+        targetTemperature.text = tank.GetComponent<cooler>().targetTemperature.ToString();
     }
 
     // Update is called once per frame
@@ -38,9 +41,7 @@ public class TankUIModule : MonoBehaviour
         internalPressure.text = tank.internalPressure.ToString();
         internalTemperature.text = tank.internalTemperature.ToString();
         volume.text = tank.volume.ToString() + "/" + tank.tankVolume.ToString();
-        coolerToggle.isOn = tank.GetComponent<cooler>().active;
-        ventToggle.isOn = tank.GetComponent<gasVent>().open;
-        valveToggle.isOn = tank.GetComponent<flowController>().opened;
+        
         if(tank.GetComponent<Tank>().tested == false)
         {
             quantity.text = tank.mass.ToString();
@@ -71,13 +72,13 @@ public class TankUIModule : MonoBehaviour
 
     public void valve()
     {
-        if(tank.GetComponent<flowController>().opened == false)
+        if(valveToggle.isOn == false)
         {
             tank.GetComponent<flowController>().opened = true;
             return;
         }
 
-        if(tank.GetComponent<flowController>().opened == true)
+        if(valveToggle.isOn == false)
         {
             tank.GetComponent<flowController>().opened = false;
             return;
@@ -86,30 +87,31 @@ public class TankUIModule : MonoBehaviour
 
     public void cooler()
     {
-        if(tank.GetComponent<cooler>().active == false)
+        
+        if(coolerToggle.isOn == false)
         {
-            tank.GetComponent<cooler>().active = true;
+            tank.GetComponent<cooler>().active = false;
             return;
         }
 
-        if(tank.GetComponent<cooler>().active == true)
+        if(coolerToggle == true)
         {
-            tank.GetComponent<cooler>().active = false;
+            tank.GetComponent<cooler>().active = true;
             return;
         }
     }
 
     public void vent()
     {
-        if(tank.GetComponent<gasVent>().open == false)
+        if(ventToggle.isOn == false)
         {
-            tank.GetComponent<gasVent>().open  = true;
+            tank.GetComponent<gasVent>().open  = false;
             return;
         }
 
-        if(tank.GetComponent<gasVent>().open  == true)
+        if(ventToggle.isOn == true)
         {
-            tank.GetComponent<gasVent>().open  = false;
+            tank.GetComponent<gasVent>().open  = true;
             return;
         }
     }
