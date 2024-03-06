@@ -72,47 +72,17 @@ public class TankUIModule : MonoBehaviour
 
     public void valve()
     {
-        if(valveToggle.isOn == false)
-        {
-            tank.GetComponent<flowController>().opened = true;
-            return;
-        }
-
-        if(valveToggle.isOn == false)
-        {
-            tank.GetComponent<flowController>().opened = false;
-            return;
-        }
+        tank.GetComponent<flowController>().opened = valveToggle.isOn;
     }
 
     public void cooler()
     {
         
-        if(coolerToggle.isOn == false)
-        {
-            tank.GetComponent<cooler>().active = false;
-            return;
-        }
-
-        if(coolerToggle == true)
-        {
-            tank.GetComponent<cooler>().active = true;
-            return;
-        }
+        tank.GetComponent<cooler>().active = coolerToggle.isOn; 
     }
 
     public void vent()
     {
-        if(ventToggle.isOn == false)
-        {
-            tank.GetComponent<gasVent>().open  = false;
-            return;
-        }
-
-        if(ventToggle.isOn == true)
-        {
-            tank.GetComponent<gasVent>().open  = true;
-            return;
-        }
+        tank.GetComponent<gasVent>().open = ventToggle.isOn;
     }
 }

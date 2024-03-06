@@ -134,32 +134,12 @@ public class StaticFireViewer : MonoBehaviour
     {
         if (category == "fuel")
         {
-            if (valveFuel.isOn == true)
-            {
-                staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened = true;
-                return;
-            }
-
-            if (valveFuel.isOn == false)
-            {
-                staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened = false;
-                return;
-            }
+            staticFireStand.GetComponent<staticFireStandManager>().fuelController.opened = valveFuel.isOn;
         }
 
         if (category == "oxidizer")
         {
-            if (valveOxidizer.isOn == true)
-            {
-                staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened = true;
-                return;
-            }
-
-            if (valveOxidizer.isOn == false)
-            {
-                staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened = false;
-                return;
-            }
+            staticFireStand.GetComponent<staticFireStandManager>().oxidizerController.opened = valveOxidizer.isOn;
         }
     }
 
@@ -183,32 +163,12 @@ public class StaticFireViewer : MonoBehaviour
 
         if (type == "fuel")
         {
-            if (ventFuel.isOn == false)
-            {
-                fuelVent.open = false;
-                return;
-            }
-
-            if (ventFuel.isOn == true)
-            {
-                fuelVent.open = true;
-                return;
-            }
+            fuelVent.open = ventFuel.isOn;
         }
 
         if (type == "oxidizer")
         {
-            if (ventOxidizer.isOn == false)
-            {
-                oxidizerVent.open = false;
-                return;
-            }
-
-            if (ventOxidizer.isOn == true)
-            {
-                oxidizerVent.open = true;
-                return;
-            }
+            oxidizerVent.open = ventOxidizer.isOn;
         }
     }
 
@@ -234,17 +194,7 @@ public class StaticFireViewer : MonoBehaviour
         {
             if (type == "fuel")
             {
-                if (coolerFuel.isOn == false)
-                {
-                    fuelCooler.active = false;
-                    return;
-                }
-
-                if (coolerFuel.isOn == true)
-                {
-                    fuelCooler.active = true;
-                    return;
-                }
+                fuelCooler.active = coolerFuel.isOn;
             }
         }
 
@@ -252,17 +202,7 @@ public class StaticFireViewer : MonoBehaviour
         {
             if (type == "oxidizer")
             {
-                if (coolerOxidizer.isOn == false)
-                {
-                    oxidizerCooler.active = false;
-                    return;
-                }
-
-                if (coolerOxidizer.isOn == true)
-                {
-                    oxidizerCooler.active = true;
-                    return;
-                }
+                oxidizerCooler.active = coolerOxidizer.isOn;
             }
         }
 

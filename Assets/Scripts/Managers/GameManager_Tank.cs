@@ -318,7 +318,7 @@ public class GameManager_Tank : MonoBehaviour
         if(tested == true)
         {
             maxMassShower.SetActive(true);
-        
+            updateMaxMass();
         }
     }
 
@@ -326,12 +326,12 @@ public class GameManager_Tank : MonoBehaviour
     {
         if(substanceDropdown.options[substanceDropdown.value].text.ToString() == "Kerosene")
         {
-            maxMass.text = (volume * kerosene.Density).ToString();
+            maxMass.text = (float.Parse(volumeViz.text) * kerosene.Density).ToString();
         }
 
         if (substanceDropdown.options[substanceDropdown.value].text.ToString() == "LOX")
         {
-            maxMass.text = (volume * LOX.Density).ToString();
+            maxMass.text = (float.Parse(volumeViz.text) * LOX.Density).ToString();
         }
         
     }

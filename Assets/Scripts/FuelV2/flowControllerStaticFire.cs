@@ -69,7 +69,7 @@ public class flowControllerStaticFire : MonoBehaviour
             float oxidizerRate = percentageOxidizer * massFlowRateEngine;
             //Static fire will be able to be ran at timewarp
             float consumedOxidizer = oxidizerRate * MyTime.deltaTime;
-            if (oxidizerContainer.mass - consumedOxidizer >= 0)
+            if (oxidizerContainer.mass - consumedOxidizer >= 0 && oxidizerContainer.state == "liquid")
             {
                 sFSM.oxidizerSufficient = true;
                 //Multiply by 1000 bcs engine rate is kg
@@ -87,7 +87,7 @@ public class flowControllerStaticFire : MonoBehaviour
             float fuelRate = percentageFuel * massFlowRateEngine;
             //Static fire will be able to be ran at timewarp
             float consumedFuel = fuelRate * MyTime.deltaTime;
-            if (fuelContainer.mass - consumedFuel >= 0)
+            if (fuelContainer.mass - consumedFuel >= 0 && fuelContainer.state == "liquid")
             {
                 sFSM.fuelSufficient = true;
                 float consumedMoles = consumedFuel * 1000 / fuelContainer.substance.MolarMass;
