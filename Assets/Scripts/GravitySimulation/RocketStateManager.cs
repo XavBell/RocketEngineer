@@ -132,8 +132,6 @@ public class RocketStateManager : MonoBehaviour
 
     public void UpdatePosition()
     {
-
-
         if(state == "simulate")
         {
             planetGravity.simulate();
@@ -170,7 +168,6 @@ public class RocketStateManager : MonoBehaviour
 
         if(state == "landed")
         {
-            //this.transform.parent = savedPlanet.transform;
             this.transform.localPosition = new Vector3((float)doublePos.x_pos, (float)doublePos.y_pos, 0);
         }
     }
