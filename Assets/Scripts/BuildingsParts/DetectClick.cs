@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
+using TMPro;
 
 
 
@@ -15,6 +17,9 @@ public class DetectClick : MonoBehaviour
 
     public GameObject buildingUI;
     public GameObject fuelTankUI;
+    public GameObject operationUI;
+    public TMP_Dropdown operationDropdown;
+    public GameObject designUI;
 
     // Start is called before the first frame update
     void Start()
@@ -113,6 +118,52 @@ public class DetectClick : MonoBehaviour
                         {
                             PanelFadeOut(buildingUI);
                             StartCoroutine(ActiveDeactive(0.1f, buildingUI, false));
+                            return;
+                        }
+                    }
+
+                    if(type == "launchPad" || type == "staticFireStand" || type == "standTank")
+                    {
+                        if(operationUI.active == false)
+                        {
+                            buildingManager.hidePanels(operationUI);
+                            operationUI.SetActive(true);
+                            PanelFadeIn(operationUI);
+                            if(type == "launchPad")
+                            {
+                                operationDropdown.value = 0;
+                            }
+                            if(type == "staticFireStand")
+                            {
+                                operationDropdown.value = 1;
+                            }
+                            if(type == "standTank")
+                            {
+                                operationDropdown.value = 2;
+                            }
+                            return;
+                        }
+                        else
+                        {
+                            PanelFadeOut(operationUI);
+                            StartCoroutine(ActiveDeactive(0.1f, operationUI, false));
+                            return;
+                        }
+                    }
+
+                    if(type == "designer")
+                    {
+                        if(designUI.active == false)
+                        {
+                            buildingManager.hidePanels(designUI);
+                            designUI.SetActive(true);
+                            PanelFadeIn(designUI);
+                            return;
+                        }
+                        else
+                        {
+                            PanelFadeOut(designUI);
+                            StartCoroutine(ActiveDeactive(0.1f, designUI, false));
                             return;
                         }
                     }

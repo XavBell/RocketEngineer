@@ -241,6 +241,7 @@ public class StageViewer : MonoBehaviour
         this.gameObject.SetActive(false);
         masterManager.ActiveRocket = null;
         camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
+        buildingManager.exitFlightMode();
         launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
         foreach (launchPadManager launchPadManager in launchPadManagers)
         {
@@ -250,6 +251,5 @@ public class StageViewer : MonoBehaviour
                 return;
             }
         }
-        buildingManager.exitFlightMode();
     }
 }

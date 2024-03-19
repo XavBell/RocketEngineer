@@ -93,6 +93,13 @@ public class BuildingManager : MonoBehaviour
                 PauseUI.SetActive(true);
             }
         }
+
+        if(Input.GetMouseButton(1))
+        {
+            Cursor.visible = true;
+            customCursor.gameObject.SetActive(false);
+            partToConstruct = null;
+        }
     }
 
     public void allowDestroy()
