@@ -199,6 +199,16 @@ public class GameManager_Engine : MonoBehaviour
 
     }
 
+    bool enginePresent()
+    {
+        if(selectedTVC != null && selectedNozzle != null && selectedTurbine != null && selectedPump != null)
+        {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     public void save()
     {
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder))
@@ -208,7 +218,7 @@ public class GameManager_Engine : MonoBehaviour
 
         saveName = "/" + savePath.text;
 
-        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
+        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json") && enginePresent())
         {
             saveEngine saveObject = new saveEngine();
             saveObject.path = savePathRef.engineFolder;

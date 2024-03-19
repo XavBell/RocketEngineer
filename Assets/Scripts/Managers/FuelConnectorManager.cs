@@ -257,6 +257,8 @@ public class FuelConnectorManager : MonoBehaviour
             
         }
 
+        ShowConnection();
+
         connectPopUp.SetActive(true);
         PanelFadeIn(connectPopUp);
         StartCoroutine(ActiveDeactive(1,connectPopUp, false ));
