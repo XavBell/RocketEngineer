@@ -108,12 +108,15 @@ public class Engine : RocketPart
                 }
                 if(this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
                 {
+                    //WHen on a rocket
                     GameObject toDestroy = this.gameObject.transform.parent.gameObject;
                     FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to engine failure");
                     Destroy(toDestroy);
                 }else if(explosion != null){
+                    //When on a static fire stand
                     explosion.transform.parent = null;
                     explosion.Play();
+                    FindObjectOfType<StaticFireViewer>().Terminate();
                     FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to engine failure");
                     Destroy(this.gameObject);
                 }
