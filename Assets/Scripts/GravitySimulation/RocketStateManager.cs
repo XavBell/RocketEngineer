@@ -35,17 +35,17 @@ public class RocketStateManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(GetComponent<PlanetGravity>().getCamera() != null)
+        if (GetComponent<PlanetGravity>().getCamera() != null)
         {
             Initialize();
         }
-        if(initialized == true)
+        if (initialized == true)
         {
             StateUpdater();
-        UpdatePosition();
-        Physics.SyncTransforms();
+            UpdatePosition();
+            Physics.SyncTransforms();
         }
-        
+
         ran = false;
     }
 

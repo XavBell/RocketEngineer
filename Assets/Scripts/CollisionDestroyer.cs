@@ -9,6 +9,13 @@ public class CollisionDestroyer : MonoBehaviour
         if(collision.relativeVelocity.magnitude > 40)
         {
             FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destruction due to collision with another object");
+            if(GetComponentInParent<RocketStateManager>() != null) 
+            {
+                if(GetComponentInParent<RocketStateManager>().gameObject == FindObjectOfType<MasterManager>().ActiveRocket)
+                {
+                    FindObjectOfType<StageViewer>().Terminate();
+                }
+            }
             Destroy(gameObject);
         }
 

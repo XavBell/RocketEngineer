@@ -112,8 +112,13 @@ public class RocketPath : MonoBehaviour
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                     {
                         FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
+                        if (MasterManager.ActiveRocket == this.gameObject)
+                    {
+                        FindObjectOfType<StageViewer>().Terminate();
+                    }
                         Destroy(planetGravity.gameObject);
                     }
+                    
                 }
                 Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
                 return transformV;
@@ -131,8 +136,13 @@ public class RocketPath : MonoBehaviour
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                     {
                         FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
+                        if(MasterManager.ActiveRocket == this.gameObject)
+                    {
+                        FindObjectOfType<StageViewer>().Terminate();
+                    }
                         Destroy(planetGravity.gameObject);
                     }
+                    
                 }
                 Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
                 return transformV;
@@ -154,7 +164,12 @@ public class RocketPath : MonoBehaviour
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                     {
                         FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
+                        if(MasterManager.ActiveRocket == this.gameObject)
+                    {
+                        FindObjectOfType<StageViewer>().Terminate();
+                    }
                         Destroy(planetGravity.gameObject);
+
                     }
                 }
 
@@ -175,7 +190,12 @@ public class RocketPath : MonoBehaviour
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
                     {
                         FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
+                        if(MasterManager.ActiveRocket == this.gameObject)
+                    {
+                        FindObjectOfType<StageViewer>().Terminate();
+                    }
                         Destroy(planetGravity.gameObject);
+
                     }
                 }
                 Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
