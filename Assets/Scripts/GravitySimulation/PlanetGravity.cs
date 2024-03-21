@@ -53,7 +53,6 @@ public class PlanetGravity : MonoBehaviour
     {
         return planetRadius;
     }
-    private float planetDensity = 0f;
 
 
     //Rocket variables
@@ -67,7 +66,6 @@ public class PlanetGravity : MonoBehaviour
 
     //This is public bcs it makes sense, everything should be able to quickly change that
     public bool possessed = false;
-    private bool landed = false;
 
     private TimeManager TimeManager;
     private MasterManager MasterManager;

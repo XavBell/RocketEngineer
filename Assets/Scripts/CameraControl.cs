@@ -14,7 +14,6 @@ public class CameraControl : MonoBehaviour
     private float zoomFactor = 0.5f;
     private float zoomLerp = 10f;
     private float moveFactor = 5f;
-    private float lineFactor = 0.01f;
     Vector3 position;
     public GameObject sun;
     public GameObject earth;

@@ -26,8 +26,6 @@ public class BodyPath : MonoBehaviour
 
     public TimeManager MyTime;
     public Rigidbody2D rb;
-
-    bool udated = false;
     public bool bypass = false;
 
 

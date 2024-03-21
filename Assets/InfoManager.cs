@@ -21,7 +21,7 @@ public class InfoManager : MonoBehaviour
 
     public void activateDeactivate(GameObject panelToExclude)
     {
-        if (panelToExclude.active == false)
+        if (panelToExclude.activeSelf == false)
         {
             infoPanel.SetActive(true);
             foreach (GameObject panel in infoPanels)
