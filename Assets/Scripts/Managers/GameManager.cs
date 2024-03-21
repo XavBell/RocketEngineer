@@ -113,6 +113,13 @@ public class GameManager : MonoBehaviour
             Rocket.GetComponent<Rocket>().scanRocket();
             updateCost();
         }
+
+        if(Input.GetMouseButton(1))
+        {
+            Cursor.visible = true;
+            customCursor.gameObject.SetActive(false);
+            partToConstruct = null;
+        }
     }
 
     public void Launch()
