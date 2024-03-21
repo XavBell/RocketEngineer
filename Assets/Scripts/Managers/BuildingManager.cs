@@ -88,7 +88,7 @@ public class BuildingManager : MonoBehaviour
 
         if(Input.GetKey(KeyCode.Escape))
         {
-            if(PauseUI.active == false)
+            if(PauseUI.activeSelf == false)
             {
                 PauseUI.SetActive(true);
             }
@@ -148,13 +148,13 @@ public class BuildingManager : MonoBehaviour
 
     public void Tutorial()
     {
-        if(TutorialPanel.active == false)
+        if(TutorialPanel.activeSelf == false)
         {
             TutorialPanel.SetActive(true);
             return;
         }
 
-        if(TutorialPanel.active == true)
+        if(TutorialPanel.activeSelf == true)
         {
             TutorialPanel.SetActive(false);
             return;
@@ -195,7 +195,7 @@ public class BuildingManager : MonoBehaviour
     {
         hidePanels(button);
 
-        if(button.active == false)
+        if(button.activeSelf == false)
         {
             button.SetActive(true);
             PanelFadeIn(button);
@@ -203,7 +203,7 @@ public class BuildingManager : MonoBehaviour
             return;
         }
 
-         if(button.active = true)
+        if(button.activeSelf == true)
         {
             PanelFadeOut(button);
             StartCoroutine(ActiveDeactive(0.1f, button, false));

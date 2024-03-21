@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using UnityEngine.UI;
 using TMPro;
 
 
@@ -46,20 +44,20 @@ public class DetectClick : MonoBehaviour
         {
             RaycastHit2D raycastHit;
             Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
+            Vector2 ray = cameraPos;
+
             raycastHit = Physics2D.Raycast(ray, -Vector2.up);
             if (raycastHit.transform != null)
             {
                 if (raycastHit.transform.gameObject.GetComponent<buildingType>())
                 {
-
                     GameObject current = raycastHit.transform.gameObject;
                     string type = current.GetComponent<buildingType>().type;
 
                     if (type == "GSEtank")
                     {
                         buildingUI.SetActive(false);
-                        if (fuelTankUI.active == false)
+                        if (!fuelTankUI.activeSelf)
                         {
                             fuelTankUI.SetActive(true);
                             buildingManager.hidePanels(fuelTankUI);
@@ -69,7 +67,7 @@ public class DetectClick : MonoBehaviour
                             fuelTankUI.GetComponent<FuelTankMonitor>().cooler = current.GetComponent<cooler>();
                             if (fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<gasVent>() != null)
                             {
-                               fuelTankUI.GetComponent<FuelTankMonitor>().ventToggle.isOn = fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<gasVent>().open;
+                                fuelTankUI.GetComponent<FuelTankMonitor>().ventToggle.isOn = fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<gasVent>().open;
                             }
                             if (fuelTankUI.GetComponent<FuelTankMonitor>().container.GetComponent<cooler>() != null)
                             {
@@ -80,12 +78,14 @@ public class DetectClick : MonoBehaviour
                         }
                         else
                         {
-                            if(current.GetComponent<container>() == fuelTankUI.GetComponent<FuelTankMonitor>().container)
+                            if (current.GetComponent<container>() == fuelTankUI.GetComponent<FuelTankMonitor>().container)
                             {
                                 //Close panel
                                 PanelFadeOut(fuelTankUI);
                                 StartCoroutine(ActiveDeactive(0.1f, fuelTankUI, false));
-                            }else{
+                            }
+                            else
+                            {
                                 //Update data for new tank
                                 fuelTankUI.GetComponent<FuelTankMonitor>().target.text = "";
                                 fuelTankUI.GetComponent<FuelTankMonitor>().container = current.GetComponent<container>();
@@ -107,7 +107,7 @@ public class DetectClick : MonoBehaviour
                     if (type == "VAB")
                     {
                         fuelTankUI.SetActive(false);
-                        if (buildingUI.active == false)
+                        if (!buildingUI.activeSelf)
                         {
                             buildingManager.hidePanels(buildingUI);
                             buildingUI.SetActive(true);
@@ -122,22 +122,22 @@ public class DetectClick : MonoBehaviour
                         }
                     }
 
-                    if(type == "launchPad" || type == "staticFireStand" || type == "standTank")
+                    if (type == "launchPad" || type == "staticFireStand" || type == "standTank")
                     {
-                        if(operationUI.active == false)
+                        if (!operationUI.activeSelf)
                         {
                             buildingManager.hidePanels(operationUI);
                             operationUI.SetActive(true);
                             PanelFadeIn(operationUI);
-                            if(type == "launchPad")
+                            if (type == "launchPad")
                             {
                                 operationDropdown.value = 0;
                             }
-                            if(type == "staticFireStand")
+                            if (type == "staticFireStand")
                             {
                                 operationDropdown.value = 1;
                             }
-                            if(type == "standTank")
+                            if (type == "standTank")
                             {
                                 operationDropdown.value = 2;
                             }
@@ -151,9 +151,9 @@ public class DetectClick : MonoBehaviour
                         }
                     }
 
-                    if(type == "designer")
+                    if (type == "designer")
                     {
-                        if(designUI.active == false)
+                        if (!designUI.activeSelf)
                         {
                             buildingManager.hidePanels(designUI);
                             designUI.SetActive(true);
@@ -167,12 +167,9 @@ public class DetectClick : MonoBehaviour
                             return;
                         }
                     }
-
                 }
-
             }
         }
-
     }
 
     /// <summary>
@@ -180,13 +177,13 @@ public class DetectClick : MonoBehaviour
     /// </summary>
     void CheckForDestroy()
     {
-        if (buildingManager.CanDestroy == true)
+        if (buildingManager.CanDestroy)
         {
             if (Input.GetMouseButtonDown(0))
             {
                 RaycastHit2D raycastHit;
                 Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector2 ray = new Vector2(cameraPos.x, cameraPos.y);
+                Vector2 ray = cameraPos;
                 raycastHit = Physics2D.Raycast(ray, -Vector2.up);
                 if (raycastHit.transform != null)
                 {
