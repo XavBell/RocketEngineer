@@ -178,19 +178,19 @@ public class FuelConnectorManager : MonoBehaviour
 
         foreach(GameObject building in actualOutputInput)
         {
-            if(building.GetComponent<buildingType>().type == "launchPad" && building.GetComponent<buildingType>().inputUI.active == false)
+            if(building.GetComponent<buildingType>().type == "launchPad" && building.GetComponent<buildingType>().inputUI.activeSelf == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
                 PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
-            if(building.GetComponent<buildingType>().type == "staticFireStand"&& building.GetComponent<buildingType>().inputUI.active == false)
+            if(building.GetComponent<buildingType>().type == "staticFireStand"&& building.GetComponent<buildingType>().inputUI.activeSelf == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
                 PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
-            if(building.GetComponent<buildingType>().type == "standTank"&& building.GetComponent<buildingType>().inputUI.active == false)
+            if(building.GetComponent<buildingType>().type == "standTank"&& building.GetComponent<buildingType>().inputUI.activeSelf == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
                 PanelFadeIn(building.GetComponent<buildingType>().inputUI);
