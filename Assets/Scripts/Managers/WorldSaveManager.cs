@@ -268,10 +268,7 @@ public class WorldSaveManager : MonoBehaviour
             {
                 FindObjectOfType<TimeManager>().time = loadedWorld.time;
                 FindObjectOfType<TimeManager>().bypass = true;
-                earth.GetComponent<BodyPath>().KeplerParams = loadedWorld.earthK;
-                moon.GetComponent<BodyPath>().KeplerParams = loadedWorld.moonK;
-                earth.GetComponent<BodyPath>().bypass = true;
-                moon.GetComponent<BodyPath>().bypass = true;
+                
 
                 MasterManager.GetComponent<pointManager>().nPoints = loadedWorld.nPoints;
                 MasterManager.GetComponent<MasterManager>().partName = loadedWorld.partName;
@@ -531,6 +528,10 @@ public class WorldSaveManager : MonoBehaviour
             if (launchsiteManager.commandCenter != null)
             {
                 worldCamera.transform.position = launchsiteManager.commandCenter.transform.position;
+                earth.GetComponent<BodyPath>().KeplerParams = loadedWorld.earthK;
+                moon.GetComponent<BodyPath>().KeplerParams = loadedWorld.moonK;
+                earth.GetComponent<BodyPath>().bypass = true;
+                moon.GetComponent<BodyPath>().bypass = true;
             }
             sun.GetComponent<SunScript>().InitializeSun();
             earth.GetComponent<EarthScript>().InitializeEarth();
