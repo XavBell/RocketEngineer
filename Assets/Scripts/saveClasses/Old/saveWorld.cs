@@ -19,9 +19,9 @@ public class saveWorld
     public float cameraRotY;
     public float cameraRotZ;
 
-    public List<string> partType = new List<string>();
-    public List<string> partName = new List<string>();
-    public List<int> count = new List<int>();
+    public List<string> enginesBuilt = new List<string>();
+    public List<string> rocketsBuilt = new List<string>();
+    public List<string> tanksBuilt= new List<string>();
 
     public List<string> turbineUnlocked = new List<string>();
     public List<string> pumpUnlocked = new List<string>();

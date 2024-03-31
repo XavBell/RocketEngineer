@@ -47,9 +47,9 @@ public class MasterManager : MonoBehaviour
     public GameObject MenuRocket;
     public bool rocketActive = false;
 
-    public List<string> partType = new List<string>();
-    public List<string> partName = new List<string>();
-    public List<int> count = new List<int>();
+    public List<string> rockets = new List<string>();
+    public List<string> tanks = new List<string>();
+    public List<string> engines = new List<string>();
 
     public List<Turbine> turbineUnlocked = new List<Turbine>();
     public List<Pump> pumpUnlocked = new List<Pump>();

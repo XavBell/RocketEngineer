@@ -121,9 +121,9 @@ public class WorldSaveManager : MonoBehaviour
             saveWorld.moonK = moon.GetComponent<BodyPath>().KeplerParams;
             
             saveWorld.nPoints = MasterManager.GetComponent<pointManager>().nPoints;
-            saveWorld.partName = MasterManager.GetComponent<MasterManager>().partName;
-            saveWorld.count = MasterManager.GetComponent<MasterManager>().count;
-            saveWorld.partType = MasterManager.GetComponent<MasterManager>().partType;
+            saveWorld.enginesBuilt = MasterManager.GetComponent<MasterManager>().engines;
+            saveWorld.tanksBuilt = MasterManager.GetComponent<MasterManager>().tanks;
+            saveWorld.rocketsBuilt = MasterManager.GetComponent<MasterManager>().rockets;
 
             foreach (Turbine turbine in MasterManager.GetComponent<MasterManager>().turbineUnlocked)
             {
@@ -271,9 +271,9 @@ public class WorldSaveManager : MonoBehaviour
                 
 
                 MasterManager.GetComponent<pointManager>().nPoints = loadedWorld.nPoints;
-                MasterManager.GetComponent<MasterManager>().partName = loadedWorld.partName;
-                MasterManager.GetComponent<MasterManager>().partType = loadedWorld.partType;
-                MasterManager.GetComponent<MasterManager>().count = loadedWorld.count;
+                MasterManager.GetComponent<MasterManager>().tanks = loadedWorld.tanksBuilt;
+                MasterManager.GetComponent<MasterManager>().rockets = loadedWorld.rocketsBuilt;
+                MasterManager.GetComponent<MasterManager>().engines = loadedWorld.enginesBuilt;
 
                 if (loadedWorld.nodeUnlocked.Count > MasterManager.GetComponent<MasterManager>().nodeUnlocked.Count)
                 {
