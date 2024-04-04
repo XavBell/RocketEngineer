@@ -45,7 +45,6 @@ public class rocketCursorManager : MonoBehaviour
 
     public void clickDelayed()
     {
-        print("here");
         if (runClickDelay == true)
         {
             runClickDelay = false;

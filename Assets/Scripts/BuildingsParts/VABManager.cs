@@ -49,8 +49,6 @@ public class VABManager : MonoBehaviour
 
     }
 
-
-
     public void onValueChanged()
     {
         if (type.value == 0)
@@ -168,8 +166,8 @@ public class VABManager : MonoBehaviour
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + partName.options[partName.value].text);
             savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
             GameObject temp = new GameObject();
-            engines.Clear();
-            tanks.Clear();
+            //engines.Clear();
+            //tanks.Clear();
             int totalEngineParts = 0;
             int totalTankParts = 0;
             float cost = 0;
@@ -190,7 +188,6 @@ public class VABManager : MonoBehaviour
                 cost += loadedRocket.tankCost[tankID];
                 tankID++;
             }
-
             engines.Distinct().ToList();
             tanks.Distinct().ToList();
 
@@ -217,46 +214,40 @@ public class VABManager : MonoBehaviour
             int engineBuilt = 0;
             int tankBuilt = 0;
             //Reduce price of rocket based on built parts
-            foreach (string name in MasterManager.engines)
+            List<string> tempEngines = new List<string>();
+            foreach(string engine in MasterManager.engines)
             {
-                if (engines.Contains("/" + name))
+                tempEngines.Add(engine);
+            }
+            int i = 0;
+            foreach(string engine in loadedRocket.engineName)
+            {
+                if(tempEngines.Contains(engine.Replace("/", "") + ".json"))
                 {
-                    int count = 0;
-                    foreach(string engine in MasterManager.engines)
-                    {
-                        if("/" + name == engine)
-                        {
-                            count++;
-                        }
-                    }
-                    engineBuilt += count;
-                    int index = engines.IndexOf("/" + name);
-                    if (cost - costsEngine[index] * count  >= 0)
-                    {
-                        cost -= costsEngine[index] * count;
-                    }
+                    tempEngines.RemoveAt(tempEngines.IndexOf(engine.Replace("/", "")+ ".json"));
+                    engineBuilt++;
+                    cost -= loadedRocket.engineCost[i];
                 }
+                i++;
             }
 
-            foreach(string name in MasterManager.tanks)
+            List<string> tempTanks = new List<string>();
+            foreach(string tank in MasterManager.tanks)
             {
-                if (tanks.Contains("/" + name))
+                tempTanks.Add(tank);
+            }
+            i = 0;
+            foreach(string tank in loadedRocket.tankName)
+            {
+                //print(MasterManager.tanks[0]);
+                //print(tank);
+                if(tempTanks.Contains(tank.Replace("/", "") + ".json"))
                 {
-                    int count = 0;
-                    foreach(string tank  in MasterManager.tanks)
-                    {
-                        if("/" + name == tank)
-                        {
-                            count++;
-                        }
-                    }
-                    tankBuilt += count;
-                    int index = tanks.IndexOf("/" + name);
-                    if (cost - costsTank[index] * count >= 0)
-                    {
-                        cost -= costsTank[index] * count;
-                    }
+                    tempTanks.RemoveAt(tempTanks.IndexOf(tank.Replace("/", "") + ".json"));
+                    tankBuilt++;
+                    cost -= loadedRocket.tankCost[i];
                 }
+                i++;
             }
 
             //Count number of rocket built
@@ -354,7 +345,7 @@ public class VABManager : MonoBehaviour
         //0 is Rocket
         //1 is Engine
         //2 is Tank
-
+        print("OH NO");
         if (Convert.ToSingle(costTxt.text) < MasterManager.gameObject.GetComponent<pointManager>().nPoints)
         {
             if(type.value == 0)
@@ -405,7 +396,10 @@ public class VABManager : MonoBehaviour
                     List<string> tempEngine = MasterManager.engines;
                     foreach (string engine in enginetoBeRemoved)
                     {
-                        tempEngine.RemoveAt(tempEngine.IndexOf(engine.Replace("/", "") + ".json"));
+                        if(tempEngine.Contains(engine.Replace("/", "") + ".json"))
+                        {
+                            tempEngine.RemoveAt(tempEngine.IndexOf(engine.Replace("/", "") + ".json"));
+                        }
                     }
                     MasterManager.engines = tempEngine;
                 }
@@ -415,8 +409,10 @@ public class VABManager : MonoBehaviour
                     List<string> tempTank = MasterManager.tanks;
                     foreach (string tank in tanktoBeRemoved)
                     {
-                        print(tank);
-                        tempTank.RemoveAt(tempTank.IndexOf(tank.Replace("/", "") + ".json"));
+                        if(tempTank.Contains(tank.Replace("/", "") + ".json"))
+                        {
+                            tempTank.RemoveAt(tempTank.IndexOf(tank.Replace("/", "") + ".json"));
+                        }
                     }
                     MasterManager.tanks = tempTank;
                 }
