@@ -41,6 +41,7 @@ public class MasterManager : MonoBehaviour
     public GameObject loadCanvas;
     public GameObject newWorldCanvas;
     public GameObject optionCanvas;
+    public TMP_Dropdown resolutionDropdown;
     public List<GameObject> buttons = new List<GameObject>();
 
     public float MenuThrust = 200;
@@ -73,6 +74,12 @@ public class MasterManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //Check if current resolution is in 16:9, if not set it
+        if(Screen.width/Screen.height != 16/9)
+        {
+            Screen.SetResolution(1920, 1080, fullScreen.isOn);
+        }
+        
         updateButtons();
         DontDestroyOnLoad(this.gameObject);
     }
@@ -123,7 +130,9 @@ public class MasterManager : MonoBehaviour
             b1text.text = Path.GetFileName(file.ToString());
             buttons.Add(button);
             buttons.Add(child);
-        } 
+        }
+
+        initializeResolutionDropdown(); 
     }
 
     public void newGame()
@@ -231,6 +240,57 @@ public class MasterManager : MonoBehaviour
         if(fullScreen.isOn == false)
         {
             Screen.fullScreen = false;
+        }
+    }
+
+    void initializeResolutionDropdown()
+    {
+        if(Screen.width == 1280 && Screen.height == 720)
+        {
+            resolutionDropdown.value = 0;
+        }
+
+        if(Screen.width == 1920 && Screen.height == 1080)
+        {
+            resolutionDropdown.value = 1;
+        }
+
+        if(Screen.width == 2560 && Screen.height == 1440)
+        {
+            resolutionDropdown.value = 2;
+        }
+
+        if(Screen.width == 3840 && Screen.height == 2160)
+        {
+            resolutionDropdown.value = 3;
+        }
+    }
+
+    public void SetResolution()
+    {
+        //0 is 1280x720
+        //1 is 1920x1080
+        //2 is 2560x1440
+        //3 is 3840x2160
+
+        if(resolutionDropdown.value == 0)
+        {
+            Screen.SetResolution(1280, 720, Screen.fullScreen);
+        }
+
+        if(resolutionDropdown.value == 1)
+        {
+            Screen.SetResolution(1920, 1080, Screen.fullScreen);
+        }
+
+        if(resolutionDropdown.value == 2)
+        {
+            Screen.SetResolution(2560, 1440, Screen.fullScreen);
+        }
+
+        if(resolutionDropdown.value == 3)
+        {
+            Screen.SetResolution(3840, 2160, Screen.fullScreen);
         }
     }
 }

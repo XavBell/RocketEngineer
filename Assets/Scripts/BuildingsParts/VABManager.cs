@@ -7,7 +7,6 @@ using Newtonsoft.Json;
 using System.Linq;
 using UnityEngine.Rendering;
 using System;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public class VABManager : MonoBehaviour
 {
@@ -41,6 +40,8 @@ public class VABManager : MonoBehaviour
                 retrieveInfo();
             }
         }
+
+        
     }
 
     // Update is called once per frame
@@ -432,7 +433,7 @@ public class VABManager : MonoBehaviour
             //Adjust new points
             MasterManager.gameObject.GetComponent<pointManager>().nPoints -= Convert.ToSingle(costTxt.text);
         }
-        onValueChanged();
+        retrieveInfo();
     }
 
 }
