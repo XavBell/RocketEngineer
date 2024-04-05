@@ -143,7 +143,11 @@ public class MapManager : MonoBehaviour
 
             foreach(Prediction pred in prediction)
             {
-                Destroy(pred.gameObject);
+                if(pred != null)
+                {
+                    Destroy(pred.gameObject);
+                }
+                
             }
 
             foreach(GameObject path in paths)

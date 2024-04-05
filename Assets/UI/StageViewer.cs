@@ -228,6 +228,7 @@ public class StageViewer : MonoBehaviour
 
     public void Terminate()
     {
+        FindObjectOfType<MapManager>().mapOn();
         if(rocket != null)
         {
             rocket.GetComponent<PlanetGravity>().possessed = false;
@@ -251,5 +252,6 @@ public class StageViewer : MonoBehaviour
                 return;
             }
         }
+        FindObjectOfType<MapManager>().mapOn();
     }
 }

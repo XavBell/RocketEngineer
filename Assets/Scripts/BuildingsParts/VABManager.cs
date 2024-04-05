@@ -166,8 +166,8 @@ public class VABManager : MonoBehaviour
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + partName.options[partName.value].text);
             savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
             GameObject temp = new GameObject();
-            //engines.Clear();
-            //tanks.Clear();
+            engines.Clear();
+            tanks.Clear();
             int totalEngineParts = 0;
             int totalTankParts = 0;
             float cost = 0;
@@ -239,8 +239,6 @@ public class VABManager : MonoBehaviour
             i = 0;
             foreach(string tank in loadedRocket.tankName)
             {
-                //print(MasterManager.tanks[0]);
-                //print(tank);
                 if(tempTanks.Contains(tank.Replace("/", "") + ".json"))
                 {
                     tempTanks.RemoveAt(tempTanks.IndexOf(tank.Replace("/", "") + ".json"));
