@@ -18,6 +18,7 @@ public class StageViewer : MonoBehaviour
     public TimeManager MyTime;
     public BuildingManager buildingManager;
     public bool runStopDelay = false;
+    public bool runTerminateDelay = false;
 
     private int nStages = -1;
 
@@ -48,6 +49,11 @@ public class StageViewer : MonoBehaviour
         if(runStopDelay == true)
         {
             stopDelayed();
+        }
+
+        if(runTerminateDelay == true)
+        {
+            TerminateDelayed();
         }
     }
 
@@ -226,7 +232,7 @@ public class StageViewer : MonoBehaviour
         }
     }
 
-    public void Terminate()
+    public void TerminateDelayed()
     {
         FindObjectOfType<MapManager>().mapOn();
         if(rocket != null)
@@ -239,6 +245,29 @@ public class StageViewer : MonoBehaviour
         CameraControl camera = FindObjectOfType<CameraControl>();
         launchsiteManager launchsiteManager = FindObjectOfType<launchsiteManager>();
         camera.transform.position = launchsiteManager.commandCenter.transform.position;
+        //Must absolutely be before changing state for the landed rockets to not change of position since the landed state
+        //is dependant on the distance from the camera
+        camera.transform.position = launchsiteManager.commandCenter.transform.position;
+        camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
+
+        //FORCE BRUTE SWITCH TO ON RAIL
+        Rocket[] rockets = FindObjectsOfType<Rocket>();
+        foreach (Rocket rp1 in rockets)
+        {
+            if ((rp1.GetComponent<RocketStateManager>().curr_X != rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y != rp1.GetComponent<RocketStateManager>().previous_Y))
+            {
+                rp1.GetComponent<RocketStateManager>().state = "rail";
+                rp1.GetComponent<PlanetGravity>().rb.simulated = false;
+                rp1.GetComponent<RocketPath>().startTime = MyTime.time;
+                rp1.GetComponent<RocketPath>().CalculateParameters();
+                rp1.GetComponent<RocketStateManager>().previousState = "rail";
+                rp1.GetComponent<RocketStateManager>().UpdatePosition();
+            }
+            else if ((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y))
+            {
+                rp1.GetComponent<RocketStateManager>().StateUpdater();
+            }
+        }
         this.gameObject.SetActive(false);
         masterManager.ActiveRocket = null;
         camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
@@ -253,5 +282,11 @@ public class StageViewer : MonoBehaviour
             }
         }
         FindObjectOfType<MapManager>().mapOn();
+        runTerminateDelay = false;
+    }
+
+    public void Terminate()
+    {
+        runTerminateDelay = true;
     }
 }

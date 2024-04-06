@@ -8,7 +8,6 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public class staticFireStandManager : MonoBehaviour
 {
@@ -67,7 +66,6 @@ public class staticFireStandManager : MonoBehaviour
                     engineStaticFireTracker.times.Add((float)(MyTime.time - startTime));
                     engineStaticFireTracker.fuelQty.Add(fuel.mass);
                     engineStaticFireTracker.oxidizerQty.Add(oxidizer.mass);
-                    print(fail);
                     if(fail == true)
                     {
                         engine.active = false;
@@ -150,10 +148,8 @@ public class staticFireStandManager : MonoBehaviour
                     {
                         rocketNames.Add(file.Name);
                     }
-                    print("here");
                     foreach(var rocket in rocketNames)
                     {
-                        print(rocket);
                         if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket))
                         {
                             savecraft saveObject = new savecraft();
@@ -165,7 +161,6 @@ public class staticFireStandManager : MonoBehaviour
                             int i = 0;
                             foreach(string engine1 in saveObject.engineName)
                             {
-                                print(engine1 + " " + ConnectedEngine.GetComponent<Engine>()._partName);
                                 if(engine1 == ConnectedEngine.GetComponent<Engine>()._partName)
                                 {
                                     saveObject.reliability[i] = engine.reliability;

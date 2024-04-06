@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Localization.Pseudo;
 
 public class CapsuleUIManager : MonoBehaviour
 {
