@@ -18,7 +18,13 @@ public class gasVent : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        expell(ventRate);
+        if(container != null)
+        {
+            if(container.substance != null)
+            {
+                expell(ventRate);
+            }
+        }
     }
 
     void expell(float rate)

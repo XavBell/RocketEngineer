@@ -33,6 +33,11 @@ public class PressureTestViewer : MonoBehaviour
             if(Stand.GetComponent<standManager>().ConnectedTank != null)
             {
                 updateQuantity();
+                updateTemp();
+                if(targetTemp.text == "")
+                {
+                    targetTemp.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<cooler>().targetTemperature.ToString();
+                }
             }
         }
     }
@@ -129,8 +134,14 @@ public class PressureTestViewer : MonoBehaviour
         float tryN = 0;
         if (float.TryParse(targetTemp.text.ToString(), out tryN))
         {
-            Stand.GetComponent<standManager>().ConnectedTank.GetComponent<cooler>().targetTemperature = tryN;
-            return;
+            if(tryN < 0)
+            {
+                Stand.GetComponent<standManager>().ConnectedTank.GetComponent<cooler>().targetTemperature = 0;
+                return;
+            }else{
+                Stand.GetComponent<standManager>().ConnectedTank.GetComponent<cooler>().targetTemperature = tryN;
+                return;
+            }
         }
     } 
 

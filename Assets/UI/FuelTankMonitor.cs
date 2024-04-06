@@ -24,12 +24,11 @@ public class FuelTankMonitor : MonoBehaviour
     [SerializeField]public gasVent gasVent;
     [SerializeField]public cooler cooler;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
-
         if(container != null)
         {
+            print("Container");
             if (container.GetComponent<gasVent>() != null)
             {
                 ventToggle.isOn = container.GetComponent<gasVent>().open;
@@ -38,9 +37,9 @@ public class FuelTankMonitor : MonoBehaviour
             {
                 coolerToggle.isOn = container.GetComponent<cooler>().active;
             }
-            if(targetTemperature != null)
+            if(target != null)
             {
-                targetTemperature.text = container.GetComponent<cooler>().targetTemperature.ToString();
+                target.text = container.GetComponent<cooler>().targetTemperature.ToString();
             }
         }
     }
@@ -54,6 +53,12 @@ public class FuelTankMonitor : MonoBehaviour
             {
                 updateValues();
             }
+
+            if(target.text == "")
+            {
+                target.text = container.GetComponent<cooler>().targetTemperature.ToString();
+            }
+            updateTemp();
         }
     }
 
@@ -65,8 +70,6 @@ public class FuelTankMonitor : MonoBehaviour
         quantity.text = container.mass.ToString();
         substance.text = container.substance.ToString();
         state.text = container.state.ToString();
-        
-        updateTemp();
     }
 
     public void updateTemp()
@@ -74,8 +77,14 @@ public class FuelTankMonitor : MonoBehaviour
         float tryN = 0;
         if(float.TryParse(target.text.ToString(), out tryN))
         {
-            cooler.targetTemperature = tryN;
-            return;
+            if(tryN < 0)
+            {
+                cooler.targetTemperature = 0;
+                return;
+            }else{
+                cooler.targetTemperature = tryN;
+                return;
+            }
         }else{
             cooler.targetTemperature = container.targetTemperature;
         }

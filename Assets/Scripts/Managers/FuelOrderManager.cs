@@ -28,13 +28,12 @@ public class FuelOrderManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        updateTemperatureText();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        updateTemperatureText();
     }
 
     public void PanelFadeIn(GameObject panel)

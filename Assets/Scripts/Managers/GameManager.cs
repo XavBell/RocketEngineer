@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 public class GameManager : MonoBehaviour
 {
 
-    private GameObject partToConstruct;
+    public GameObject partToConstruct;
     private GameObject capsule;
     public CustomCursor customCursor;
     public TMP_InputField saveName;
@@ -79,6 +79,7 @@ public class GameManager : MonoBehaviour
         updateSaveName();
         if (Input.GetMouseButtonDown(0) && partToConstruct != null)
         {
+            Vector3 savedRot = customCursor.transform.GetChild(1).transform.eulerAngles;
             ResetCursorGameObject();
             GameObject currentPrefab = null;
             if (Cursor.visible == false)
@@ -95,7 +96,7 @@ public class GameManager : MonoBehaviour
                     currentPrefab.GetComponentInChildren<autoSpritePositionner>().UpdatePosition();
                     currentPrefab.GetComponentInChildren<autoSpritePositionner>().bypass = true;
                 }
-                currentPrefab.transform.localRotation = Quaternion.Euler(customCursor.transform.eulerAngles);
+                currentPrefab.transform.localRotation = Quaternion.Euler(savedRot);
                 Vector2 prefabPos = new Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
@@ -117,7 +118,8 @@ public class GameManager : MonoBehaviour
         if(Input.GetMouseButton(1))
         {
             Cursor.visible = true;
-            customCursor.gameObject.SetActive(false);
+            customCursor.GetComponent<SpriteRenderer>().sprite = null;
+            partPath = null;
             partToConstruct = null;
         }
     }
@@ -156,7 +158,7 @@ public class GameManager : MonoBehaviour
 
     public void ResetCursorGameObject()
     {
-        DestroyImmediate(customCursor.transform.GetChild(0).gameObject);
+        DestroyImmediate(customCursor.transform.GetChild(1).gameObject);
     }
 
     public void ConstructPart(GameObject part)
@@ -183,7 +185,7 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.R))
             {
-                customCursor.transform.Rotate(0, 0, 90);
+                customCursor.transform.GetChild(1).transform.Rotate(0, 0, 90);
                 StartCoroutine(Delay());
             }
         }

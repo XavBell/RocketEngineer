@@ -53,6 +53,18 @@ public class StaticFireViewer : MonoBehaviour
             updateStatus();
             updateQuantity();
             updateThrust();
+            updateTemp("fuel");
+            updateTemp("oxidizer");
+
+            if(targetTempFuel.text == "")
+            {
+                targetTempFuel.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.GetComponent<cooler>().targetTemperature.ToString();
+            }
+
+            if(targetTempOxidizer.text == "")
+            {
+                targetTempOxidizer.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.GetComponent<cooler>().targetTemperature.ToString();
+            }
         }
     }
 
@@ -232,8 +244,14 @@ public class StaticFireViewer : MonoBehaviour
             float tryN = 0;
             if (float.TryParse(targetTempOxidizer.text.ToString(), out tryN))
             {
-                oxidizerCooler.targetTemperature = tryN;
-                return;
+                if(tryN < 0)
+                {
+                    oxidizerCooler.targetTemperature = 0;
+                    return;
+                }else{
+                    oxidizerCooler.targetTemperature = tryN;
+                    return;
+                }
             }
         }
 
@@ -242,8 +260,14 @@ public class StaticFireViewer : MonoBehaviour
             float tryN = 0;
             if (float.TryParse(targetTempFuel.text.ToString(), out tryN))
             {
-                fuelCooler.targetTemperature = tryN;
-                return;
+                if(tryN < 0)
+                {
+                    fuelCooler.targetTemperature = 0;
+                    return;
+                }else{
+                    fuelCooler.targetTemperature = tryN;
+                    return;
+                }
             }
 
         }

@@ -15,7 +15,7 @@ public class container : MonoBehaviour
     public float maxPressure;
 
 
-    public float moles;
+    public float moles = 0;
     public float internalPressure; //Pa
     public float internalTemperature = 298; //K
     public float externalTemperature = 298; //K
@@ -45,11 +45,15 @@ public class container : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(substance != null)
+        if(substance != null && moles > 0)
         {
             calculateInternalConditions();
             checkBreak();
-            
+        }else if(substance == null)
+        {
+            state = "none";
+            internalPressure = 0;
+            internalTemperature = 298;
         }
         
     }

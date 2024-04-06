@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.Localization.Plugins.XLIFF.V20;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,8 +9,10 @@ public class TankUIModule : MonoBehaviour
 {
     [SerializeField]TMP_Text internalPressure;
     [SerializeField]TMP_Text internalTemperature;
+    [SerializeField]TMP_Text connectedLine;
     [SerializeField]TMP_Text volume;
     [SerializeField]TMP_Text quantity;
+    [SerializeField]TMP_Text state;
     [SerializeField]Toggle coolerToggle;
     [SerializeField]Toggle ventToggle;
     [SerializeField]Toggle valveToggle;
@@ -24,6 +27,7 @@ public class TankUIModule : MonoBehaviour
         ventToggle.isOn = tank.GetComponent<gasVent>().open;
         valveToggle.isOn = tank.GetComponent<flowController>().opened;
         targetTemperature.text = tank.GetComponent<cooler>().targetTemperature.ToString();
+        connectedLine.text = tank.GetComponent<Tank>().propellantCategory.ToString();
     }
 
     // Update is called once per frame
@@ -31,7 +35,12 @@ public class TankUIModule : MonoBehaviour
     {
         if(tank != null)
         {
-            updateValues();    
+            updateValues();
+            updateTemp();
+            if(targetTemperature.text == "")
+            {
+                targetTemperature.text = tank.GetComponent<cooler>().targetTemperature.ToString();
+            }
         }
         
     }
@@ -41,6 +50,7 @@ public class TankUIModule : MonoBehaviour
         internalPressure.text = tank.internalPressure.ToString();
         internalTemperature.text = tank.internalTemperature.ToString();
         volume.text = tank.volume.ToString() + "/" + tank.tankVolume.ToString();
+        state.text = tank.state.ToString();
         
         if(tank.GetComponent<Tank>().tested == false)
         {
@@ -63,8 +73,14 @@ public class TankUIModule : MonoBehaviour
         float tryN = 0;
         if(float.TryParse(targetTemperature.text.ToString(), out tryN))
         {
-            tank.GetComponent<cooler>().targetTemperature = tryN;
-            return;
+            if(tryN < 0)
+            {
+                tank.GetComponent<cooler>().targetTemperature = 0;
+                return;
+            }else{
+                tank.GetComponent<cooler>().targetTemperature = tryN;
+                return;
+            }
         }else{
             tank.GetComponent<cooler>().targetTemperature = tank.internalTemperature;
         }
