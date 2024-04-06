@@ -61,13 +61,43 @@ public class Stages
         {
             foreach(RocketPart engine in engines)
             {
-
                 //Fix to have the right start time
                 bool fail;
                 float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(Time.time - startTime, out fail);
                 if(fail == false && engine.GetComponent<Engine>().operational == true)
                 {
                     thrust += thrustCoefficient * new Vector2(engine.gameObject.transform.up.x, engine.gameObject.transform.up.y) * rawThrust;
+                    foreach (RocketPart tank in Parts)
+                    {
+                        if (tank._partType == "tank")
+                        {
+                            if (tank.GetComponent<Tank>().propellantCategory == "oxidizer")
+                            {
+                                if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / oxidizerQty * consumedOxidizer * 1000f / tank.GetComponent<container>().substance.MolarMass < 0)
+                                {
+                                    tank.GetComponent<container>().moles = 0;
+                                }
+                                else
+                                {
+                                    tank.GetComponent<container>().moles -= tank.GetComponent<container>().mass / oxidizerQty * consumedOxidizer * 1000f / tank.GetComponent<container>().substance.MolarMass;
+                                }
+
+                            }
+
+                            if (tank.GetComponent<Tank>().propellantCategory == "fuel")
+                            {
+                                if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / fuelQty * consumedFuel * 1000f / tank.GetComponent<container>().substance.MolarMass < 0)
+                                {
+                                    tank.GetComponent<container>().moles = 0;
+                                }
+                                else
+                                {
+                                    tank.GetComponent<container>().moles -= tank.GetComponent<container>().mass / fuelQty * consumedFuel * 1000f / tank.GetComponent<container>().substance.MolarMass;
+                                }
+
+                            }
+                        }
+                    }
                 }
 
                 if(fail == true)
@@ -76,33 +106,7 @@ public class Stages
                 }
             }
 
-            foreach(RocketPart tank in Parts)
-            {
-                if(tank._partType == "tank")
-                {
-                    if(tank.GetComponent<Tank>().propellantCategory == "oxidizer")
-                    {
-                        if(tank.GetComponent<container>().moles - tank.GetComponent<container>().mass/oxidizerQty*consumedOxidizer*1000f/tank.GetComponent<container>().substance.MolarMass < 0)
-                        {
-                            tank.GetComponent<container>().moles = 0;
-                        }else{
-                            tank.GetComponent<container>().moles -= tank.GetComponent<container>().mass/oxidizerQty*consumedOxidizer*1000f/tank.GetComponent<container>().substance.MolarMass;
-                        }
-                        
-                    }
-
-                    if(tank.GetComponent<Tank>().propellantCategory == "fuel")
-                    {
-                        if(tank.GetComponent<container>().moles - tank.GetComponent<container>().mass/fuelQty*consumedFuel*1000f/tank.GetComponent<container>().substance.MolarMass < 0)
-                        {
-                            tank.GetComponent<container>().moles = 0;
-                        }else{
-                            tank.GetComponent<container>().moles -= tank.GetComponent<container>().mass/fuelQty*consumedFuel*1000f/tank.GetComponent<container>().substance.MolarMass;
-                        }
-                        
-                    }
-                }
-            }
+            
         }
         engineStarted = true;  
     }

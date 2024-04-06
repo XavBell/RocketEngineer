@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public class staticFireStandManager : MonoBehaviour
 {
@@ -66,7 +67,7 @@ public class staticFireStandManager : MonoBehaviour
                     engineStaticFireTracker.times.Add((float)(MyTime.time - startTime));
                     engineStaticFireTracker.fuelQty.Add(fuel.mass);
                     engineStaticFireTracker.oxidizerQty.Add(oxidizer.mass);
-
+                    print(fail);
                     if(fail == true)
                     {
                         engine.active = false;
@@ -141,6 +142,44 @@ public class staticFireStandManager : MonoBehaviour
                         var jsonString1 = JsonConvert.SerializeObject(saveObject);
                         System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json", jsonString1);
                     }
+                    //Apply new reliability to all rockets
+                    var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
+                    var rocketNamesFiles = info.GetFiles();
+                    List<string> rocketNames = new List<string>();
+                    foreach(var file in rocketNamesFiles)
+                    {
+                        rocketNames.Add(file.Name);
+                    }
+                    print("here");
+                    foreach(var rocket in rocketNames)
+                    {
+                        print(rocket);
+                        if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket))
+                        {
+                            savecraft saveObject = new savecraft();
+                            var jsonString = JsonConvert.SerializeObject(saveObject);
+                            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket);
+                            savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
+
+                            saveObject = loadedRocket;
+                            int i = 0;
+                            foreach(string engine1 in saveObject.engineName)
+                            {
+                                print(engine1 + " " + ConnectedEngine.GetComponent<Engine>()._partName);
+                                if(engine1 == ConnectedEngine.GetComponent<Engine>()._partName)
+                                {
+                                    saveObject.reliability[i] = engine.reliability;
+                                }
+                                i++;
+                            }
+
+                            var jsonString1 = JsonConvert.SerializeObject(saveObject);
+                            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket, jsonString1);
+                        }
+                        
+
+                    }
+
                     stopped = true;
                     engineStaticFireTracker = null;
                     oxidizerSufficient = true;

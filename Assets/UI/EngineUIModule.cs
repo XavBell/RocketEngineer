@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EngineUIModule : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class EngineUIModule : MonoBehaviour
     public Color color1;
     public Color color2;
     public Color color3;
+
+    public Color colorWorking;
+    public Color colorNotWorking;
+    public GameObject imageStatus;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +27,20 @@ public class EngineUIModule : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        updateStatus();
+    }
+
+    void updateStatus()
+    {
+        if(engine.operational == true)
+        {
+            imageStatus.GetComponent<Image>().color = colorWorking;
+        }
+
+        if(engine.operational == false)
+        {
+            imageStatus.GetComponent<Image>().color = colorNotWorking;
+        }
     }
 
     public void activate()

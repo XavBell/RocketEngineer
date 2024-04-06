@@ -89,7 +89,7 @@ public class Engine : RocketPart
         }
     }
 
-    public float CalculateOutputThrust(float time, out bool fail)
+    public float CalculateOutputThrust(double time, out bool fail)
     {
         float percentageOfThrust = Random.Range(0.99f, 1.01f);
         float outThrust = _thrust * percentageOfThrust;

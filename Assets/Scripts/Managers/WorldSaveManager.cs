@@ -184,14 +184,6 @@ public class WorldSaveManager : MonoBehaviour
                     saveWorld.padOxidizerGuid.Add(building.GetComponent<flowControllerForLaunchPads>().oxidizerGuid);
                 }
 
-                if (building.GetComponent<buildingType>().type == "staticFireStand")
-                {
-
-                    saveWorld.staticFireFuelGuid.Add(building.GetComponent<flowControllerStaticFire>().fuelGuid);
-
-                    saveWorld.staticFireOxidizerGuid.Add(building.GetComponent<flowControllerStaticFire>().oxidizerGuid);
-                }
-
                 if (building.GetComponent<buildingType>().type == "standTank")
                 {
                     saveWorld.standGuid.Add(building.GetComponent<flowControllerForTankStand>().originGuid);
@@ -338,7 +330,6 @@ public class WorldSaveManager : MonoBehaviour
 
 
             BuildingManager.GetComponent<BuildingManager>().IDMax = loadedWorld.IDMax;
-
             foreach (string buildingType in loadedWorld.buildingTypes)
             {
                 Vector3 position = new Vector3(loadedWorld.buildingLocX[count], loadedWorld.buildingLocY[count], loadedWorld.buildingLocZ[count]);
@@ -446,41 +437,18 @@ public class WorldSaveManager : MonoBehaviour
 
                 foreach (container container in containers)
                 {
-                    if (container.guid == flowControllerForLaunchPads.fuelGuid)
+                    if (container.guid == flowControllerForLaunchPads.fuelGuid && flowControllerForLaunchPads.fuelGuid != Guid.Empty)
                     {
                         flowControllerForLaunchPads.fuelContainerOrigin = container;
                     }
 
-                    if (container.guid == flowControllerForLaunchPads.oxidizerGuid)
+                    if (container.guid == flowControllerForLaunchPads.oxidizerGuid && flowControllerForLaunchPads.oxidizerGuid != Guid.Empty)
                     {
                         flowControllerForLaunchPads.oxidizerContainerOrigin = container;
                     }
                 }
 
                 padIndex++;
-            }
-
-            int staticFireStandIndex = 0;
-            flowControllerStaticFire[] flowControllersStaticFire = FindObjectsOfType<flowControllerStaticFire>();
-            foreach (flowControllerStaticFire flowControllerStaticFire in flowControllersStaticFire)
-            {
-                flowControllerStaticFire.fuelGuid = loadedWorld.staticFireFuelGuid[staticFireStandIndex];
-                flowControllerStaticFire.oxidizerGuid = loadedWorld.staticFireOxidizerGuid[staticFireStandIndex];
-
-                foreach (container container in containers)
-                {
-                    if (container.guid == flowControllerStaticFire.fuelGuid)
-                    {
-                        flowControllerStaticFire.fuelContainer = container;
-                    }
-
-                    if (container.guid == flowControllerStaticFire.oxidizerGuid)
-                    {
-                        flowControllerStaticFire.oxidizerContainer = container;
-                    }
-                }
-
-                staticFireStandIndex++;
             }
 
             int standIndex = 0;
@@ -490,7 +458,7 @@ public class WorldSaveManager : MonoBehaviour
                 flowControllerForTankStand.originGuid = loadedWorld.standGuid[standIndex];
                 foreach (container container in containers)
                 {
-                    if (container.guid == flowControllerForTankStand.originGuid)
+                    if (container.guid == flowControllerForTankStand.originGuid && flowControllerForTankStand.originGuid != Guid.Empty) 
                     {
                         flowControllerForTankStand.origin = container;
                     }
@@ -508,12 +476,12 @@ public class WorldSaveManager : MonoBehaviour
                     flowController.destinationGuid = loadedWorld.destinationGuid[flowControllerID];
                     foreach (container container in containers)
                     {
-                        if (container.guid == flowController.originGuid)
+                        if (container.guid == flowController.originGuid && flowController.originGuid != Guid.Empty)
                         {
                             flowController.origin = container;
                         }
 
-                        if (container.guid == flowController.destinationGuid)
+                        if (container.guid == flowController.destinationGuid && flowController.destinationGuid != Guid.Empty)
                         {
                             flowController.destination = container;
                         }

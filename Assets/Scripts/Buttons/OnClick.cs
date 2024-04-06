@@ -220,7 +220,7 @@ public class OnClick : MonoBehaviour
                     if(part.GetComponent<RocketPart>()._partType == "tank")
                     {
                         part.GetComponent<Tank>()._partName = loadedRocket.tankName[tankID];
-                        part.transform.localScale = new UnityEngine.Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
+                        part.transform.localScale = new Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
                         part.GetComponent<Tank>()._volume = loadedRocket.volume[tankID];
                         part.GetComponent<Tank>().tankMaterial = loadedRocket.tankMaterial[tankID];
                         part.GetComponent<Tank>().propellantCategory = loadedRocket.propellantType[tankID];
@@ -269,8 +269,6 @@ public class OnClick : MonoBehaviour
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
             spawnedRocket = Instantiate(Engine, launchPad.transform);
-
-            //Engine engine = spawnedRocket.GetComponent<Engine>();
             spawnedRocket.GetComponent<Engine>()._path = loadedEngine.path;
             spawnedRocket.GetComponent<Engine>()._partName = loadedEngine.engineName;
             spawnedRocket.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
