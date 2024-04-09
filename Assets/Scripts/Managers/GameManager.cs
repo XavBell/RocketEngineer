@@ -115,12 +115,16 @@ public class GameManager : MonoBehaviour
             updateCost();
         }
 
-        if(Input.GetMouseButton(1))
+        if(Input.GetMouseButton(1) && partToConstruct != null)
         {
             Cursor.visible = true;
             customCursor.GetComponent<SpriteRenderer>().sprite = null;
             partPath = null;
             partToConstruct = null;
+            if(customCursor.transform.childCount > 1)
+            {
+                ResetCursorGameObject();
+            }
         }
     }
 
