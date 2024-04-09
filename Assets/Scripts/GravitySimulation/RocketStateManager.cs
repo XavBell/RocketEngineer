@@ -74,7 +74,7 @@ public class RocketStateManager : MonoBehaviour
 
     public void StateUpdater()
     {
-        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && this.planetGravity.rb.velocity.magnitude < 1 && (planetGravity.getCamera().transform.position - transform.position).magnitude >= 100)
+        if(curr_X == previous_X && curr_Y == previous_Y && planetGravity.possessed == false && this.planetGravity.rb.velocity.magnitude < 1 && (planetGravity.getCamera().transform.position - transform.position).magnitude >= 200)
         {
             state = "landed";
             if(previousState != state)
