@@ -174,7 +174,6 @@ public class OnClick : MonoBehaviour
                     currentPart.AddComponent<Rocket>();
                     rocket.core = currentPart;
                     core = currentPart;
-                    //newParts.Remove(currentPart);
                 }
 
                 topGuid.Add(loadedRocket.attachedTop[i]);
@@ -212,48 +211,49 @@ public class OnClick : MonoBehaviour
             int engineID = 0;
             foreach(GameObject part in rocketPart)
             {
-                if(part != core)
+                if (part != core)
                 {
                     part.transform.SetParent(core.transform);
-                    part.transform.position = new UnityEngine.Vector3(loadedRocket.x_pos[j] + core.transform.position.x, loadedRocket.y_pos[j]+ core.transform.position.y, loadedRocket.z_pos[j]+ core.transform.position.z);
-
-                    if(part.GetComponent<RocketPart>()._partType == "tank")
-                    {
-                        part.GetComponent<Tank>()._partName = loadedRocket.tankName[tankID];
-                        part.transform.localScale = new Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
-                        part.GetComponent<Tank>()._volume = loadedRocket.volume[tankID];
-                        part.GetComponent<Tank>().tankMaterial = loadedRocket.tankMaterial[tankID];
-                        part.GetComponent<Tank>().propellantCategory = loadedRocket.propellantType[tankID];
-                        part.GetComponent<Tank>().x_scale = loadedRocket.x_scale[tankID];
-                        part.GetComponent<Tank>().y_scale = loadedRocket.y_scale[tankID];
-                        part.GetComponent<Tank>()._partCost = loadedRocket.tankCost[tankID];
-                        part.GetComponent<Tank>().tested = loadedRocket.tested[tankID];
-                        tankID++;
-                    }
-
-                    if(part.GetComponent<RocketPart>()._partType == "engine")
-                    {
-                        part.GetComponent<Engine>()._partName = loadedRocket.engineName[engineID];
-                        part.GetComponent<Engine>()._nozzleName = loadedRocket.nozzleName[engineID];
-                        part.GetComponent<Engine>()._turbineName = loadedRocket.turbineName[engineID];
-                        part.GetComponent<Engine>()._pumpName = loadedRocket.pumpName[engineID];
-                        part.GetComponent<Engine>()._thrust = loadedRocket.thrust[engineID];
-                        part.GetComponent<Engine>()._rate = loadedRocket.flowRate[engineID];
-                        part.GetComponent<Engine>().reliability = loadedRocket.reliability[engineID];
-                        part.GetComponent<Engine>().maxTime = loadedRocket.maxTime[engineID];
-                        part.GetComponent<Engine>()._partCost = loadedRocket.engineCost[engineID];
-
-                        //For custom textures
-                        Vector3 rotation = part.transform.rotation.eulerAngles;
-                        part.GetComponent<Engine>().InitializeSprite();
-                        part.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        part.GetComponentInChildren<autoSpritePositionner>().UpdatePosition();
-                        part.GetComponentInChildren<autoSpritePositionner>().bypass = true;
-                        part.transform.localRotation = Quaternion.Euler(rotation);
-
-                        engineID++;
-                    }
+                    part.transform.position = new UnityEngine.Vector3(loadedRocket.x_pos[j] + core.transform.position.x, loadedRocket.y_pos[j] + core.transform.position.y, loadedRocket.z_pos[j] + core.transform.position.z);
                 }
+                
+                if (part.GetComponent<RocketPart>()._partType == "tank")
+                {
+                    part.GetComponent<Tank>()._partName = loadedRocket.tankName[tankID];
+                    part.transform.localScale = new Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
+                    part.GetComponent<Tank>()._volume = loadedRocket.volume[tankID];
+                    part.GetComponent<Tank>().tankMaterial = loadedRocket.tankMaterial[tankID];
+                    part.GetComponent<Tank>().propellantCategory = loadedRocket.propellantType[tankID];
+                    part.GetComponent<Tank>().x_scale = loadedRocket.x_scale[tankID];
+                    part.GetComponent<Tank>().y_scale = loadedRocket.y_scale[tankID];
+                    part.GetComponent<Tank>()._partCost = loadedRocket.tankCost[tankID];
+                    part.GetComponent<Tank>().tested = loadedRocket.tested[tankID];
+                    tankID++;
+                }
+
+                if (part.GetComponent<RocketPart>()._partType == "engine")
+                {
+                    part.GetComponent<Engine>()._partName = loadedRocket.engineName[engineID];
+                    part.GetComponent<Engine>()._nozzleName = loadedRocket.nozzleName[engineID];
+                    part.GetComponent<Engine>()._turbineName = loadedRocket.turbineName[engineID];
+                    part.GetComponent<Engine>()._pumpName = loadedRocket.pumpName[engineID];
+                    part.GetComponent<Engine>()._thrust = loadedRocket.thrust[engineID];
+                    part.GetComponent<Engine>()._rate = loadedRocket.flowRate[engineID];
+                    part.GetComponent<Engine>().reliability = loadedRocket.reliability[engineID];
+                    part.GetComponent<Engine>().maxTime = loadedRocket.maxTime[engineID];
+                    part.GetComponent<Engine>()._partCost = loadedRocket.engineCost[engineID];
+
+                    //For custom textures
+                    Vector3 rotation = part.transform.rotation.eulerAngles;
+                    part.GetComponent<Engine>().InitializeSprite();
+                    part.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    part.GetComponentInChildren<autoSpritePositionner>().UpdatePosition();
+                    part.GetComponentInChildren<autoSpritePositionner>().bypass = true;
+                    part.transform.localRotation = Quaternion.Euler(rotation);
+
+                    engineID++;
+                }
+
                 j++;
             }
             spawnedRocket = core;
