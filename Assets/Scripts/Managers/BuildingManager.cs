@@ -99,6 +99,11 @@ public class BuildingManager : MonoBehaviour
             Cursor.visible = true;
             customCursor.gameObject.SetActive(false);
             partToConstruct = null;
+
+            if(CanDestroy == true)
+            {
+                CanDestroy = false;
+            }
         }
     }
 
