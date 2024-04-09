@@ -24,30 +24,14 @@ public class VABManager : MonoBehaviour
 
     public List<string> tanks = new List<string>();
     public List<string> engines = new List<string>();
-
+    public bool needUpdate = false;
+    public int tempBuilt = 0;
 
     // Start is called before the first frame update
     void Start()
     {
         MasterManager = FindObjectOfType<MasterManager>();
-
-
-        if (MasterManager != null)
-        {
-            retrieveRocketSaved();
-            if (partName.options.Count > 0)
-            {
-                retrieveInfo();
-            }
-        }
-
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        onValueChanged();
     }
 
     public void onValueChanged()
@@ -259,6 +243,8 @@ public class VABManager : MonoBehaviour
                 }
             }
 
+            tempBuilt = built;
+
             engineBuiltTxt.gameObject.SetActive(true);
             tankBuiltTxt.gameObject.SetActive(true);
             tankText.SetActive(true);
@@ -289,6 +275,8 @@ public class VABManager : MonoBehaviour
                     built += 1;
                 }
             }
+
+            tempBuilt = built;
 
             builtTxt.text = built.ToString();
             costTxt.text = loadedTank.cost.ToString();
@@ -323,6 +311,8 @@ public class VABManager : MonoBehaviour
                     built += 1;
                 }
             }
+
+            tempBuilt = built;
             
             builtTxt.text = built.ToString();
             costTxt.text = loadedEngine.cost.ToString();
@@ -344,7 +334,6 @@ public class VABManager : MonoBehaviour
         //0 is Rocket
         //1 is Engine
         //2 is Tank
-        print("OH NO");
         if (Convert.ToSingle(costTxt.text) < MasterManager.gameObject.GetComponent<pointManager>().nPoints)
         {
             if(type.value == 0)

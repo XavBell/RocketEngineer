@@ -4933,6 +4933,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 1
@@ -7557,7 +7558,7 @@ GameObject:
   - component: {fileID: 240181239}
   m_Layer: 5
   m_Name: PressureTestViewer
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10872,7 +10873,7 @@ GameObject:
   - component: {fileID: 400100225}
   m_Layer: 5
   m_Name: TankStand
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -15482,7 +15483,7 @@ GameObject:
   - component: {fileID: 563377561}
   m_Layer: 5
   m_Name: Tutorial
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18432,7 +18433,7 @@ GameObject:
   - component: {fileID: 647580534}
   m_Layer: 5
   m_Name: DesingPanel
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18785,6 +18786,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -20128,7 +20130,7 @@ GameObject:
   - component: {fileID: 688600029}
   m_Layer: 5
   m_Name: PopUpDestroy
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22223,7 +22225,7 @@ GameObject:
   - component: {fileID: 781234818}
   m_Layer: 5
   m_Name: PauseMenu
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26785,7 +26787,7 @@ GameObject:
   - component: {fileID: 928721449}
   m_Layer: 5
   m_Name: TutorialHelper
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29279,7 +29281,7 @@ GameObject:
   - component: {fileID: 1053581807}
   m_Layer: 5
   m_Name: PopUpConnect
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31515,7 +31517,7 @@ GameObject:
   - component: {fileID: 1106656739}
   m_Layer: 5
   m_Name: StageViewer
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -31565,6 +31567,7 @@ MonoBehaviour:
   MyTime: {fileID: 0}
   buildingManager: {fileID: 0}
   runStopDelay: 0
+  runTerminateDelay: 0
 --- !u!1 &1106747255
 GameObject:
   m_ObjectHideFlags: 0
@@ -33152,7 +33155,7 @@ GameObject:
   - component: {fileID: 1163831794}
   m_Layer: 5
   m_Name: VAB
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34125,7 +34128,7 @@ GameObject:
   - component: {fileID: 1182644490}
   m_Layer: 5
   m_Name: BuildUI
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -34217,6 +34220,8 @@ MonoBehaviour:
   buildingManager: {fileID: 0}
   tanks: []
   engines: []
+  needUpdate: 0
+  tempBuilt: 0
 --- !u!1 &1188206418
 GameObject:
   m_ObjectHideFlags: 0
@@ -36541,7 +36546,7 @@ GameObject:
   - component: {fileID: 1249300512}
   m_Layer: 5
   m_Name: BuildingPanel
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37249,7 +37254,7 @@ GameObject:
   - component: {fileID: 1269784190}
   m_Layer: 5
   m_Name: FlightUI
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -40625,7 +40630,7 @@ GameObject:
   - component: {fileID: 1381962188}
   m_Layer: 5
   m_Name: RocketStaticFireViewer
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43122,7 +43127,7 @@ GameObject:
   - component: {fileID: 1453584365}
   m_Layer: 5
   m_Name: OperationPanel
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43160,6 +43165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 186ca2b0b9f6c4047a9eeafe6e9a94ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  VABManager: {fileID: 1182644490}
   selectButton: {fileID: 3785555916945954321, guid: 0ccc97858d3b14e5b9adb3d4443dc25a, type: 3}
   vehicleLaunchDropdown: {fileID: 1041009554}
   vehicleWDRDropdown: {fileID: 871451386}
@@ -43307,7 +43313,7 @@ GameObject:
   - component: {fileID: 1455933661}
   m_Layer: 5
   m_Name: PopUpNotBuilt
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -43748,7 +43754,7 @@ GameObject:
   - component: {fileID: 1469855057}
   m_Layer: 5
   m_Name: DesignerBuild
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45323,6 +45329,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 1
@@ -50040,7 +50047,7 @@ GameObject:
   - component: {fileID: 1678258843}
   m_Layer: 5
   m_Name: Legend
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -52568,7 +52575,7 @@ GameObject:
   - component: {fileID: 1785092428}
   m_Layer: 5
   m_Name: Fuel Storage
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -53449,7 +53456,7 @@ GameObject:
   - component: {fileID: 1805022976}
   m_Layer: 5
   m_Name: WDRTestViewer
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -55399,7 +55406,7 @@ GameObject:
   - component: {fileID: 1871578656}
   m_Layer: 5
   m_Name: ManageFuelPanel
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57940,7 +57947,7 @@ GameObject:
   - component: {fileID: 1960761027}
   m_Layer: 5
   m_Name: StaticFireViewer
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60013,7 +60020,7 @@ GameObject:
   - component: {fileID: 2012500672}
   m_Layer: 5
   m_Name: Launchpad
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60599,7 +60606,7 @@ GameObject:
   - component: {fileID: 2027264588}
   m_Layer: 5
   m_Name: StaticFireStand
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -62159,7 +62166,7 @@ GameObject:
   - component: {fileID: 2059682212}
   m_Layer: 5
   m_Name: FuelTankUI
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -63902,7 +63909,7 @@ GameObject:
   - component: {fileID: 2107107334}
   m_Layer: 5
   m_Name: CommandCenter
-  m_TagString: Untagged
+  m_TagString: UI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -9,6 +9,7 @@ using DG.Tweening;
 public class operationManager : MonoBehaviour
 {
     private MasterManager MasterManager;
+    public VABManager VABManager;
     private savePath savePathRef = new savePath();
     [SerializeField] GameObject selectButton;
     [SerializeField] private TMP_Dropdown vehicleLaunchDropdown;
@@ -385,13 +386,6 @@ public class operationManager : MonoBehaviour
                     StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
                 }
             }
-
-            VABManager[] vabs = FindObjectsOfType<VABManager>();
-            foreach (VABManager VAB in vabs)
-            {
-                VAB.retrieveInfo();
-            }
-
         }
         else
         {
@@ -399,7 +393,7 @@ public class operationManager : MonoBehaviour
             PanelFadeIn(popUpBuilt);
             StartCoroutine(ActiveDeactive(2, popUpBuilt, false));
         }
-
+        VABManager.onValueChanged();
     }
 
     void OnEnable()

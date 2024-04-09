@@ -124,6 +124,41 @@ public class standManager : MonoBehaviour
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName + ".json", jsonString1);
         }
 
+        //Apply new data to all rockets
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
+        var rocketNamesFiles = info.GetFiles();
+        List<string> rocketNames = new List<string>();
+        foreach (var file in rocketNamesFiles)
+        {
+            rocketNames.Add(file.Name);
+        }
+        foreach (var rocket in rocketNames)
+        {
+            if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket))
+            {
+                savecraft saveObject = new savecraft();
+                var jsonString = JsonConvert.SerializeObject(saveObject);
+                jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket);
+                savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
+
+                saveObject = loadedRocket;
+                int i = 0;
+                foreach (string tank1 in saveObject.tankName)
+                {
+                    if (tank1 == ConnectedTank.GetComponent<Tank>()._partName)
+                    {
+                        saveObject.tested[i] = tank.tested;
+                    }
+                    i++;
+                }
+
+                var jsonString1 = JsonConvert.SerializeObject(saveObject);
+                System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket, jsonString1);
+            }
+
+
+        }
+
         failed = false;
         tankStatusTracker = null;
     }

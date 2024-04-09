@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Threading.Tasks;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class CameraControl : MonoBehaviour
 {
@@ -76,21 +78,22 @@ public class CameraControl : MonoBehaviour
 
     public void ZoomIn()
     {
+
         float scrollData;
         scrollData = Input.GetAxis("Mouse ScrollWheel");
 
-        if(targetZoom - scrollData * zoomFactor * cam.orthographicSize > 1)
+        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize > 1)
         {
             targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
             //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize * lineFactor;
-        }if(targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
+        }
+        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
         {
             targetZoom = 1;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime*zoomLerp);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
             //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize*lineFactor;
         }
-        
     }
 
     public void WASD()

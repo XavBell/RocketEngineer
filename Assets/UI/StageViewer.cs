@@ -49,11 +49,13 @@ public class StageViewer : MonoBehaviour
         if(runStopDelay == true)
         {
             stopDelayed();
+            runStopDelay = false;
         }
 
         if(runTerminateDelay == true)
         {
             TerminateDelayed();
+            runTerminateDelay = false;
         }
     }
 
@@ -162,14 +164,14 @@ public class StageViewer : MonoBehaviour
         masterManager.ActiveRocket = rocket;
         masterManager.GetComponent<pointManager>().nPoints += 2f;
         launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
-            foreach(launchPadManager launchPadManager in launchPadManagers)
+        foreach(launchPadManager launchPadManager in launchPadManagers)
+        {
+            if(launchPadManager.ConnectedRocket == rocket)
             {
-                if(launchPadManager.ConnectedRocket == rocket)
-                {
-                    launchPadManager.ConnectedRocket = null;
-                    return;
-                }
+                launchPadManager.ConnectedRocket = null;
+                return;
             }
+        }
     }
 
     public void Stop()
@@ -218,7 +220,6 @@ public class StageViewer : MonoBehaviour
             floatingOrigin.closestPlanet = null;
             buildingManager.exitFlightMode();
             floatingOrigin.bypass = true;
-            runStopDelay = false;
             launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
             foreach(launchPadManager launchPadManager in launchPadManagers)
             {
@@ -268,7 +269,6 @@ public class StageViewer : MonoBehaviour
                 rp1.GetComponent<RocketStateManager>().StateUpdater();
             }
         }
-        this.gameObject.SetActive(false);
         masterManager.ActiveRocket = null;
         camera.transform.rotation = Quaternion.Euler(camera.transform.eulerAngles.x, camera.transform.eulerAngles.y, 0);
         buildingManager.exitFlightMode();
@@ -282,7 +282,7 @@ public class StageViewer : MonoBehaviour
             }
         }
         FindObjectOfType<MapManager>().mapOn();
-        runTerminateDelay = false;
+        this.gameObject.SetActive(false);
     }
 
     public void Terminate()

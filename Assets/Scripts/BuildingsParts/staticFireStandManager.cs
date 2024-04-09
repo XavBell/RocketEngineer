@@ -73,7 +73,7 @@ public class staticFireStandManager : MonoBehaviour
                     }
                 }
 
-                if((failed == true || fuelSufficient == false || oxidizerSufficient == false || stopped == true) && engineStaticFireTracker != null)
+                if((failed == true || fuelSufficient == false || oxidizerSufficient == false || stopped == true || (started == true && ConnectedEngine.GetComponent<Engine>().active == false)) && engineStaticFireTracker != null)
                 {
                     //Save results to file and null tracker and save new reliabili
                     started = false;

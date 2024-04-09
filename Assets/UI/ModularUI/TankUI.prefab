@@ -2705,6 +2705,7 @@ GameObject:
   - component: {fileID: 783154755347743643}
   - component: {fileID: 4567045918635463152}
   - component: {fileID: 9219790055349292575}
+  - component: {fileID: 7074915895586271467}
   m_Layer: 0
   m_Name: TankUI
   m_TagString: Untagged
@@ -2740,8 +2741,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 334, y: -345.60126}
-  m_SizeDelta: {x: 300, y: 260.922}
+  m_AnchoredPosition: {x: 334, y: -359.80298}
+  m_SizeDelta: {x: 300, y: 289.3254}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4567045918635463152
 MonoBehaviour:
@@ -2764,6 +2765,7 @@ MonoBehaviour:
   coolerToggle: {fileID: 5501542069033454446}
   ventToggle: {fileID: 5431874933704012790}
   valveToggle: {fileID: 4540025389100873480}
+  tankColor: {r: 0, g: 0, b: 0, a: 0}
   tank: {fileID: 0}
   targetTemperature: {fileID: 4135284920274786343}
   rate: 5000
@@ -2793,6 +2795,51 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &7074915895586271467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6914386055600145497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4567045918635463152}
+          m_TargetAssemblyTypeName: TankUIModule, Assembly-CSharp
+          m_MethodName: changeColorGreen
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 4567045918635463152}
+          m_TargetAssemblyTypeName: TankUIModule, Assembly-CSharp
+          m_MethodName: changeColorNormal
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &6937664227671758904
 GameObject:
   m_ObjectHideFlags: 0

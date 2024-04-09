@@ -1109,7 +1109,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5103712648801074943}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VABManager, Assembly-CSharp
         m_MethodName: build
         m_Mode: 1
@@ -2185,7 +2185,6 @@ GameObject:
   - component: {fileID: -2821159826925204335}
   - component: {fileID: 2873788820980888798}
   - component: {fileID: -4501993937823853355}
-  - component: {fileID: 5103712648801074943}
   - component: {fileID: 1479030842585450668}
   m_Layer: 7
   m_Name: VAB
@@ -2362,30 +2361,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &5103712648801074943
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4919702563059865179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91310ab3001b84d9596014ad2e0be6fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tankText: {fileID: 458737484697615642}
-  engineText: {fileID: 8845089552256031612}
-  type: {fileID: 2399509358189069128}
-  partName: {fileID: 200686715957138777}
-  builtTxt: {fileID: 8787428077934336325}
-  engineBuiltTxt: {fileID: 895107180765821717}
-  tankBuiltTxt: {fileID: 2369663791618061827}
-  costTxt: {fileID: 7928700968727867005}
-  MasterManager: {fileID: 0}
-  buildingManager: {fileID: 0}
-  tanks: []
-  engines: []
 --- !u!114 &1479030842585450668
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2828,7 +2803,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5103712648801074943}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VABManager, Assembly-CSharp
         m_MethodName: retrieveInfo
         m_Mode: 1
@@ -2898,6 +2873,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -3475,7 +3451,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5103712648801074943}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: VABManager, Assembly-CSharp
         m_MethodName: onValueChanged
         m_Mode: 1

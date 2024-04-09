@@ -15,6 +15,7 @@ public class TankUIModule : MonoBehaviour
     [SerializeField]Toggle coolerToggle;
     [SerializeField]Toggle ventToggle;
     [SerializeField]Toggle valveToggle;
+    public Color tankColor;
     public container tank;
     [SerializeField]private TMP_InputField targetTemperature;
     
@@ -27,6 +28,8 @@ public class TankUIModule : MonoBehaviour
         valveToggle.isOn = tank.GetComponent<flowController>().opened;
         targetTemperature.text = tank.GetComponent<cooler>().targetTemperature.ToString();
         connectedLine.text = tank.GetComponent<Tank>().propellantCategory.ToString();
+
+        tankColor = tank.GetComponent<SpriteRenderer>().color;
     }
 
     // Update is called once per frame
@@ -99,5 +102,16 @@ public class TankUIModule : MonoBehaviour
     public void vent()
     {
         tank.GetComponent<gasVent>().open = ventToggle.isOn;
+    }
+
+    public void changeColorGreen()
+    {
+        tank.GetComponent<SpriteRenderer>().color = Color.green;
+    }
+
+    public void changeColorNormal()
+    {
+        tank.GetComponent<SpriteRenderer>().color = tankColor;
+
     }
 }
