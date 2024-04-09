@@ -48,6 +48,14 @@ public class FuelConnectorManager : MonoBehaviour
     {
         if(showToggle.isOn)
         {
+            foreach(LineRenderer line in lines)
+            {
+                if(line != null)
+                {
+                    Destroy(line.gameObject);
+                }
+            }
+            
             lines.Clear();
             flowController[] flowControllers = FindObjectsOfType<flowController>();
             foreach(flowController flowController in flowControllers)
@@ -139,7 +147,10 @@ public class FuelConnectorManager : MonoBehaviour
         {
             foreach(LineRenderer line in lines)
             {
-                Destroy(line.gameObject);
+                if(line != null)
+                {
+                    Destroy(line.gameObject);
+                }
             }
             
         }
