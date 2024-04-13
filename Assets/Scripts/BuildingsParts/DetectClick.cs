@@ -16,6 +16,7 @@ public class DetectClick : MonoBehaviour
     public GameObject buildingUI;
     public GameObject fuelTankUI;
     public GameObject operationUI;
+    public FuelConnectorManager fuelConnectorManager;
     public TMP_Dropdown operationDropdown;
     public GameObject designUI;
 
@@ -192,8 +193,9 @@ public class DetectClick : MonoBehaviour
 
                         GameObject current = raycastHit.transform.gameObject;
 
-                        Destroy(current);
+                        DestroyImmediate(current);
                         buildingManager.CanDestroy = false;
+                        fuelConnectorManager.ShowConnection();
 
                     }
 
