@@ -559,8 +559,8 @@ RectTransform:
   m_Father: {fileID: 1607521972}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.15103039}
-  m_AnchorMax: {x: 1, y: 0.95750225}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0.9989524}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -8188,8 +8188,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0004582389, y: 17.501465}
-  m_SizeDelta: {x: 0, y: 411.8206}
+  m_AnchoredPosition: {x: -0.0004582389, y: 0.34828365}
+  m_SizeDelta: {x: 0, y: 332.47}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &270144666
 MonoBehaviour:
@@ -10431,8 +10431,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 19419101}
   m_HandleRect: {fileID: 19419100}
   m_Direction: 2
-  m_Value: 0.7804052
-  m_Size: 0.80647177
+  m_Value: 0
+  m_Size: 0.9989524
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13266,6 +13266,7 @@ MonoBehaviour:
   buildingUI: {fileID: 1182644486}
   fuelTankUI: {fileID: 2059682210}
   operationUI: {fileID: 1453584362}
+  fuelConnectorManager: {fileID: 1871578656}
   operationDropdown: {fileID: 1366876917}
   designUI: {fileID: 647580533}
 --- !u!114 &492879243
@@ -55469,6 +55470,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07b6b5febacf3439ab7f82c05ae26e14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  planet: {fileID: 2121345929}
+  solarSystemManager: {fileID: 1182590599}
   input: {fileID: 0}
   output: {fileID: 0}
   Legend: {fileID: 1678258842}

@@ -59,6 +59,11 @@ public class VABManager : MonoBehaviour
     {
         partName.ClearOptions();
         List<string> options = new List<string>();
+        if(MasterManager == null)
+        {
+            MasterManager = FindObjectOfType<MasterManager>();
+        }
+
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder))
         {
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
@@ -81,6 +86,10 @@ public class VABManager : MonoBehaviour
     public void retrieveEngineSaved()
     {
         partName.ClearOptions();
+        if(MasterManager == null)
+        {
+            MasterManager = FindObjectOfType<MasterManager>();
+        }
         List<string> options = new List<string>();
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder))
         {
@@ -104,6 +113,10 @@ public class VABManager : MonoBehaviour
     public void retrieveTankSaved()
     {
         partName.ClearOptions();
+        if(MasterManager == null)
+        {
+            MasterManager = FindObjectOfType<MasterManager>();
+        }
         List<string> options = new List<string>();
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder))
         {

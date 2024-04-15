@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class FuelConnectorManager : MonoBehaviour
 {
+    public GameObject planet;
+    public SolarSystemManager solarSystemManager;
     public container input;
     public container output;
     public GameObject Legend;
@@ -20,7 +22,7 @@ public class FuelConnectorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -57,6 +59,7 @@ public class FuelConnectorManager : MonoBehaviour
             }
             
             lines.Clear();
+            int n = 4;
             flowController[] flowControllers = FindObjectsOfType<flowController>();
             foreach(flowController flowController in flowControllers)
             {
@@ -68,9 +71,13 @@ public class FuelConnectorManager : MonoBehaviour
                         PanelFadeIn(line);
                         linePrefab.GetComponent<LineRenderer>();
                         LineRenderer lr = line.GetComponent<LineRenderer>();
-                        lr.positionCount = 2;
+                        Vector2 altitude1 = (planet.transform.position - flowController.transform.position).normalized * (n);
+                        Vector2 altitude2 = (planet.transform.position - flowController.origin.transform.position).normalized * (n);
+                        lr.positionCount = 4;
                         lr.SetPosition(0, flowController.transform.position);
-                        lr.SetPosition(1, flowController.origin.transform.position);
+                        lr.SetPosition(1, new Vector2(flowController.transform.position.x, altitude1.y));
+                        lr.SetPosition(2, new Vector2(flowController.origin.transform.position.x, altitude2.y));
+                        lr.SetPosition(3, flowController.origin.transform.position);
                         if(flowController.destination.type == "fuel")
                         {
                             lr.startColor = orange;
@@ -87,6 +94,7 @@ public class FuelConnectorManager : MonoBehaviour
                         line.transform.parent = flowController.gameObject.transform;
                     }
                 }
+                n += 2;
             }
 
             flowControllerForLaunchPads[] flowControllersLaunchPad = FindObjectsOfType<flowControllerForLaunchPads>();
@@ -98,13 +106,18 @@ public class FuelConnectorManager : MonoBehaviour
                     PanelFadeIn(line);
                     linePrefab.GetComponent<LineRenderer>();
                     LineRenderer lr = line.GetComponent<LineRenderer>();
-                    lr.positionCount = 2;
+                    Vector2 altitude1 = (planet.transform.position - flowControllerForLaunchPad.transform.position).normalized * (n);
+                    Vector2 altitude2 = (planet.transform.position - flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position).normalized * (n);
+                    lr.positionCount = 4;
                     lr.SetPosition(0, flowControllerForLaunchPad.transform.position);
-                    lr.SetPosition(1, flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position);
+                    lr.SetPosition(1, new Vector2(flowControllerForLaunchPad.transform.position.x, altitude1.y));
+                    lr.SetPosition(2, new Vector2(flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position.x, altitude2.y));
+                    lr.SetPosition(3, flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position);
                     lr.startColor = blue;
                     lr.endColor = blue;
                     lines.Add(lr);
                     line.transform.parent = flowControllerForLaunchPad.gameObject.transform;
+                    n+=2;
                 }
 
                 if(flowControllerForLaunchPad.fuelContainerOrigin != null)
@@ -113,13 +126,18 @@ public class FuelConnectorManager : MonoBehaviour
                     PanelFadeIn(line);
                     linePrefab.GetComponent<LineRenderer>();
                     LineRenderer lr = line.GetComponent<LineRenderer>();
-                    lr.positionCount = 2;
+                    Vector2 altitude1 = (planet.transform.position - flowControllerForLaunchPad.transform.position).normalized * (n);
+                    Vector2 altitude2 = (planet.transform.position - flowControllerForLaunchPad.fuelContainerOrigin.transform.position).normalized * (n);
+                    lr.positionCount = 4;
                     lr.SetPosition(0, flowControllerForLaunchPad.transform.position);
-                    lr.SetPosition(1, flowControllerForLaunchPad.fuelContainerOrigin.transform.position);
+                    lr.SetPosition(1, new Vector2(flowControllerForLaunchPad.transform.position.x,altitude1.y));
+                    lr.SetPosition(2, new Vector2(flowControllerForLaunchPad.fuelContainerOrigin.transform.position.x,altitude2.y));
+                    lr.SetPosition(3, flowControllerForLaunchPad.fuelContainerOrigin.transform.position);
                     lr.startColor = orange;
                     lr.endColor = orange;
                     lines.Add(lr);
                     line.transform.parent = flowControllerForLaunchPad.gameObject.transform;
+                    n+=2;
                 }
             }
 
@@ -132,14 +150,19 @@ public class FuelConnectorManager : MonoBehaviour
                     PanelFadeIn(line);
                     linePrefab.GetComponent<LineRenderer>();
                     LineRenderer lr = line.GetComponent<LineRenderer>();
-                    lr.positionCount = 2;
+                    Vector2 altitude1 = (planet.transform.position - flowControllerForTankStand.transform.position).normalized * (n);
+                    Vector2 altitude2 = (planet.transform.position - flowControllerForTankStand.origin.transform.position).normalized * (n);
+                    lr.positionCount = 4;
                     lr.SetPosition(0, flowControllerForTankStand.transform.position);
-                    lr.SetPosition(1, flowControllerForTankStand.origin.transform.position);
+                    lr.SetPosition(1, new Vector2(flowControllerForTankStand.transform.position.x,altitude1.y));
+                    lr.SetPosition(2, new Vector2(flowControllerForTankStand.origin.transform.position.x,altitude2.y));
+                    lr.SetPosition(3, flowControllerForTankStand.origin.transform.position);
                     lr.startColor = Color.white;
                     lr.endColor = Color.white;
                     lines.Add(lr);
                     line.transform.parent = flowControllerForTankStand.gameObject.transform;
                 }
+                n += 2;
             }
         }
 
