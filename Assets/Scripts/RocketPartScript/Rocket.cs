@@ -24,38 +24,42 @@ public class Rocket : MonoBehaviour
     void Update()
     {
         //numberOfStages = Stages.Count;
-        
+
     }
 
     public void controlThrust()
     {
         //updateActiveEngines();
-        if(Input.GetKey(KeyCode.Z))
+        if (Input.GetKey(KeyCode.Z))
         {
             throttle = 100;
         }
 
-        if(Input.GetKey(KeyCode.LeftControl))
+        if (Input.GetKey(KeyCode.LeftControl))
         {
-            if(throttle - Time.fixedDeltaTime * factor > 0)
+            if (throttle - Time.fixedDeltaTime * factor > 0)
             {
                 throttle -= Time.fixedDeltaTime * factor;
-            }else{
+            }
+            else
+            {
                 throttle = 0;
             }
         }
 
-        if(Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftShift))
         {
-            if(throttle + Time.fixedDeltaTime * factor < 100)
+            if (throttle + Time.fixedDeltaTime * factor < 100)
             {
                 throttle += Time.fixedDeltaTime * factor;
-            }else{
+            }
+            else
+            {
                 throttle = 100;
             }
         }
 
-        if(Input.GetKey(KeyCode.X))
+        if (Input.GetKey(KeyCode.X))
         {
             throttle = 0;
         }
@@ -80,19 +84,19 @@ public class Rocket : MonoBehaviour
     public void updateMass()
     {
         rocketMass = 0;
-        foreach(Stages stage in Stages)
+        foreach (Stages stage in Stages)
         {
-            
-            foreach(RocketPart part in stage.Parts)
+
+            foreach (RocketPart part in stage.Parts)
             {
                 rocketMass += part._partMass;
-                if(part._partType == "tank")
+                if (part._partType == "tank")
                 {
                     rocketMass += part.GetComponent<container>().mass;
                 }
             }
         }
-        if(this.GetComponent<PlanetGravity>().rb != null)
+        if (this.GetComponent<PlanetGravity>().rb != null)
         {
             this.GetComponent<PlanetGravity>().rb.mass = rocketMass;
         }
@@ -102,7 +106,7 @@ public class Rocket : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(0, 0 , Time.deltaTime*50);
+            transform.Rotate(0, 0, Time.deltaTime * 50);
         }
         if (Input.GetKey(KeyCode.D))
         {
@@ -114,18 +118,18 @@ public class Rocket : MonoBehaviour
     {
         engines.Clear();
         int i = 0;
-        foreach(Stages stage in Stages)
+        foreach (Stages stage in Stages)
         {
-            foreach(RocketPart part in stage.Parts)
+            foreach (RocketPart part in stage.Parts)
             {
-                if(part._partType == "engine")
+                if (part._partType == "engine")
                 {
-                    if(part.GetComponent<Engine>().active == true)
+                    if (part.GetComponent<Engine>().active == true)
                     {
                         engines.Add(part.GetComponent<Engine>());
                     }
                 }
-                
+
             }
             i++;
         }
@@ -136,48 +140,48 @@ public class Rocket : MonoBehaviour
         RocketPart partAttached = null;
 
         //Find decoupler reference in part
-        if(reference == "top")
+        if (reference == "top")
         {
             partAttached = rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>();
         }
 
-        if(reference == "bottom")
+        if (reference == "bottom")
         {
             partAttached = rp.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>();
         }
-            
-            if(partAttached._attachTop != null)
+
+        if (partAttached._attachTop != null)
+        {
+            if (partAttached._attachTop.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
             {
-                if(partAttached._attachTop.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
-                {
-                    partAttached._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
-                }
-                
+                partAttached._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
             }
 
-            if(partAttached._attachBottom != null)
-            {
-                if(partAttached._attachBottom.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
-                {
-                    partAttached._attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
-                }
-            }
+        }
 
-            if(partAttached._attachLeft != null)
+        if (partAttached._attachBottom != null)
+        {
+            if (partAttached._attachBottom.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
             {
-                if(partAttached._attachLeft.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
-                {
-                    partAttached._attachLeft.GetComponent<AttachPointScript>().attachedBody = null;
-                }
+                partAttached._attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
             }
+        }
 
-            if(partAttached._attachRight != null)
+        if (partAttached._attachLeft != null)
+        {
+            if (partAttached._attachLeft.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
             {
-                if(partAttached._attachRight.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
-                {
-                    partAttached._attachRight.GetComponent<AttachPointScript>().attachedBody = null;
-                }
+                partAttached._attachLeft.GetComponent<AttachPointScript>().attachedBody = null;
             }
+        }
+
+        if (partAttached._attachRight != null)
+        {
+            if (partAttached._attachRight.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
+            {
+                partAttached._attachRight.GetComponent<AttachPointScript>().attachedBody = null;
+            }
+        }
     }
 
     public void updateRocketStaging()
@@ -185,26 +189,26 @@ public class Rocket : MonoBehaviour
         //Find if there is a decoupled decoupler and its stage pos
         RocketPart rp = null;
         int i = 0;
-        int stagePos = 1000*1000;
-        foreach(Stages stage in Stages)
+        int stagePos = 1000 * 1000;
+        foreach (Stages stage in Stages)
         {
-            foreach(RocketPart part in stage.Parts)
+            foreach (RocketPart part in stage.Parts)
             {
-                if(part._partType == "decoupler")
+                if (part._partType == "decoupler")
                 {
-                    if(part.GetComponent<Decoupler>().activated == true)
+                    if (part.GetComponent<Decoupler>().activated == true)
                     {
                         rp = part;
                         stagePos = i;
                         part.GetComponent<Decoupler>().activated = false;
                     }
                 }
-                
+
             }
             i++;
         }
 
-        if(stagePos != 1000*1000)
+        if (stagePos != 1000 * 1000)
         {
             RocketPart previousPartToo = rp._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>();
             deleteReference(rp, "top");
@@ -218,40 +222,40 @@ public class Rocket : MonoBehaviour
 
             bool coreIn = false;
 
-            foreach(RocketPart part in Stages[stagePos].Parts)
+            foreach (RocketPart part in Stages[stagePos].Parts)
             {
                 inStage.Add(part);
             }
 
-            while(currentCount != previousCount)
+            while (currentCount != previousCount)
             {
-                foreach(Stages stage in Stages)
+                foreach (Stages stage in Stages)
                 {
-                    foreach(RocketPart part in stage.Parts)
+                    foreach (RocketPart part in stage.Parts)
                     {
-                        if(part != rp)
+                        if (part != rp)
                         {
-                            if(part.GetComponent<RocketPart>()._attachTop != null)
+                            if (part.GetComponent<RocketPart>()._attachTop != null)
                             {
 
-                            
-                                if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+
+                                if (part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                                 {
-                                    if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                    if (inStage.Contains(part.GetComponent<RocketPart>()))
                                     {
                                         int j = 0;
-                                        foreach(Stages stage2 in Stages)
+                                        foreach (Stages stage2 in Stages)
                                         {
-                                            foreach(RocketPart part2 in stage2.Parts)
+                                            foreach (RocketPart part2 in stage2.Parts)
                                             {
-                                                if(part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                if (part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                 {
-                                                    if(inPos.Contains(j) == false)
+                                                    if (inPos.Contains(j) == false)
                                                     {
                                                         inPos.Add(j);
                                                     }
 
-                                                    if(inStage.Contains(part2) == false)
+                                                    if (inStage.Contains(part2) == false)
                                                     {
                                                         inStage.Add(part2);
                                                     }
@@ -260,29 +264,29 @@ public class Rocket : MonoBehaviour
                                             j++;
                                         }
                                     }
-                                }   
+                                }
 
                             }
 
-                            if(part.GetComponent<RocketPart>()._attachBottom != null)
+                            if (part.GetComponent<RocketPart>()._attachBottom != null)
                             {
-                                if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                                if (part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                                 {
-                                    if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                    if (inStage.Contains(part.GetComponent<RocketPart>()))
                                     {
                                         int j = 0;
-                                        foreach(Stages stage2 in Stages)
+                                        foreach (Stages stage2 in Stages)
                                         {
-                                            foreach(RocketPart part2 in stage2.Parts)
+                                            foreach (RocketPart part2 in stage2.Parts)
                                             {
-                                                if(part2 == part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                if (part2 == part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                 {
-                                                    if(inPos.Contains(j) == false)
+                                                    if (inPos.Contains(j) == false)
                                                     {
                                                         inPos.Add(j);
                                                     }
 
-                                                    if(inStage.Contains(part2) == false)
+                                                    if (inStage.Contains(part2) == false)
                                                     {
                                                         inStage.Add(part2);
                                                     }
@@ -294,24 +298,24 @@ public class Rocket : MonoBehaviour
                                 }
                             }
 
-                            if(part.GetComponent<RocketPart>()._attachLeft != null)
+                            if (part.GetComponent<RocketPart>()._attachLeft != null)
                             {
-                                if(part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                                if (part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
                                 {
-                                    if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                    if (inStage.Contains(part.GetComponent<RocketPart>()))
                                     {
                                         int j = 0;
-                                        foreach(Stages stage2 in Stages)
+                                        foreach (Stages stage2 in Stages)
                                         {
-                                            foreach(RocketPart part2 in stage2.Parts)
+                                            foreach (RocketPart part2 in stage2.Parts)
                                             {
-                                                if(part2 == part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                if (part2 == part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                 {
-                                                    if(inPos.Contains(j) == false)
+                                                    if (inPos.Contains(j) == false)
                                                     {
                                                         inPos.Add(j);
                                                     }
-                                                    if(inStage.Contains(part2) == false)
+                                                    if (inStage.Contains(part2) == false)
                                                     {
                                                         inStage.Add(part2);
                                                     }
@@ -323,25 +327,25 @@ public class Rocket : MonoBehaviour
                                 }
                             }
 
-                            if(part.GetComponent<RocketPart>()._attachRight != null)
+                            if (part.GetComponent<RocketPart>()._attachRight != null)
                             {
-                                if(part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                                if (part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
                                 {
-                                    if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                    if (inStage.Contains(part.GetComponent<RocketPart>()))
                                     {
                                         int j = 0;
-                                        foreach(Stages stage2 in Stages)
+                                        foreach (Stages stage2 in Stages)
                                         {
-                                            foreach(RocketPart part2 in stage2.Parts)
+                                            foreach (RocketPart part2 in stage2.Parts)
                                             {
-                                                if(part2 == part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                if (part2 == part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                 {
-                                                    if(inPos.Contains(j) == false)
+                                                    if (inPos.Contains(j) == false)
                                                     {
                                                         inPos.Add(j);
                                                     }
 
-                                                    if(inStage.Contains(part2) == false)
+                                                    if (inStage.Contains(part2) == false)
                                                     {
                                                         inStage.Add(part2);
                                                     }
@@ -359,25 +363,25 @@ public class Rocket : MonoBehaviour
 
                 previousCount = currentCount;
                 currentCount = inStage.Count;
-                
+
             }
 
             //Check if in other way
-            foreach(int pos in inPos)
+            foreach (int pos in inPos)
             {
-                foreach(RocketPart part in Stages[pos].Parts)
+                foreach (RocketPart part in Stages[pos].Parts)
                 {
-                    if(part.gameObject == core.gameObject)
+                    if (part.gameObject == core.gameObject)
                     {
                         coreIn = true;
                     }
                 }
             }
 
-            if(coreIn == false)
+            if (coreIn == false)
             {
                 rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
-                if(rp.GetComponent<Rigidbody2D>() == null)
+                if (rp.GetComponent<Rigidbody2D>() == null)
                 {
                     rp.gameObject.AddComponent<Rigidbody2D>();
                 }
@@ -387,7 +391,7 @@ public class Rocket : MonoBehaviour
                 rp.GetComponent<Rigidbody2D>().angularDrag = 0;
                 rp.GetComponent<Rigidbody2D>().gravityScale = 0;
                 rp.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity;
-            
+
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
                 rp.GetComponent<PlanetGravity>().possessed = false;
@@ -400,21 +404,21 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.GetComponent<RocketStateManager>().prediction = rp.gameObject.GetComponent<RocketPath>();
                 rp.gameObject.AddComponent<BodySwitcher>();
 
-                foreach(int pos in inPos)
+                foreach (int pos in inPos)
                 {
                     rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
                 }
 
                 List<int> newPositionsCount = inPos;
-                for(i = 0; i < inPos.Count; i++)
+                for (i = 0; i < inPos.Count; i++)
                 {
                     int ToRemove = Mathf.Max(newPositionsCount.ToArray());
                     this.Stages.RemoveAt(ToRemove);
                     newPositionsCount.Remove(ToRemove);
                 }
-                
 
-                foreach(RocketPart part in inStage)
+
+                foreach (RocketPart part in inStage)
                 {
                     part.gameObject.transform.parent = rp.gameObject.transform;
                 }
@@ -427,37 +431,37 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.GetComponent<PlanetGravity>().stageViewerForceCall();
             }
 
-            if(coreIn == true)
+            if (coreIn == true)
             {
 
                 rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = previousPartToo.gameObject;
-                if(previousPartToo._attachTop != null)
+                if (previousPartToo._attachTop != null)
                 {
-                    if(previousPartToo._attachTop.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
+                    if (previousPartToo._attachTop.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
                     {
                         previousPartToo._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
                     }
                 }
 
-                if(previousPartToo._attachBottom != null)
+                if (previousPartToo._attachBottom != null)
                 {
-                    if(previousPartToo._attachBottom.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
+                    if (previousPartToo._attachBottom.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
                     {
                         previousPartToo._attachBottom.GetComponent<AttachPointScript>().attachedBody = null;
                     }
                 }
 
-                if(previousPartToo._attachRight != null)
+                if (previousPartToo._attachRight != null)
                 {
-                    if(previousPartToo._attachRight.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
+                    if (previousPartToo._attachRight.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
                     {
                         previousPartToo._attachRight.GetComponent<AttachPointScript>().attachedBody = null;
                     }
                 }
 
-                if(previousPartToo._attachLeft != null)
+                if (previousPartToo._attachLeft != null)
                 {
-                    if(previousPartToo._attachLeft.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
+                    if (previousPartToo._attachLeft.GetComponent<AttachPointScript>().attachedBody == rp.gameObject)
                     {
                         previousPartToo._attachLeft.GetComponent<AttachPointScript>().attachedBody = null;
                     }
@@ -470,9 +474,9 @@ public class Rocket : MonoBehaviour
                 //Find stage pos
                 int n = 0;
                 int newPos = 1000;
-                foreach(Stages stage in Stages)
+                foreach (Stages stage in Stages)
                 {
-                    if(stage.Parts.Contains(rp))
+                    if (stage.Parts.Contains(rp))
                     {
                         newPos = n;
                     }
@@ -485,40 +489,40 @@ public class Rocket : MonoBehaviour
                 List<int> newInPos = new List<int>();
                 newInPos.Add(newPos);
 
-                foreach(RocketPart part in Stages[newPos].Parts)
+                foreach (RocketPart part in Stages[newPos].Parts)
                 {
                     inStage.Add(part);
                 }
 
-                if(newPos != 1000)
+                if (newPos != 1000)
                 {
-                    while(newCurrentCount != newPreviousCount)
+                    while (newCurrentCount != newPreviousCount)
                     {
-                        foreach(Stages stage in Stages)
+                        foreach (Stages stage in Stages)
                         {
-                            foreach(RocketPart part in stage.Parts)
+                            foreach (RocketPart part in stage.Parts)
                             {
-                                if(part != rp)
+                                if (part != rp)
                                 {
-                                    if(part.GetComponent<RocketPart>()._attachTop != null)
+                                    if (part.GetComponent<RocketPart>()._attachTop != null)
                                     {
-                                        if(part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
+                                        if (part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody != null)
                                         {
-                                            if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                            if (inStage.Contains(part.GetComponent<RocketPart>()))
                                             {
                                                 int j = 0;
-                                                foreach(Stages stage2 in Stages)
+                                                foreach (Stages stage2 in Stages)
                                                 {
-                                                    foreach(RocketPart part2 in stage2.Parts)
+                                                    foreach (RocketPart part2 in stage2.Parts)
                                                     {
-                                                        if(part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                        if (part2 == part.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                         {
-                                                            if(newInPos.Contains(j) == false)
+                                                            if (newInPos.Contains(j) == false)
                                                             {
                                                                 newInPos.Add(j);
                                                             }
 
-                                                            if(inStage.Contains(part2) == false)
+                                                            if (inStage.Contains(part2) == false)
                                                             {
                                                                 inStage.Add(part2);
                                                             }
@@ -530,25 +534,25 @@ public class Rocket : MonoBehaviour
                                         }
                                     }
 
-                                    if(part.GetComponent<RocketPart>()._attachBottom != null)
+                                    if (part.GetComponent<RocketPart>()._attachBottom != null)
                                     {
-                                        if(part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+                                        if (part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
                                         {
-                                            if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                            if (inStage.Contains(part.GetComponent<RocketPart>()))
                                             {
                                                 int j = 0;
-                                                foreach(Stages stage2 in Stages)
+                                                foreach (Stages stage2 in Stages)
                                                 {
-                                                    foreach(RocketPart part2 in stage2.Parts)
+                                                    foreach (RocketPart part2 in stage2.Parts)
                                                     {
-                                                        if(part2 == part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                        if (part2 == part.GetComponent<RocketPart>()._attachBottom.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                         {
-                                                            if(newInPos.Contains(j) == false)
+                                                            if (newInPos.Contains(j) == false)
                                                             {
                                                                 newInPos.Add(j);
                                                             }
 
-                                                            if(inStage.Contains(part2) == false)
+                                                            if (inStage.Contains(part2) == false)
                                                             {
                                                                 inStage.Add(part2);
                                                             }
@@ -560,25 +564,25 @@ public class Rocket : MonoBehaviour
                                         }
                                     }
 
-                                    if(part.GetComponent<RocketPart>()._attachLeft != null)
+                                    if (part.GetComponent<RocketPart>()._attachLeft != null)
                                     {
-                                        if(part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
+                                        if (part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody != null)
                                         {
-                                            if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                            if (inStage.Contains(part.GetComponent<RocketPart>()))
                                             {
                                                 int j = 0;
-                                                foreach(Stages stage2 in Stages)
+                                                foreach (Stages stage2 in Stages)
                                                 {
-                                                    foreach(RocketPart part2 in stage2.Parts)
+                                                    foreach (RocketPart part2 in stage2.Parts)
                                                     {
-                                                        if(part2 == part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                        if (part2 == part.GetComponent<RocketPart>()._attachLeft.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                         {
-                                                            if(newInPos.Contains(j) == false)
+                                                            if (newInPos.Contains(j) == false)
                                                             {
                                                                 newInPos.Add(j);
                                                             }
 
-                                                            if(inStage.Contains(part2) == false)
+                                                            if (inStage.Contains(part2) == false)
                                                             {
                                                                 inStage.Add(part2);
                                                             }
@@ -590,25 +594,25 @@ public class Rocket : MonoBehaviour
                                         }
                                     }
 
-                                    if(part.GetComponent<RocketPart>()._attachRight != null)
+                                    if (part.GetComponent<RocketPart>()._attachRight != null)
                                     {
-                                        if(part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
+                                        if (part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody != null)
                                         {
-                                            if(inStage.Contains(part.GetComponent<RocketPart>()))
+                                            if (inStage.Contains(part.GetComponent<RocketPart>()))
                                             {
                                                 int j = 0;
-                                                foreach(Stages stage2 in Stages)
+                                                foreach (Stages stage2 in Stages)
                                                 {
-                                                    foreach(RocketPart part2 in stage2.Parts)
+                                                    foreach (RocketPart part2 in stage2.Parts)
                                                     {
-                                                        if(part2 == part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
+                                                        if (part2 == part.GetComponent<RocketPart>()._attachRight.GetComponent<AttachPointScript>().attachedBody.GetComponent<RocketPart>())
                                                         {
-                                                            if(newInPos.Contains(j) == false)
+                                                            if (newInPos.Contains(j) == false)
                                                             {
                                                                 newInPos.Add(j);
                                                             }
 
-                                                            if(inStage.Contains(part2) == false)
+                                                            if (inStage.Contains(part2) == false)
                                                             {
                                                                 inStage.Add(part2);
                                                             }
@@ -631,7 +635,7 @@ public class Rocket : MonoBehaviour
                 }
 
                 rp.GetComponent<RocketPart>()._attachTop.GetComponent<AttachPointScript>().attachedBody = null;
-                if(rp.GetComponent<Rigidbody2D>()== null)
+                if (rp.GetComponent<Rigidbody2D>() == null)
                 {
                     rp.gameObject.AddComponent<Rigidbody2D>();
                 }
@@ -641,7 +645,7 @@ public class Rocket : MonoBehaviour
                 rp.GetComponent<Rigidbody2D>().angularDrag = 0;
                 rp.GetComponent<Rigidbody2D>().gravityScale = 0;
                 rp.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity;
-            
+
                 rp.gameObject.AddComponent<Rocket>();
                 rp.gameObject.AddComponent<PlanetGravity>();
                 rp.GetComponent<PlanetGravity>().initializeRocket();
@@ -655,23 +659,23 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.AddComponent<BodySwitcher>();
                 this.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1));
                 rp.GetComponent<Rigidbody2D>().AddForce(new Vector2(1, 1));
-                
+
                 rp.gameObject.transform.parent = null;
 
-                foreach(int pos in newInPos)
+                foreach (int pos in newInPos)
                 {
                     rp.GetComponent<Rocket>().Stages.Add(Stages[pos]);
                 }
 
                 List<int> newPositionsCount = newInPos;
-                for(i = 0; i < newInPos.Count; i++)
+                for (i = 0; i < newInPos.Count; i++)
                 {
                     int ToRemove = Mathf.Max(newPositionsCount.ToArray());
                     Stages.RemoveAt(ToRemove);
                     newPositionsCount.Remove(ToRemove);
                 }
 
-                foreach(RocketPart part in inStage)
+                foreach (RocketPart part in inStage)
                 {
                     part.gameObject.transform.parent = rp.gameObject.transform;
                 }
@@ -699,7 +703,7 @@ public class Rocket : MonoBehaviour
     {
         List<RocketPart> RocketParts = new List<RocketPart>();
         RocketPart[] rocketParts = FindObjectsOfType<RocketPart>();
-        foreach(RocketPart rp in rocketParts)
+        foreach (RocketPart rp in rocketParts)
         {
             RocketParts.Add(rp);
         }
@@ -709,9 +713,9 @@ public class Rocket : MonoBehaviour
     public List<RocketPart> filterPart(List<RocketPart> PartsToFilter, string type)
     {
         List<RocketPart> FilteredParts = new List<RocketPart>();
-        foreach(RocketPart PotentialPart in PartsToFilter)
+        foreach (RocketPart PotentialPart in PartsToFilter)
         {
-            if(PotentialPart._partType == type)
+            if (PotentialPart._partType == type)
             {
                 FilteredParts.Add(PotentialPart);
             }
@@ -723,7 +727,7 @@ public class Rocket : MonoBehaviour
     {
         List<AttachPointScript> AttachPoints = new List<AttachPointScript>();
         AttachPointScript[] Attachs = FindObjectsOfType<AttachPointScript>();
-        foreach(AttachPointScript attach in Attachs)
+        foreach (AttachPointScript attach in Attachs)
         {
             AttachPoints.Add(attach);
         }
@@ -737,10 +741,10 @@ public class Rocket : MonoBehaviour
         List<AttachPointScript> FilteredAttachPoints = new List<AttachPointScript>();
         foreach (AttachPointScript attach in AttachsToFilter)
         {
-            if(attach.attachedBody != null)
+            if (attach.attachedBody != null)
             {
                 FilteredAttachPoints.Add(attach);
-            }   
+            }
         }
         return FilteredAttachPoints;
     }
@@ -750,7 +754,7 @@ public class Rocket : MonoBehaviour
         List<AttachPointScript> AttachToRemove = new List<AttachPointScript>();
         foreach (AttachPointScript Attach in AttachToGroup)
         {
-            if(Attach.referenceBody.GetComponent<RocketPart>()._partType == "decoupler" || Attach.attachedBody.GetComponent<RocketPart>()._partType == "decoupler")
+            if (Attach.referenceBody.GetComponent<RocketPart>()._partType == "decoupler" || Attach.attachedBody.GetComponent<RocketPart>()._partType == "decoupler")
             {
                 AttachToRemove.Add(Attach);
             }
@@ -770,7 +774,7 @@ public class Rocket : MonoBehaviour
         FilteredRocketParts = PartsToFilter;
         for (int i = 0; i < PartsToFilter.Count; i++)
         {
-            if(PartsToFilter[i]._partType == "decoupler")
+            if (PartsToFilter[i]._partType == "decoupler")
             {
                 FilteredRocketParts.Remove(PartsToFilter[i]);
                 i = 0;
@@ -789,37 +793,37 @@ public class Rocket : MonoBehaviour
 
         for (int x = 0; x < numberOfStages; x++)
         {
-            foreach(RocketPart RP in RocketParts)
+            foreach (RocketPart RP in RocketParts)
             {
-                if(RP._partType != "decoupler")
+                if (RP._partType != "decoupler")
                 {
-                
-                Stages Stage = new Stages();
-                List<RocketPart> PartsInStage = new List<RocketPart>();
 
-                if(!PartsPlaced.Contains(RP))
-                {
-                    PartsPlaced.Add(RP);
-                    PartsInStage.Add(RP);
+                    Stages Stage = new Stages();
+                    List<RocketPart> PartsInStage = new List<RocketPart>();
 
-                    for(int i = 0; i < GroupedAttach.Count; i++)
+                    if (!PartsPlaced.Contains(RP))
                     {
-                        if(PartsInStage.Contains(GroupedAttach[i].attachedBody.GetComponent<RocketPart>()) && !PartsPlaced.Contains(GroupedAttach[i].referenceBody.GetComponent<RocketPart>()))
+                        PartsPlaced.Add(RP);
+                        PartsInStage.Add(RP);
+
+                        for (int i = 0; i < GroupedAttach.Count; i++)
                         {
-                            PartsInStage.Add(GroupedAttach[i].referenceBody.GetComponent<RocketPart>());
-                            PartsPlaced.Add(GroupedAttach[i].referenceBody.GetComponent<RocketPart>());
-                            i = 0;
+                            if (PartsInStage.Contains(GroupedAttach[i].attachedBody.GetComponent<RocketPart>()) && !PartsPlaced.Contains(GroupedAttach[i].referenceBody.GetComponent<RocketPart>()))
+                            {
+                                PartsInStage.Add(GroupedAttach[i].referenceBody.GetComponent<RocketPart>());
+                                PartsPlaced.Add(GroupedAttach[i].referenceBody.GetComponent<RocketPart>());
+                                i = 0;
+                            }
                         }
-                    }
 
-                    foreach (RocketPart RPA in PartsInStage)
-                    {
-                        Stage.Parts.Add(RPA);
+                        foreach (RocketPart RPA in PartsInStage)
+                        {
+                            Stage.Parts.Add(RPA);
+                        }
+                        Stages.Add(Stage);
                     }
-                    Stages.Add(Stage);
                 }
-                }
-            
+
             }
         }
     }
@@ -828,33 +832,33 @@ public class Rocket : MonoBehaviour
     {
         foreach (RocketPart _decoupler in Decouplers)
         {
-            if(_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
+            if (_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody != null)
             {
                 RocketPart BottomPart = _decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody.gameObject.GetComponent<RocketPart>();
 
                 if (BottomPart != null)
                 {
-                    foreach(Stages Stage in Stages)
+                    foreach (Stages Stage in Stages)
                     {
-                        List<RocketPart> PartsToAdd = new List<RocketPart>(); 
-                        foreach(RocketPart Part in Stage.Parts)
+                        List<RocketPart> PartsToAdd = new List<RocketPart>();
+                        foreach (RocketPart Part in Stage.Parts)
                         {
-                            if(Part == BottomPart)
+                            if (Part == BottomPart)
                             {
                                 PartsToAdd.Add(_decoupler);
                                 break;
                             }
                         }
-    
+
                         foreach (RocketPart rp in PartsToAdd)
                         {
-                            Stage.Parts.Add(rp);   
+                            Stage.Parts.Add(rp);
                         }
                     }
                 }
             }
 
-            else if(_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
+            else if (_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
             {
                 Stages Stage = new Stages();
                 Stage.Parts.Add(_decoupler);
@@ -866,7 +870,7 @@ public class Rocket : MonoBehaviour
     public void scanStage()
     {
         int StageNumber = 0;
-        foreach(Stages Stage in Stages)
+        foreach (Stages Stage in Stages)
         {
             print("Stage " + StageNumber);
             int PartNumber = 0;
