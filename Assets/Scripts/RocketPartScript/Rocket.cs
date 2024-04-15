@@ -692,7 +692,6 @@ public class Rocket : MonoBehaviour
         numberOfStages = Decouplers.Count + 1;
         CreateStage(RocketParts);
         addDecouplerStages(Decouplers);
-        cleanStage();
         scanStage();
     }
 
@@ -774,6 +773,7 @@ public class Rocket : MonoBehaviour
             if(PartsToFilter[i]._partType == "decoupler")
             {
                 FilteredRocketParts.Remove(PartsToFilter[i]);
+                i = 0;
             }
         }
 
@@ -784,15 +784,16 @@ public class Rocket : MonoBehaviour
     public void CreateStage(List<RocketPart> RocketParts)
     {
         List<AttachPointScript> GroupedAttach = findAttachPoints();
-        
-        List<RocketPart> FilteredRocketParts = RemoveDecouplersFromList(RocketParts);
 
         List<RocketPart> PartsPlaced = new List<RocketPart>();
 
         for (int x = 0; x < numberOfStages; x++)
         {
-            foreach(RocketPart RP in FilteredRocketParts)
+            foreach(RocketPart RP in RocketParts)
             {
+                if(RP._partType != "decoupler")
+                {
+                
                 Stages Stage = new Stages();
                 List<RocketPart> PartsInStage = new List<RocketPart>();
 
@@ -817,6 +818,8 @@ public class Rocket : MonoBehaviour
                     }
                     Stages.Add(Stage);
                 }
+                }
+            
             }
         }
     }
@@ -839,6 +842,7 @@ public class Rocket : MonoBehaviour
                             if(Part == BottomPart)
                             {
                                 PartsToAdd.Add(_decoupler);
+                                break;
                             }
                         }
     
@@ -850,7 +854,7 @@ public class Rocket : MonoBehaviour
                 }
             }
 
-            if(_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
+            else if(_decoupler._attachBottom.GetComponent<AttachPointScript>().attachedBody == null)
             {
                 Stages Stage = new Stages();
                 Stage.Parts.Add(_decoupler);
@@ -859,25 +863,16 @@ public class Rocket : MonoBehaviour
         }
     }
 
-    void cleanStage()
-    {
-        for(int i = 0; i < Stages.Count; i++)
-        {
-            //if(Stages[i].Parts.Count == 1 && Stages[i].Parts[0]._partType == "decoupler")
-            //{
-            //    Stages.Remove(Stages[i]);
-            //}
-        }
-    }
-
     public void scanStage()
     {
         int StageNumber = 0;
         foreach(Stages Stage in Stages)
         {
+            print("Stage " + StageNumber);
             int PartNumber = 0;
             foreach (RocketPart RP in Stage.Parts)
             {
+                print("Part " + PartNumber + " " + RP._partType);
                 PartNumber++;
             }
             StageNumber++;
