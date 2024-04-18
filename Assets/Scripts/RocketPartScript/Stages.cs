@@ -73,9 +73,10 @@ public class Stages
                         {
                             if (tank.GetComponent<Tank>().propellantCategory == "oxidizer")
                             {
-                                if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / oxidizerQty * consumedOxidizer * 1000f / tank.GetComponent<container>().substance.MolarMass < 0)
+                                if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / oxidizerQty * consumedOxidizer * 1000f / tank.GetComponent<container>().substance.MolarMass <= 0)
                                 {
                                     tank.GetComponent<container>().moles = 0;
+                                    thrust = Vector2.zero;
                                 }
                                 else
                                 {
@@ -86,9 +87,10 @@ public class Stages
 
                             if (tank.GetComponent<Tank>().propellantCategory == "fuel")
                             {
-                                if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / fuelQty * consumedFuel * 1000f / tank.GetComponent<container>().substance.MolarMass < 0)
+                                if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / fuelQty * consumedFuel * 1000f / tank.GetComponent<container>().substance.MolarMass <= 0)
                                 {
                                     tank.GetComponent<container>().moles = 0;
+                                    thrust = Vector2.zero;
                                 }
                                 else
                                 {
@@ -107,6 +109,8 @@ public class Stages
             }
 
             
+        }else{
+            thrust = Vector2.zero;
         }
         engineStarted = true;  
     }
