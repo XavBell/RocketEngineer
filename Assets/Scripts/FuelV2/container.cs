@@ -24,6 +24,7 @@ public class container : MonoBehaviour
     public float volume; //m3 volume of substance
     public string state = "none"; //state of substance
     public float mass; //mass in kg of the substance
+    public bool tested = false; //If container is tested, flow will stop
 
     public flowController flowController;
 

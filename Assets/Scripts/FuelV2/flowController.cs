@@ -63,16 +63,38 @@ public class flowController : MonoBehaviour
                 destination.internalTemperature = origin.internalTemperature;
             }
             
-
-            if(origin.moles - molesToTransfer >= 0)
+            if(destination.tested == false)
             {
-                origin.moles -= molesToTransfer;
-                destination.moles += molesToTransfer;
-            }else if(origin.moles - molesToTransfer < 0)
-            {
-                destination.moles += origin.moles;
-                origin.moles = 0;
+                if (origin.moles - molesToTransfer >= 0)
+                {
+                    origin.moles -= molesToTransfer;
+                    destination.moles += molesToTransfer;
+                }
+                else if (origin.moles - molesToTransfer < 0)
+                {
+                    destination.moles += origin.moles;
+                    origin.moles = 0;
+                }
             }
+
+            if(destination.tested == true)
+            {
+                float volumeToTransfer = massToTransfer / (destination.substance.Density *1000);
+                if(volumeToTransfer + destination.volume <= destination.tankVolume)
+                {
+                    if (origin.moles - molesToTransfer >= 0)
+                    {
+                        origin.moles -= molesToTransfer;
+                        destination.moles += molesToTransfer;
+                    }
+                    else if (origin.moles - molesToTransfer < 0)
+                    {
+                        destination.moles += origin.moles;
+                        origin.moles = 0;
+                    }
+                }
+            }
+            
         }
     }
 }

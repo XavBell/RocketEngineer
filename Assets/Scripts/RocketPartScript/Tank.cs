@@ -20,6 +20,7 @@ public class Tank : RocketPart
         container.tankVolume = _volume;
         container.tankThermalConductivity = conductivity;
         container.tankSurfaceArea = x_scale*Mathf.PI*2 + (x_scale*Mathf.PI*y_scale);
+        container.tested = tested;
 
     }
 }

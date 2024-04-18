@@ -6,8 +6,7 @@ using UnityEngine;
 public class Substance : ScriptableObject
 {
     public string Name;
-    //in kg/m3
-    public float Density;
+    public float Density; //in kg/m3
     public float LiquidTemperature; //up to 424
     public float GaseousTemperature; //and more
     public float SolidTemperature; //and below

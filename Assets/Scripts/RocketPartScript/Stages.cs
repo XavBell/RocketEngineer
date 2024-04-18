@@ -109,8 +109,6 @@ public class Stages
             }
 
             
-        }else{
-            thrust = Vector2.zero;
         }
         engineStarted = true;  
     }
