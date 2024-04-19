@@ -12,11 +12,11 @@ public class Stages
     public bool engineStarted = false;
     public float startTime = 0;
     public TimeManager MyTime;
-    
+
 
     public void updateThrust(float thrustCoefficient)
     {
-        if(engineStarted == false)
+        if (engineStarted == false)
         {
             startTime = Time.time;
         }
@@ -27,12 +27,12 @@ public class Stages
 
         string oxidizerType = null;
         string fuelType = null;
-        if(fuelQty > 0 && oxidizerQty > 0)
+        if (fuelQty > 0 && oxidizerQty > 0)
         {
             oxidizerType = GetType("oxidizer").name;
             fuelType = GetType("fuel").name;
         }
-        
+
 
         bool liquid = GetState();
 
@@ -42,94 +42,104 @@ public class Stages
         string propellantType = GetPropellant(oxidizerType, fuelType);
         float percentageFuel = 0f;
         float percentageOxidizer = 0f;
-        if(propellantType != "none")
+        if (propellantType != "none")
         {
-            if(propellantType == "RP-1")
+            if (propellantType == "RP-1")
             {
                 float ratio = 2.56f; //oxidizer to fuel ratio of RP-1
                 //it means that for 2.56kg of oxidizer, 1 kg of fuel is consumed
 
-                percentageOxidizer = ratio/(ratio + 1);
-                percentageFuel = 1f/(ratio + 1);
+                percentageOxidizer = ratio / (ratio + 1);
+                percentageFuel = 1f / (ratio + 1);
             }
         }
 
         //Shouldn't need to use the MyTime because it's only ran in simulate mode
         float consumedFuel = Time.deltaTime * massFlowRate * percentageFuel;
         float consumedOxidizer = Time.deltaTime * massFlowRate * percentageOxidizer;
-        if(fuelQty - consumedFuel >= 0 && oxidizerQty - consumedOxidizer >= 0 && consumedFuel != 0 && consumedOxidizer != 0 && liquid == true)
+        if (fuelQty - consumedFuel >= 0 && oxidizerQty - consumedOxidizer >= 0 && consumedFuel != 0 && consumedOxidizer != 0 && liquid == true)
         {
-            foreach(RocketPart engine in engines)
+            foreach (RocketPart engine in engines)
             {
                 //Fix to have the right start time
                 bool fail;
                 float rawThrust = engine.GetComponent<Engine>().CalculateOutputThrust(Time.time - startTime, out fail);
-                if(fail == false && engine.GetComponent<Engine>().operational == true)
+                if (fail == false && engine.GetComponent<Engine>().operational == true)
                 {
                     thrust += thrustCoefficient * new Vector2(engine.gameObject.transform.up.x, engine.gameObject.transform.up.y) * rawThrust;
                     foreach (RocketPart tank in Parts)
                     {
                         if (tank._partType == "tank")
                         {
-                            if (tank.GetComponent<Tank>().propellantCategory == "oxidizer")
+                            if (tank.GetComponent<container>().substance != null)
                             {
-                                if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / oxidizerQty * consumedOxidizer * 1000f / tank.GetComponent<container>().substance.MolarMass <= 0)
+                                if (tank.GetComponent<Tank>().propellantCategory == "oxidizer")
                                 {
-                                    tank.GetComponent<container>().moles = 0;
-                                    thrust = Vector2.zero;
-                                }
-                                else
-                                {
-                                    tank.GetComponent<container>().moles -= tank.GetComponent<container>().mass / oxidizerQty * consumedOxidizer * 1000f / tank.GetComponent<container>().substance.MolarMass;
+                                    if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / oxidizerQty * consumedOxidizer * 1000f / tank.GetComponent<container>().substance.MolarMass <= 0)
+                                    {
+                                        tank.GetComponent<container>().moles = 0;
+                                        engine.GetComponent<Engine>().lackFuel = true;
+                                        thrust = Vector2.zero;
+                                    }
+                                    else
+                                    {
+                                        tank.GetComponent<container>().moles -= tank.GetComponent<container>().mass / oxidizerQty * consumedOxidizer * 1000f / tank.GetComponent<container>().substance.MolarMass;
+                                        engine.GetComponent<Engine>().lackFuel = false;
+                                    }
+
                                 }
 
-                            }
-
-                            if (tank.GetComponent<Tank>().propellantCategory == "fuel")
-                            {
-                                if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / fuelQty * consumedFuel * 1000f / tank.GetComponent<container>().substance.MolarMass <= 0)
+                                if (tank.GetComponent<Tank>().propellantCategory == "fuel")
                                 {
-                                    tank.GetComponent<container>().moles = 0;
-                                    thrust = Vector2.zero;
-                                }
-                                else
-                                {
-                                    tank.GetComponent<container>().moles -= tank.GetComponent<container>().mass / fuelQty * consumedFuel * 1000f / tank.GetComponent<container>().substance.MolarMass;
-                                }
+                                    if (tank.GetComponent<container>().moles - tank.GetComponent<container>().mass / fuelQty * consumedFuel * 1000f / tank.GetComponent<container>().substance.MolarMass <= 0)
+                                    {
+                                        tank.GetComponent<container>().moles = 0;
+                                        engine.GetComponent<Engine>().lackFuel = true;
+                                        thrust = Vector2.zero;
+                                    }
+                                    else
+                                    {
+                                        tank.GetComponent<container>().moles -= tank.GetComponent<container>().mass / fuelQty * consumedFuel * 1000f / tank.GetComponent<container>().substance.MolarMass;
+                                        engine.GetComponent<Engine>().lackFuel = false;
+                                    }
 
+                                }
                             }
                         }
+
                     }
                 }
 
-                if(fail == true)
+                if (fail == true)
                 {
                     engine.GetComponent<Engine>().operational = false;
                 }
             }
 
-            
+
         }
-        engineStarted = true;  
+        engineStarted = true;
     }
 
     string GetPropellant(string oxidizer, string fuel)
     {
-        if(oxidizer == "LOX" && fuel == "kerosene")
+        if (oxidizer == "LOX" && fuel == "kerosene")
         {
             return "RP-1";
-        }else{
+        }
+        else
+        {
             return "none";
         }
     }
-    
+
     bool GetState()
     {
-        foreach(RocketPart part in Parts)
+        foreach (RocketPart part in Parts)
         {
-            if(part._partType == "tank")
+            if (part._partType == "tank")
             {
-                if(part.GetComponent<container>().state != "liquid")
+                if (part.GetComponent<container>().state != "liquid" && part.GetComponent<container>().substance != null)
                 {
                     return false;
                 }
@@ -142,11 +152,11 @@ public class Stages
     float GetQty(string type)
     {
         float qty = 0f;
-        foreach(RocketPart part in Parts)
+        foreach (RocketPart part in Parts)
         {
-            if(part._partType == "tank")
+            if (part._partType == "tank")
             {
-                if(part.GetComponent<Tank>().propellantCategory == type)
+                if (part.GetComponent<Tank>().propellantCategory == type)
                 {
                     qty += part.GetComponent<container>().mass;
                 }
@@ -159,28 +169,28 @@ public class Stages
     Substance GetType(string type)
     {
         Substance substance = null;
-        foreach(RocketPart part in Parts)
+        foreach (RocketPart part in Parts)
         {
-            if(part._partType == "tank")
+            if (part._partType == "tank")
             {
-                if(part.GetComponent<Tank>().propellantCategory == type)
+                if (part.GetComponent<Tank>().propellantCategory == type && part.GetComponent<container>().substance != null)
                 {
                     substance = part.GetComponent<container>().substance;
+                    return substance;
                 }
             }
         }
-
-        return substance;
+        return null;
     }
 
     List<RocketPart> GetEngines()
     {
         List<RocketPart> engines = new List<RocketPart>();
-        foreach(RocketPart part in Parts)
+        foreach (RocketPart part in Parts)
         {
-            if(part._partType == "engine")
+            if (part._partType == "engine")
             {
-                if(part.GetComponent<Engine>().active == true)
+                if (part.GetComponent<Engine>().active == true)
                 {
                     engines.Add(part);
                 }
@@ -192,7 +202,7 @@ public class Stages
     float totalMassFlowRate(List<RocketPart> Engines)
     {
         float massFlowRate = 0f;
-        foreach(RocketPart engine in Engines)
+        foreach (RocketPart engine in Engines)
         {
             massFlowRate += engine.GetComponent<Engine>()._rate;
         }

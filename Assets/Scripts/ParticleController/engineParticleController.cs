@@ -58,7 +58,7 @@ public class engineParticleController : MonoBehaviour
                }
             }
             
-            if(throttle == 0 || this.GetComponent<Engine>().active == false || this.GetComponent<Engine>().operational == false)
+            if(throttle == 0 || this.GetComponent<Engine>().active == false || this.GetComponent<Engine>().operational == false || this.GetComponent<Engine>().lackFuel == true)
             {
                 var em = plume.GetComponent<ParticleSystem>().emission;
                 em.rateOverTime = 0; 
@@ -91,6 +91,16 @@ public class engineParticleController : MonoBehaviour
         }
 
         if(SceneManager.GetActiveScene().name != "SampleScene")
+        {
+            var em = plume.GetComponent<ParticleSystem>().emission;
+            em.rateOverTime = 0; 
+            if(EngineSound.isPlaying == true)
+            {
+                EngineSound.Pause();
+            }
+        }
+
+        if(SceneManager.GetActiveScene().name == "SampleScene" && this.GetComponentInParent<Rocket>().Stages.Count == 1 && this.GetComponentInParent<Rocket>().Stages[0].Parts.Count == 1)
         {
             var em = plume.GetComponent<ParticleSystem>().emission;
             em.rateOverTime = 0; 

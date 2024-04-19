@@ -27,6 +27,7 @@ public class Engine : RocketPart
     public float timeOfFail;
     public float outReadThrust;
     public bool willExplode = false;
+    public bool lackFuel = false; //Used between Stages control and ParticleController
 
     public void activate()
     {
