@@ -15,6 +15,7 @@ public class flowController : MonoBehaviour
     public bool opened = false; //is flow allowed or not
 
     public TimeManager MyTime;
+    public GameObject refLine;
 
 
     // Start is called before the first frame update

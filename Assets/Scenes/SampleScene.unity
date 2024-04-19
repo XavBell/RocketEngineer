@@ -13211,6 +13211,7 @@ MonoBehaviour:
   WorldSaveManager: {fileID: 0}
   launchsiteManager: {fileID: 1494031408}
   solarSystemManager: {fileID: 1182590599}
+  fuelConnectorManager: {fileID: 1871578656}
   panels:
   - {fileID: 1249300510}
   - {fileID: 647580533}
@@ -55472,6 +55473,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planet: {fileID: 2121345929}
   solarSystemManager: {fileID: 1182590599}
+  buildingManager: {fileID: 492879240}
+  destroyPrefab: {fileID: 2587374546967891860, guid: fcaa0df0319e7414998058ed175fbf04, type: 3}
   input: {fileID: 0}
   output: {fileID: 0}
   Legend: {fileID: 1678258842}
@@ -55479,6 +55482,7 @@ MonoBehaviour:
   showToggle: {fileID: 336589166}
   started: 0
   lines: []
+  Destroyable: []
   linePrefab: {fileID: 5355462812571006898, guid: f490907b98c5c45d1b50fa0662c2beba, type: 3}
   orange: {r: 1, g: 0.5529412, b: 0.16078432, a: 1}
   blue: {r: 0, g: 0.53333336, b: 0.98039216, a: 1}

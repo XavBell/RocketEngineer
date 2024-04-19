@@ -8,6 +8,8 @@ public class FuelConnectorManager : MonoBehaviour
 {
     public GameObject planet;
     public SolarSystemManager solarSystemManager;
+    public BuildingManager buildingManager;
+    public GameObject destroyPrefab;
     public container input;
     public container output;
     public GameObject Legend;
@@ -15,6 +17,7 @@ public class FuelConnectorManager : MonoBehaviour
     public Toggle showToggle;
     public bool started = false;
     public List<LineRenderer> lines = new List<LineRenderer>();
+    public List<GameObject> Destroyable = new List<GameObject>();
     public GameObject linePrefab;
     public Color orange;
     public Color blue;
@@ -22,7 +25,6 @@ public class FuelConnectorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -57,6 +59,14 @@ public class FuelConnectorManager : MonoBehaviour
                     Destroy(line.gameObject);
                 }
             }
+
+            foreach(GameObject destroy in Destroyable)
+            {
+                if(destroy != null)
+                {
+                    Destroy(destroy);
+                }
+            }
             
             lines.Clear();
             int n = 4;
@@ -78,6 +88,17 @@ public class FuelConnectorManager : MonoBehaviour
                         lr.SetPosition(1, new Vector2(flowController.transform.position.x, altitude1.y));
                         lr.SetPosition(2, new Vector2(flowController.origin.transform.position.x, altitude2.y));
                         lr.SetPosition(3, flowController.origin.transform.position);
+                        if(buildingManager.CanDestroy == true)
+                        {
+                            GameObject destroy = Instantiate(destroyPrefab);
+                            destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x) / 2, (altitude1.y + altitude2.y) / 2);
+                            destroy.transform.parent = flowController.gameObject.transform;
+                            destroy.transform.parent = null;
+                            destroy.GetComponent<destroyConnection>().flowcontroller = flowController.gameObject;
+                            destroy.GetComponent<destroyConnection>().line = line;
+                            Destroyable.Add(destroy);
+                        }
+                        flowController.refLine = line;
                         if(flowController.destination.type == "fuel")
                         {
                             lr.startColor = orange;
@@ -113,6 +134,16 @@ public class FuelConnectorManager : MonoBehaviour
                     lr.SetPosition(1, new Vector2(flowControllerForLaunchPad.transform.position.x, altitude1.y));
                     lr.SetPosition(2, new Vector2(flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position.x, altitude2.y));
                     lr.SetPosition(3, flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position);
+                    if (buildingManager.CanDestroy == true)
+                    {
+                        GameObject destroy = Instantiate(destroyPrefab);
+                        destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x)/2, (altitude1.y + altitude2.y) / 2);
+                        destroy.transform.parent = flowControllerForLaunchPad.transform;
+                        destroy.transform.parent = null;
+                        destroy.GetComponent<destroyConnection>().flowcontroller = flowControllerForLaunchPad.gameObject;
+                        destroy.GetComponent<destroyConnection>().line = line;
+                        Destroyable.Add(destroy);
+                    }
                     lr.startColor = blue;
                     lr.endColor = blue;
                     lines.Add(lr);
@@ -133,6 +164,16 @@ public class FuelConnectorManager : MonoBehaviour
                     lr.SetPosition(1, new Vector2(flowControllerForLaunchPad.transform.position.x,altitude1.y));
                     lr.SetPosition(2, new Vector2(flowControllerForLaunchPad.fuelContainerOrigin.transform.position.x,altitude2.y));
                     lr.SetPosition(3, flowControllerForLaunchPad.fuelContainerOrigin.transform.position);
+                    if (buildingManager.CanDestroy == true)
+                    {
+                        GameObject destroy = Instantiate(destroyPrefab);
+                        destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x)/2, (altitude1.y + altitude2.y) / 2);
+                        destroy.transform.parent = flowControllerForLaunchPad.transform;
+                        destroy.transform.parent = null;
+                        destroy.GetComponentInChildren<destroyConnection>().flowcontroller = flowControllerForLaunchPad.gameObject;
+                        destroy.GetComponentInChildren<destroyConnection>().line = line;
+                        Destroyable.Add(destroy);
+                    }
                     lr.startColor = orange;
                     lr.endColor = orange;
                     lines.Add(lr);
@@ -157,6 +198,16 @@ public class FuelConnectorManager : MonoBehaviour
                     lr.SetPosition(1, new Vector2(flowControllerForTankStand.transform.position.x,altitude1.y));
                     lr.SetPosition(2, new Vector2(flowControllerForTankStand.origin.transform.position.x,altitude2.y));
                     lr.SetPosition(3, flowControllerForTankStand.origin.transform.position);
+                    if (buildingManager.CanDestroy == true)
+                    {
+                        GameObject destroy = Instantiate(destroyPrefab);
+                        destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x)/2, (altitude1.y + altitude2.y) / 2);
+                        destroy.transform.parent = flowControllerForTankStand.transform;
+                        destroy.transform.parent = null;
+                        destroy.GetComponent<destroyConnection>().flowcontroller = flowControllerForTankStand.gameObject;
+                        destroy.GetComponent<destroyConnection>().line = line;
+                        Destroyable.Add(destroy);
+                    }
                     lr.startColor = Color.white;
                     lr.endColor = Color.white;
                     lines.Add(lr);
@@ -173,6 +224,14 @@ public class FuelConnectorManager : MonoBehaviour
                 if(line != null)
                 {
                     Destroy(line.gameObject);
+                }
+            }
+
+            foreach(GameObject destroy in Destroyable)
+            {
+                if(destroy != null)
+                {
+                    Destroy(destroy);
                 }
             }
             

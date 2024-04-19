@@ -17,6 +17,7 @@ public class BuildingManager : MonoBehaviour
     public WorldSaveManager WorldSaveManager;
     public launchsiteManager launchsiteManager;
     public SolarSystemManager solarSystemManager = new SolarSystemManager();
+    public FuelConnectorManager fuelConnectorManager;
     public GameObject[] panels;
     public GameObject[] mainBar;
     public GameObject[] flightUI;
@@ -99,17 +100,23 @@ public class BuildingManager : MonoBehaviour
             Cursor.visible = true;
             customCursor.gameObject.SetActive(false);
             partToConstruct = null;
+            unAllowDestroy();
+        }
+    }
 
-            if(CanDestroy == true)
-            {
-                CanDestroy = false;
-            }
+    private void unAllowDestroy()
+    {
+        if (CanDestroy == true)
+        {
+            CanDestroy = false;
+            fuelConnectorManager.ShowConnection();
         }
     }
 
     public void allowDestroy()
     {
         CanDestroy = true;
+        fuelConnectorManager.ShowConnection();
     }
 
     public void Close()
