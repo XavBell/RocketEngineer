@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using Newtonsoft.Json;
+
 
 public class Engine : RocketPart
 { 
     public List<Nozzle> nozzleReferences = new List<Nozzle>();
     public List<Turbine> turbineReferences = new List<Turbine>();
     public List<Pump> pumpReferences = new List<Pump>();
+    public savePath savePathRef = new savePath();
+    private MasterManager MasterManager;
     public float _thrust;
     public float _rate;
     public float _tvcSpeed;
@@ -36,6 +41,7 @@ public class Engine : RocketPart
 
     void Start()
     {
+        MasterManager = FindObjectOfType<MasterManager>();
         InitializeSprite();
         InitializeFail();
     }
@@ -112,6 +118,15 @@ public class Engine : RocketPart
                     //WHen on a rocket
                     GameObject toDestroy = this.gameObject.transform.parent.gameObject;
                     FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to engine failure");
+                    //Add 5% reliability
+                    if(reliability + 0.05f <= 1f)
+                    {
+                        reliability += 0.05f;
+                        saveReliability();
+                    }else{
+                        reliability = 1f;
+                        saveReliability();
+                    }
                     Destroy(toDestroy);
                 }else if(explosion != null){
                     //When on a static fire stand
@@ -119,6 +134,15 @@ public class Engine : RocketPart
                     explosion.Play();
                     FindObjectOfType<StaticFireViewer>().Terminate();
                     FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to engine failure");
+                    //Add 5% reliability
+                    if(reliability + 0.05f <= 1f)
+                    {
+                        reliability += 0.05f;
+                        saveReliability();
+                    }else{
+                        reliability = 1f;
+                        saveReliability();
+                    }
                     Destroy(this.gameObject);
                 }
             }
@@ -131,5 +155,76 @@ public class Engine : RocketPart
         }
         outReadThrust = outThrust;
         return outThrust;
+    }
+
+    public void saveReliability()
+    {
+        //Save new engine reliability and maxTime
+        if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + this.GetComponent<Engine>()._partName + ".json"))
+        {
+            saveEngine saveObject = new saveEngine();
+            var jsonString = JsonConvert.SerializeObject(saveObject);
+            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + this.GetComponent<Engine>()._partName + ".json");
+            saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+
+            RocketPart part = this.GetComponent<RocketPart>();
+            Engine engine = this.GetComponent<Engine>();
+            saveObject = loadedEngine;
+            //Save previous unchanged value
+            saveObject.path = savePathRef.engineFolder;
+            saveObject.engineName = part._partName;
+            saveObject.thrust_s = engine._thrust;
+            saveObject.mass_s = engine._partMass;
+            saveObject.rate_s = engine._rate;
+            saveObject.tvcSpeed_s = engine._tvcSpeed;
+            saveObject.tvcMaxAngle_s = engine._maxAngle;
+
+            saveObject.tvcName_s = engine._tvcName;
+            saveObject.nozzleName_s = engine._nozzleName;
+            saveObject.turbineName_s = engine._turbineName;
+            saveObject.pumpName_s = engine._pumpName;
+
+            //Updated Value
+            saveObject.reliability = engine.reliability;
+            saveObject.maxTime = engine.maxTime;
+            saveObject.cost = engine._partCost;
+
+            var jsonString1 = JsonConvert.SerializeObject(saveObject);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + this.GetComponent<Engine>()._partName + ".json", jsonString1);
+        }
+        //Apply new reliability to all rockets
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
+        var rocketNamesFiles = info.GetFiles();
+        List<string> rocketNames = new List<string>();
+        foreach (var file in rocketNamesFiles)
+        {
+            rocketNames.Add(file.Name);
+        }
+        foreach (var rocket in rocketNames)
+        {
+            if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket))
+            {
+                savecraft saveObject = new savecraft();
+                var jsonString = JsonConvert.SerializeObject(saveObject);
+                jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket);
+                savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
+
+                saveObject = loadedRocket;
+                int i = 0;
+                foreach (string engine1 in saveObject.engineName)
+                {
+                    if (engine1 == this.GetComponent<Engine>()._partName)
+                    {
+                        saveObject.reliability[i] = this.GetComponent<Engine>().reliability;
+                    }
+                    i++;
+                }
+
+                var jsonString1 = JsonConvert.SerializeObject(saveObject);
+                System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket, jsonString1);
+            }
+
+
+        }
     }
 }

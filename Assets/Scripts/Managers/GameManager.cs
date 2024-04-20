@@ -131,7 +131,6 @@ public class GameManager : MonoBehaviour
         if(Input.GetMouseButton(1) && partToConstruct == false && propellantPanel.activeSelf == false)
         {
             DetectClick();
-            print("Clicked");
         }
     }
 

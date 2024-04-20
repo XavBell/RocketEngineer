@@ -696,7 +696,7 @@ public class Rocket : MonoBehaviour
         numberOfStages = Decouplers.Count + 1;
         CreateStage(RocketParts);
         addDecouplerStages(Decouplers);
-        scanStage();
+        //scanStage();
     }
 
     public List<RocketPart> findRocketParts()

@@ -16,6 +16,15 @@ public class dropDownManager : MonoBehaviour
         if(SceneManager.GetActiveScene().name == "Building")
         {
             dropdown.gameObject.SetActive(true);
+            if(tank.GetComponentInChildren<Tank>().propellantCategory == "fuel")
+            {
+                dropdown.value = 0;
+            }
+
+            if(tank.GetComponentInChildren<Tank>().propellantCategory == "oxidizer")
+            {
+                dropdown.value = 1;
+            }
         }else
         {
             dropdown.gameObject.SetActive(false);
