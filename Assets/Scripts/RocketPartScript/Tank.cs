@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Tank : RocketPart
 {
@@ -21,6 +22,11 @@ public class Tank : RocketPart
         container.tankThermalConductivity = conductivity;
         container.tankSurfaceArea = x_scale*Mathf.PI*2 + (x_scale*Mathf.PI*y_scale);
         container.tested = tested;
+
+        if(SceneManager.GetActiveScene().name == "Building")
+        {
+            this.gameObject.layer = 0;
+        }
 
     }
 }

@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     public GameObject MainPanel;
     public GameObject CreatorPanel;
     public GameObject DataPanel;
+    public GameObject propellantPanel;
 
     public TMP_Text costTxt;
 
@@ -124,6 +125,29 @@ public class GameManager : MonoBehaviour
             if(customCursor.transform.childCount > 1)
             {
                 ResetCursorGameObject();
+            }
+        }
+
+        if(Input.GetMouseButton(1) && partToConstruct == false && propellantPanel.activeSelf == false)
+        {
+            DetectClick();
+            print("Clicked");
+        }
+    }
+
+    public void DetectClick()
+    {
+        RaycastHit2D raycastHit;
+        Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 ray = cameraPos;
+        raycastHit = Physics2D.Raycast(ray, new Vector2(0, 1000));
+        print(raycastHit);
+        if(raycastHit.transform != null)
+        {
+            if(raycastHit.transform.gameObject.GetComponent<Tank>())
+            {
+                propellantPanel.SetActive(true);
+                propellantPanel.GetComponent<dropDownManager>().tank = raycastHit.transform.gameObject;
             }
         }
     }

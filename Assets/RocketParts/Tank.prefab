@@ -5013,7 +5013,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
@@ -10833,6 +10833,7 @@ MonoBehaviour:
   volume: 0
   state: 
   mass: 0
+  tested: 0
   flowController: {fileID: -6460567251299605222}
   substance: {fileID: 0}
   explosion: {fileID: 6724116179815217865}
@@ -10854,6 +10855,7 @@ MonoBehaviour:
   selfRate: 1
   opened: 0
   MyTime: {fileID: 0}
+  refLine: {fileID: 0}
 --- !u!114 &5373207493885616187
 MonoBehaviour:
   m_ObjectHideFlags: 0
