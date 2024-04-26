@@ -20,6 +20,10 @@ public class DetectClick : MonoBehaviour
     public TMP_Dropdown operationDropdown;
     public GameObject designUI;
 
+    public GameObject testPlanet;
+    public GameObject debugObject;
+    public bool test = false; //For testing purposes
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +38,28 @@ public class DetectClick : MonoBehaviour
         CheckForRightClickOnBuilding();
         CheckForDestroy();
 
+        if(test)
+        {
+            checkForLeftClick();
+        }
+
+    }
+
+    void checkForLeftClick()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            RaycastHit2D raycastHit;
+            Vector2 camPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 ray = camPos;
+            Vector2 destination = new Vector2(testPlanet.transform.position.x, testPlanet.transform.position.y);
+            raycastHit = Physics2D.Raycast(ray, destination - ray);
+            if(raycastHit.transform != null)
+            {
+                Debug.Log(raycastHit.point);
+                GameObject GO = Instantiate(debugObject, raycastHit.point, Quaternion.identity);
+            }
+        }
     }
 
     /// <summary>
