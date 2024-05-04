@@ -154,6 +154,7 @@ public class OnClick : MonoBehaviour
             List<System.Guid> rightGuid = new List<System.Guid>();
             List<GameObject> rocketPart = new List<GameObject>();
             int savedID = -1;
+            int savedIDEngine = -1;
             //Put parts in stages
             for(int i = 0; i < maxSteps; i++)
             {
@@ -172,6 +173,11 @@ public class OnClick : MonoBehaviour
                 if(loadedRocket.partType[i] == "tank" && core == null)
                 {
                     savedID++;
+                }
+
+                if(loadedRocket.partType[i] == "engine" && core == null)
+                {
+                    savedIDEngine++;
                 }
 
                 if(loadedRocket.coreID == loadedRocket.PartsID[i])
@@ -206,6 +212,8 @@ public class OnClick : MonoBehaviour
             {
                 core.transform.localScale = new Vector2(loadedRocket.x_scale[savedID], loadedRocket.y_scale[savedID]);
             }
+
+
             
             foreach(Stages stage in rocket.Stages)
             {
@@ -225,10 +233,7 @@ public class OnClick : MonoBehaviour
                 {
                     part.GetComponent<Tank>()._partName = loadedRocket.tankName[tankID];
 
-                    if(part != core)
-                    {
-                        part.transform.localScale = new Vector2(loadedRocket.x_scale[tankID]/core.transform.localScale.x, loadedRocket.y_scale[tankID]);    
-                    }
+                    part.transform.localScale = new Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
                     
                     part.GetComponent<Tank>()._volume = loadedRocket.volume[tankID];
                     part.GetComponent<Tank>().tankMaterial = loadedRocket.tankMaterial[tankID];
