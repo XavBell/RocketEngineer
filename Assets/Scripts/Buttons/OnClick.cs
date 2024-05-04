@@ -153,7 +153,7 @@ public class OnClick : MonoBehaviour
             List<System.Guid> leftGuid = new List<System.Guid>();
             List<System.Guid> rightGuid = new List<System.Guid>();
             List<GameObject> rocketPart = new List<GameObject>();
-
+            int savedID = -1;
             //Put parts in stages
             for(int i = 0; i < maxSteps; i++)
             {
@@ -168,6 +168,11 @@ public class OnClick : MonoBehaviour
                 //Add part to stage
                 rocket.Stages[loadedRocket.StageNumber[i]].Parts.Add(part);
                 rocket.Stages[loadedRocket.StageNumber[i]].PartsID.Add(part._partID);
+
+                if(loadedRocket.partType[i] == "tank" && core == null)
+                {
+                    savedID++;
+                }
 
                 if(loadedRocket.coreID == loadedRocket.PartsID[i])
                 {
@@ -193,10 +198,14 @@ public class OnClick : MonoBehaviour
             core.AddComponent<PlanetGravity>();
             core.GetComponent<PlanetGravity>().setCore(core);
             core.GetComponent<Rocket>().core = core;
-            //core.AddComponent<DoubleTransform>();
             core.AddComponent<RocketStateManager>();
             core.AddComponent<RocketPath>();
             core.AddComponent<BodySwitcher>();
+
+            if(core.GetComponent<Tank>())
+            {
+                core.transform.localScale = new Vector2(loadedRocket.x_scale[savedID], loadedRocket.y_scale[savedID]);
+            }
             
             foreach(Stages stage in rocket.Stages)
             {
@@ -211,16 +220,16 @@ public class OnClick : MonoBehaviour
             int engineID = 0;
             foreach(GameObject part in rocketPart)
             {
-                if (part != core)
-                {
-                    part.transform.SetParent(core.transform);
-                    part.transform.position = new UnityEngine.Vector3(loadedRocket.x_pos[j] + core.transform.position.x, loadedRocket.y_pos[j] + core.transform.position.y, loadedRocket.z_pos[j] + core.transform.position.z);
-                }
                 
                 if (part.GetComponent<RocketPart>()._partType == "tank")
                 {
                     part.GetComponent<Tank>()._partName = loadedRocket.tankName[tankID];
-                    part.transform.localScale = new Vector2(loadedRocket.x_scale[tankID], loadedRocket.y_scale[tankID]);
+
+                    if(part != core)
+                    {
+                        part.transform.localScale = new Vector2(loadedRocket.x_scale[tankID]/core.transform.localScale.x, loadedRocket.y_scale[tankID]);    
+                    }
+                    
                     part.GetComponent<Tank>()._volume = loadedRocket.volume[tankID];
                     part.GetComponent<Tank>().tankMaterial = loadedRocket.tankMaterial[tankID];
                     part.GetComponent<Tank>().propellantCategory = loadedRocket.propellantType[tankID];
@@ -252,6 +261,12 @@ public class OnClick : MonoBehaviour
                     part.transform.localRotation = Quaternion.Euler(rotation);
 
                     engineID++;
+                }
+
+                if (part != core)
+                {
+                    part.transform.SetParent(core.transform);
+                    part.transform.position = new UnityEngine.Vector3(loadedRocket.x_pos[j] + core.transform.position.x, loadedRocket.y_pos[j] + core.transform.position.y, loadedRocket.z_pos[j] + core.transform.position.z);
                 }
 
                 j++;
