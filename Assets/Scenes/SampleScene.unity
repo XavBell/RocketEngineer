@@ -14034,7 +14034,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8635
+  orthographic size: 82
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -14058,7 +14058,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -62936, y: 6773, z: 0}
+  m_LocalPosition: {x: 0, y: 63731, z: 0}
   m_LocalScale: {x: 1.3005009, y: 1.3004996, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -20125,6 +20125,7 @@ MonoBehaviour:
   OrbitingBody: {fileID: 2121345929}
   WorldSaveManager: {fileID: 0}
   MasterManager: {fileID: 0}
+  FloatingOrigin: {fileID: 0}
   line: {fileID: 680244250}
   solarSystemManager: {fileID: 1182590599}
   G: 0
@@ -66403,6 +66404,7 @@ MonoBehaviour:
   OrbitingBody: {fileID: 1877019593}
   WorldSaveManager: {fileID: 1533443820}
   MasterManager: {fileID: 0}
+  FloatingOrigin: {fileID: 0}
   line: {fileID: 2121345932}
   solarSystemManager: {fileID: 1182590599}
   G: 0

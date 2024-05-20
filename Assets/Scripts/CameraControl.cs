@@ -122,7 +122,7 @@ public class CameraControl : MonoBehaviour
 
         if(cam != null)
         {
-            if((cam.transform.position + new Vector3(xAxisValue*Time.deltaTime, yAxisValue*Time.deltaTime, 0) - launchsiteManager.commandCenter.transform.position).magnitude < 500)
+            if((cam.transform.position + new Vector3(xAxisValue*Time.deltaTime, yAxisValue*Time.deltaTime, 0) - launchsiteManager.commandCenter.transform.position).magnitude < 500e20)
             {
                 cam.transform.position += new Vector3(xAxisValue*Time.deltaTime, yAxisValue*Time.deltaTime, 0);   
             }

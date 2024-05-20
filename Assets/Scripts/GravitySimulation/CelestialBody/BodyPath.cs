@@ -12,6 +12,7 @@ public class BodyPath : MonoBehaviour
     public GameObject OrbitingBody;
     public GameObject WorldSaveManager;
     public MasterManager MasterManager;
+    public FloatingOrigin FloatingOrigin;
     public LineRenderer line;
     public SolarSystemManager solarSystemManager;
     public double G;
@@ -34,6 +35,7 @@ public class BodyPath : MonoBehaviour
     void Start()
     {
         WorldSaveManager = GameObject.FindGameObjectWithTag("WorldSaveManager");
+        FloatingOrigin = FindObjectOfType<FloatingOrigin>();
         if(MyTime == null)
         {
             MyTime = FindObjectOfType<TimeManager>();
@@ -84,10 +86,13 @@ public class BodyPath : MonoBehaviour
                 double x;
                 double y;
                 GetOrbitPositionKepler(gravityParam, MyTime.time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y);
-                Vector3 transform2 = new Vector3((float)x, (float)y, 0) + new Vector3((float)OrbitingBody.GetComponent<DoubleTransform>().x_pos, (float)OrbitingBody.GetComponent<DoubleTransform>().y_pos, 0);
+                (double, double) orbtingBodyPos = (OrbitingBody.GetComponent<DoubleTransform>().x_pos, OrbitingBody.GetComponent<DoubleTransform>().y_pos);
+                double xpos = x + orbtingBodyPos.Item1;
+                double ypos = y + orbtingBodyPos.Item2;
+                Vector3 transform2 = new Vector3((float)xpos, (float)ypos, 0);
                 this.gameObject.transform.position = transform2;
-                this.GetComponent<DoubleTransform>().x_pos = transform2.x;
-                this.GetComponent<DoubleTransform>().y_pos = transform2.y;
+                this.GetComponent<DoubleTransform>().x_pos = xpos;
+                this.GetComponent<DoubleTransform>().y_pos = ypos;
                 updated = true;
             }
             
@@ -154,6 +159,14 @@ public class BodyPath : MonoBehaviour
         double y;
         GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y);
         return new Vector3((float)x, (float)y, 0);
+    }
+
+    public (double x, double y) GetPositionAtTimeDouble(double Time)
+    {
+        double x;
+        double y;
+        GetOrbitPositionKepler(gravityParam, Time, KeplerParams.semiMajorAxis, KeplerParams.eccentricity, KeplerParams.argumentOfPeriapsis, KeplerParams.longitudeOfAscendingNode, KeplerParams.inclination, KeplerParams.trueAnomalyAtEpoch, out x, out y);
+        return (x, y);
     }
 
     public Vector2 GetVelocityAtTime(double Time)

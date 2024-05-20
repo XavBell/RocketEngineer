@@ -108,6 +108,7 @@ public class Prediction : MonoBehaviour
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
             UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
+            if(planetGravity.gameObject == MasterManager.ActiveRocket)
             if(DO == true)
             {
                 DO = false;
