@@ -10,6 +10,8 @@ public class FloatingOrigin : MonoBehaviour
 {
     public float threshold = 0;
     public float floatingFPS = 0.1f;
+    public GameObject previousPlanet;
+    public bool corrected = true;
     public GameObject sun;
     public GameObject earth;
     public GameObject moon;
@@ -216,6 +218,16 @@ public class FloatingOrigin : MonoBehaviour
             closestPlanet = masterManager.ActiveRocket.GetComponent<PlanetGravity>().getPlanet();
             DoubleTransform dtClosestPlanet = closestPlanet.GetComponent<DoubleTransform>();
 
+            (double, double) separation = (0, 0);
+            if(corrected == false && closestPlanet != previousPlanet)
+            {
+                separation = (masterManager.ActiveRocket.GetComponent<DoubleTransform>().x_pos - previousPlanet.GetComponent<DoubleTransform>().x_pos, masterManager.ActiveRocket.GetComponent<DoubleTransform>().y_pos - previousPlanet.GetComponent<DoubleTransform>().y_pos);
+            }else if(closestPlanet == previousPlanet)
+            {
+                corrected = true;
+                previousPlanet = null;
+            }
+
             if (closestPlanet == earth)
             {
                 double positionAtTimeX = closestPlanet.GetComponent<BodyPath>().GetPositionAtTimeDouble(MyTime.time).x;
@@ -241,6 +253,15 @@ public class FloatingOrigin : MonoBehaviour
                     moon.GetComponent<DoubleTransform>().y_pos = moonPosY;
                     earth.GetComponent<BodyPath>().ReDraw();
                     moon.GetComponent<BodyPath>().ReDraw();
+
+                    if (corrected == false)
+                    {
+                        masterManager.ActiveRocket.GetComponent<DoubleTransform>().x_pos = previousPlanet.GetComponent<DoubleTransform>().x_pos + separation.Item1;
+                        masterManager.ActiveRocket.GetComponent<DoubleTransform>().y_pos = previousPlanet.GetComponent<DoubleTransform>().y_pos + separation.Item2;
+                        masterManager.ActiveRocket.transform.position = new Vector2((float)masterManager.ActiveRocket.GetComponent<DoubleTransform>().x_pos, (float)masterManager.ActiveRocket.GetComponent<DoubleTransform>().y_pos);
+                        corrected = true;
+                        previousPlanet = null;
+                    }
                 }
             }
 
@@ -269,6 +290,16 @@ public class FloatingOrigin : MonoBehaviour
                     earth.GetComponent<DoubleTransform>().y_pos = earthPosY;
                     earth.GetComponent<BodyPath>().ReDraw();
                     moon.GetComponent<BodyPath>().ReDraw();
+
+                    if (corrected == false)
+                    {
+                        masterManager.ActiveRocket.GetComponent<DoubleTransform>().x_pos = previousPlanet.GetComponent<DoubleTransform>().x_pos + separation.Item1;
+                        masterManager.ActiveRocket.GetComponent<DoubleTransform>().y_pos = previousPlanet.GetComponent<DoubleTransform>().y_pos + separation.Item2;
+                        masterManager.ActiveRocket.transform.position = new Vector2((float)masterManager.ActiveRocket.GetComponent<DoubleTransform>().x_pos, (float)masterManager.ActiveRocket.GetComponent<DoubleTransform>().y_pos);
+                        corrected = true;
+                        previousPlanet = null;
+                    }
+
                 }
             }
 
@@ -300,6 +331,15 @@ public class FloatingOrigin : MonoBehaviour
                     moon.GetComponent<DoubleTransform>().y_pos = moonPosY;
                     earth.GetComponent<BodyPath>().ReDraw();
                     moon.GetComponent<BodyPath>().ReDraw();
+
+                    if (corrected == false)
+                    {
+                        masterManager.ActiveRocket.GetComponent<DoubleTransform>().x_pos = previousPlanet.GetComponent<DoubleTransform>().x_pos + separation.Item1;
+                        masterManager.ActiveRocket.GetComponent<DoubleTransform>().y_pos = previousPlanet.GetComponent<DoubleTransform>().y_pos + separation.Item2;
+                        masterManager.ActiveRocket.transform.position = new Vector2((float)masterManager.ActiveRocket.GetComponent<DoubleTransform>().x_pos, (float)masterManager.ActiveRocket.GetComponent<DoubleTransform>().y_pos);
+                        corrected = true;
+                        previousPlanet = null;
+                    }
                 }
             }
 

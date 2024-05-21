@@ -139,8 +139,6 @@ public class RocketStateManager : MonoBehaviour
             {
                 prediction.CalculateParameters();
             }
-            doublePos.x_pos = this.transform.position.x;
-            doublePos.y_pos = this.transform.position.y;
             previous_X = curr_X;
             previous_Y = curr_Y;
             curr_X = this.transform.position.x;
@@ -152,8 +150,6 @@ public class RocketStateManager : MonoBehaviour
         {
             Vector2 transform = prediction.updatePosition();
             this.transform.position = transform;
-            doublePos.x_pos = transform.x;
-            doublePos.y_pos = transform.y;
             previous_X = curr_X;
             previous_Y = curr_Y;
             curr_X = transform.x;

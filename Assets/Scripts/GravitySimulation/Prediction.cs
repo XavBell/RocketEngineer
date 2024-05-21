@@ -21,6 +21,7 @@ public class Prediction : MonoBehaviour
     public Rigidbody2D rb;
     public GameObject Moon;
     public GameObject Earth;
+    public GameObject Sun;
     public float G;
     public float rocketMass;
     public float gravityParam = 0;
@@ -80,6 +81,11 @@ public class Prediction : MonoBehaviour
             {
                 Earth = planet.gameObject;
             }
+
+            if (planet.GetComponent<TypeScript>().type == "sun")
+            {
+                Sun = planet.gameObject;
+            }
         }
     }
 
@@ -107,8 +113,7 @@ public class Prediction : MonoBehaviour
             double time = MyTime.time;
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
-            UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
-            if(planetGravity.gameObject == MasterManager.ActiveRocket)
+            (double, double) planetPosition2D = (planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos);
             if(DO == true)
             {
                 DO = false;
@@ -123,7 +128,7 @@ public class Prediction : MonoBehaviour
 
     }
 
-    public IEnumerator DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam)
+    public IEnumerator DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, (double, double) planetPos, float gravityParam)
     {
         int numPoints = 1000;
         double[] times = new double[numPoints];
@@ -131,11 +136,11 @@ public class Prediction : MonoBehaviour
 
         if (planetGravity.gameObject.GetComponent<Rocket>().throttle > 0 || updated == false)
         {
-            SetKeplerParams(keplerParams, rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, time);
+            SetKeplerParams(keplerParams, rocketPosition2D, planetPos, rocketVelocity2D, gravityParam, time);
             if (rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)
             {
                 line.loop = true;
-                CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
+                CalculatePoints(time, numPoints, gravityParam, planetPos, keplerParams, ref times, ref positions);
                 line.positionCount = positions.Count();
                 line.SetPositions(positions);
             }
@@ -144,8 +149,8 @@ public class Prediction : MonoBehaviour
             {
                 line.loop = false;
                 startTime = (float)MyTime.time;
-                CalculateParametersHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, time, line);
-                CalculateParameterHyperbolic(rocketPosition2D, rocketVelocity2D, planetPosition2D, gravityParam, MyTime.time);
+                CalculateParametersHyperbolic(rocketPosition2D, rocketVelocity2D, planetPos, gravityParam, time, line);
+                CalculateParameterHyperbolic(rocketPosition2D, rocketVelocity2D, planetPos, gravityParam, MyTime.time);
             }
 
             if(planetGravity.getPlanet() == Earth)
@@ -294,11 +299,11 @@ public class Prediction : MonoBehaviour
         return t;
     }
 
-    public static void KtoCfromC(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time, out double semiMajorAxis, out double eccentricity, out double argPeriapsis, out double LAN, out double inclination, out double timeToPeriapsis, out double trueAnomalyAtEpoch)
+    public static void KtoCfromC(UnityEngine.Vector2 rocketPosition2D, (double, double) planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time, out double semiMajorAxis, out double eccentricity, out double argPeriapsis, out double LAN, out double inclination, out double timeToPeriapsis, out double trueAnomalyAtEpoch)
     {
         //Calculate rocket position in 3D and transform it for Kepler
         UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, 0, rocketPosition2D.y); //FLIP for Unity
-        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, 0, planetPosition2D.y); //FLIP for Unity
+        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3((float)planetPosition2D.Item1, 0, (float)planetPosition2D.Item2); //FLIP for Unity
 
         rocketPosition3D = rocketPosition3D - planetPosition3D; //Assume planet at (0,0,0)
 
@@ -358,12 +363,12 @@ public class Prediction : MonoBehaviour
         trueAnomalyAtEpoch = TA;
     }
 
-    public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time)
+    public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, (double, double) planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time)
     {
         KtoCfromC(rocketPosition2D, planetPosition2D, rocketVelocity2D, gravityParam, time, out keplerParams.semiMajorAxis, out keplerParams.eccentricity, out keplerParams.argumentOfPeriapsis, out keplerParams.longitudeOfAscendingNode, out keplerParams.inclination, out keplerParams.timeToPeriapsis, out keplerParams.trueAnomalyAtEpoch);
     }
 
-    public void CalculatePoints(double time, int numPoints, double gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref double[] times, ref UnityEngine.Vector3[] positions)
+    public void CalculatePoints(double time, int numPoints, double gravityParam,(double, double) planetPos, KeplerParams keplerParams, ref double[] times, ref UnityEngine.Vector3[] positions)
     {
         double period = GetOrbitalPeriod(gravityParam, keplerParams.semiMajorAxis);
         double timeIncrement = period / numPoints;
@@ -385,9 +390,11 @@ public class Prediction : MonoBehaviour
             double VX;
             double VY;
             GetOrbitPositionKepler(gravityParam, time + timeIncrement, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out X, out Y, out VX, out VY);
-            Vector2 pos = new Vector3((float)X, (float)Y) + new Vector3(planetPosition2D.x, planetPosition2D.y, 0);
-            if((pos - planetPosition2D).magnitude < SOI)
+            Vector2 pos = new Vector3((float)X, (float)Y) + new Vector3((float)planetPos.Item1, (float)planetPos.Item2, 0);
+            if((pos - new Vector2((float)planetPos.Item1, (float)planetPos.Item2)).magnitude < SOI)
             {
+                newPos.Add(pos);
+            }else if(planetGravity.getPlanet() == Sun){
                 newPos.Add(pos);
             }else{
                 positions = newPos.ToArray();
@@ -400,15 +407,14 @@ public class Prediction : MonoBehaviour
             time += timeIncrement;
 
         }
-
         positions = newPos.ToArray();
     }
 
-    public void CalculateParametersHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, double gravityParam, double time, LineRenderer line)
+    public void CalculateParametersHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, (double, double) planetPosition2D, double gravityParam, double time, LineRenderer line)
     {
         //Calculate rocket position in 3D and transform it for Kepler
         UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, rocketPosition2D.y, 0);
-        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
+        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3((float)planetPosition2D.Item1, (float)planetPosition2D.Item2, 0);
 
         rocketPosition3D = rocketPosition3D - planetPosition3D; //Assume planet at (0,0,0)
 
@@ -483,10 +489,10 @@ public class Prediction : MonoBehaviour
             Vector2 rawP = new UnityEngine.Vector2((float)(a * (e - Math.Cosh(H))), (float)(a * Math.Sqrt(Math.Pow(e, 2) - 1) * Math.Sinh(H)));
             Vector2 pos = new Vector2((float)(rawP.x * Math.Cos(i) - rawP.y * Math.Sin(i)), (float)(rawP.x * Math.Sin(i) + rawP.y * Math.Cos(i)));
 
-            pos += planetPosition2D;
+            pos += new Vector2((float)planetPosition2D.Item1, (float)planetPosition2D.Item2);
             if(pos.magnitude != float.NaN)
             {   
-                if((pos - planetPosition2D).magnitude < SOI)
+                if((pos - new Vector2((float)planetPosition2D.Item1, (float)planetPosition2D.Item2)).magnitude < SOI)
                 {
                     enteredSOI = true;
                     positions.Add(pos);
@@ -511,11 +517,11 @@ public class Prediction : MonoBehaviour
         line.SetPositions(positions.ToArray());
     }
 
-    public void CalculateParameterHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, float gravityParam, double time)
+    public void CalculateParameterHyperbolic(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, (double, double) planetPosition2D, float gravityParam, double time)
     {
         //Calculate rocket position in 3D and transform it for Kepler
         UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, rocketPosition2D.y, 0);
-        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, planetPosition2D.y, 0);
+        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3((float)planetPosition2D.Item1, (float)planetPosition2D.Item2, 0);
 
         rocketPosition3D = rocketPosition3D - planetPosition3D; //Assume planet at (0,0,0)
 

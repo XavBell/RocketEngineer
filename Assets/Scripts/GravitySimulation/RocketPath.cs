@@ -71,7 +71,7 @@ public class RocketPath : MonoBehaviour
 
     public void CalculateParameters()
     {
-            startTime = MyTime.time;
+        startTime = MyTime.time;
         
         if (planetGravity != null)
         {
@@ -86,10 +86,10 @@ public class RocketPath : MonoBehaviour
         UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
         if (bypass == false)
         {
-            SetKeplerParams(KeplerParams, rb.position, planetGravity.getPlanet().transform.position, rb.velocity, gravityParam, startTime);
+            SetKeplerParams(KeplerParams, rb.position, new Vector2((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos), rb.velocity, gravityParam, startTime);
             if (KeplerParams.eccentricity > 1)
             {
-                CalculateParametersHyperbolic(rb.position, rb.velocity, planetGravity.getPlanet().transform.position, gravityParam, startTime);
+                CalculateParametersHyperbolic(rb.position, rb.velocity, new Vector2((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos), gravityParam, startTime);
             }
         }
         bypass = false;
@@ -113,14 +113,16 @@ public class RocketPath : MonoBehaviour
                     {
                         FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Rocket destroyed due to collision with planet");
                         if (MasterManager.ActiveRocket == this.gameObject)
-                    {
-                        FindObjectOfType<StageViewer>().Terminate();
-                    }
+                        {
+                            FindObjectOfType<StageViewer>().Terminate();
+                        }
                         Destroy(planetGravity.gameObject);
                     }
                     
                 }
-                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + new Vector3((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos, 0);
+                this.GetComponent<DoubleTransform>().x_pos = x + planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos;
+                this.GetComponent<DoubleTransform>().y_pos = y + planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos;
                 return transformV;
             }
 
@@ -144,7 +146,9 @@ public class RocketPath : MonoBehaviour
                     }
                     
                 }
-                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + new Vector3((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos, 0);
+                this.GetComponent<DoubleTransform>().x_pos = x + planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos;
+                this.GetComponent<DoubleTransform>().y_pos = y + planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos;
                 return transformV;
             }
         }
@@ -173,7 +177,9 @@ public class RocketPath : MonoBehaviour
                     }
                 }
 
-                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + new Vector3((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos, 0);
+                this.GetComponent<DoubleTransform>().x_pos = x + planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos;
+                this.GetComponent<DoubleTransform>().y_pos = y + planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos;
                 return transformV;
             }
 
@@ -184,7 +190,6 @@ public class RocketPath : MonoBehaviour
                 double vX;
                 double vY;
                 GetOrbitalPositionHyperbolic(Mo, MyTime.time, Ho, e, a, i, n, startTime, out x, out y, out vX, out vY);
-                print(x.ToString() + y);
                 if(bypass == false)
                 {
                     if (new Vector2((float)x, (float)y).magnitude < planetGravity.getPlanetRadius() + 50)
@@ -198,7 +203,9 @@ public class RocketPath : MonoBehaviour
 
                     }
                 }
-                Vector2 transformV = new Vector3((float)x, (float)y, 0) + planetGravity.getPlanet().transform.position;
+                Vector2 transformV = new Vector3((float)x, (float)y, 0) + new Vector3((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos, 0);
+                this.GetComponent<DoubleTransform>().x_pos = x + planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos;
+                this.GetComponent<DoubleTransform>().y_pos = y + planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos;
                 return transformV;
             }
         }

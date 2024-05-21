@@ -71,6 +71,7 @@ public class PlanetGravity : MonoBehaviour
     private MasterManager MasterManager;
     private StageViewer stageViewer;
     private pointManager pointManager;
+    public FloatingOrigin floatingOrigin;
 
     public SolarSystemManager SolarSystemManager;
     public Camera cam;
@@ -186,6 +187,7 @@ public class PlanetGravity : MonoBehaviour
         {
             SolarSystemManager = FindObjectOfType<SolarSystemManager>();
             rb = GetComponent<Rigidbody2D>();
+            floatingOrigin = FindObjectOfType<FloatingOrigin>();
             if (core != null)
             {
                 core.GetComponent<Rocket>().updateMass();
@@ -221,6 +223,13 @@ public class PlanetGravity : MonoBehaviour
 
         if (previous != planet && possessed == true && previous != null && rb.velocity.magnitude != float.NaN)
         {
+            if(this.gameObject == MasterManager.ActiveRocket && previous != sun && GetComponent<RocketStateManager>().state == "rail")
+            {
+                floatingOrigin.corrected = false;
+                floatingOrigin.previousPlanet = previous;
+                floatingOrigin.UpdateReferenceBody();
+                GetComponent<RocketPath>().CalculateParameters();
+            }
             exitTimewarp();
 
 
@@ -260,7 +269,7 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                    rb.velocity += 1f * new Vector2(velocity.x, velocity.y);
                 }
             }
             GetComponent<RocketPath>().CalculateParameters();
@@ -304,7 +313,7 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                    rb.velocity += 1*new Vector2(velocity.x, velocity.y);
                 }
             }
             GetComponent<RocketPath>().CalculateParameters();
