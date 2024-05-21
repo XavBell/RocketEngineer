@@ -98,11 +98,6 @@ public class MasterManager : MonoBehaviour
                 }
             }
         }
-
-        if(SceneManager.GetActiveScene().name == "Menu")
-        {
-            thrust();
-        }
     }
 
     void updateButtons()
@@ -214,15 +209,6 @@ public class MasterManager : MonoBehaviour
         optionCanvas.SetActive(false);
     }
 
-    void thrust()
-    {
-        if(rocketActive == true)
-        {
-            Vector3 Thrust = MenuRocket.transform.up * MenuThrust;
-            MenuRocket.GetComponent<Rigidbody2D>().AddForce(Thrust);
-        }
-    }
-
     IEnumerator Text() 
     {
 	    AlertText.SetActive(true);
@@ -245,6 +231,7 @@ public class MasterManager : MonoBehaviour
 
     void initializeResolutionDropdown()
     {
+        //Set resolution dropdown option to current resolution
         if(Screen.width == 1280 && Screen.height == 720)
         {
             resolutionDropdown.value = 0;
@@ -264,6 +251,9 @@ public class MasterManager : MonoBehaviour
         {
             resolutionDropdown.value = 3;
         }
+
+        //Update full screen toggle state
+        fullScreen.isOn = Screen.fullScreen;
     }
 
     public void SetResolution()
@@ -273,6 +263,7 @@ public class MasterManager : MonoBehaviour
         //2 is 2560x1440
         //3 is 3840x2160
 
+        //Set resolution based on dropdown value
         if(resolutionDropdown.value == 0)
         {
             Screen.SetResolution(1280, 720, Screen.fullScreen);
