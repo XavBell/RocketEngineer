@@ -106,7 +106,6 @@ public class MapManager : MonoBehaviour
             {
                 GameObject arrow = Instantiate(cursor);
                 arrow.transform.SetParent(planetGravity1.gameObject.transform, false);
-                //arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
                 arrow.transform.localPosition = new Vector3(0, 0, 0);
                 icons.Add(arrow);
                 rockets.Add(planetGravity1);
