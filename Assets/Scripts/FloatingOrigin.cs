@@ -55,15 +55,10 @@ public class FloatingOrigin : MonoBehaviour
     {
         if (bypass == false)
         {
-            if (fixedRan == true)
-            {
-                //UpdateReferenceBody();
-            }
 
             if (DO == true && LOCK == false && fixedRan == true)
             {
                 DO = true;
-               //updateFloatReference();
             }
         }
         fixedRan = false;
