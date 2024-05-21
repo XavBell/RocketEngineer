@@ -11,6 +11,7 @@ public class flightUIManager : MonoBehaviour
     public MasterManager masterManager;
     public GameObject rocketUI;
     public GameObject progradeUI;
+    public FloatingVelocity floatingVelocity;
 
     public TMP_Text velocity;
     public TMP_Text altitude;
@@ -21,6 +22,7 @@ public class flightUIManager : MonoBehaviour
     void Start()
     {
         masterManager = FindObjectOfType<MasterManager>();
+        floatingVelocity = FindObjectOfType<FloatingVelocity>();
     }
 
     // Update is called once per frame
@@ -35,7 +37,7 @@ public class flightUIManager : MonoBehaviour
     void updateUI()
     {
         rocketUI.transform.rotation = stageViewer.rocket.transform.rotation;
-        velocity.text = Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude).ToString() + " m/s";
+        velocity.text = Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude + (new Vector2((float)floatingVelocity.velocity.Item1, (float)floatingVelocity.velocity.Item2)).magnitude).ToString() + " m/s";
         altitude.text = Mathf.Round((stageViewer.rocket.transform.position - stageViewer.rocket.GetComponent<PlanetGravity>().getPlanet().transform.position).magnitude - stageViewer.rocket.GetComponent<PlanetGravity>().getPlanetRadius()).ToString() + " m";
 
         if(Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude) != 0)

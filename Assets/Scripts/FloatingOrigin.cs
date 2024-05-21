@@ -25,6 +25,7 @@ public class FloatingOrigin : MonoBehaviour
     public MapManager mapManager;
     public StageViewer StageViewer;
 
+    public FloatingVelocity floatingVelocity;
     public bool recalculateParameters;
 
     public GameObject closestPlanet = null;
@@ -39,6 +40,7 @@ public class FloatingOrigin : MonoBehaviour
     {
         masterManager = FindObjectOfType<MasterManager>();
         mapManager = FindObjectOfType<MapManager>();
+        floatingVelocity = FindObjectOfType<FloatingVelocity>();
         planets.Add(sun);
         planets.Add(earth);
         planets.Add(moon);
@@ -336,6 +338,18 @@ public class FloatingOrigin : MonoBehaviour
                         previousPlanet = null;
                     }
                 }
+            }
+
+            foreach(GameObject planet in planets)
+            {
+                if(masterManager.ActiveRocket.GetComponent<RocketStateManager>().state == "simulate")
+                {
+                    DoubleTransform dt = planet.GetComponent<DoubleTransform>();
+                    dt.x_pos += floatingVelocity.velocity.Item1 * MyTime.deltaTime;
+                    dt.y_pos += floatingVelocity.velocity.Item2 * MyTime.deltaTime;
+                    planet.transform.position = new Vector2((float)dt.x_pos, (float)dt.y_pos);
+                }
+                
             }
 
         }

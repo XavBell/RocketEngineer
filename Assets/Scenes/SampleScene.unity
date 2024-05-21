@@ -63378,6 +63378,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   threshold: 2000
   floatingFPS: 0.04
+  previousPlanet: {fileID: 0}
+  corrected: 1
   sun: {fileID: 1877019593}
   earth: {fileID: 2121345929}
   moon: {fileID: 680244244}
@@ -66503,3 +66505,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 503832032205420218, guid: e62bce303f1107b49af062e356eeac1e, type: 3}
   m_PrefabInstance: {fileID: 6067550310254388866}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6067550310254388868
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1877019593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d94e410c49549408439ee76e74d34d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bodies:
+  - {fileID: 1877019593}
+  - {fileID: 2121345929}
+  - {fileID: 680244244}
+  timeManager: {fileID: 0}

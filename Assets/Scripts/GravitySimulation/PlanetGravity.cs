@@ -9,6 +9,9 @@ using System.Linq;
 public class PlanetGravity : MonoBehaviour
 {
     private GameObject[] planets;
+    public bool velocityStored = false;
+    public FloatingVelocity floatingVelocity;
+    public Vector2 storedVelocity;
     private bool initialized = false;
     private GameObject core;
     public GameObject getCore()
@@ -146,9 +149,23 @@ public class PlanetGravity : MonoBehaviour
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
-        if (Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity)
+        if ((Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity) && storedVelocity.magnitude < 100)
         {
+            if(velocityStored == true)
+            {
+                rb.velocity = storedVelocity;
+                floatingVelocity.velocity.Item1 = 0;
+                floatingVelocity.velocity.Item2 = 0;
+                velocityStored = false;
+            }
             rb.AddForce(ResultVector);
+            storedVelocity = new Vector2(rb.velocity.x, rb.velocity.y);
+        }else if(rb.velocity.magnitude > 100)
+        {
+            floatingVelocity.velocity.Item1 -= (double)(ResultVector.x/rb.mass * TimeManager.deltaTime);
+            floatingVelocity.velocity.Item2 -= (double)(ResultVector.y/rb.mass * TimeManager.deltaTime);
+            storedVelocity += new Vector2(ResultVector.x/rb.mass * TimeManager.deltaTime, ResultVector.y/rb.mass * TimeManager.deltaTime);
+            velocityStored = true;
         }
         GetComponent<DoubleTransform>().x_pos = rb.position.x;
         GetComponent<DoubleTransform>().y_pos = rb.position.y;
@@ -188,6 +205,7 @@ public class PlanetGravity : MonoBehaviour
             SolarSystemManager = FindObjectOfType<SolarSystemManager>();
             rb = GetComponent<Rigidbody2D>();
             floatingOrigin = FindObjectOfType<FloatingOrigin>();
+            floatingVelocity = FindObjectOfType<FloatingVelocity>();
             if (core != null)
             {
                 core.GetComponent<Rocket>().updateMass();
