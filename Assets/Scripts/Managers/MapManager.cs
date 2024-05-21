@@ -60,7 +60,10 @@ public class MapManager : MonoBehaviour
         {
             if(icon != null)
             {
-                icon.transform.localScale = new Vector2(mapCam.orthographicSize, mapCam.orthographicSize) / 100;
+                Vector3 rot = icon.transform.rotation.eulerAngles;
+                icon.transform.rotation = Quaternion.Euler(0, 0, 0);
+                icon.transform.localScale = new Vector2(mapCam.orthographicSize/icon.transform.parent.transform.localScale.x, mapCam.orthographicSize/icon.transform.parent.transform.localScale.y) / 100;
+                icon.transform.rotation = Quaternion.Euler(rot);
             }else{
                 iconToRemove.Add(icon);
             }
@@ -101,8 +104,10 @@ public class MapManager : MonoBehaviour
             PlanetGravity[] planetGravity = FindObjectsOfType<PlanetGravity>();
             foreach (PlanetGravity planetGravity1 in planetGravity)
             {
-                GameObject arrow = Instantiate(cursor, planetGravity1.transform);
-                arrow.transform.position = planetGravity1.gameObject.transform.position;
+                GameObject arrow = Instantiate(cursor);
+                arrow.transform.SetParent(planetGravity1.gameObject.transform, false);
+                //arrow.transform.rotation = Quaternion.Euler(0, 0, 0);
+                arrow.transform.localPosition = new Vector3(0, 0, 0);
                 icons.Add(arrow);
                 rockets.Add(planetGravity1);
 
