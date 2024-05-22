@@ -2,6 +2,7 @@ using System.Transactions;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor.Callbacks;
 
 public class RocketStateManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class RocketStateManager : MonoBehaviour
     public bool switched = false;
     public PlanetGravity planetGravity;
     public FloatingOrigin floatingOrigin;
+    public FloatingVelocity floatingVelocity;
     public RocketPath prediction;
     public DoubleTransform doublePos;
     public BodySwitcher bodySwitcher;
@@ -57,6 +59,7 @@ public class RocketStateManager : MonoBehaviour
         bodySwitcher = this.GetComponent<BodySwitcher>();
         MyTime = FindObjectOfType<TimeManager>();
         floatingOrigin = FindObjectOfType<FloatingOrigin>();
+        floatingVelocity = FindObjectOfType<FloatingVelocity>();
         initialized = true;
 
     }
@@ -94,8 +97,18 @@ public class RocketStateManager : MonoBehaviour
         {
             state = "simulate";
             if(previousState != state)
-            {
+            {   
                 planetGravity.rb.simulated = true;
+                if(previousState == "rail" && planetGravity.possessed == true)
+                {
+                    if(planetGravity.rb.velocity.magnitude > planetGravity.velocityThreshold)
+                    {
+                        planetGravity.storedVelocity = planetGravity.rb.velocity;
+                        planetGravity.rb.velocity = planetGravity.rb.velocity.normalized * planetGravity.velocityThreshold;
+                        floatingVelocity.velocity = (-planetGravity.storedVelocity.x - planetGravity.rb.velocity.x, -planetGravity.storedVelocity.y - planetGravity.rb.velocity.y);
+                        planetGravity.velocityStored = true;
+                    }
+                }
                 if(savedPlanet != null)
                 {
                     this.transform.parent = null;
@@ -122,6 +135,13 @@ public class RocketStateManager : MonoBehaviour
                 }
                 planetGravity.updateReferenceBody();
                 planetGravity.rb.simulated = false;
+                if(previousState == "simulate" && planetGravity.possessed == true)
+                {
+                    planetGravity.rb.velocity -= new Vector2((float)floatingVelocity.velocity.Item1, (float)floatingVelocity.velocity.Item2);
+                    planetGravity.storedVelocity = planetGravity.rb.velocity;
+                    floatingVelocity.velocity = (0, 0);
+                    planetGravity.velocityStored = false;
+                }
                 prediction.startTime = prediction.MyTime.time;
                 prediction.CalculateParameters();
             }

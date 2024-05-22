@@ -37,14 +37,15 @@ public class flightUIManager : MonoBehaviour
     void updateUI()
     {
         rocketUI.transform.rotation = stageViewer.rocket.transform.rotation;
-        velocity.text = Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude + (new Vector2((float)floatingVelocity.velocity.Item1, (float)floatingVelocity.velocity.Item2)).magnitude).ToString() + " m/s";
+        Vector3 realVelocity = stageViewer.rocket.GetComponent<Rigidbody2D>().velocity - new Vector2((float)floatingVelocity.velocity.Item1, (float)floatingVelocity.velocity.Item2);
+        velocity.text = Mathf.Round(realVelocity.magnitude).ToString() + " m/s";
         altitude.text = Mathf.Round((stageViewer.rocket.transform.position - stageViewer.rocket.GetComponent<PlanetGravity>().getPlanet().transform.position).magnitude - stageViewer.rocket.GetComponent<PlanetGravity>().getPlanetRadius()).ToString() + " m";
 
         if(Mathf.Round(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.magnitude) != 0)
         {
             
-            float angle = Mathf.Rad2Deg*Mathf.Atan(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.y/stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.x);
-            if(stageViewer.rocket.GetComponent<Rigidbody2D>().velocity.x < 0)
+            float angle = Mathf.Rad2Deg*Mathf.Atan(realVelocity.y/realVelocity.x);
+            if(realVelocity.x < 0)
             {
                 angle += 180;
             }

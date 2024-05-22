@@ -11,6 +11,7 @@ public class PlanetGravity : MonoBehaviour
     private GameObject[] planets;
     public bool velocityStored = false;
     public FloatingVelocity floatingVelocity;
+    public float velocityThreshold = 1000;
     public Vector2 storedVelocity;
     private bool initialized = false;
     private GameObject core;
@@ -149,7 +150,7 @@ public class PlanetGravity : MonoBehaviour
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
-        if ((Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity) && storedVelocity.magnitude < 1000)
+        if ((Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity) && storedVelocity.magnitude <= velocityThreshold)
         {
             if(velocityStored == true)
             {
@@ -160,7 +161,7 @@ public class PlanetGravity : MonoBehaviour
             }
             rb.AddForce(ResultVector);
             storedVelocity = new Vector2(rb.velocity.x, rb.velocity.y);
-        }else if(rb.velocity.magnitude > 1000)
+        }else if(storedVelocity.magnitude > velocityThreshold)
         {
             floatingVelocity.velocity.Item1 -= (double)(ResultVector.x/rb.mass * TimeManager.deltaTime);
             floatingVelocity.velocity.Item2 -= (double)(ResultVector.y/rb.mass * TimeManager.deltaTime);
@@ -257,7 +258,16 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    if(((rb.velocity - new Vector2(velocity.x, velocity.y)).magnitude <= velocityThreshold && velocityStored == false) || possessed == false)
+                    {
+                        rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    }else if(velocityStored == true)
+                    {
+                        floatingVelocity.velocity.Item1 += velocity.x;
+                        floatingVelocity.velocity.Item2 += velocity.y;
+                        storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    }
+                    
                 }
             }
 
@@ -267,7 +277,15 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                    if(((rb.velocity + new Vector2(velocity.x, velocity.y)).magnitude <= velocityThreshold && velocityStored == false) || possessed == false)
+                    {
+                        rb.velocity += new Vector2(velocity.x, velocity.y);
+                    }else if(velocityStored == true)
+                    {
+                        floatingVelocity.velocity.Item1 -= velocity.x;
+                        floatingVelocity.velocity.Item2 -= velocity.y;
+                        storedVelocity += new Vector2(velocity.x, velocity.y);
+                    }
                 }
             }
 
@@ -277,7 +295,15 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    if(((rb.velocity - new Vector2(velocity.x, velocity.y)).magnitude <= velocityThreshold && velocityStored == false) || possessed == false)
+                    {
+                        rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    }else if(velocityStored == true)
+                    {
+                        floatingVelocity.velocity.Item1 += velocity.x;
+                        floatingVelocity.velocity.Item2 += velocity.y;
+                        storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    }
                 }
             }
 
@@ -287,7 +313,15 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity += 1f * new Vector2(velocity.x, velocity.y);
+                    if(((rb.velocity + new Vector2(velocity.x, velocity.y)).magnitude <= velocityThreshold && velocityStored == false) || possessed == false)
+                    {
+                        rb.velocity += new Vector2(velocity.x, velocity.y);
+                    }else if(velocityStored == true)
+                    {
+                        floatingVelocity.velocity.Item1 -= velocity.x;
+                        floatingVelocity.velocity.Item2 -= velocity.y;
+                        storedVelocity += new Vector2(velocity.x, velocity.y);
+                    }
                 }
             }
             GetComponent<RocketPath>().CalculateParameters();
@@ -301,7 +335,15 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    if(((rb.velocity - new Vector2(velocity.x, velocity.y)).magnitude <= velocityThreshold && velocityStored == false) || possessed == false)
+                    {
+                        rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    }else if(velocityStored == true)
+                    {
+                        floatingVelocity.velocity.Item1 += velocity.x;
+                        floatingVelocity.velocity.Item2 += velocity.y;
+                        storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    }
                 }
             }
 
@@ -311,7 +353,15 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = moon.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                    if(((rb.velocity + new Vector2(velocity.x, velocity.y)).magnitude <= velocityThreshold && velocityStored == false) || possessed == false)
+                    {
+                        rb.velocity += new Vector2(velocity.x, velocity.y);
+                    }else if(velocityStored == true)
+                    {
+                        floatingVelocity.velocity.Item1 -= velocity.x;
+                        floatingVelocity.velocity.Item2 -= velocity.y;
+                        storedVelocity += new Vector2(velocity.x, velocity.y);
+                    }
                 }
             }
 
@@ -321,7 +371,15 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    if(((rb.velocity - new Vector2(velocity.x, velocity.y)).magnitude <= velocityThreshold && velocityStored == false) || possessed == false)
+                    {
+                        rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    }else if(velocityStored == true)
+                    {
+                        floatingVelocity.velocity.Item1 += velocity.x;
+                        floatingVelocity.velocity.Item2 += velocity.y;
+                        storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    }
                 }
             }
 
@@ -331,7 +389,15 @@ public class PlanetGravity : MonoBehaviour
                 Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
-                    rb.velocity += 1*new Vector2(velocity.x, velocity.y);
+                    if(((rb.velocity + new Vector2(velocity.x, velocity.y)).magnitude <= velocityThreshold && velocityStored == false) || possessed == false)
+                    {
+                        rb.velocity += new Vector2(velocity.x, velocity.y);
+                    }else if(velocityStored == true)
+                    {
+                        floatingVelocity.velocity.Item1 -= velocity.x;
+                        floatingVelocity.velocity.Item2 -= velocity.y;
+                        storedVelocity += new Vector2(velocity.x, velocity.y);
+                    }
                 }
             }
             GetComponent<RocketPath>().CalculateParameters();

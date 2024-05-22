@@ -12,6 +12,7 @@ using Unity.Burst;
 
 public class Prediction : MonoBehaviour
 {
+    public FloatingVelocity floatingVelocity;
     public PlanetGravity planetGravity;
     public GameObject WorldSaveManager;
     public MasterManager MasterManager;
@@ -68,6 +69,7 @@ public class Prediction : MonoBehaviour
         MyTime = FindObjectOfType<TimeManager>();
         G = FindObjectOfType<SolarSystemManager>().G;
         interceptDetector = GetComponent<interceptDetector>();
+        floatingVelocity = FindObjectOfType<FloatingVelocity>();
 
         TypeScript[] planets = FindObjectsOfType<TypeScript>();
         foreach (TypeScript planet in planets)
@@ -113,6 +115,10 @@ public class Prediction : MonoBehaviour
             double time = MyTime.time;
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
+            if(planetGravity.possessed == true)
+            {
+                rocketVelocity2D -= new Vector2((float)floatingVelocity.velocity.Item1, (float)floatingVelocity.velocity.Item2);
+            }
             (double, double) planetPosition2D = (planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos);
             if(DO == true)
             {
