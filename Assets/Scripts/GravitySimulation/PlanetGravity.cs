@@ -149,7 +149,7 @@ public class PlanetGravity : MonoBehaviour
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
-        if ((Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity) && storedVelocity.magnitude < 100)
+        if ((Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity) && storedVelocity.magnitude < 1000)
         {
             if(velocityStored == true)
             {
@@ -160,7 +160,7 @@ public class PlanetGravity : MonoBehaviour
             }
             rb.AddForce(ResultVector);
             storedVelocity = new Vector2(rb.velocity.x, rb.velocity.y);
-        }else if(rb.velocity.magnitude > 100)
+        }else if(rb.velocity.magnitude > 1000)
         {
             floatingVelocity.velocity.Item1 -= (double)(ResultVector.x/rb.mass * TimeManager.deltaTime);
             floatingVelocity.velocity.Item2 -= (double)(ResultVector.y/rb.mass * TimeManager.deltaTime);
