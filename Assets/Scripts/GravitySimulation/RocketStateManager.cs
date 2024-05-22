@@ -105,8 +105,13 @@ public class RocketStateManager : MonoBehaviour
                     {
                         planetGravity.storedVelocity = planetGravity.rb.velocity;
                         planetGravity.rb.velocity = planetGravity.rb.velocity.normalized * planetGravity.velocityThreshold;
-                        floatingVelocity.velocity = (-planetGravity.storedVelocity.x - planetGravity.rb.velocity.x, -planetGravity.storedVelocity.y - planetGravity.rb.velocity.y);
+                        floatingVelocity.velocity = (-(planetGravity.storedVelocity.x-planetGravity.rb.velocity.x), -(planetGravity.storedVelocity.y - planetGravity.rb.velocity.y));
                         planetGravity.velocityStored = true;
+                    }else
+                    {
+                        floatingVelocity.velocity = (0, 0);
+                        planetGravity.storedVelocity = planetGravity.rb.velocity;
+                        planetGravity.velocityStored = false;
                     }
                 }
                 if(savedPlanet != null)
