@@ -11,6 +11,7 @@ public class rocketCursorManager : MonoBehaviour
     StageViewer stageViewer = null;
     GameObject rocket = null;
     TimeManager MyTime;
+    FloatingVelocity floatingVelocity;
     bool runClickDelay = false;
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,7 @@ public class rocketCursorManager : MonoBehaviour
         MyTime = FindObjectOfType<TimeManager>();
         masterManager = FindObjectOfType<MasterManager>();
         floatingOrigin = FindObjectOfType<FloatingOrigin>();
+        floatingVelocity = FindObjectOfType<FloatingVelocity>();
         stageViewer = FindObjectOfType<StageViewer>();
         buildingManager = FindObjectOfType<BuildingManager>();
         rocket = this.transform.parent.gameObject;
@@ -31,7 +33,7 @@ public class rocketCursorManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(runClickDelay == true)
+        if (runClickDelay == true)
         {
             clickDelayed();
         }
@@ -53,6 +55,9 @@ public class rocketCursorManager : MonoBehaviour
             {
                 masterManager.ActiveRocket.GetComponent<Rocket>().throttle = 0;
                 masterManager.ActiveRocket.GetComponent<PlanetGravity>().possessed = false;
+                masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().storedVelocity;
+                masterManager.ActiveRocket.GetComponent<PlanetGravity>().velocityStored = false;
+                floatingVelocity.velocity = (0, 0);
             }
 
             //Must absolutely be before changing state for the landed rockets to not change of position since the landed state
@@ -63,7 +68,7 @@ public class rocketCursorManager : MonoBehaviour
             Rocket[] rockets = FindObjectsOfType<Rocket>();
             foreach (Rocket rp1 in rockets)
             {
-                if((rp1.GetComponent<RocketStateManager>().curr_X != rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y != rp1.GetComponent<RocketStateManager>().previous_Y))
+                if ((rp1.GetComponent<RocketStateManager>().curr_X != rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y != rp1.GetComponent<RocketStateManager>().previous_Y))
                 {
                     rp1.GetComponent<RocketStateManager>().state = "rail";
                     rp1.GetComponent<PlanetGravity>().rb.simulated = false;
@@ -71,7 +76,9 @@ public class rocketCursorManager : MonoBehaviour
                     rp1.GetComponent<RocketPath>().CalculateParameters();
                     rp1.GetComponent<RocketStateManager>().previousState = "rail";
                     rp1.GetComponent<RocketStateManager>().UpdatePosition();
-                }else if((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y) && rp1 != rocket){
+                }
+                else if ((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y) && rp1 != rocket)
+                {
                     rp1.GetComponent<RocketStateManager>().StateUpdater();
                 }
             }

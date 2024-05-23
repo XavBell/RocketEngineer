@@ -351,7 +351,6 @@ public class FloatingOrigin : MonoBehaviour
                 }
                 
             }
-
         }
 
         foreach (Prediction prediction1 in mapManager.prediction)

@@ -397,6 +397,8 @@ public class Rocket : MonoBehaviour
                 rp.GetComponent<PlanetGravity>().possessed = false;
                 rp.GetComponent<PlanetGravity>().initializeRocket();
                 rp.GetComponent<PlanetGravity>().setPlanet(this.GetComponent<PlanetGravity>().getPlanet());
+                rp.GetComponent<PlanetGravity>().storedVelocity = this.GetComponent<PlanetGravity>().storedVelocity;
+                rp.GetComponent<PlanetGravity>().velocityStored = this.GetComponent<PlanetGravity>().velocityStored;
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().setCore(rp.gameObject);
                 rp.gameObject.AddComponent<RocketStateManager>();
@@ -651,6 +653,8 @@ public class Rocket : MonoBehaviour
                 rp.gameObject.AddComponent<PlanetGravity>();
                 rp.GetComponent<PlanetGravity>().initializeRocket();
                 rp.GetComponent<PlanetGravity>().setPlanet(this.GetComponent<PlanetGravity>().getPlanet());
+                rp.GetComponent<PlanetGravity>().storedVelocity = this.GetComponent<PlanetGravity>().storedVelocity;
+                rp.GetComponent<PlanetGravity>().velocityStored = this.GetComponent<PlanetGravity>().velocityStored;
                 rp.GetComponent<PlanetGravity>().possessed = false;
                 rp.gameObject.GetComponent<Rocket>().core = rp.gameObject;
                 rp.gameObject.GetComponent<PlanetGravity>().setCore(rp.gameObject);

@@ -11,7 +11,7 @@ public class PlanetGravity : MonoBehaviour
     private GameObject[] planets;
     public bool velocityStored = false;
     public FloatingVelocity floatingVelocity;
-    public float velocityThreshold = 500;
+    public float velocityThreshold = 5000;
     public Vector2 storedVelocity;
     private bool initialized = false;
     private GameObject core;
@@ -163,6 +163,14 @@ public class PlanetGravity : MonoBehaviour
             storedVelocity = new Vector2(rb.velocity.x, rb.velocity.y);
         }else if(storedVelocity.magnitude > velocityThreshold)
         {
+            if(rb.velocity.magnitude > velocityThreshold)
+            {
+                storedVelocity = rb.velocity;
+                rb.velocity = rb.velocity.normalized * velocityThreshold;
+                floatingVelocity.velocity.Item1 = -(storedVelocity.x - rb.velocity.x);
+                floatingVelocity.velocity.Item2 = -(storedVelocity.y - rb.velocity.y);
+                velocityStored = true;
+            }
             floatingVelocity.velocity.Item1 -= (double)(ResultVector.x/rb.mass * TimeManager.deltaTime);
             floatingVelocity.velocity.Item2 -= (double)(ResultVector.y/rb.mass * TimeManager.deltaTime);
             storedVelocity += new Vector2(ResultVector.x/rb.mass * TimeManager.deltaTime, ResultVector.y/rb.mass * TimeManager.deltaTime);

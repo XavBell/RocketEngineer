@@ -7,6 +7,7 @@ using UnityEngine.UIElements;
 public class StageViewer : MonoBehaviour
 {
     public GameObject rocket;
+    public FloatingVelocity floatingVelocity;
     public TMP_Dropdown stageDropdown;
     public GameObject EngineUI;
     public GameObject DecouplerUI;
@@ -28,14 +29,15 @@ public class StageViewer : MonoBehaviour
         floatingOrigin = FindObjectOfType<FloatingOrigin>();
         MyTime = FindObjectOfType<TimeManager>();
         buildingManager = FindObjectOfType<BuildingManager>();
+        floatingVelocity = FindObjectOfType<FloatingVelocity>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(rocket != null)
+        if (rocket != null)
         {
-            if(nStages != rocket.GetComponent<Rocket>().Stages.Count)
+            if (nStages != rocket.GetComponent<Rocket>().Stages.Count)
             {
                 fullReset(false);
                 nStages = rocket.GetComponent<Rocket>().Stages.Count;
@@ -46,13 +48,13 @@ public class StageViewer : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(runStopDelay == true)
+        if (runStopDelay == true)
         {
             stopDelayed();
             runStopDelay = false;
         }
 
-        if(runTerminateDelay == true)
+        if (runTerminateDelay == true)
         {
             TerminateDelayed();
             runTerminateDelay = false;
@@ -67,12 +69,12 @@ public class StageViewer : MonoBehaviour
     }
     public void updateStagesView(bool forcedCall)
     {
-        if(rocket != null)
+        if (rocket != null)
         {
             List<string> options = new List<string>();
-            foreach(Transform child in Content.transform)
+            foreach (Transform child in Content.transform)
             {
-                if(child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<TankUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
+                if (child.gameObject.GetComponent<EngineUIModule>() != null || child.gameObject.GetComponent<TankUIModule>() != null || child.gameObject.GetComponent<DecouplerUIModule>() != null)
                 {
                     DestroyImmediate(child.gameObject);
                 }
@@ -80,7 +82,7 @@ public class StageViewer : MonoBehaviour
             }
             stageDropdown.ClearOptions();
             int i = 0;
-            foreach(Stages stage in rocket.GetComponent<Rocket>().Stages)
+            foreach (Stages stage in rocket.GetComponent<Rocket>().Stages)
             {
                 options.Add($"Stage {i}");
                 i++;
@@ -107,46 +109,46 @@ public class StageViewer : MonoBehaviour
     public void updateInfoPerStage(bool forcedCall)
     {
         int maxCount = Content.transform.childCount;
-        if(maxCount != 0)
+        if (maxCount != 0)
         {
-            for(int i = maxCount-1; i >= 0; i--)
+            for (int i = maxCount - 1; i >= 0; i--)
             {
                 Destroy(Content.transform.GetChild(i).gameObject);
             }
         }
         int value = 0;
-        if(forcedCall == false)
+        if (forcedCall == false)
         {
             value = stageDropdown.value;
         }
 
-        if(forcedCall == true)
+        if (forcedCall == true)
         {
             value = 0;
             stageDropdown.value = 0;
         }
 
-        foreach(RocketPart part in rocket.GetComponent<Rocket>().Stages[value].Parts)
+        foreach (RocketPart part in rocket.GetComponent<Rocket>().Stages[value].Parts)
         {
-            if(part._partType == "engine")
+            if (part._partType == "engine")
             {
                 GameObject engineUI = Instantiate(EngineUI, Content.transform);
                 engineUI.GetComponent<EngineUIModule>().engine = part.GetComponent<Engine>();
             }
 
-            if(part._partType == "decoupler")
+            if (part._partType == "decoupler")
             {
                 GameObject decouplerUI = Instantiate(DecouplerUI, Content.transform);
                 decouplerUI.GetComponent<DecouplerUIModule>().decoupler = part.GetComponent<Decoupler>();
             }
 
-            if(part._partType == "tank")
+            if (part._partType == "tank")
             {
                 GameObject tankUI = Instantiate(TankUI, Content.transform);
                 tankUI.GetComponent<TankUIModule>().tank = part.GetComponent<container>();
             }
 
-            if(part._partType == "satellite")
+            if (part._partType == "satellite")
             {
                 GameObject satUI = Instantiate(CapsuleUI, Content.transform);
                 satUI.GetComponent<CapsuleUIManager>().satellite = part.GetComponent<Satellite>();
@@ -164,9 +166,9 @@ public class StageViewer : MonoBehaviour
         masterManager.ActiveRocket = rocket;
         masterManager.GetComponent<pointManager>().nPoints += 2f;
         launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
-        foreach(launchPadManager launchPadManager in launchPadManagers)
+        foreach (launchPadManager launchPadManager in launchPadManagers)
         {
-            if(launchPadManager.ConnectedRocket == rocket)
+            if (launchPadManager.ConnectedRocket == rocket)
             {
                 launchPadManager.ConnectedRocket = null;
                 return;
@@ -183,11 +185,15 @@ public class StageViewer : MonoBehaviour
     {
         if (runStopDelay == true)
         {
-            if(rocket != null)
+            if (rocket != null)
             {
                 rocket.GetComponent<PlanetGravity>().possessed = false;
+                rocket.GetComponent<PlanetGravity>().rb.velocity = rocket.GetComponent<PlanetGravity>().storedVelocity;
+                rocket.GetComponent<PlanetGravity>().velocityStored = false;
+                floatingVelocity.velocity = (0, 0);
+
             }
-            
+
             MasterManager masterManager = FindObjectOfType<MasterManager>();
             masterManager.gameState = "Building";
             BuildingManager buildingManager = FindObjectOfType<BuildingManager>();
@@ -203,7 +209,7 @@ public class StageViewer : MonoBehaviour
             Rocket[] rockets = FindObjectsOfType<Rocket>();
             foreach (Rocket rp1 in rockets)
             {
-                if((rp1.GetComponent<RocketStateManager>().curr_X != rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y != rp1.GetComponent<RocketStateManager>().previous_Y))
+                if ((rp1.GetComponent<RocketStateManager>().curr_X != rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y != rp1.GetComponent<RocketStateManager>().previous_Y))
                 {
                     rp1.GetComponent<RocketStateManager>().state = "rail";
                     rp1.GetComponent<PlanetGravity>().rb.simulated = false;
@@ -211,7 +217,9 @@ public class StageViewer : MonoBehaviour
                     rp1.GetComponent<RocketPath>().CalculateParameters();
                     rp1.GetComponent<RocketStateManager>().previousState = "rail";
                     rp1.GetComponent<RocketStateManager>().UpdatePosition();
-                }else if((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y)){
+                }
+                else if ((rp1.GetComponent<RocketStateManager>().curr_X == rp1.GetComponent<RocketStateManager>().previous_X) && (rp1.GetComponent<RocketStateManager>().curr_Y == rp1.GetComponent<RocketStateManager>().previous_Y))
+                {
                     rp1.GetComponent<RocketStateManager>().StateUpdater();
                 }
             }
@@ -221,9 +229,9 @@ public class StageViewer : MonoBehaviour
             buildingManager.exitFlightMode();
             floatingOrigin.bypass = true;
             launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
-            foreach(launchPadManager launchPadManager in launchPadManagers)
+            foreach (launchPadManager launchPadManager in launchPadManagers)
             {
-                if(launchPadManager.ConnectedRocket == rocket)
+                if (launchPadManager.ConnectedRocket == rocket)
                 {
                     launchPadManager.ConnectedRocket = null;
                     return;
@@ -236,10 +244,13 @@ public class StageViewer : MonoBehaviour
     public void TerminateDelayed()
     {
         FindObjectOfType<MapManager>().mapOn();
-        if(rocket != null)
+        if (rocket != null)
         {
             rocket.GetComponent<PlanetGravity>().possessed = false;
-            Destroy(rocket);   
+            rocket.GetComponent<PlanetGravity>().rb.velocity = rocket.GetComponent<PlanetGravity>().storedVelocity;
+            rocket.GetComponent<PlanetGravity>().velocityStored = false;
+            floatingVelocity.velocity = (0, 0);
+            Destroy(rocket);
         }
         MasterManager masterManager = FindObjectOfType<MasterManager>();
         masterManager.gameState = "Building";

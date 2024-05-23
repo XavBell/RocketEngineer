@@ -115,7 +115,7 @@ public class Prediction : MonoBehaviour
             double time = MyTime.time;
             UnityEngine.Vector2 rocketPosition2D = rb.position;
             UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
-            if(planetGravity.possessed == true)
+            if(planetGravity.GetComponent<RocketStateManager>().state == "simulate")
             {
                 rocketVelocity2D -= new Vector2((float)floatingVelocity.velocity.Item1, (float)floatingVelocity.velocity.Item2);
             }
