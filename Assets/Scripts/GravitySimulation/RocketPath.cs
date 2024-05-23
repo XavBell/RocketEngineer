@@ -84,9 +84,13 @@ public class RocketPath : MonoBehaviour
         UnityEngine.Vector2 rocketPosition2D = rb.position;
         UnityEngine.Vector2 rocketVelocity2D = rb.velocity;
         UnityEngine.Vector2 planetPosition2D = planetGravity.getPlanet().transform.position;
+        if(planetGravity.velocityStored == true)
+        {
+            rocketVelocity2D = planetGravity.storedVelocity;
+        }
         if (bypass == false)
         {
-            SetKeplerParams(KeplerParams, rb.position, new Vector2((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos), rb.velocity, gravityParam, startTime);
+            SetKeplerParams(KeplerParams, rb.position, new Vector2((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos), rocketVelocity2D, gravityParam, startTime);
             if (KeplerParams.eccentricity > 1)
             {
                 CalculateParametersHyperbolic(rb.position, rb.velocity, new Vector2((float)planetGravity.getPlanet().GetComponent<DoubleTransform>().x_pos, (float)planetGravity.getPlanet().GetComponent<DoubleTransform>().y_pos), gravityParam, startTime);

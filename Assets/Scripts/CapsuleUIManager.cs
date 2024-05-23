@@ -28,7 +28,6 @@ public class CapsuleUIManager : MonoBehaviour
     {
         if(Vector2.Distance(pg.getPlanet().gameObject.transform.position, satellite.transform.position) <= pg.getPlanetRadius() + pg.getAtmoAlt() && satellite.chuteDeployed == false)
         {
-            print("Deploying chute");
             satellite.chuteDeployed = true;
             changeColorNormal();
             satellite.chute.SetActive(true);
@@ -37,14 +36,12 @@ public class CapsuleUIManager : MonoBehaviour
         
         if(satellite.chuteDeployed == false && Vector2.Distance(pg.getPlanet().transform.position, satellite.transform.position) > pg.getPlanetRadius() + pg.getAtmoAlt())
         {
-            Debug.Log("You can't deploy the chute in space");
             //TODO add a message to the player
             return;
         }
         
         if(satellite.chuteDeployed == true)
         {
-            print("Retracting chute");
             satellite.chuteDeployed = false;
             changeColorNormal();
             satellite.chute.SetActive(false);
