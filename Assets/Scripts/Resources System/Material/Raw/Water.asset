@@ -10,12 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5abc7bb59a1b14f2889693d40a5a51d0, type: 3}
-  m_Name: LOX
+  m_Name: Water
   m_EditorClassIdentifier: 
-  Name: LOX
-  Density: 1141
-  LiquidTemperature: 56
-  GaseousTemperature: 91
-  SolidTemperature: 56
-  MolarMass: 32
-  SpecificHeatCapacity: 2010
+  Name: water
+  Icon: {fileID: 0}
+  Density: 1000
+  LiquidTemperature: 273.15
+  GaseousTemperature: 373.15
+  SolidTemperature: 273.15
+  MolarMass: 18.015
+  SpecificHeatCapacity: 4184
+  hasSolidState: 1
+  hasLiquidState: 1
+  hasGaseousState: 1
+  cargoStorage: 0
+  liquidStorage: 1
+  tankStorage: 1
