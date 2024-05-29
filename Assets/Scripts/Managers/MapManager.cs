@@ -29,7 +29,7 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        mapCam.GetComponent<Camera>();
+        mapCam.GetComponent<Camera>().enabled = false;
         floatingOrigin = FindObjectOfType<FloatingOrigin>();
     }
 
@@ -58,6 +58,8 @@ public class MapManager : MonoBehaviour
         EarthIcon.transform.position = Earth.transform.position/1_000_00;
         MoonIcon.transform.position = Moon.transform.position/1_000_00;
         SunIcon.transform.position = Sun.transform.position/1_000_00;
+
+        mapCam.transform.position = EarthIcon.transform.position;
 
         List<GameObject> iconToRemove = new List<GameObject>();
         foreach (GameObject icon in icons)
@@ -102,6 +104,7 @@ public class MapManager : MonoBehaviour
     {
         if (MapOn == false)
         {
+            mapCam.GetComponent<Camera>().enabled = true;
             EarthIcon.SetActive(true);
             SunIcon.SetActive(true);
             MoonIcon.SetActive(true);
@@ -140,6 +143,7 @@ public class MapManager : MonoBehaviour
 
         if (MapOn == true)
         {
+            mapCam.GetComponent<Camera>().enabled = false;
             EarthIcon.SetActive(false);
             SunIcon.SetActive(false);
             MoonIcon.SetActive(false);
