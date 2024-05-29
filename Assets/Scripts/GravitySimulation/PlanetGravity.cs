@@ -169,7 +169,7 @@ public class PlanetGravity : MonoBehaviour
             if (rb.velocity.magnitude > velocityThreshold)
             {
                 storedVelocity = rb.velocity;
-                rb.velocity = rb.velocity.normalized * velocityThreshold;
+                rb.velocity = rb.velocity.normalized * velocityThreshold*0.9f;
                 floatingVelocity.velocity.Item1 = -(storedVelocity.x - rb.velocity.x);
                 floatingVelocity.velocity.Item2 = -(storedVelocity.y - rb.velocity.y);
                 velocityStored = true;
@@ -427,11 +427,11 @@ public class PlanetGravity : MonoBehaviour
         {
             newSOIPlanet = moonScript.gameObject;
         }
-        else if (distanceToEarth < SolarSystemManager.earthSOI - earthBuffer)
+        else if (distanceToEarth < SolarSystemManager.earthSOI)
         {
             newSOIPlanet = earthScript.gameObject;
         }
-        else if (distanceToSun < SolarSystemManager.sunSOI - earthBuffer)
+        else if (distanceToEarth > SolarSystemManager.earthSOI + earthBuffer)
         {
             newSOIPlanet = sunScript.gameObject;
         }
