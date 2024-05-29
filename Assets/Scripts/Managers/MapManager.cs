@@ -55,6 +55,10 @@ public class MapManager : MonoBehaviour
         MoonIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/MoonIcon.transform.parent.localScale.x;
         SunIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/SunIcon.transform.parent.localScale.x;
 
+        EarthIcon.transform.position = Earth.transform.position/1_000_00;
+        MoonIcon.transform.position = Moon.transform.position/1_000_00;
+        SunIcon.transform.position = Sun.transform.position/1_000_00;
+
         List<GameObject> iconToRemove = new List<GameObject>();
         foreach (GameObject icon in icons)
         {
