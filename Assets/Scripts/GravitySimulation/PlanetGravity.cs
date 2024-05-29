@@ -230,7 +230,7 @@ public class PlanetGravity : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "SampleScene")
         {
-            cam = GameObject.FindObjectOfType<Camera>();
+            cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
             G = SolarSystemManager.G;
         }
 

@@ -36,7 +36,7 @@ public class soiLineRenderer : MonoBehaviour
             float y = yScaled * radius;
 
             Vector3 currentPosition = new Vector3(x, y, 0);
-            points.Add(currentPosition);
+            points.Add(currentPosition/1_000_00);
         }
         
         line.positionCount = points.Count;

@@ -70,6 +70,7 @@ public class MapManager : MonoBehaviour
                 icon.transform.rotation = Quaternion.Euler(0, 0, 0);
                 icon.transform.localScale = new Vector2(mapCam.orthographicSize/icon.transform.parent.transform.localScale.x, mapCam.orthographicSize/icon.transform.parent.transform.localScale.y) / 100;
                 icon.transform.rotation = Quaternion.Euler(rot);
+                icon.transform.position = icon.transform.parent.position/1_000_00;
             }else{
                 iconToRemove.Add(icon);
             }
@@ -126,8 +127,11 @@ public class MapManager : MonoBehaviour
             BodyPath[] bodyPaths = FindObjectsOfType<BodyPath>();
             foreach(BodyPath bodyPath in bodyPaths)
             {
-                bodyPath.GetComponent<LineRenderer>().enabled = true;
-                paths.Add(bodyPath.GetComponent<LineRenderer>().gameObject);
+                if(bodyPath.line != null)
+                {
+                    bodyPath.line.enabled = true;
+                    paths.Add(bodyPath.line.gameObject);
+                }
             }
 
             soiLineRenderer[] soiLineRenderers = FindObjectsOfType<soiLineRenderer>();
