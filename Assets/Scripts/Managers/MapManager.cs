@@ -25,7 +25,7 @@ public class MapManager : MonoBehaviour
 
     public GameObject predictionPrefab;
     private float lineFactor = 0.01f;
-    public const float scaledSpace = 5_000_000;
+    public const float scaledSpace = 500_000;
 
     // Start is called before the first frame update
     void Start()

@@ -95,7 +95,7 @@ public class FloatingOrigin : MonoBehaviour
                 {
                     for (int i = 0; i < pred.positionCount; i++)
                     {
-                        pred.SetPosition(i, pred.GetPosition(i) + difference);
+                        //pred.SetPosition(i, pred.GetPosition(i) + difference);
                     }
                 }
             }
