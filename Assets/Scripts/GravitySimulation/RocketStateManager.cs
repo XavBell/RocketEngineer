@@ -100,10 +100,10 @@ public class RocketStateManager : MonoBehaviour
                 planetGravity.rb.simulated = true;
                 if(previousState == "rail" && planetGravity.possessed == true)
                 {
-                    if(planetGravity.rb.velocity.magnitude > planetGravity.velocityThreshold)
+                    if(planetGravity.storedVelocity.magnitude > planetGravity.velocityThreshold)
                     {
                         planetGravity.storedVelocity = planetGravity.rb.velocity;
-                        planetGravity.rb.velocity = planetGravity.rb.velocity.normalized * planetGravity.velocityThreshold;
+                        planetGravity.rb.velocity = planetGravity.rb.velocity.normalized * planetGravity.velocityThreshold * 0.9f;
                         floatingVelocity.velocity = (-(planetGravity.storedVelocity.x-planetGravity.rb.velocity.x), -(planetGravity.storedVelocity.y - planetGravity.rb.velocity.y));
                         planetGravity.velocityStored = true;
                     }else

@@ -427,11 +427,11 @@ public class PlanetGravity : MonoBehaviour
         {
             newSOIPlanet = moonScript.gameObject;
         }
-        else if (distanceToEarth < SolarSystemManager.earthSOI)
+        else if (distanceToEarth < SolarSystemManager.earthSOI + earthBuffer)
         {
             newSOIPlanet = earthScript.gameObject;
         }
-        else if (distanceToEarth > SolarSystemManager.earthSOI + earthBuffer)
+        else if (distanceToEarth > SolarSystemManager.earthSOI - earthBuffer)
         {
             newSOIPlanet = sunScript.gameObject;
         }
