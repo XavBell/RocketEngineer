@@ -137,10 +137,9 @@ public class RocketStateManager : MonoBehaviour
                     this.transform.parent = null;
                     savedPlanet = null;
                 }
-                if(previousState != "simulate")
-                {
-                    planetGravity.updateReferenceBody();
-                }
+
+                planetGravity.updateReferenceBody();
+                
                 planetGravity.rb.simulated = false;
                 if(previousState == "simulate" && planetGravity.possessed == true)
                 {

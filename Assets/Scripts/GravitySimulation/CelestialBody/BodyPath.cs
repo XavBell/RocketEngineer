@@ -71,6 +71,7 @@ public class BodyPath : MonoBehaviour
             Vector2 orbitingBodyPosition2D = new Vector2((float)dT.x_pos, (float)dT.y_pos);
             DrawLine(time, line, KeplerParams, bodyPosition2D, bodyVelocity2D, orbitingBodyPosition2D, gravityParam);
             orbitalPeriod = GetOrbitalPeriod(gravityParam, KeplerParams.semiMajorAxis);
+            print(this.GetComponent<TypeScript>().type + KeplerParams.semiMajorAxis);
             calculate = false;
             start = true;
         }

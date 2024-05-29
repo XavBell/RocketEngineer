@@ -396,7 +396,11 @@ public class PlanetGravity : MonoBehaviour
 
     void setPlanetProperty()
     {
-        if (Vector2.Distance(rb.position, FindObjectOfType<MoonScript>().gameObject.transform.position) < SolarSystemManager.moonSOI)
+        double x = rb.position.x - FindObjectOfType<MoonScript>().GetComponent<DoubleTransform>().x_pos;
+        double y = rb.position.y - FindObjectOfType<MoonScript>().GetComponent<DoubleTransform>().y_pos;
+        double z = 0;
+        double distance = Math.Sqrt(x * x + y * y + z * z);
+        if (distance < SolarSystemManager.moonSOI)
         {
             Mass = SolarSystemManager.moonMass;
             aeroCoefficient = 0.0f;
@@ -405,7 +409,11 @@ public class PlanetGravity : MonoBehaviour
             planet = FindObjectOfType<MoonScript>().gameObject;
             return;
         }
-        if (Vector2.Distance(rb.position, FindObjectOfType<EarthScript>().gameObject.transform.position) < SolarSystemManager.earthSOI)
+        x = rb.position.x - FindObjectOfType<EarthScript>().GetComponent<DoubleTransform>().x_pos;
+        y = rb.position.y - FindObjectOfType<EarthScript>().GetComponent<DoubleTransform>().y_pos;
+        z = 0;
+        distance = Math.Sqrt(x * x + y * y + z * z);
+        if (distance < SolarSystemManager.earthSOI)
         {
             Mass = SolarSystemManager.earthMass;
             atmoAlt = SolarSystemManager.earthAlt;
