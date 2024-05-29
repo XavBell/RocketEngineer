@@ -9,7 +9,7 @@ public class rocketCursorManager : MonoBehaviour
     BuildingManager buildingManager = null;
     FloatingOrigin floatingOrigin = null;
     StageViewer stageViewer = null;
-    GameObject rocket = null;
+    public GameObject rocket = null;
     TimeManager MyTime;
     FloatingVelocity floatingVelocity;
     bool runClickDelay = false;
@@ -22,7 +22,6 @@ public class rocketCursorManager : MonoBehaviour
         floatingVelocity = FindObjectOfType<FloatingVelocity>();
         stageViewer = FindObjectOfType<StageViewer>();
         buildingManager = FindObjectOfType<BuildingManager>();
-        rocket = this.transform.parent.gameObject;
     }
 
     void Update()

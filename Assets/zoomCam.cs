@@ -27,15 +27,15 @@ public class zoomCam : MonoBehaviour
         float scrollData;
         scrollData = Input.GetAxis("Mouse ScrollWheel");
 
-        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize > 0.1)
+        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize > 0.01)
         {
             targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
             //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize * lineFactor;
         }
-        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize < 0.1)
+        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize < 0.01)
         {
-            targetZoom = 1;
+            targetZoom = 0.01f;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
             //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize*lineFactor;
         }

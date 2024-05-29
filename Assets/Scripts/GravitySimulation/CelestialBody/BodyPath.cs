@@ -133,7 +133,7 @@ public class BodyPath : MonoBehaviour
             List<Vector3> newPos = new List<Vector3>();
             foreach(Vector3 pos in positions)
             {
-                newPos.Add(pos + OrbitingBody.transform.position/1_000_00);
+                newPos.Add(pos + OrbitingBody.transform.position/MapManager.scaledSpace);
             }
             line.SetPositions(newPos.ToArray());
         }
@@ -407,9 +407,9 @@ public class BodyPath : MonoBehaviour
             double x;
             double y;
             GetOrbitPositionKepler(gravityParam, time, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out x, out y);
-            Vector3 pos = new Vector3((float)x, (float)y, 10000000);
+            Vector3 pos = new Vector3((float)x, (float)y, -1000000000);
             times[count] = time;
-            positions[count] = pos/1_000_00;
+            positions[count] = pos/MapManager.scaledSpace;
 
             time += timeIncrement;
         }

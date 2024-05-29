@@ -396,17 +396,20 @@ public class Prediction : MonoBehaviour
             double VX;
             double VY;
             GetOrbitPositionKepler(gravityParam, time + timeIncrement, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out X, out Y, out VX, out VY);
-            Vector2 pos = new Vector3((float)X, (float)Y)/1_000_00 + new Vector3((float)planetPos.Item1, (float)planetPos.Item2, 1_000_00)/1_000_00;
+            Vector2 pos = new Vector2((float)X, (float)Y) + new Vector2((float)planetPos.Item1, (float)planetPos.Item2);
             if((pos - new Vector2((float)planetPos.Item1, (float)planetPos.Item2)).magnitude < SOI)
             {
+                pos = new Vector3(pos.x, pos.y, -100000000)/MapManager.scaledSpace;
                 newPos.Add(pos);
             }else if(planetGravity.getPlanet() == Sun){
+                pos = new Vector3(pos.x, pos.y, -100000000)/MapManager.scaledSpace;
                 newPos.Add(pos);
             }else{
                 positions = newPos.ToArray();
                 line.loop = false;
                 return;
             }
+            pos = new Vector3(pos.x, pos.y, -100000000)/MapManager.scaledSpace;
             times[count] = time;
             positions[count] = pos;
 
@@ -501,7 +504,7 @@ public class Prediction : MonoBehaviour
                 if((pos - new Vector2((float)planetPosition2D.Item1, (float)planetPosition2D.Item2)).magnitude < SOI)
                 {
                     enteredSOI = true;
-                    positions.Add(pos/1_000_00);
+                    positions.Add(new Vector3(pos.x, pos.y, -100000000)/MapManager.scaledSpace);
                     timeStep += 10;
                 }else if(enteredSOI == true)
                 {

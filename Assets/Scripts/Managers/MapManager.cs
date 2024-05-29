@@ -25,6 +25,7 @@ public class MapManager : MonoBehaviour
 
     public GameObject predictionPrefab;
     private float lineFactor = 0.01f;
+    public const float scaledSpace = 5_000_000;
 
     // Start is called before the first frame update
     void Start()
@@ -49,15 +50,49 @@ public class MapManager : MonoBehaviour
 
     }
 
+    void LateUpdate()
+    {
+        if (MapOn == true)
+        {
+            updatePosition();
+        }
+    }
+
+    public void updatePosition()
+    {
+        EarthIcon.transform.position = Earth.transform.position/scaledSpace;
+        MoonIcon.transform.position = Moon.transform.position/scaledSpace;
+        SunIcon.transform.position = Sun.transform.position/scaledSpace;
+
+        mapCam.transform.position = EarthIcon.transform.position;
+
+        List<GameObject> iconToRemove = new List<GameObject>();
+        foreach (GameObject icon in icons)
+        {
+            if(icon != null)
+            {
+                icon.transform.position = icon.GetComponent<rocketCursorManager>().rocket.transform.position/scaledSpace;
+                icon.transform.rotation = icon.GetComponent<rocketCursorManager>().rocket.transform.rotation;
+            }else{
+                iconToRemove.Add(icon);
+            }
+        }
+
+        foreach(GameObject icon in iconToRemove)
+        {
+            icons.Remove(icon);
+        }
+    }
+
     public void updateScale()
     {
-        EarthIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/EarthIcon.transform.parent.localScale.x;
-        MoonIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/MoonIcon.transform.parent.localScale.x;
-        SunIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5)/SunIcon.transform.parent.localScale.x;
+        EarthIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5);
+        MoonIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5);
+        SunIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5);
 
-        EarthIcon.transform.position = Earth.transform.position/1_000_00;
-        MoonIcon.transform.position = Moon.transform.position/1_000_00;
-        SunIcon.transform.position = Sun.transform.position/1_000_00;
+        EarthIcon.transform.position = Earth.transform.position/scaledSpace;
+        MoonIcon.transform.position = Moon.transform.position/scaledSpace;
+        SunIcon.transform.position = Sun.transform.position/scaledSpace;
 
         mapCam.transform.position = EarthIcon.transform.position;
 
@@ -67,10 +102,10 @@ public class MapManager : MonoBehaviour
             if(icon != null)
             {
                 Vector3 rot = icon.transform.rotation.eulerAngles;
-                icon.transform.rotation = Quaternion.Euler(0, 0, 0);
-                icon.transform.localScale = new Vector2(mapCam.orthographicSize/icon.transform.parent.transform.localScale.x, mapCam.orthographicSize/icon.transform.parent.transform.localScale.y) / 100;
-                icon.transform.rotation = Quaternion.Euler(rot);
-                icon.transform.position = icon.transform.parent.position/1_000_00;
+                //icon.transform.rotation = Quaternion.Euler(0, 0, 0);
+                icon.transform.localScale = new Vector2(mapCam.orthographicSize, mapCam.orthographicSize) / 100;
+                //icon.transform.rotation = Quaternion.Euler(rot);
+                icon.transform.position = icon.GetComponent<rocketCursorManager>().rocket.transform.position/scaledSpace;
             }else{
                 iconToRemove.Add(icon);
             }
@@ -96,7 +131,7 @@ public class MapManager : MonoBehaviour
 
         foreach (GameObject path in paths)
         {
-            path.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor;
+            path.GetComponent<LineRenderer>().widthMultiplier = mapCam.orthographicSize * lineFactor * 1;
         }
 
     }
@@ -113,11 +148,11 @@ public class MapManager : MonoBehaviour
             foreach (PlanetGravity planetGravity1 in planetGravity)
             {
                 GameObject arrow = Instantiate(cursor);
-                arrow.transform.SetParent(planetGravity1.gameObject.transform, false);
+                //arrow.transform.SetParent(planetGravity1.gameObject.transform, false);
                 arrow.transform.localPosition = new Vector3(0, 0, 0);
                 icons.Add(arrow);
                 rockets.Add(planetGravity1);
-
+                arrow.GetComponent<rocketCursorManager>().rocket = planetGravity1.gameObject;
                 GameObject prediction1 = Instantiate(predictionPrefab);
                 prediction1.GetComponent<Prediction>().planetGravity = planetGravity1;
                 prediction.Add(prediction1.GetComponent<Prediction>());
