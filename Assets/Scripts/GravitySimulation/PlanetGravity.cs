@@ -267,8 +267,10 @@ public class PlanetGravity : MonoBehaviour
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
 
-                        rb.velocity -= new Vector2(velocity.x, velocity.y);
-                        storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    GetComponent<RocketPath>().CalculateParameters();
+                    return;
 
                     
                 }
@@ -281,8 +283,10 @@ public class PlanetGravity : MonoBehaviour
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
 
-                        rb.velocity += new Vector2(velocity.x, velocity.y);
-                        storedVelocity += new Vector2(velocity.x, velocity.y);
+                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                    storedVelocity += new Vector2(velocity.x, velocity.y);
+                    GetComponent<RocketPath>().CalculateParameters();
+                    return;
 
                 }
             }
@@ -290,28 +294,34 @@ public class PlanetGravity : MonoBehaviour
             //Sun to Earth
             if (previous == sun && planet == earth)
             {
-                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(Math.Round(TimeManager.time));
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
  
-                        rb.velocity -= new Vector2(velocity.x, velocity.y);
-                        storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    GetComponent<RocketPath>().CalculateParameters();
+                    return;
 
+                }else{
+                    Debug.Log("Velocity is NaN");
                 }
             }
 
             //EarthToSun
             if (planet == sun && previous == earth)
             {
-                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(Math.Round(TimeManager.time));
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
                     rb.velocity += new Vector2(velocity.x, velocity.y);
                     storedVelocity += new Vector2(velocity.x, velocity.y);
-
+                    GetComponent<RocketPath>().CalculateParameters();
+                    return;
+                }else{
+                    Debug.Log("Velocity is NaN");
                 }
             }
-            GetComponent<RocketPath>().CalculateParameters();
         }
 
         if (previous != planet && possessed == false && previous != null && rb.velocity.magnitude != float.NaN)
@@ -368,6 +378,11 @@ public class PlanetGravity : MonoBehaviour
             }
             GetComponent<RocketPath>().CalculateParameters();
 
+        }
+
+        if(previous != planet && possessed == true && rb.velocity.magnitude == float.NaN)
+        {
+            print("Velocity is NaN");
         }
     }
 
