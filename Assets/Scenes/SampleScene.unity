@@ -5395,7 +5395,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2340473791555044017, guid: f2c19105bfa8644eeb7a86ba5aa6ee39, type: 3}
       propertyPath: soiRange
-      value: 9000000
+      value: 13500000
       objectReference: {fileID: 0}
     - target: {fileID: 5629023294607760884, guid: f2c19105bfa8644eeb7a86ba5aa6ee39, type: 3}
       propertyPath: m_Parameters.colorGradient.ctime1
@@ -31936,6 +31936,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rocket: {fileID: 0}
+  floatingVelocity: {fileID: 0}
   stageDropdown: {fileID: 566759425}
   EngineUI: {fileID: 6914386055600145497, guid: ca2ad942111a842bfa1312af9c22d2f9, type: 3}
   DecouplerUI: {fileID: 6914386055600145497, guid: e0105a2e4351e4e4caada90b88fabc6e, type: 3}
@@ -34512,7 +34513,7 @@ MonoBehaviour:
   G: 6.67e-11
   earthgSlvl: 9.8
   earthRadius: 63710
-  earthSOI: 9000000
+  earthSOI: 13500000
   earthMass: 0
   earthAlt: 1000
   earthDensitySlvl: 0.006
@@ -66453,6 +66454,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.010816221
       objectReference: {fileID: 0}
+    - target: {fileID: 8654575258051899888, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: updatetTransform
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
 --- !u!4 &5038023260506428699 stripped
@@ -66591,3 +66596,5 @@ MonoBehaviour:
   - {fileID: 2121345929}
   - {fileID: 680244244}
   timeManager: {fileID: 0}
+  x: 0
+  y: 0
