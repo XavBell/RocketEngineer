@@ -501,7 +501,7 @@ public class Prediction : MonoBehaviour
                 if((pos - new Vector2((float)planetPosition2D.Item1, (float)planetPosition2D.Item2)).magnitude < SOI)
                 {
                     enteredSOI = true;
-                    positions.Add(pos);
+                    positions.Add(pos/1_000_00);
                     timeStep += 10;
                 }else if(enteredSOI == true)
                 {
