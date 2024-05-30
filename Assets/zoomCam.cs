@@ -6,13 +6,16 @@ public class zoomCam : MonoBehaviour
 {
      //Camera
     public Camera cam;
-    private float targetZoom;
-    private float zoomFactor = 0.1f;
-    private float zoomLerp = 100f;
+    public MasterManager masterManager;
+    private float userFactor = 1f;
+    private float targetZoom = 3;
+    public float zoomFactor = 1f;
+    public float zoomLerp = 10f;
     // Start is called before the first frame update
     void Start()
     {
-        
+        masterManager = FindObjectOfType<MasterManager>();
+        userFactor = masterManager.scrollMultiplierValue;
     }
 
     // Update is called once per frame
@@ -27,15 +30,15 @@ public class zoomCam : MonoBehaviour
         float scrollData;
         scrollData = Input.GetAxis("Mouse ScrollWheel");
 
-        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize > 0.01)
+        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize  > 0.001)
         {
-            targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
+            targetZoom -= scrollData * zoomFactor * cam.orthographicSize * userFactor;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
             //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize * lineFactor;
         }
-        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize < 0.01)
+        if (targetZoom - scrollData * zoomFactor * cam.orthographicSize < 0.001)
         {
-            targetZoom = 0.01f;
+            targetZoom = 0.001f;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
             //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize*lineFactor;
         }

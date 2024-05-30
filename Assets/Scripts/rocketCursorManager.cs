@@ -85,7 +85,7 @@ public class rocketCursorManager : MonoBehaviour
                 }
             }
 
-            masterManager.ActiveRocket = null;
+            masterManager.ActiveRocket = rocket;
             buildingManager.enterFlightMode();
             rocket.GetComponent<PlanetGravity>().possessed = true;
             stageViewer = FindObjectOfType<StageViewer>();
