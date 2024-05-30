@@ -14,6 +14,8 @@ public class CameraControl : MonoBehaviour
     private float targetZoom;
     Vector3 dragOrigin;
     private float zoomFactor = 0.5f;
+    private float userFactor = 1f;
+    private bool postProcess = true;
     private float zoomLerp = 10f;
     private float moveFactor = 5f;
     Vector3 position;
@@ -50,6 +52,8 @@ public class CameraControl : MonoBehaviour
         if(MasterManager == null)
         {  
             MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
+            postProcess = MasterManager.GetComponent<MasterManager>().postProcess;
+            userFactor = MasterManager.GetComponent<MasterManager>().scrollMultiplierValue;
         }
     }
 
@@ -84,7 +88,7 @@ public class CameraControl : MonoBehaviour
 
         if (targetZoom - scrollData * zoomFactor * cam.orthographicSize > 1)
         {
-            targetZoom -= scrollData * zoomFactor * cam.orthographicSize;
+            targetZoom -= scrollData * zoomFactor * cam.orthographicSize * userFactor;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
             //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize * lineFactor;
         }

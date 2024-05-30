@@ -100,12 +100,6 @@ public class MapManager : MonoBehaviour
             //Fade in planet icon 2
         }
 
-        EarthIcon.transform.position = Earth.transform.position/scaledSpace;
-        MoonIcon.transform.position = Moon.transform.position/scaledSpace;
-        SunIcon.transform.position = Sun.transform.position/scaledSpace;
-
-        mapCam.transform.position = EarthIcon.transform.position;
-
         List<GameObject> iconToRemove = new List<GameObject>();
         foreach (GameObject icon in icons)
         {
@@ -160,6 +154,7 @@ public class MapManager : MonoBehaviour
         {
             //Activate Map
             mapCam.GetComponent<Camera>().enabled = true;
+            mapCam.GetComponent<Camera>().orthographicSize = 3;
             mapCam.GetComponent<zoomCam>().enabled = true;
             mainCam.GetComponent<Camera>().enabled = false;
             mainCam.GetComponent<CameraControl>().enabled = false;
