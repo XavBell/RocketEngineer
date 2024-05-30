@@ -10,12 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5abc7bb59a1b14f2889693d40a5a51d0, type: 3}
-  m_Name: kerosene
+  m_Name: AtmosphericMixture
   m_EditorClassIdentifier: 
-  Name: kerosene
-  Density: 800
-  LiquidTemperature: 226
-  GaseousTemperature: 424
-  SolidTemperature: 226
-  MolarMass: 170
-  SpecificHeatCapacity: 2010
+  Name: atmosphericMixture
+  Icon: {fileID: 0}
+  Density: 1.225
+  LiquidTemperature: 63
+  GaseousTemperature: 184
+  SolidTemperature: 63
+  MolarMass: 28.97
+  SpecificHeatCapacity: 1005
+  hasSolidState: 0
+  hasLiquidState: 0
+  hasGaseousState: 1
+  cargoStorage: 0
+  liquidStorage: 1
+  tankStorage: 1
