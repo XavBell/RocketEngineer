@@ -8,7 +8,7 @@ public class zoomCam : MonoBehaviour
     public Camera cam;
     private float targetZoom;
     private float zoomFactor = 0.1f;
-    private float zoomLerp = 10f;
+    private float zoomLerp = 100f;
     // Start is called before the first frame update
     void Start()
     {

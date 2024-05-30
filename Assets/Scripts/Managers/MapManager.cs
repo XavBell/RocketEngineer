@@ -25,7 +25,7 @@ public class MapManager : MonoBehaviour
 
     public GameObject predictionPrefab;
     private float lineFactor = 0.01f;
-    public const float scaledSpace = 500_000;
+    public const float scaledSpace = 50_000;
 
     // Start is called before the first frame update
     void Start()
@@ -86,9 +86,10 @@ public class MapManager : MonoBehaviour
 
     public void updateScale()
     {
-        EarthIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5);
-        MoonIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5);
-        SunIcon.transform.localScale = (mapCam.orthographicSize * lineFactor * new Vector2(1, 1) * 5);
+        if(mapCam.orthographicSize > 10)
+        {
+            //Fade in planet icon 2
+        }
 
         EarthIcon.transform.position = Earth.transform.position/scaledSpace;
         MoonIcon.transform.position = Moon.transform.position/scaledSpace;
@@ -103,7 +104,7 @@ public class MapManager : MonoBehaviour
             {
                 Vector3 rot = icon.transform.rotation.eulerAngles;
                 //icon.transform.rotation = Quaternion.Euler(0, 0, 0);
-                icon.transform.localScale = new Vector2(mapCam.orthographicSize, mapCam.orthographicSize) / 100;
+                icon.transform.localScale = new Vector2(mapCam.orthographicSize, mapCam.orthographicSize) / 200;
                 //icon.transform.rotation = Quaternion.Euler(rot);
                 icon.transform.position = icon.GetComponent<rocketCursorManager>().rocket.transform.position/scaledSpace;
             }else{

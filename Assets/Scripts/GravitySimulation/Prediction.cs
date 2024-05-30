@@ -136,7 +136,7 @@ public class Prediction : MonoBehaviour
 
     public IEnumerator DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, (double, double) planetPos, float gravityParam)
     {
-        int numPoints = 1000;
+        int numPoints = 500;
         double[] times = new double[numPoints];
         Vector3[] positions = new Vector3[numPoints];
 
@@ -467,7 +467,7 @@ public class Prediction : MonoBehaviour
 
         //Plot positions
         int timeStep = 1;
-        int maxStep = 1000;
+        int maxStep = 500;
         List<Vector3> positions = new List<Vector3>();
         double H = Ho;
 

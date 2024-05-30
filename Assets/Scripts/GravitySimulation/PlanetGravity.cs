@@ -404,7 +404,7 @@ public class PlanetGravity : MonoBehaviour
     void setPlanetProperty()
     {
         // Define the buffer zone for SOI transitions
-        const double earthBuffer = 40000.0;
+        const double earthBuffer = 100000.0;
         const double moonBuffer = 1000.0;
 
         MoonScript moonScript = FindObjectOfType<MoonScript>();
@@ -427,11 +427,14 @@ public class PlanetGravity : MonoBehaviour
         {
             newSOIPlanet = moonScript.gameObject;
         }
-        else if (distanceToEarth < SolarSystemManager.earthSOI + earthBuffer)
+        else if (currentSOIPlanet == moonScript.gameObject && distanceToEarth < SolarSystemManager.earthSOI)
+        {
+            newSOIPlanet = earthScript.gameObject;
+        }else if(currentSOIPlanet == sunScript && distanceToEarth < SolarSystemManager.earthSOI + earthBuffer)
         {
             newSOIPlanet = earthScript.gameObject;
         }
-        else if (distanceToEarth > SolarSystemManager.earthSOI - earthBuffer)
+        else if (distanceToEarth > SolarSystemManager.earthSOI)
         {
             newSOIPlanet = sunScript.gameObject;
         }
