@@ -91,11 +91,11 @@ public class FloatingOrigin : MonoBehaviour
             LineRenderer[] lines = FindObjectsOfType<LineRenderer>();
             foreach (LineRenderer pred in lines)
             {
-                if (!pred.GetComponent<soiLineRenderer>())
+                if (!pred.GetComponent<soiLineRenderer>() || !pred.GetComponent<Prediction>() || !pred.GetComponent<BodyPath>())
                 {
                     for (int i = 0; i < pred.positionCount; i++)
                     {
-                        pred.SetPosition(i, pred.GetPosition(i) + difference);
+                        //pred.SetPosition(i, pred.GetPosition(i) + difference);
                     }
                 }
             }
@@ -353,12 +353,11 @@ public class FloatingOrigin : MonoBehaviour
                 double toAddX = actualPosX - positionAtTimeX;
                 double toAddY = actualPosY - positionAtTimeY;
 
-                Vector2 toAdd = new Vector2((float)toAddX, (float)toAddY);
-
                 if (!double.IsNaN(toAddX) && !double.IsNaN(toAddY))
                 {
                     double earthPosX = earth.GetComponent<BodyPath>().GetPositionAtTimeDouble(MyTime.time).x + toAddX;
                     double earthPosY = earth.GetComponent<BodyPath>().GetPositionAtTimeDouble(MyTime.time).y + toAddY;
+                    earth.GetComponent<Rigidbody2D>().MovePosition(new Vector2((float)earthPosX, (float)earthPosY));
                     earth.transform.position = new Vector2((float)earthPosX, (float)earthPosY);
                     earth.GetComponent<DoubleTransform>().x_pos = earthPosX;
                     earth.GetComponent<DoubleTransform>().y_pos = earthPosY;

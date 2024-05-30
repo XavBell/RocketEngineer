@@ -136,7 +136,7 @@ public class Prediction : MonoBehaviour
 
     public IEnumerator DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, (double, double) planetPos, float gravityParam)
     {
-        int numPoints = 1000;
+        int numPoints = 500;
         double[] times = new double[numPoints];
         Vector3[] positions = new Vector3[numPoints];
 
@@ -396,8 +396,8 @@ public class Prediction : MonoBehaviour
             double VX;
             double VY;
             GetOrbitPositionKepler(gravityParam, time + timeIncrement, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out X, out Y, out VX, out VY);
-            Vector2 pos = new Vector3((float)X, (float)Y) + new Vector3((float)planetPos.Item1, (float)planetPos.Item2, 0);
-            if((pos - new Vector2((float)planetPos.Item1, (float)planetPos.Item2)).magnitude < SOI)
+            Vector3 pos = new Vector3((float)X, (float)Y, 0)/MapManager.scaledSpace + new Vector3((float)planetPos.Item1, (float)planetPos.Item2,  -100000000)/MapManager.scaledSpace;
+            if((new Vector2(pos.x, pos.y)*MapManager.scaledSpace - new Vector2((float)planetPos.Item1, (float)planetPos.Item2)).magnitude < SOI)
             {
                 newPos.Add(pos);
             }else if(planetGravity.getPlanet() == Sun){
@@ -467,7 +467,7 @@ public class Prediction : MonoBehaviour
 
         //Plot positions
         int timeStep = 1;
-        int maxStep = 1000;
+        int maxStep = 500;
         List<Vector3> positions = new List<Vector3>();
         double H = Ho;
 
@@ -501,7 +501,7 @@ public class Prediction : MonoBehaviour
                 if((pos - new Vector2((float)planetPosition2D.Item1, (float)planetPosition2D.Item2)).magnitude < SOI)
                 {
                     enteredSOI = true;
-                    positions.Add(pos);
+                    positions.Add(new Vector3(pos.x, pos.y, -100000000)/MapManager.scaledSpace);
                     timeStep += 10;
                 }else if(enteredSOI == true)
                 {

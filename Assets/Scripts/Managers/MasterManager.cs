@@ -44,6 +44,9 @@ public class MasterManager : MonoBehaviour
     public TMP_Dropdown resolutionDropdown;
     public List<GameObject> buttons = new List<GameObject>();
 
+    public Toggle postProcessingToggle;
+    public TMP_InputField scrollMultiplier;
+
     public float MenuThrust = 200;
     public GameObject MenuRocket;
     public bool rocketActive = false;
@@ -68,18 +71,43 @@ public class MasterManager : MonoBehaviour
     public List<string> nodeUnlocked = new List<string>();
 
     public Toggle fullScreen;
-    
-   
+
+    public bool postProcess = true;
+    public float scrollMultiplierValue = 1;
+
+
 
     // Start is called before the first frame update
     void Start()
     {
         //Check if current resolution is in 16:9, if not set it
-        if(Screen.width/Screen.height != 16/9)
+        if (Screen.width / Screen.height != 16 / 9)
         {
             Screen.SetResolution(1920, 1080, fullScreen.isOn);
         }
-        
+
+        if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
+        {
+            string saveUserPath = Application.persistentDataPath + "/saveUser.json";
+            string saveUserJson = File.ReadAllText(saveUserPath);
+            saveUser saveUser = JsonConvert.DeserializeObject<saveUser>(saveUserJson);
+            // Load saveUser values here<
+            postProcess = saveUser.postProcess;
+            scrollMultiplierValue = saveUser.scrollMultiplier;
+        }
+        else
+        {
+            // Create a new saveUser object with default values
+            saveUser saveUser = new saveUser();
+            saveUser.postProcess = postProcess;
+            saveUser.scrollMultiplier = scrollMultiplierValue;
+
+            // Serialize the saveUser object to JSON
+            string saveUserJson = JsonConvert.SerializeObject(saveUser);
+
+            // Write the JSON string to the saveUser.json file
+            File.WriteAllText(Application.persistentDataPath + "/saveUser.json", saveUserJson);
+        }
         updateButtons();
         DontDestroyOnLoad(this.gameObject);
     }
@@ -87,12 +115,12 @@ public class MasterManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(currentBuildingBody == null)
+        if (currentBuildingBody == null)
         {
             GameObject[] planets = GameObject.FindGameObjectsWithTag("Planet");
-            foreach(GameObject go in planets)
+            foreach (GameObject go in planets)
             {
-                if(go.GetComponent<TypeScript>().type == "earth")
+                if (go.GetComponent<TypeScript>().type == "earth")
                 {
                     currentBuildingBody = go;
                 }
@@ -102,7 +130,7 @@ public class MasterManager : MonoBehaviour
 
     void updateButtons()
     {
-        foreach(GameObject child in buttons)
+        foreach (GameObject child in buttons)
         {
             DestroyImmediate(child);
         }
@@ -127,13 +155,15 @@ public class MasterManager : MonoBehaviour
             buttons.Add(child);
         }
 
-        initializeResolutionDropdown(); 
+        initializeResolutionDropdown();
+        initializeGraphics();
+        initializeGameSettings();
     }
 
     public void newGame()
     {
         string folder = savePath.text.ToString();
-        if(!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder))
         {
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder);
             FolderName = folder;
@@ -143,7 +173,7 @@ public class MasterManager : MonoBehaviour
             worldPath = Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder + "/" + FolderName + ".json";
             SceneManager.LoadScene("SampleScene");
         }
-        else if(Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder))
+        else if (Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + "/" + folder))
         {
             StartCoroutine(Text());
         }
@@ -151,7 +181,7 @@ public class MasterManager : MonoBehaviour
 
     public void load()
     {
-        if(FolderName != null)
+        if (FolderName != null)
         {
             worldPath = Application.persistentDataPath + savePathRef.worldsFolder + "/" + FolderName + "/" + FolderName + ".json";
             SceneManager.LoadScene("SampleScene");
@@ -161,11 +191,11 @@ public class MasterManager : MonoBehaviour
     public void delete()
     {
         string folder = savePath.text.ToString();
-        if(FolderName != null)
+        if (FolderName != null)
         {
             var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder);
             var fileInfo = info.GetFiles();
-            foreach(var file in fileInfo)
+            foreach (var file in fileInfo)
             {
                 file.Delete();
             }
@@ -209,21 +239,21 @@ public class MasterManager : MonoBehaviour
         optionCanvas.SetActive(false);
     }
 
-    IEnumerator Text() 
+    IEnumerator Text()
     {
-	    AlertText.SetActive(true);
+        AlertText.SetActive(true);
         yield return new WaitForSeconds(1);
         AlertText.SetActive(false);
     }
 
     public void Toggle()
     {
-        if(fullScreen.isOn == true)
+        if (fullScreen.isOn == true)
         {
             Screen.fullScreen = true;
         }
 
-        if(fullScreen.isOn == false)
+        if (fullScreen.isOn == false)
         {
             Screen.fullScreen = false;
         }
@@ -232,28 +262,72 @@ public class MasterManager : MonoBehaviour
     void initializeResolutionDropdown()
     {
         //Set resolution dropdown option to current resolution
-        if(Screen.width == 1280 && Screen.height == 720)
+        if (Screen.width == 1280 && Screen.height == 720)
         {
             resolutionDropdown.value = 0;
         }
 
-        if(Screen.width == 1920 && Screen.height == 1080)
+        if (Screen.width == 1920 && Screen.height == 1080)
         {
             resolutionDropdown.value = 1;
         }
 
-        if(Screen.width == 2560 && Screen.height == 1440)
+        if (Screen.width == 2560 && Screen.height == 1440)
         {
             resolutionDropdown.value = 2;
         }
 
-        if(Screen.width == 3840 && Screen.height == 2160)
+        if (Screen.width == 3840 && Screen.height == 2160)
         {
             resolutionDropdown.value = 3;
         }
 
         //Update full screen toggle state
         fullScreen.isOn = Screen.fullScreen;
+    }
+
+    public void initializeGraphics()
+    {
+        //postProcessingToggle.isOn = postProcess;
+    }
+
+    public void SetPostProcessing()
+    {
+        postProcess = postProcessingToggle.isOn;
+
+
+        // Update the saveUser file with the new postProcess value
+        if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
+        {
+            string saveUserPath = Application.persistentDataPath + "/saveUser.json";
+            string saveUserJson = File.ReadAllText(saveUserPath);
+            saveUser saveUser = JsonConvert.DeserializeObject<saveUser>(saveUserJson);
+            saveUser.postProcess = postProcess;
+            saveUserJson = JsonConvert.SerializeObject(saveUser);
+            File.WriteAllText(saveUserPath, saveUserJson);
+        }
+
+    }
+
+    public void initializeGameSettings()
+    {
+        scrollMultiplier.text = scrollMultiplierValue.ToString();
+    }
+
+    public void SetScrollMultiplier()
+    {
+        scrollMultiplierValue = float.Parse(scrollMultiplier.text);
+
+        // Update the saveUser file with the new postProcess value
+        if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
+        {
+            string saveUserPath = Application.persistentDataPath + "/saveUser.json";
+            string saveUserJson = File.ReadAllText(saveUserPath);
+            saveUser saveUser = JsonConvert.DeserializeObject<saveUser>(saveUserJson);
+            saveUser.scrollMultiplier = scrollMultiplierValue;
+            saveUserJson = JsonConvert.SerializeObject(saveUser);
+            File.WriteAllText(saveUserPath, saveUserJson);
+        }
     }
 
     public void SetResolution()
@@ -264,22 +338,22 @@ public class MasterManager : MonoBehaviour
         //3 is 3840x2160
 
         //Set resolution based on dropdown value
-        if(resolutionDropdown.value == 0)
+        if (resolutionDropdown.value == 0)
         {
             Screen.SetResolution(1280, 720, Screen.fullScreen);
         }
 
-        if(resolutionDropdown.value == 1)
+        if (resolutionDropdown.value == 1)
         {
             Screen.SetResolution(1920, 1080, Screen.fullScreen);
         }
 
-        if(resolutionDropdown.value == 2)
+        if (resolutionDropdown.value == 2)
         {
             Screen.SetResolution(2560, 1440, Screen.fullScreen);
         }
 
-        if(resolutionDropdown.value == 3)
+        if (resolutionDropdown.value == 3)
         {
             Screen.SetResolution(3840, 2160, Screen.fullScreen);
         }

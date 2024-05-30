@@ -103,7 +103,7 @@ public class RocketStateManager : MonoBehaviour
                     if(planetGravity.storedVelocity.magnitude > planetGravity.velocityThreshold)
                     {
                         planetGravity.storedVelocity = planetGravity.rb.velocity;
-                        planetGravity.rb.velocity = planetGravity.rb.velocity.normalized * planetGravity.velocityThreshold;
+                        planetGravity.rb.velocity = planetGravity.rb.velocity.normalized * planetGravity.velocityThreshold * 0.9f;
                         floatingVelocity.velocity = (-(planetGravity.storedVelocity.x-planetGravity.rb.velocity.x), -(planetGravity.storedVelocity.y - planetGravity.rb.velocity.y));
                         planetGravity.velocityStored = true;
                     }else
@@ -137,9 +137,7 @@ public class RocketStateManager : MonoBehaviour
                     this.transform.parent = null;
                     savedPlanet = null;
                 }
-
                 planetGravity.updateReferenceBody();
-                
                 planetGravity.rb.simulated = false;
                 if(previousState == "simulate" && planetGravity.possessed == true)
                 {
