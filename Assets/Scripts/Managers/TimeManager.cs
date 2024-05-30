@@ -81,6 +81,10 @@ public class TimeManager : MonoBehaviour
     public void setScaler(float desiredScaler)
     {
         scaler = desiredScaler;
+        if(masterManager.ActiveRocket != null)
+        {
+            masterManager.ActiveRocket.GetComponent<RocketPath>().CalculateParameters();
+        }
     }
 
     public void calculateDate()

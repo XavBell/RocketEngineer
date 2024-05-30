@@ -19,6 +19,7 @@ TagManager:
   - Prediction
   - DestroyedPop
   - UI
+  - mapCam
   layers:
   - Default
   - TransparentFX
@@ -29,7 +30,7 @@ TagManager:
   - CameraCollision
   - Child
   - Planet
-  - 
+  - Map
   - 
   - 
   - 
@@ -53,6 +54,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Map
+    uniqueID: 1459294365
+    locked: 0
   - name: Foreground
     uniqueID: 4053515789
     locked: 0

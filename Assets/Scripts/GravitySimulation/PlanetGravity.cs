@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using Unity.Mathematics;
 
 
 public class PlanetGravity : MonoBehaviour
@@ -15,6 +16,7 @@ public class PlanetGravity : MonoBehaviour
     public Vector2 storedVelocity;
     private bool initialized = false;
     private GameObject core;
+    private GameObject currentSOIPlanet = null;
     public GameObject getCore()
     {
         return core;
@@ -152,7 +154,7 @@ public class PlanetGravity : MonoBehaviour
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
         if ((Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity) && storedVelocity.magnitude <= velocityThreshold)
         {
-            if(velocityStored == true)
+            if (velocityStored == true)
             {
                 rb.velocity = storedVelocity;
                 floatingVelocity.velocity.Item1 = 0;
@@ -161,19 +163,20 @@ public class PlanetGravity : MonoBehaviour
             }
             rb.AddForce(ResultVector);
             storedVelocity = new Vector2(rb.velocity.x, rb.velocity.y);
-        }else if(storedVelocity.magnitude > velocityThreshold)
+        }
+        else if (storedVelocity.magnitude > velocityThreshold)
         {
-            if(rb.velocity.magnitude > velocityThreshold)
+            if (rb.velocity.magnitude > velocityThreshold)
             {
                 storedVelocity = rb.velocity;
-                rb.velocity = rb.velocity.normalized * velocityThreshold;
+                rb.velocity = rb.velocity.normalized * velocityThreshold*0.9f;
                 floatingVelocity.velocity.Item1 = -(storedVelocity.x - rb.velocity.x);
                 floatingVelocity.velocity.Item2 = -(storedVelocity.y - rb.velocity.y);
                 velocityStored = true;
             }
-            floatingVelocity.velocity.Item1 -= (double)(ResultVector.x/rb.mass * TimeManager.deltaTime);
-            floatingVelocity.velocity.Item2 -= (double)(ResultVector.y/rb.mass * TimeManager.deltaTime);
-            storedVelocity += new Vector2(ResultVector.x/rb.mass * TimeManager.deltaTime, ResultVector.y/rb.mass * TimeManager.deltaTime);
+            floatingVelocity.velocity.Item1 -= (double)(ResultVector.x / rb.mass * TimeManager.deltaTime);
+            floatingVelocity.velocity.Item2 -= (double)(ResultVector.y / rb.mass * TimeManager.deltaTime);
+            storedVelocity += new Vector2(ResultVector.x / rb.mass * TimeManager.deltaTime, ResultVector.y / rb.mass * TimeManager.deltaTime);
             velocityStored = true;
         }
         GetComponent<DoubleTransform>().x_pos = rb.position.x;
@@ -182,17 +185,17 @@ public class PlanetGravity : MonoBehaviour
 
     void checkManager()
     {
+        if (TimeManager == null)
+        {
+            TimeManager = FindObjectOfType<TimeManager>();
+        }
+
         if (MasterManager == null)
         {
             if (TimeManager != null)
             {
                 MasterManager = FindObjectOfType<MasterManager>();
             }
-        }
-
-        if (TimeManager == null)
-        {
-            TimeManager = FindObjectOfType<TimeManager>();
         }
 
         if (stageViewer == null)
@@ -227,7 +230,7 @@ public class PlanetGravity : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "SampleScene")
         {
-            cam = GameObject.FindObjectOfType<Camera>();
+            cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
             G = SolarSystemManager.G;
         }
 
@@ -250,7 +253,7 @@ public class PlanetGravity : MonoBehaviour
 
         if (previous != planet && possessed == true && previous != null && rb.velocity.magnitude != float.NaN)
         {
-            if(this.gameObject == MasterManager.ActiveRocket && previous != sun && GetComponent<RocketStateManager>().state == "rail")
+            if (this.gameObject == MasterManager.ActiveRocket && previous != sun && GetComponent<RocketStateManager>().state == "rail")
             {
                 floatingOrigin.corrected = false;
                 floatingOrigin.previousPlanet = previous;
@@ -267,10 +270,12 @@ public class PlanetGravity : MonoBehaviour
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
 
-                        rb.velocity -= new Vector2(velocity.x, velocity.y);
-                        storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    GetComponent<RocketPath>().CalculateParameters();
+                    return;
 
-                    
+
                 }
             }
 
@@ -281,8 +286,10 @@ public class PlanetGravity : MonoBehaviour
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
 
-                        rb.velocity += new Vector2(velocity.x, velocity.y);
-                        storedVelocity += new Vector2(velocity.x, velocity.y);
+                    rb.velocity += new Vector2(velocity.x, velocity.y);
+                    storedVelocity += new Vector2(velocity.x, velocity.y);
+                    GetComponent<RocketPath>().CalculateParameters();
+                    return;
 
                 }
             }
@@ -290,28 +297,38 @@ public class PlanetGravity : MonoBehaviour
             //Sun to Earth
             if (previous == sun && planet == earth)
             {
-                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(Math.Round(TimeManager.time));
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
- 
-                        rb.velocity -= new Vector2(velocity.x, velocity.y);
-                        storedVelocity -= new Vector2(velocity.x, velocity.y);
 
+                    rb.velocity -= new Vector2(velocity.x, velocity.y);
+                    storedVelocity -= new Vector2(velocity.x, velocity.y);
+                    GetComponent<RocketPath>().CalculateParameters();
+                    return;
+
+                }
+                else
+                {
+                    Debug.Log("Velocity is NaN");
                 }
             }
 
             //EarthToSun
             if (planet == sun && previous == earth)
             {
-                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(TimeManager.time);
+                Vector3 velocity = earth.GetComponent<BodyPath>().GetVelocityAtTime(Math.Round(TimeManager.time));
                 if (!float.IsNaN(velocity.x) && !float.IsNaN(velocity.y))
                 {
                     rb.velocity += new Vector2(velocity.x, velocity.y);
                     storedVelocity += new Vector2(velocity.x, velocity.y);
-
+                    GetComponent<RocketPath>().CalculateParameters();
+                    return;
+                }
+                else
+                {
+                    Debug.Log("Velocity is NaN");
                 }
             }
-            GetComponent<RocketPath>().CalculateParameters();
         }
 
         if (previous != planet && possessed == false && previous != null && rb.velocity.magnitude != float.NaN)
@@ -369,6 +386,11 @@ public class PlanetGravity : MonoBehaviour
             GetComponent<RocketPath>().CalculateParameters();
 
         }
+
+        if (previous != planet && possessed == true && rb.velocity.magnitude == float.NaN)
+        {
+            print("Velocity is NaN");
+        }
     }
 
     void exitTimewarp()
@@ -381,31 +403,73 @@ public class PlanetGravity : MonoBehaviour
 
     void setPlanetProperty()
     {
-        if (Vector2.Distance(rb.position, FindObjectOfType<MoonScript>().gameObject.transform.position) < SolarSystemManager.moonSOI)
+        // Define the buffer zone for SOI transitions
+        const double earthBuffer = 500000.0;
+        const double moonBuffer = 1000.0;
+
+        MoonScript moonScript = FindObjectOfType<MoonScript>();
+        EarthScript earthScript = FindObjectOfType<EarthScript>();
+        SunScript sunScript = FindObjectOfType<SunScript>();
+
+        // Retrieve the positions of the Moon, Earth, and Sun
+        (double, double) moonPosition = (moonScript.GetComponent<DoubleTransform>().x_pos,moonScript.GetComponent<DoubleTransform>().y_pos);
+        (double, double) earthPosition = (earthScript.GetComponent<DoubleTransform>().x_pos, FindObjectOfType<EarthScript>().GetComponent<DoubleTransform>().y_pos);
+        (double, double) sunPosition = (sunScript.GetComponent<DoubleTransform>().x_pos, FindObjectOfType<SunScript>().GetComponent<DoubleTransform>().y_pos);
+
+        // Calculate distances to the Moon, Earth, and Sun
+        double distanceToMoon = Math.Sqrt(Math.Pow(rb.position.x - moonPosition.Item1, 2) + Math.Pow(rb.position.y - moonPosition.Item2, 2));
+        double distanceToEarth = Math.Sqrt(Math.Pow(rb.position.x - earthPosition.Item1, 2) + Math.Pow(rb.position.y - earthPosition.Item2, 2));
+        double distanceToSun = Math.Sqrt(Math.Pow(rb.position.x - sunPosition.Item1, 2) + Math.Pow(rb.position.y - sunPosition.Item2, 2));
+
+        // Determine the new SOI based on distances and buffer zones
+        GameObject newSOIPlanet = null;
+        if (distanceToMoon < SolarSystemManager.moonSOI - moonBuffer)
         {
-            Mass = SolarSystemManager.moonMass;
-            aeroCoefficient = 0.0f;
-            planetRadius = SolarSystemManager.moonRadius;
-            atmoAlt = SolarSystemManager.moonAlt;
-            planet = FindObjectOfType<MoonScript>().gameObject;
-            return;
+            newSOIPlanet = moonScript.gameObject;
+        }else if(distanceToEarth < SolarSystemManager.earthSOI)
+        {
+            newSOIPlanet = earthScript.gameObject;
         }
-        if (Vector2.Distance(rb.position, FindObjectOfType<EarthScript>().gameObject.transform.position) < SolarSystemManager.earthSOI)
+        else if (distanceToEarth > SolarSystemManager.earthSOI + earthBuffer)
         {
-            Mass = SolarSystemManager.earthMass;
-            atmoAlt = SolarSystemManager.earthAlt;
-            aeroCoefficient = SolarSystemManager.earthDensitySlvl;
-            planetRadius = SolarSystemManager.earthRadius;
-            planet = FindObjectOfType<EarthScript>().gameObject;
-            return;
+            newSOIPlanet = sunScript.gameObject;
+        }else if(distanceToEarth < SolarSystemManager.earthSOI)
+        {
+            newSOIPlanet = earthScript.gameObject;
         }
-        else
+
+        // If the SOI has changed, update the properties
+        if (newSOIPlanet != currentSOIPlanet)
         {
-            Mass = SolarSystemManager.sunMass;
-            atmoAlt = 0.0f;
-            aeroCoefficient = 0.0f;
-            planetRadius = SolarSystemManager.sunRadius;
-            planet = FindObjectOfType<SunScript>().gameObject;
+            currentSOIPlanet = newSOIPlanet;
+
+            if (currentSOIPlanet == moonScript.gameObject)
+            {
+                // Within Moon's SOI
+                Mass = SolarSystemManager.moonMass;
+                aeroCoefficient = 0.0f;
+                planetRadius = SolarSystemManager.moonRadius;
+                atmoAlt = SolarSystemManager.moonAlt;
+                planet = moonScript.gameObject;
+            }
+            else if (currentSOIPlanet == earthScript.gameObject)
+            {
+                // Within Earth's SOI
+                Mass = SolarSystemManager.earthMass;
+                aeroCoefficient = SolarSystemManager.earthDensitySlvl;
+                planetRadius = SolarSystemManager.earthRadius;
+                atmoAlt = SolarSystemManager.earthAlt;
+                planet = earthScript.gameObject;
+            }
+            else
+            {
+                // Default to Sun's SOI
+                Mass = SolarSystemManager.sunMass;
+                atmoAlt = 0.0f;
+                aeroCoefficient = 0.0f;
+                planetRadius = SolarSystemManager.sunRadius;
+                planet = sunScript.gameObject;
+            }
         }
     }
 }

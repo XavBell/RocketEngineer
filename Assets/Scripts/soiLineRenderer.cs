@@ -10,7 +10,7 @@ public class soiLineRenderer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        generateCircle(soiRange/this.transform.parent.localScale.x, 2000);
+        generateCircle(soiRange/(this.transform.parent.localScale.x * MapManager.scaledSpace), 2000);
     }
 
     // Update is called once per frame

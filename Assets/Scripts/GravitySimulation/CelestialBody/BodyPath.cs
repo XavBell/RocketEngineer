@@ -65,10 +65,10 @@ public class BodyPath : MonoBehaviour
         if(calculate == true && MyTime != null)
         {
             double time = MyTime.time;
-            Vector2 bodyPosition2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_pos, (float)this.GetComponent<PhysicsStats>().y_pos);
+            (double, double) bodyPosition2D = (this.GetComponent<DoubleTransform>().x_pos, this.GetComponent<DoubleTransform>().y_pos);
             Vector2 bodyVelocity2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_vel, (float)this.GetComponent<PhysicsStats>().y_vel);
             DoubleTransform dT = OrbitingBody.GetComponent<DoubleTransform>();
-            Vector2 orbitingBodyPosition2D = new Vector2((float)dT.x_pos, (float)dT.y_pos);
+            (double, double) orbitingBodyPosition2D = (dT.x_pos, dT.y_pos);
             DrawLine(time, line, KeplerParams, bodyPosition2D, bodyVelocity2D, orbitingBodyPosition2D, gravityParam);
             orbitalPeriod = GetOrbitalPeriod(gravityParam, KeplerParams.semiMajorAxis);
             calculate = false;
@@ -100,7 +100,7 @@ public class BodyPath : MonoBehaviour
         }
     }
 
-    void DrawLine(double time, LineRenderer line, KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 rocketVelocity2D, UnityEngine.Vector2 planetPosition2D, double gravityParam)
+    void DrawLine(double time, LineRenderer line, KeplerParams keplerParams, (double, double) rocketPosition2D, Vector2 rocketVelocity2D, (double, double) planetPosition2D, double gravityParam)
     {
         int numPoints = 1000;
         double[] times = new double[numPoints];
@@ -121,19 +121,19 @@ public class BodyPath : MonoBehaviour
         }  
     }
 
-    void UpdateLine(Vector2 rocketVelocity2D, double time, Vector2 planetPosition2D, KeplerParams keplerParams)
+    void UpdateLine((double, double) rocketVelocity2D, double time, (double, double)planetPosition2D, KeplerParams keplerParams)
     {
         int numPoints = 1000;
         double[] times = new double[numPoints];
         Vector3[] positions = new Vector3[numPoints];
-        if(rocketVelocity2D.magnitude != 0)
+        if(Math.Sqrt(Math.Pow(rocketVelocity2D.Item1, 2) + Math.Pow(rocketVelocity2D.Item2, 2)) != 0)
         {
             CalculatePoints(time, numPoints, gravityParam, planetPosition2D, keplerParams, ref times, ref positions);
             line.positionCount = numPoints;
             List<Vector3> newPos = new List<Vector3>();
             foreach(Vector3 pos in positions)
             {
-                newPos.Add(pos + OrbitingBody.transform.position);
+                newPos.Add(pos + OrbitingBody.transform.position/MapManager.scaledSpace);
             }
             line.SetPositions(newPos.ToArray());
         }
@@ -142,8 +142,8 @@ public class BodyPath : MonoBehaviour
     public void ReDraw()
     {
         double time = MyTime.time;
-        Vector2 bodyPosition2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_pos, (float)this.GetComponent<PhysicsStats>().y_pos);
-        Vector2 bodyVelocity2D = new Vector2((float)this.GetComponent<PhysicsStats>().x_vel, (float)this.GetComponent<PhysicsStats>().y_vel);
+        (double, double) bodyPosition2D = (this.GetComponent<DoubleTransform>().x_pos, this.GetComponent<DoubleTransform>().y_pos);
+        (double, double) bodyVelocity2D =(this.GetComponent<PhysicsStats>().x_vel, this.GetComponent<PhysicsStats>().y_vel);
         DoubleTransform dT = OrbitingBody.GetComponent<DoubleTransform>();
         UpdateLine(bodyVelocity2D, time, bodyPosition2D, KeplerParams);
     }
@@ -320,25 +320,31 @@ public class BodyPath : MonoBehaviour
         return t;
     }
 
-    public static void KtoCfromC(UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time, out double semiMajorAxis, out double eccentricity, out double argPeriapsis, out double LAN, out double inclination, out double timeToPeriapsis, out double trueAnomalyAtEpoch)
+    public static void KtoCfromC((double, double) rocketPosition2D, (double, double)planetPosition2D, Vector2 rocketVelocity2D, double gravityParam, double time, out double semiMajorAxis, out double eccentricity, out double argPeriapsis, out double LAN, out double inclination, out double timeToPeriapsis, out double trueAnomalyAtEpoch)
     {   
         //Calculate rocket position in 3D and transform it for Kepler
-        UnityEngine.Vector3 rocketPosition3D = new UnityEngine.Vector3(rocketPosition2D.x, 0, rocketPosition2D.y); //FLIP for Unity
-        UnityEngine.Vector3 planetPosition3D = new UnityEngine.Vector3(planetPosition2D.x, 0, planetPosition2D.y); //FLIP for Unity
-        
-        rocketPosition3D = rocketPosition3D - planetPosition3D; //Assume planet at (0,0,0)
+        (double rocketPosition3D_x, double rocketPosition3D_y, double rocketPosition3D_z) = (rocketPosition2D.Item1, 0, rocketPosition2D.Item2);
+        (double planetPosition3D_x, double planetPosition3D_y, double planetPosition3D_z) = (planetPosition2D.Item1, 0, planetPosition2D.Item2);
+        (double, double, double) rocketPosition3D = (rocketPosition3D_x, rocketPosition3D_y, rocketPosition3D_z);
+        (double, double, double) planetPosition3D = (planetPosition3D_x, planetPosition3D_y, planetPosition3D_z);
+
+        rocketPosition3D = (rocketPosition3D.Item1 - planetPosition3D.Item1, 0, rocketPosition3D.Item3 - planetPosition3D.Item3); //Assume planet at (0,0,0)
 
         //Calculate velocity
         UnityEngine.Vector3 rocketVelocity3D = new UnityEngine.Vector3(rocketVelocity2D.x, 0, rocketVelocity2D.y); //FLIP for Unity
 
         //Find position and velocity magnitude
-        double r = rocketPosition3D.magnitude;
+        double r = Math.Sqrt(Math.Pow(rocketPosition3D.Item1, 2) + Math.Pow(rocketPosition3D.Item3, 2));
         double v = rocketVelocity3D.magnitude;
 
         //Calculate specific angular momentum
-        UnityEngine.Vector3 h_bar = UnityEngine.Vector3.Cross(rocketPosition3D, rocketVelocity3D);
+        // Decompose velocity3D into the same format as rocketPosition3D
+        double vX = rocketVelocity3D.x;
+        double vY = rocketVelocity3D.y;
+        double vZ = rocketVelocity3D.z;
+        (double, double, double) h_bar = (rocketPosition3D.Item2 * vZ - rocketPosition3D.Item3 * vY, rocketPosition3D.Item3 * vX - rocketPosition3D.Item1 * vZ, rocketPosition3D.Item1 * vY - rocketPosition3D.Item2 * vX);
 
-        double h = h_bar.magnitude;
+        double h = Math.Sqrt(Math.Pow(h_bar.Item1, 2) + Math.Pow(h_bar.Item2, 2) + Math.Pow(h_bar.Item3, 2));
 
         //Compute specific energy
         double E = (0.5f * Math.Pow(v, 2)) - gravityParam/r;
@@ -350,17 +356,18 @@ public class BodyPath : MonoBehaviour
         double e = Math.Sqrt(1 - Math.Pow(h,2)/(a*gravityParam));
       
         //Compute inclination
-        double i = Math.Acos(h_bar.z/h);
+        double i = Math.Acos(h_bar.Item3 / h);
 
         //Compute right ascension of ascending node
-        double omega_LAN = Mathf.Atan2(h_bar.x, -h_bar.y);
+        double omega_LAN = Math.Atan2(h_bar.Item1, -h_bar.Item2);
 
         //Compute argument of latitude v+w
-        double lat = Math.Atan2((rocketPosition3D[2]/Math.Sin(i)), (rocketPosition3D[0]*Math.Cos(omega_LAN) + rocketPosition3D[1] * Math.Sin(omega_LAN)));
+        double lat = Math.Atan2((rocketPosition3D.Item3 / Math.Sin(i)), (rocketPosition3D.Item1 * Math.Cos(omega_LAN) + rocketPosition3D.Item2 * Math.Sin(omega_LAN)));
 
         // Compute true anomaly, v, (not actual true anomaly)
         double p = a * (1 - Math.Pow(e, 2));
-        double nu = Math.Atan2(Math.Sqrt(p / gravityParam) * UnityEngine.Vector3.Dot(rocketPosition3D, rocketVelocity3D), p - r);
+        double dot = rocketPosition3D.Item1 * vX + rocketPosition3D.Item3 * vZ;
+        double nu = Math.Atan2(Math.Sqrt(p / gravityParam) * dot, p - r);
 
         // Compute argument of periapse, w (not actual argperi)
         double omega_AP = lat - nu;
@@ -384,13 +391,13 @@ public class BodyPath : MonoBehaviour
         trueAnomalyAtEpoch = TA;
     }
 
-    public void SetKeplerParams(KeplerParams keplerParams, UnityEngine.Vector2 rocketPosition2D, UnityEngine.Vector2 planetPosition2D, UnityEngine.Vector2 rocketVelocity2D, double gravityParam, double time)
+    public void SetKeplerParams(KeplerParams keplerParams, (double, double) rocketPosition2D, (double, double) planetPosition2D, Vector2 rocketVelocity2D, double gravityParam, double time)
     {
         KtoCfromC(rocketPosition2D, planetPosition2D,rocketVelocity2D, gravityParam, time, out keplerParams.semiMajorAxis, out keplerParams.eccentricity, out keplerParams.argumentOfPeriapsis, out keplerParams.longitudeOfAscendingNode, out keplerParams.inclination, out keplerParams.timeToPeriapsis, out keplerParams.trueAnomalyAtEpoch);
         bypass = true;
     }
 
-    public static void CalculatePoints(double time, int numPoints, double gravityParam, UnityEngine.Vector2 planetPosition2D, KeplerParams keplerParams, ref double[] times, ref UnityEngine.Vector3[] positions)
+    public static void CalculatePoints(double time, int numPoints, double gravityParam, (double, double) planetPosition2D, KeplerParams keplerParams, ref double[] times, ref UnityEngine.Vector3[] positions)
     {
         var period = GetOrbitalPeriod(gravityParam, keplerParams.semiMajorAxis);
         var timeIncrement = period / numPoints;
@@ -400,9 +407,9 @@ public class BodyPath : MonoBehaviour
             double x;
             double y;
             GetOrbitPositionKepler(gravityParam, time, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out x, out y);
-            Vector3 pos = new Vector3((float)x, (float)y, 0);
+            Vector3 pos = new Vector3((float)x, (float)y, -1000000000);
             times[count] = time;
-            positions[count] = pos;
+            positions[count] = pos/MapManager.scaledSpace;
 
             time += timeIncrement;
         }

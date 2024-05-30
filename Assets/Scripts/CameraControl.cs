@@ -147,8 +147,8 @@ public class CameraControl : MonoBehaviour
     {
         if(Input.GetKey(KeyCode.M))
         {
-            cam.orthographicSize = 150000f;
-            targetZoom = cam.orthographicSize;
+            MapManager mapManager = FindObjectOfType<MapManager>();
+            mapManager.mapOn();
         }
     }
 
