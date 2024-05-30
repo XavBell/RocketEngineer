@@ -5,24 +5,26 @@ using UnityEngine;
 
 public class rocketCursorManager : MonoBehaviour
 {
+    public Canvas canvasGroup = null;
     MasterManager masterManager = null;
     BuildingManager buildingManager = null;
     FloatingOrigin floatingOrigin = null;
     StageViewer stageViewer = null;
-    GameObject rocket = null;
+    public GameObject rocket = null;
     TimeManager MyTime;
     FloatingVelocity floatingVelocity;
     bool runClickDelay = false;
     // Start is called before the first frame update
     void Start()
     {
+        canvasGroup = GetComponentInChildren<Canvas>();
+        canvasGroup.worldCamera = GameObject.FindWithTag("mapCam").GetComponent<Camera>();
         MyTime = FindObjectOfType<TimeManager>();
         masterManager = FindObjectOfType<MasterManager>();
         floatingOrigin = FindObjectOfType<FloatingOrigin>();
         floatingVelocity = FindObjectOfType<FloatingVelocity>();
         stageViewer = FindObjectOfType<StageViewer>();
         buildingManager = FindObjectOfType<BuildingManager>();
-        rocket = this.transform.parent.gameObject;
     }
 
     void Update()
