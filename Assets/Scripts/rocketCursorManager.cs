@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class rocketCursorManager : MonoBehaviour
 {
+    public Canvas canvasGroup = null;
     MasterManager masterManager = null;
     BuildingManager buildingManager = null;
     FloatingOrigin floatingOrigin = null;
@@ -16,6 +17,8 @@ public class rocketCursorManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        canvasGroup = GetComponentInChildren<Canvas>();
+        canvasGroup.worldCamera = GameObject.FindWithTag("mapCam").GetComponent<Camera>();
         MyTime = FindObjectOfType<TimeManager>();
         masterManager = FindObjectOfType<MasterManager>();
         floatingOrigin = FindObjectOfType<FloatingOrigin>();

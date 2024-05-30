@@ -185,17 +185,17 @@ public class PlanetGravity : MonoBehaviour
 
     void checkManager()
     {
+        if (TimeManager == null)
+        {
+            TimeManager = FindObjectOfType<TimeManager>();
+        }
+
         if (MasterManager == null)
         {
             if (TimeManager != null)
             {
                 MasterManager = FindObjectOfType<MasterManager>();
             }
-        }
-
-        if (TimeManager == null)
-        {
-            TimeManager = FindObjectOfType<TimeManager>();
         }
 
         if (stageViewer == null)
@@ -404,7 +404,7 @@ public class PlanetGravity : MonoBehaviour
     void setPlanetProperty()
     {
         // Define the buffer zone for SOI transitions
-        const double earthBuffer = 100000.0;
+        const double earthBuffer = 500000.0;
         const double moonBuffer = 1000.0;
 
         MoonScript moonScript = FindObjectOfType<MoonScript>();
@@ -426,17 +426,16 @@ public class PlanetGravity : MonoBehaviour
         if (distanceToMoon < SolarSystemManager.moonSOI - moonBuffer)
         {
             newSOIPlanet = moonScript.gameObject;
-        }
-        else if (currentSOIPlanet == moonScript.gameObject && distanceToEarth < SolarSystemManager.earthSOI)
-        {
-            newSOIPlanet = earthScript.gameObject;
-        }else if(currentSOIPlanet == sunScript && distanceToEarth < SolarSystemManager.earthSOI + earthBuffer)
+        }else if(distanceToEarth < SolarSystemManager.earthSOI)
         {
             newSOIPlanet = earthScript.gameObject;
         }
-        else if (distanceToEarth > SolarSystemManager.earthSOI)
+        else if (distanceToEarth > SolarSystemManager.earthSOI + earthBuffer)
         {
             newSOIPlanet = sunScript.gameObject;
+        }else if(distanceToEarth < SolarSystemManager.earthSOI)
+        {
+            newSOIPlanet = earthScript.gameObject;
         }
 
         // If the SOI has changed, update the properties

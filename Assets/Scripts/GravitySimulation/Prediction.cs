@@ -397,7 +397,7 @@ public class Prediction : MonoBehaviour
             double VY;
             GetOrbitPositionKepler(gravityParam, time + timeIncrement, keplerParams.semiMajorAxis, keplerParams.eccentricity, keplerParams.argumentOfPeriapsis, keplerParams.longitudeOfAscendingNode, keplerParams.inclination, keplerParams.trueAnomalyAtEpoch, out X, out Y, out VX, out VY);
             Vector3 pos = new Vector3((float)X, (float)Y, 0)/MapManager.scaledSpace + new Vector3((float)planetPos.Item1, (float)planetPos.Item2,  -100000000)/MapManager.scaledSpace;
-            if((pos - new Vector3((float)planetPos.Item1, (float)planetPos.Item2)).magnitude < SOI)
+            if((new Vector2(pos.x, pos.y)*MapManager.scaledSpace - new Vector2((float)planetPos.Item1, (float)planetPos.Item2)).magnitude < SOI)
             {
                 newPos.Add(pos);
             }else if(planetGravity.getPlanet() == Sun){

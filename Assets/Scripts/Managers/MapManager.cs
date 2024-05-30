@@ -15,11 +15,13 @@ public class MapManager : MonoBehaviour
     public GameObject Moon;
 
     public Camera mapCam;
+    public Camera mainCam;
     public FloatingOrigin floatingOrigin;
     public List<GameObject> icons = new List<GameObject>();
     public List<PlanetGravity> rockets = new List<PlanetGravity>();
     public List<Prediction> prediction = new List<Prediction>();
     public List<GameObject> paths = new List<GameObject>();
+    public MasterManager masterManager;
     public bool MapOn = false;
     public GameObject cursor;
 
@@ -32,6 +34,7 @@ public class MapManager : MonoBehaviour
     {
         mapCam.GetComponent<Camera>().enabled = false;
         floatingOrigin = FindObjectOfType<FloatingOrigin>();
+        masterManager = FindObjectOfType<MasterManager>();
     }
 
     // Update is called once per frame
@@ -40,6 +43,7 @@ public class MapManager : MonoBehaviour
         float previousSize = 0;
         if (MapOn == true)
         {   
+            MapView();
             if(mapCam.orthographicSize != previousSize)
             {
                 updateScale();
@@ -50,7 +54,7 @@ public class MapManager : MonoBehaviour
 
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (MapOn == true)
         {
@@ -64,7 +68,12 @@ public class MapManager : MonoBehaviour
         MoonIcon.transform.position = Moon.transform.position/scaledSpace;
         SunIcon.transform.position = Sun.transform.position/scaledSpace;
 
-        mapCam.transform.position = EarthIcon.transform.position;
+        if(masterManager.ActiveRocket != null)
+        {
+            mapCam.transform.position = masterManager.ActiveRocket.transform.position/scaledSpace;
+        }else{
+            mapCam.transform.position = EarthIcon.transform.position;
+        }
 
         List<GameObject> iconToRemove = new List<GameObject>();
         foreach (GameObject icon in icons)
@@ -137,11 +146,23 @@ public class MapManager : MonoBehaviour
 
     }
 
+    void MapView()
+    {
+        if(Input.GetKey(KeyCode.M))
+        {
+            mapOn();
+        }
+    }
+
     public void mapOn()
     {
         if (MapOn == false)
         {
+            //Activate Map
             mapCam.GetComponent<Camera>().enabled = true;
+            mapCam.GetComponent<zoomCam>().enabled = true;
+            mainCam.GetComponent<Camera>().enabled = false;
+            mainCam.GetComponent<CameraControl>().enabled = false;
             EarthIcon.SetActive(true);
             SunIcon.SetActive(true);
             MoonIcon.SetActive(true);
@@ -183,7 +204,11 @@ public class MapManager : MonoBehaviour
 
         if (MapOn == true)
         {
+            //Turn off Map
             mapCam.GetComponent<Camera>().enabled = false;
+            mapCam.GetComponent<zoomCam>().enabled = false;
+            mainCam.GetComponent<Camera>().enabled = true;
+            mainCam.GetComponent<CameraControl>().enabled = true;
             EarthIcon.SetActive(false);
             SunIcon.SetActive(false);
             MoonIcon.SetActive(false);

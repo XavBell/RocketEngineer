@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 2247422}
   m_Layer: 0
   m_Name: MapCam
-  m_TagString: Untagged
+  m_TagString: mapCam
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -198,7 +198,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: -10000
+  near clip plane: -100000
   far clip plane: 1000
   field of view: 60
   orthographic: 1
@@ -37961,11 +37961,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2727338394657550577, guid: b2ffccf3bcf4d4205a45249256850fba, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.68
+      value: 6.8
       objectReference: {fileID: 0}
     - target: {fileID: 2727338394657550577, guid: b2ffccf3bcf4d4205a45249256850fba, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.68
+      value: 6.8
       objectReference: {fileID: 0}
     - target: {fileID: 2727338394657550577, guid: b2ffccf3bcf4d4205a45249256850fba, type: 3}
       propertyPath: m_LocalPosition.y
@@ -50867,11 +50867,13 @@ MonoBehaviour:
   MoonIcon: {fileID: 1261721905}
   Moon: {fileID: 680244244}
   mapCam: {fileID: 2247420}
+  mainCam: {fileID: 519420031}
   floatingOrigin: {fileID: 0}
   icons: []
   rockets: []
   prediction: []
   paths: []
+  masterManager: {fileID: 0}
   MapOn: 0
   cursor: {fileID: 2655591415972963116, guid: beae72a481b42426aa91514776e6a938, type: 3}
   predictionPrefab: {fileID: 4468450867335054349, guid: 90c0bab755ed045aea1c7f544905e44f, type: 3}

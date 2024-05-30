@@ -124,12 +124,12 @@ public class interceptDetector : MonoBehaviour
         {
             if (interceptIndicator != null)
             {
-                interceptIndicator.transform.position = prediction.GetPositionAtTime(foundTime) + prediction.planetGravity.getPlanet().transform.position;
+                interceptIndicator.transform.position = prediction.GetPositionAtTime(foundTime)/MapManager.scaledSpace + prediction.planetGravity.getPlanet().transform.position/MapManager.scaledSpace;
             }
             else
             {
                 interceptIndicator = Instantiate(indicatorPrefab, this.transform);
-                interceptIndicator.transform.position = (prediction.GetPositionAtTime(foundTime) + prediction.planetGravity.getPlanet().transform.position)/MapManager.scaledSpace;
+                interceptIndicator.transform.position = (prediction.GetPositionAtTime(foundTime)/MapManager.scaledSpace + prediction.planetGravity.getPlanet().transform.position)/MapManager.scaledSpace;
             }
         }else{
             Destroy(interceptIndicator);
