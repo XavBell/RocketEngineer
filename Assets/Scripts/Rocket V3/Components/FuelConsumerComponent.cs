@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class FuelConsumerComponent : MonoBehaviour
 {
     public float fuelConsumptionRate;
+    public Substance requiredOxidizer;
+    public Substance requiredFuel;
     public List<TankComponent> tanks = new List<TankComponent>();
-    //public List<GameObject> visitedObjects = new List<GameObject>();
-    public GameObject hi;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +26,6 @@ public class FuelConsumerComponent : MonoBehaviour
     public void FindTanks()
     {
         tanks.Clear();
-        //visitedObjects.Clear();
         GameObject highestParent = findHighestParent(this.gameObject);
         if(highestParent.GetComponent<TankComponent>() != null)
         {

@@ -873,6 +873,7 @@ GameObject:
   m_Component:
   - component: {fileID: 951305911}
   - component: {fileID: 951305910}
+  - component: {fileID: 951305912}
   m_Layer: 0
   m_Name: Manager
   m_TagString: Untagged
@@ -895,6 +896,8 @@ MonoBehaviour:
   designerCursor: {fileID: 1066112485}
   activePart: {fileID: 0}
   originalPart: {fileID: 0}
+  rocketController: {fileID: 1643693375}
+  RocketSaveManager: {fileID: 951305912}
   partPlaced: 0
   lineNames: []
   lineName: 
@@ -914,6 +917,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &951305912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951305909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f391aa20b5a2444b98e62fe5703dbb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1066112484
 GameObject:
   m_ObjectHideFlags: 0
@@ -1045,7 +1060,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 951305910}
         m_TargetAssemblyTypeName: RocketAssemblerManager, Assembly-CSharp
-        m_MethodName: loadRocket
+        m_MethodName: load
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1228,6 +1243,52 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271279351}
   m_CullTransparentMesh: 1
+--- !u!1 &1643693374
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1643693376}
+  - component: {fileID: 1643693375}
+  m_Layer: 0
+  m_Name: RocketController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1643693375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643693374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df16d91647db1446099008094c9c7d3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rocketName: 
+  lineNames: []
+--- !u!4 &1643693376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643693374}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.14862564, y: 1.8591115, z: -0.050407223}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1852467599
 GameObject:
   m_ObjectHideFlags: 0
@@ -1449,7 +1510,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 951305910}
         m_TargetAssemblyTypeName: RocketAssemblerManager, Assembly-CSharp
-        m_MethodName: saveRocket
+        m_MethodName: save
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

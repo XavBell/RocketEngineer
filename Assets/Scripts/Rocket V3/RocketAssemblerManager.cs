@@ -10,6 +10,8 @@ public class RocketAssemblerManager : MonoBehaviour
     public DesignerCursor designerCursor;
     public GameObject activePart;
     public GameObject originalPart;
+    public RocketController rocketController;
+    public rocketSaveManager RocketSaveManager = new rocketSaveManager();
     public bool partPlaced = false;
 
     //For rocket wide variables
@@ -71,7 +73,8 @@ public class RocketAssemblerManager : MonoBehaviour
         {
             if(activePart != null)
             {
-                activePart.transform.parent = null;
+                rocketController.transform.position = activePart.transform.position;
+                activePart.transform.parent = rocketController.transform;
                 originalPart = activePart;
                 activePart.GetComponent<PhysicsPart>().guid = Guid.NewGuid();
                 initializePartFromType(activePart, activePart.GetComponent<PhysicsPart>().type);
@@ -135,14 +138,15 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void AddLine()
     {
-        lineNames.Add(lineName);
-        lineGuids.Add(Guid.NewGuid());
+        rocketController.lineNames.Add(lineName);
+        rocketController.lineGuids.Add(Guid.NewGuid());
     }
 
+    //Purely for editor
     public void SetLine(string line, TankComponent tankComponent)
     {
         tankComponent.lineName = line;
-        tankComponent.lineGuid = lineGuids[lineNames.IndexOf(line)];
+        tankComponent.lineGuid = rocketController.lineGuids[rocketController.lineNames.IndexOf(line)];
     }
 
     private AttachPoint FindClosestAttachPoint(AttachPoint closestAttach)
@@ -212,134 +216,15 @@ public class RocketAssemblerManager : MonoBehaviour
         }
     }
 
-    public void saveRocket()
+    public void save()
     {
-        RocketData rocketData = new RocketData();
-        rocketData.rocketName = "Rocket";
-        rocketData.lineNames = lineNames;
-        rocketData.lineGuids = lineGuids;
-        rocketData.rootPart = new PartData();
-        rocketData.rootPart.partType = originalPart.GetComponent<PhysicsPart>().type;
-        rocketData.rootPart.x_pos = originalPart.transform.position.x;
-        rocketData.rootPart.y_pos = originalPart.transform.position.y;
-        rocketData.rootPart.z_rot = originalPart.transform.eulerAngles.z;
-        rocketData.rootPart.guid = originalPart.GetComponent<PhysicsPart>().guid;
-        savePartFromType(rocketData.rootPart.partType, originalPart, rocketData.rootPart);
-
-        //Get all children
-        PartData rootPart = rocketData.rootPart;
-        GameObject rootPartObject = originalPart;
-        AddChildren(rootPart, rootPartObject);
-        
-
-        //Write file
-        string saveUserPath = Application.persistentDataPath + "/rocket.json";
-        string rocketData1 = JsonConvert.SerializeObject(rocketData);
-        File.WriteAllText(saveUserPath, rocketData1);
-
+        RocketSaveManager.saveRocket(rocketController, true);
     }
 
-    public void loadRocket()
+    public void load()
     {
-        string saveUserPath = Application.persistentDataPath + "/rocket.json";
-        string rocketData1 = File.ReadAllText(saveUserPath);
-        RocketData rocketData = JsonConvert.DeserializeObject<RocketData>(rocketData1);
-
-        //Load rocket info
-        lineNames = rocketData.lineNames;
-        lineGuids = rocketData.lineGuids;
-
-        //Load parts
-        GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + rocketData.rootPart.partType));
-        originalPart = newPart;
-        originalPart.transform.position = new Vector2(rocketData.rootPart.x_pos, rocketData.rootPart.y_pos);
-        originalPart.transform.rotation = Quaternion.Euler(0, 0, rocketData.rootPart.z_rot);
-        originalPart.GetComponent<PhysicsPart>().guid = rocketData.rootPart.guid;
+        RocketSaveManager.loadRocket(rocketController, true);
         partPlaced = true;
-        originalPart.transform.parent = null;
-        loadPartFromType(rocketData.rootPart.partType, originalPart, rocketData.rootPart);
-        LoadChildren(rocketData.rootPart, originalPart);
     }
-
-    public void LoadChildren(PartData parent, GameObject parentObject)
-    {
-        foreach(PartData child in parent.children)
-        {
-            GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + child.partType));
-            //Important to change rotation before assigning parent
-            newPart.transform.rotation = Quaternion.Euler(0, 0, child.z_rot);
-            newPart.transform.position = new Vector2(child.x_pos, child.y_pos);
-            newPart.transform.parent = parentObject.transform;
-            newPart.GetComponent<PhysicsPart>().guid = child.guid;
-            loadPartFromType(child.partType, newPart, child);
-            LoadChildren(child, newPart);
-        }
-    }
-
-    public void loadPartFromType(string type, GameObject part, PartData partData)
-    {
-        if(type == "decoupler")
-        {
-            loadDecoupler(part, partData);
-        }
-
-        if(type == "tank")
-        {
-            loadTank(part, partData);
-        }
-    }
-
-    public void loadDecoupler(GameObject part, PartData partData)
-    {
-        part.GetComponent<DecouplerComponent>().detachFromParent = partData.detachFromParent;
-    }
-
-    public void loadTank(GameObject part, PartData partData)
-    {
-        part.GetComponent<TankComponent>().lineGuid = partData.lineGuid;
-        part.GetComponent<TankComponent>().lineName = lineNames[lineGuids.IndexOf(partData.lineGuid)];
-    }
-
-    public void AddChildren(PartData parent, GameObject parentObject)
-    {
-        foreach(Transform child in parentObject.transform)
-        {
-            if(child.GetComponent<PhysicsPart>() == null)
-            {
-                continue;
-            }
-            PartData newPart = new PartData();
-            newPart.partType = child.GetComponent<PhysicsPart>().type;
-            newPart.x_pos = child.position.x;
-            newPart.y_pos = child.position.y;
-            newPart.z_rot = child.eulerAngles.z;
-            newPart.guid = child.GetComponent<PhysicsPart>().guid;
-            savePartFromType(newPart.partType, child.gameObject, newPart);
-            parent.children.Add(newPart);
-            AddChildren(newPart, child.gameObject);
-        }
-    }
-
-    public void savePartFromType(string type, GameObject part, PartData partData)
-    {
-        if(type == "decoupler")
-        {
-            saveDecoupler(part, partData);
-        }
-
-        if(type == "tank")
-        {
-            saveTank(part, partData);
-        }
-    }
-
-    public void saveDecoupler(GameObject part, PartData partData)
-    {
-        partData.detachFromParent = part.GetComponent<DecouplerComponent>().detachFromParent;
-    }
-
-    public void saveTank(GameObject part, PartData partData)
-    {
-        partData.lineGuid = part.GetComponent<TankComponent>().lineGuid;
-    }
+    
 }

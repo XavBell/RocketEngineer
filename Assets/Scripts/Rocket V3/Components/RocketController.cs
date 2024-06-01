@@ -1,18 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class RocketController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //For rocket wide variables
+    public string rocketName;
+    public List<string> lineNames = new List<string>();
+    public List<Guid> lineGuids = new List<Guid>();
 }
