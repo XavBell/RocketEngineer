@@ -4,15 +4,37 @@ using UnityEngine;
 
 public class DecouplerComponent : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public bool decoupled = false;
+    public bool detachFromParent = false;
+    public bool hasDecoupled = false;
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if(decoupled && !hasDecoupled)
+        {
+            Decoupler();
+            hasDecoupled = true;
+        }
+    }
+
+    public void Decoupler()
+    {
+        if(detachFromParent)
+        {
+            //Separate from parent
+            transform.parent = null;
+        }else{
+            //Detach children
+            //Conserve parent
+            GameObject parent = transform.parent.gameObject;
+            foreach(Transform child in transform)
+            {
+                if(child.GetComponent<PhysicsPart>() != null)
+                {
+                    child.transform.parent = null;
+                }
+            }
+            transform.parent = parent.transform;
+        }
     }
 }

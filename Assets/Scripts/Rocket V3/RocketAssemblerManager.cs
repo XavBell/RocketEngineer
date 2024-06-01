@@ -25,7 +25,11 @@ public class RocketAssemblerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        onClick();   
+        onClick();
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Rotate();
+        }
     }
 
     public void selectPart(GameObject part)
@@ -44,6 +48,14 @@ public class RocketAssemblerManager : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             placePart();
+        }
+    }
+
+    public void Rotate()
+    {
+        if(activePart != null)
+        {
+            activePart.transform.Rotate(0, 0, 90);
         }
     }
 
@@ -73,7 +85,7 @@ public class RocketAssemblerManager : MonoBehaviour
                 foreach(AttachPoint attach in attachs)
                 {
                     float distance = Vector2.Distance(attach.transform.position, activePart.transform.position);
-                    if(distance < closestDistance && attach.transform.parent != activePart.transform)
+                    if(distance < closestDistance && attach.transform.parent != activePart.transform && attach.isConnected == false)
                     {
                         closestAttach = attach;
                         closestDistance = distance;
@@ -85,7 +97,6 @@ public class RocketAssemblerManager : MonoBehaviour
                 {
                     if (closestAttach.GetComponentInParent<PhysicsPart>().CanHaveChildren == false)
                     {
-                        print("Placing part");
                         DestroyImmediate(activePart);
                         activePart = null;
                         designerCursor.selectedPart = null;
@@ -94,7 +105,6 @@ public class RocketAssemblerManager : MonoBehaviour
                     }
                     else if(closestAttach.GetComponentInParent<PhysicsPart>().CanHaveChildren == true)
                     {
-                        print("Attaching part");
                         //Move the part to the attach point
                         //Find attach point on part that is closest to the attach point
                         AttachPoint[] attachPoints = activePart.transform.GetComponentsInChildren<AttachPoint>();
@@ -110,12 +120,14 @@ public class RocketAssemblerManager : MonoBehaviour
                             }
                         }
 
+                        closestAttach.isConnected = true;
+                        closestAttachPoint.isConnected = true;
+
                         //Move the part to the attach point
                         Vector2 offset = closestAttach.transform.position - closestAttachPoint.transform.position;
                         activePart.transform.position = new Vector2(activePart.transform.position.x + offset.x, activePart.transform.position.y + offset.y);
-
-
                         activePart.transform.parent = closestAttach.transform.parent.transform;
+                        initializePartFromType(activePart, activePart.GetComponent<PhysicsPart>().type);
                         activePart = null;
                         designerCursor.selectedPart = null;
                         Cursor.visible = true;
@@ -127,6 +139,49 @@ public class RocketAssemblerManager : MonoBehaviour
         }
     }
 
+    public void initializePartFromType(GameObject part, string type)
+    {
+        if(type == "decoupler")
+        {
+            InitializeDecoupler(part);
+        }
+    }
+
+    private static void InitializeDecoupler(GameObject part)
+    {
+        AttachPoint[] attachPoints = part.transform.GetComponentsInChildren<AttachPoint>();
+        bool topConnected = false;
+        bool bottomConnected = false;
+        foreach (AttachPoint attachPoint in attachPoints)
+        {
+            print("Test");
+            if (attachPoint.relativeOrientation == "top")
+            {
+                if (attachPoint.isConnected == true)
+                {
+                    topConnected = true;
+                }
+            }
+            if (attachPoint.relativeOrientation == "bottom")
+            {
+                if (attachPoint.isConnected == true)
+                {
+                    bottomConnected = true;
+                }
+            }
+        }
+
+        if (topConnected == true)
+        {
+            part.GetComponent<DecouplerComponent>().detachFromParent = true;
+        }
+
+        if (bottomConnected == true)
+        {
+            part.GetComponent<DecouplerComponent>().detachFromParent = false;
+        }
+    }
+
     public void saveRocket()
     {
         RocketData rocketData = new RocketData();
@@ -135,6 +190,8 @@ public class RocketAssemblerManager : MonoBehaviour
         rocketData.rootPart.partType = originalPart.GetComponent<PhysicsPart>().type;
         rocketData.rootPart.x_pos = originalPart.transform.position.x;
         rocketData.rootPart.y_pos = originalPart.transform.position.y;
+        rocketData.rootPart.z_rot = originalPart.transform.eulerAngles.z;
+        savePartFromType(rocketData.rootPart.partType, originalPart, rocketData.rootPart);
 
         //Get all children
         PartData rootPart = rocketData.rootPart;
@@ -159,8 +216,10 @@ public class RocketAssemblerManager : MonoBehaviour
         GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + rocketData.rootPart.partType));
         originalPart = newPart;
         originalPart.transform.position = new Vector2(rocketData.rootPart.x_pos, rocketData.rootPart.y_pos);
+        originalPart.transform.rotation = Quaternion.Euler(0, 0, rocketData.rootPart.z_rot);
         partPlaced = true;
         originalPart.transform.parent = null;
+        loadPartFromType(rocketData.rootPart.partType, originalPart, rocketData.rootPart);
         LoadChildren(rocketData.rootPart, originalPart);
     }
 
@@ -169,10 +228,26 @@ public class RocketAssemblerManager : MonoBehaviour
         foreach(PartData child in parent.children)
         {
             GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + child.partType));
-            newPart.transform.parent = parentObject.transform;
+            //Important to change rotation before assigning parent
+            newPart.transform.rotation = Quaternion.Euler(0, 0, child.z_rot);
             newPart.transform.position = new Vector2(child.x_pos, child.y_pos);
+            newPart.transform.parent = parentObject.transform;
+            loadPartFromType(child.partType, newPart, child);
             LoadChildren(child, newPart);
         }
+    }
+
+    public void loadPartFromType(string type, GameObject part, PartData partData)
+    {
+        if(type == "decoupler")
+        {
+            loadDecoupler(part, partData);
+        }
+    }
+
+    public void loadDecoupler(GameObject part, PartData partData)
+    {
+        part.GetComponent<DecouplerComponent>().detachFromParent = partData.detachFromParent;
     }
 
     public void AddChildren(PartData parent, GameObject parentObject)
@@ -187,8 +262,23 @@ public class RocketAssemblerManager : MonoBehaviour
             newPart.partType = child.GetComponent<PhysicsPart>().type;
             newPart.x_pos = child.position.x;
             newPart.y_pos = child.position.y;
+            newPart.z_rot = child.eulerAngles.z;
+            savePartFromType(newPart.partType, child.gameObject, newPart);
             parent.children.Add(newPart);
             AddChildren(newPart, child.gameObject);
         }
+    }
+
+    public void savePartFromType(string type, GameObject part, PartData partData)
+    {
+        if(type == "decoupler")
+        {
+            saveDecoupler(part, partData);
+        }
+    }
+
+    public void saveDecoupler(GameObject part, PartData partData)
+    {
+        partData.detachFromParent = part.GetComponent<DecouplerComponent>().detachFromParent;
     }
 }
