@@ -159,6 +159,7 @@ public class RocketAssemblerManager : MonoBehaviour
         GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + rocketData.rootPart.partType));
         originalPart = newPart;
         originalPart.transform.position = new Vector2(rocketData.rootPart.x_pos, rocketData.rootPart.y_pos);
+        partPlaced = true;
         originalPart.transform.parent = null;
         LoadChildren(rocketData.rootPart, originalPart);
     }
