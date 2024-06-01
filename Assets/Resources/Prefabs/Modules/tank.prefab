@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 883461831394683177}
   - component: {fileID: 4454463808331212394}
   - component: {fileID: -1896132167636180690}
+  - component: {fileID: 5636733792229007514}
+  - component: {fileID: 1620941210377110143}
   m_Layer: 0
   m_Name: tank
   m_TagString: Untagged
@@ -55,6 +57,7 @@ MonoBehaviour:
   type: tank
   mass: 0
   CanHaveChildren: 1
+  BlockFuelFlow: 0
 --- !u!114 &-1896132167636180690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +71,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineName: 
+--- !u!114 &5636733792229007514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741375175755937908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba68ebea408fd4ed389787842be3a028, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: oxidizer
+  tankVolume: 0
+  tankHeight: 0
+  tankThermalConductivity: 0
+  tankSurfaceArea: 0
+  tankThickness: 0
+  maxPressure: 0
+  moles: 0
+  internalPressure: 0
+  internalTemperature: 298
+  externalTemperature: 298
+  coolerActive: 0
+  targetTemperature: 0
+  volume: 0
+  state: none
+  mass: 0
+  tested: 0
+  flowController: {fileID: 1620941210377110143}
+  substance: {fileID: 0}
+  explosion: {fileID: 0}
+  MyTime: {fileID: 0}
+--- !u!114 &1620941210377110143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3741375175755937908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4baf604769de045fdbd1cdf5874f000d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  origin: {fileID: 0}
+  destination: {fileID: 0}
+  selfRate: 0
+  opened: 0
+  MyTime: {fileID: 0}
+  refLine: {fileID: 0}
 --- !u!1 &3877604124059248427
 GameObject:
   m_ObjectHideFlags: 0

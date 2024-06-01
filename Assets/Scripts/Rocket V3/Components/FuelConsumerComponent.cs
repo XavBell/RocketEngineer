@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -78,5 +79,76 @@ public class FuelConsumerComponent : MonoBehaviour
                 AddTanks(tankComponent.gameObject);
             }
         }
+    }
+
+    //Amount in kg
+    public bool propellantSufficient(float amount, Propellants propellants)
+    {
+        float oxidizerQty = amount * propellants.oxidizerToFuelRatio;
+        float fuelQty = amount - oxidizerQty;
+
+        float oxidizerAvailable = 0;
+        float fuelAvailable = 0;
+
+        foreach (container container in GetFuelContainers(propellants.oxidizer))
+        {
+            oxidizerAvailable += container.mass;
+        }
+
+        foreach (container container in GetFuelContainers(propellants.fuel))
+        {
+            fuelAvailable += container.mass;
+        }
+
+        if(oxidizerAvailable >= oxidizerQty && fuelAvailable >= fuelQty)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void ConsumeFuel(float amount, Propellants propellants)
+    {
+        //Determine how much fuel and oxidizer to consume
+        float oxidizerQty = amount * propellants.oxidizerToFuelRatio;
+        float fuelQty = amount - oxidizerQty;
+
+        //Find necessaryContainers
+        List<container> oxidizerContainers = GetFuelContainers(propellants.oxidizer);
+        List<container> fuelContainers = GetFuelContainers(propellants.fuel);
+
+        int oxidizerContainerCount = oxidizerContainers.Count;
+        int fuelContainerCount = fuelContainers.Count;
+
+        float ConsumeFuelPerContainer = fuelQty / fuelContainerCount;
+        float ConsumeOxidizerPerContainer = oxidizerQty / oxidizerContainerCount;
+
+        //Consume fuel and oxidizer
+        foreach (container container in oxidizerContainers)
+        {
+            container.Consume(ConsumeOxidizerPerContainer);
+        }
+
+        foreach (container container in fuelContainers)
+        {
+            container.Consume(ConsumeFuelPerContainer);
+        }
+
+    }
+
+    public List<container> GetFuelContainers(Substance substance)
+    {
+        List<container> containers = new List<container>();
+        foreach (TankComponent tank in tanks)
+        {
+            if(tank.GetComponent<container>().substance == substance)
+            {
+                containers.Add(tank.GetComponent<container>());
+            }
+        }
+        return containers;
     }
 }
