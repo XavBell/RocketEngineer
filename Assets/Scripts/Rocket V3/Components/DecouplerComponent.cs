@@ -12,12 +12,12 @@ public class DecouplerComponent : MonoBehaviour
     {
         if(decoupled && !hasDecoupled)
         {
-            Decoupler();
+            Decouple();
             hasDecoupled = true;
         }
     }
 
-    public void Decoupler()
+    public void Decouple()
     {
         if(detachFromParent)
         {
