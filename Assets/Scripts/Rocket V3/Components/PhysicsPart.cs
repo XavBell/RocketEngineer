@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PhysicsPart : MonoBehaviour
 {
     public string type;
+    public Guid guid;
     public float mass;
     public bool CanHaveChildren;
-    //For snapping purpose
 
 }

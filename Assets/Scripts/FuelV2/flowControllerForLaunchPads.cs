@@ -52,6 +52,7 @@ public class flowControllerForLaunchPads : MonoBehaviour
         }  
     }
 
+    //TODO refactor for new rocket system
     public void setTankOrigin()
     {
         rocket = launchPadManager.ConnectedRocket.GetComponent<Rocket>();
@@ -77,6 +78,7 @@ public class flowControllerForLaunchPads : MonoBehaviour
 
     void Disconnect()
     {
+        //TODO refactor for new rocket system
         if(rocket != null)
         {
             foreach(Stages stage in rocket.Stages)

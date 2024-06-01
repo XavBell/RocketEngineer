@@ -26,6 +26,7 @@ public class flowControllerStaticFire : MonoBehaviour
 
     public void updateGuid()
     {
+        //TODO rework for new rocket system
         if(oxidizerContainer)
         {
             oxidizerGuid = oxidizerContainer.guid;

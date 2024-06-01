@@ -198,7 +198,7 @@ public class Prediction : MonoBehaviour
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
         // M = n (t)
-        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); // TODO (Mean Angular Motion can be computed at build/run time once)
+        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); 
         double timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
         double MA = timeWithOffset * meanAngularMotion;
 

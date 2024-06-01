@@ -58,20 +58,5 @@ public class launchPadManager : MonoBehaviour
                 }
             }
         }
-
-        if(operation == "launch")
-        {
-            //TODO
-        }
-
-        if(operation == "staticFire")
-        {
-            //TODO
-        }
-
-        if(operation == "WDR")
-        {
-            //TODO
-        }
     }
 }
