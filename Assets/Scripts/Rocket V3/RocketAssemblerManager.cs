@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Newtonsoft.Json;
+using System.IO;
+using UnityEditor.Localization.Plugins.XLIFF.V12;
 
 public class RocketAssemblerManager : MonoBehaviour
 {
@@ -8,6 +11,10 @@ public class RocketAssemblerManager : MonoBehaviour
     public GameObject activePart;
     public GameObject originalPart;
     public bool partPlaced = false;
+
+    //Prefab list
+    public GameObject tank;
+    public GameObject engine;
 
     // Start is called before the first frame update
     void Start()
@@ -59,37 +66,56 @@ public class RocketAssemblerManager : MonoBehaviour
         {
             if(activePart != null)
             {
-                print("Placing part");
                 //Find closest part with PhysicsPart component
-                PhysicsPart[] parts = FindObjectsOfType<PhysicsPart>();
-                PhysicsPart closestPart = null;
+                AttachPoint[] attachs = FindObjectsOfType<AttachPoint>();
+                AttachPoint closestAttach = null;
                 float closestDistance = Mathf.Infinity;
-                foreach(PhysicsPart part in parts)
+                foreach(AttachPoint attach in attachs)
                 {
-                    float distance = Vector2.Distance(part.transform.position, activePart.transform.position);
-                    if(distance < closestDistance && part.gameObject != activePart)
+                    float distance = Vector2.Distance(attach.transform.position, activePart.transform.position);
+                    if(distance < closestDistance && attach.transform.parent != activePart.transform)
                     {
-                        closestPart = part;
+                        closestAttach = attach;
                         closestDistance = distance;
                     }
                 }
 
                 //Snap to the PhysicsPart Collider
-                if (closestPart != null)
+                if (closestAttach != null)
                 {
-                    if (closestPart.CanHaveChildren == false)
+                    if (closestAttach.GetComponentInParent<PhysicsPart>().CanHaveChildren == false)
                     {
+                        print("Placing part");
                         DestroyImmediate(activePart);
-                        originalPart = activePart;
                         activePart = null;
                         designerCursor.selectedPart = null;
                         Cursor.visible = true;
                         partPlaced = true;
                     }
-                    else
+                    else if(closestAttach.GetComponentInParent<PhysicsPart>().CanHaveChildren == true)
                     {
+                        print("Attaching part");
+                        //Move the part to the attach point
+                        //Find attach point on part that is closest to the attach point
+                        AttachPoint[] attachPoints = activePart.transform.GetComponentsInChildren<AttachPoint>();
+                        AttachPoint closestAttachPoint = null;
+                        float closestAttachPointDistance = Mathf.Infinity;
+                        foreach(AttachPoint attachPoint in attachPoints)
+                        {
+                            float distance = Vector2.Distance(attachPoint.transform.position, closestAttach.transform.position);
+                            if(distance < closestAttachPointDistance && attachPoint.transform.parent != closestAttach.transform.parent.transform)
+                            {
+                                closestAttachPoint = attachPoint;
+                                closestAttachPointDistance = distance;
+                            }
+                        }
 
-                        activePart.transform.parent = closestPart.transform;
+                        //Move the part to the attach point
+                        Vector2 offset = closestAttach.transform.position - closestAttachPoint.transform.position;
+                        activePart.transform.position = new Vector2(activePart.transform.position.x + offset.x, activePart.transform.position.y + offset.y);
+
+
+                        activePart.transform.parent = closestAttach.transform.parent.transform;
                         activePart = null;
                         designerCursor.selectedPart = null;
                         Cursor.visible = true;
@@ -98,6 +124,70 @@ public class RocketAssemblerManager : MonoBehaviour
 
             }
             print(originalPart.transform.childCount);
+        }
+    }
+
+    public void saveRocket()
+    {
+        RocketData rocketData = new RocketData();
+        rocketData.rocketName = "Rocket";
+        rocketData.rootPart = new PartData();
+        rocketData.rootPart.partType = originalPart.GetComponent<PhysicsPart>().type;
+        rocketData.rootPart.x_pos = originalPart.transform.position.x;
+        rocketData.rootPart.y_pos = originalPart.transform.position.y;
+
+        //Get all children
+        PartData rootPart = rocketData.rootPart;
+        GameObject rootPartObject = originalPart;
+        AddChildren(rootPart, rootPartObject);
+        
+
+        //Write file
+        string saveUserPath = Application.persistentDataPath + "/rocket.json";
+        string rocketData1 = JsonConvert.SerializeObject(rocketData);
+        File.WriteAllText(saveUserPath, rocketData1);
+
+    }
+
+    public void loadRocket()
+    {
+        string saveUserPath = Application.persistentDataPath + "/rocket.json";
+        string rocketData1 = File.ReadAllText(saveUserPath);
+        RocketData rocketData = JsonConvert.DeserializeObject<RocketData>(rocketData1);
+
+        //Load rocket
+        GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + rocketData.rootPart.partType));
+        originalPart = newPart;
+        originalPart.transform.position = new Vector2(rocketData.rootPart.x_pos, rocketData.rootPart.y_pos);
+        originalPart.transform.parent = null;
+        LoadChildren(rocketData.rootPart, originalPart);
+    }
+
+    public void LoadChildren(PartData parent, GameObject parentObject)
+    {
+        foreach(PartData child in parent.children)
+        {
+            GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + child.partType));
+            newPart.transform.parent = parentObject.transform;
+            newPart.transform.position = new Vector2(child.x_pos, child.y_pos);
+            LoadChildren(child, newPart);
+        }
+    }
+
+    public void AddChildren(PartData parent, GameObject parentObject)
+    {
+        foreach(Transform child in parentObject.transform)
+        {
+            if(child.GetComponent<PhysicsPart>() == null)
+            {
+                continue;
+            }
+            PartData newPart = new PartData();
+            newPart.partType = child.GetComponent<PhysicsPart>().type;
+            newPart.x_pos = child.position.x;
+            newPart.y_pos = child.position.y;
+            parent.children.Add(newPart);
+            AddChildren(newPart, child.gameObject);
         }
     }
 }

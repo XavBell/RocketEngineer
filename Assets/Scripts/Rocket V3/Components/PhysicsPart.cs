@@ -8,6 +8,5 @@ public class PhysicsPart : MonoBehaviour
     public float mass;
     public bool CanHaveChildren;
     //For snapping purpose
-    public BoxCollider2D boxCollider;
 
 }
