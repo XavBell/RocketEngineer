@@ -22,8 +22,14 @@ public class DecouplerComponent : MonoBehaviour
         if(detachFromParent)
         {
             //Separate from parent
+            GameObject parent = transform.parent.gameObject;
             transform.parent = null;
-        }else{
+            GameObject rocketController = Instantiate(Resources.Load("Prefabs/RocketController")) as GameObject;
+            rocketController.transform.position = this.transform.position;
+            this.transform.parent = rocketController.transform;
+            rocketController.GetComponent<RocketController>().TransferStateFromDecoupling(parent.GetComponentInParent<RocketController>());
+        }
+        else{
             //Detach children
             //Conserve parent
             GameObject parent = transform.parent.gameObject;
@@ -31,10 +37,16 @@ public class DecouplerComponent : MonoBehaviour
             {
                 if(child.GetComponent<PhysicsPart>() != null)
                 {
+                    //Single child
                     child.transform.parent = null;
+                    GameObject rocketController = Instantiate(Resources.Load("Prefabs/RocketController")) as GameObject;
+                    rocketController.transform.position = child.transform.position;
+                    child.transform.parent = rocketController.transform;
+                    rocketController.GetComponent<RocketController>().TransferStateFromDecoupling(parent.GetComponentInParent<RocketController>());
                 }
             }
             transform.parent = parent.transform;
+            
         }
     }
 }
