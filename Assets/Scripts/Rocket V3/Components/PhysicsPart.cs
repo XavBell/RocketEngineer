@@ -9,5 +9,6 @@ public class PhysicsPart : MonoBehaviour
     public Guid guid;
     public float mass;
     public bool CanHaveChildren;
+    public bool BlockFuelFlow;
 
 }
