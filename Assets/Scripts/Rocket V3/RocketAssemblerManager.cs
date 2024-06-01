@@ -25,11 +25,7 @@ public class RocketAssemblerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        onClick();
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            Rotate();
-        }
+        HandleInput();
     }
 
     public void selectPart(GameObject part)
@@ -43,11 +39,16 @@ public class RocketAssemblerManager : MonoBehaviour
         }
     }
 
-    public void onClick()
+    public void HandleInput()
     {
         if(Input.GetMouseButtonDown(0))
         {
             placePart();
+        }
+
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Rotate();
         }
     }
 
@@ -61,6 +62,7 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void placePart()
     {
+        //Check if root part is present
         if(partPlaced == false)
         {
             if(activePart != null)
@@ -74,11 +76,12 @@ public class RocketAssemblerManager : MonoBehaviour
             }
         }
 
+        //If root is present snap to closest part
         if(partPlaced == true)
         {
             if(activePart != null)
             {
-                //Find closest part with PhysicsPart component
+                //Find closest part with PhysicsPart component on other placed parts
                 AttachPoint[] attachs = FindObjectsOfType<AttachPoint>();
                 AttachPoint closestAttach = null;
                 float closestDistance = Mathf.Infinity;
@@ -92,33 +95,19 @@ public class RocketAssemblerManager : MonoBehaviour
                     }
                 }
 
-                //Snap to the PhysicsPart Collider
+                //Snap to the PhysicsPart Collider if attach is found
                 if (closestAttach != null)
                 {
                     if (closestAttach.GetComponentInParent<PhysicsPart>().CanHaveChildren == false)
                     {
                         DestroyImmediate(activePart);
-                        activePart = null;
-                        designerCursor.selectedPart = null;
-                        Cursor.visible = true;
                         partPlaced = true;
+                        ClearPart();
                     }
                     else if(closestAttach.GetComponentInParent<PhysicsPart>().CanHaveChildren == true)
                     {
-                        //Move the part to the attach point
                         //Find attach point on part that is closest to the attach point
-                        AttachPoint[] attachPoints = activePart.transform.GetComponentsInChildren<AttachPoint>();
-                        AttachPoint closestAttachPoint = null;
-                        float closestAttachPointDistance = Mathf.Infinity;
-                        foreach(AttachPoint attachPoint in attachPoints)
-                        {
-                            float distance = Vector2.Distance(attachPoint.transform.position, closestAttach.transform.position);
-                            if(distance < closestAttachPointDistance && attachPoint.transform.parent != closestAttach.transform.parent.transform)
-                            {
-                                closestAttachPoint = attachPoint;
-                                closestAttachPointDistance = distance;
-                            }
-                        }
+                        AttachPoint closestAttachPoint = FindClosestAttachPoint(closestAttach);
 
                         closestAttach.isConnected = true;
                         closestAttachPoint.isConnected = true;
@@ -128,15 +117,37 @@ public class RocketAssemblerManager : MonoBehaviour
                         activePart.transform.position = new Vector2(activePart.transform.position.x + offset.x, activePart.transform.position.y + offset.y);
                         activePart.transform.parent = closestAttach.transform.parent.transform;
                         initializePartFromType(activePart, activePart.GetComponent<PhysicsPart>().type);
-                        activePart = null;
-                        designerCursor.selectedPart = null;
-                        Cursor.visible = true;
+                        ClearPart();
                     }
                 }
 
             }
             print(originalPart.transform.childCount);
         }
+    }
+
+    private AttachPoint FindClosestAttachPoint(AttachPoint closestAttach)
+    {
+        AttachPoint[] attachPoints = activePart.transform.GetComponentsInChildren<AttachPoint>();
+        AttachPoint closestAttachPoint = null;
+        float closestAttachPointDistance = Mathf.Infinity;
+        foreach (AttachPoint attachPoint in attachPoints)
+        {
+            float distance = Vector2.Distance(attachPoint.transform.position, closestAttach.transform.position);
+            if (distance < closestAttachPointDistance && attachPoint.transform.parent != closestAttach.transform.parent.transform)
+            {
+                closestAttachPoint = attachPoint;
+                closestAttachPointDistance = distance;
+            }
+        }
+        return closestAttachPoint;
+    }
+
+    private void ClearPart()
+    {
+        activePart = null;
+        designerCursor.selectedPart = null;
+        Cursor.visible = true;
     }
 
     public void initializePartFromType(GameObject part, string type)
@@ -154,7 +165,7 @@ public class RocketAssemblerManager : MonoBehaviour
         bool bottomConnected = false;
         foreach (AttachPoint attachPoint in attachPoints)
         {
-            print("Test");
+            //Determine if the decoupler is connected to the top or bottom to know how it will detach
             if (attachPoint.relativeOrientation == "top")
             {
                 if (attachPoint.isConnected == true)
