@@ -4,9 +4,12 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
 using System;
+using UnityEngine.UI;
+using TMPro;
 
 public class RocketAssemblerManager : MonoBehaviour
 {
+    MasterManager masterManager;
     public DesignerCursor designerCursor;
     public GameObject activePart;
     public GameObject originalPart;
@@ -14,18 +17,34 @@ public class RocketAssemblerManager : MonoBehaviour
     public rocketSaveManager RocketSaveManager = new rocketSaveManager();
     public bool partPlaced = false;
 
+    //UI References
+    public GameObject MainPanel;
+    public GameObject CreatorPanel;
+    public GameObject DataPanel;
+    public GameObject propellantPanel;
+    public GameObject scrollEngine;
+    public GameObject scrollTank;
+    public GameObject engineButtonPrefab;
+    public GameObject tankButtonPrefab;
+
+
     //For rocket wide variables
     public List<string> lineNames = new List<string>();
     public List<Guid> lineGuids = new List<Guid>();
 
     //For editor
     public string lineName;
-    public TankComponent tankComponent;
+    public savePath savePathRef = new savePath();
+
+
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        masterManager = FindObjectOfType<MasterManager>();
+        //savePathRef = new savePath();
+        retrieveEngineSaved();
+        retrieveTankSaved();
     }
 
     // Update is called once per frame
@@ -225,6 +244,60 @@ public class RocketAssemblerManager : MonoBehaviour
     {
         RocketSaveManager.loadRocket(rocketController, true);
         partPlaced = true;
+    }
+
+    public void retrieveEngineSaved()
+    {
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("engineButton");
+        foreach (GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder);
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject engine = Instantiate(engineButtonPrefab) as GameObject;
+            GameObject child = engine.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollEngine.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+            child.GetComponentInChildren<OnClick>().filePath = savePathRef.engineFolder;
+        }
+    }
+
+    public void retrieveTankSaved()
+    {
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("tankButton");
+        foreach (GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder);
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject tank = Instantiate(tankButtonPrefab) as GameObject;
+            GameObject child = tank.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollTank.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+            child.GetComponentInChildren<OnClick>().filePath = savePathRef.tankFolder;
+        }
     }
     
 }

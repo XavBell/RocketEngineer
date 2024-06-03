@@ -18,7 +18,7 @@ public class EditorButton : Editor
 
         if(GUILayout.Button("Set Line"))
         {
-            rocketAssemblerManager.SetLine(rocketAssemblerManager.lineName, rocketAssemblerManager.tankComponent);
+            //rocketAssemblerManager.SetLine(rocketAssemblerManager.lineName, rocketAssemblerManager.tankComponent);
         }
     } 
 }
