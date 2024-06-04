@@ -216,6 +216,7 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void initializeTank(GameObject tank, string path)
     {
+        tank.GetComponent<PhysicsPart>().path = path;
         var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + path);
         saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
         tank.transform.localScale = new Vector3(loadedTank.tankSizeX, loadedTank.tankSizeX, tank.transform.localScale.z);
@@ -223,6 +224,7 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void initializeEngine(GameObject engine, string path)
     {
+        engine.GetComponent<PhysicsPart>().path = path;
         var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder + path);
         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
         engine.GetComponent<EngineComponent>()._nozzleName = loadedEngine.nozzleName_s;

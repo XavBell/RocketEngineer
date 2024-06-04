@@ -6,6 +6,7 @@ using System;
 public class PhysicsPart : MonoBehaviour
 {
     public string type;
+    public string path;
     public Guid guid;
     public float mass;
     public bool CanHaveChildren;

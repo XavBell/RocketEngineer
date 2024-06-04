@@ -8,6 +8,7 @@ using System;
 public class PartData
 {
     public string partType;
+    public string partPath;
     public Guid guid;
     public float x_pos;
     public float y_pos;

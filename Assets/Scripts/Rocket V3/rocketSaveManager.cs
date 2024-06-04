@@ -7,6 +7,13 @@ using Newtonsoft.Json;
 
 public class rocketSaveManager : MonoBehaviour
 {
+    public savePath savePathRef = new savePath();
+    public MasterManager masterManager;
+    public void Start()
+    {
+        masterManager = FindObjectOfType<MasterManager>();
+    }
+
     public void saveRocket(RocketController rocketController, bool inEditor)
     {
         RocketData rocketData = new RocketData();
@@ -86,6 +93,11 @@ public class rocketSaveManager : MonoBehaviour
         {
             loadTank(part, partData, rocketController);
         }
+
+        if (type == "engine")
+        {
+            loadEngine(part, partData);
+        }
     }
 
     public void loadDecoupler(GameObject part, PartData partData)
@@ -95,11 +107,30 @@ public class rocketSaveManager : MonoBehaviour
 
     public void loadTank(GameObject part, PartData partData, RocketController rocketController)
     {
+        part.GetComponent<PhysicsPart>().path = partData.fileName;
         if (part.GetComponent<TankComponent>().lineGuid != Guid.Empty)
         {
             part.GetComponent<TankComponent>().lineGuid = partData.lineGuid;
             part.GetComponent<TankComponent>().lineName = rocketController.lineNames[rocketController.lineGuids.IndexOf(partData.lineGuid)];
         }
+
+        //Load tank from path
+        var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + partData.fileName);
+        saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
+        part.transform.localScale = new Vector3(loadedTank.tankSizeX, loadedTank.tankSizeY, 1);
+    }
+
+    public void loadEngine(GameObject part, PartData partData)
+    {
+        part.GetComponent<PhysicsPart>().path = partData.fileName;
+        
+        //Load engine from path
+        var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder + partData.fileName);
+        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+        part.GetComponent<EngineComponent>()._nozzleName = loadedEngine.nozzleName_s;
+        part.GetComponent<EngineComponent>()._pumpName = loadedEngine.pumpName_s;
+        part.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
+        part.GetComponent<EngineComponent>().InitializeSprite();
     }
 
     public void AddChildren(PartData parent, GameObject parentObject)
@@ -116,6 +147,7 @@ public class rocketSaveManager : MonoBehaviour
             newPart.y_pos = child.localPosition.y;
             newPart.z_rot = child.eulerAngles.z;
             newPart.guid = child.GetComponent<PhysicsPart>().guid;
+            newPart.partPath = child.GetComponent<PhysicsPart>().path;
             savePartFromType(newPart.partType, child.gameObject, newPart);
             parent.children.Add(newPart);
             AddChildren(newPart, child.gameObject);
@@ -133,6 +165,11 @@ public class rocketSaveManager : MonoBehaviour
         {
             saveTank(part, partData);
         }
+
+        if (type == "engine")
+        {
+            saveEngine(part, partData);
+        }
     }
 
     public void saveDecoupler(GameObject part, PartData partData)
@@ -142,6 +179,12 @@ public class rocketSaveManager : MonoBehaviour
 
     public void saveTank(GameObject part, PartData partData)
     {
+        partData.fileName = part.GetComponent<PhysicsPart>().path;
         partData.lineGuid = part.GetComponent<TankComponent>().lineGuid;
+    }
+
+    public void saveEngine(GameObject part, PartData partData)
+    {
+        partData.fileName = part.GetComponent<PhysicsPart>().path;
     }
 }
