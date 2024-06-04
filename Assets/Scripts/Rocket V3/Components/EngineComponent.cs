@@ -14,6 +14,10 @@ public class EngineComponent : MonoBehaviour
     public bool active;
     public Propellants usedPropellant;
 
+    public string _nozzleName;
+    public string _pumpName;
+    public string _turbineName;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,5 +35,16 @@ public class EngineComponent : MonoBehaviour
         {
             return Vector2.zero;
         }
+    }
+
+    public void InitializeSprite()
+    {
+        Nozzle nozzle = Resources.Load<Nozzle>("Engine/Nozzles/" + _nozzleName);
+        Pump pump = Resources.Load<Pump>("Engine/Pumps/" + _pumpName);
+        Turbine turbine = Resources.Load<Turbine>("Engine/Turbines/" + _turbineName);
+
+        this.GetComponentInChildren<autoSpritePositionner>().nozzle.GetComponent<SpriteRenderer>().sprite = nozzle.sprite;
+        this.GetComponentInChildren<autoSpritePositionner>().pump.GetComponent<SpriteRenderer>().sprite = pump.sprite;
+        this.GetComponentInChildren<autoSpritePositionner>().turbine.GetComponent<SpriteRenderer>().sprite = turbine.sprite;
     }
 }

@@ -225,7 +225,10 @@ public class RocketAssemblerManager : MonoBehaviour
     {
         var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder + path);
         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
-        
+        engine.GetComponent<EngineComponent>()._nozzleName = loadedEngine.nozzleName_s;
+        engine.GetComponent<EngineComponent>()._pumpName = loadedEngine.pumpName_s;
+        engine.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
+        engine.GetComponent<EngineComponent>().InitializeSprite();
     }
 
     private static void InitializeDecoupler(GameObject part)
