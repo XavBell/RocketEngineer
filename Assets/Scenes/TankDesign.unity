@@ -175,10 +175,10 @@ MonoBehaviour:
   saveName: 
   Tank: {fileID: 2035272971}
   tankSP: {fileID: 0}
-  attachTopObj: {fileID: 0}
-  attachBottomObj: {fileID: 0}
-  attachRightObj: {fileID: 0}
-  attachLeftObj: {fileID: 0}
+  attachTopObj: {fileID: 2035272974}
+  attachBottomObj: {fileID: 2035272975}
+  attachRightObj: {fileID: 2035272972}
+  attachLeftObj: {fileID: 2035272973}
   tankHeightFloat: 0
   tankDiameterFloat: 0
   costValue: 0
@@ -1654,9 +1654,9 @@ RectTransform:
   m_Father: {fileID: 904792194}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 41.5008, y: -94.275}
   m_SizeDelta: {x: 51, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &294928904
@@ -2487,9 +2487,9 @@ RectTransform:
   m_Father: {fileID: 1604090330}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 44.2508, y: -94.275}
   m_SizeDelta: {x: 62, y: 84}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &443797528
@@ -4871,9 +4871,9 @@ RectTransform:
   m_Father: {fileID: 1604090330}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 272.9458, y: -94.275}
   m_SizeDelta: {x: 372.3868, y: 88.55353}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &700719964
@@ -8236,9 +8236,9 @@ RectTransform:
   m_Father: {fileID: 904792194}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 270.1958, y: -94.275}
   m_SizeDelta: {x: 372.3868, y: 88.55353}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1388001306
@@ -13185,6 +13185,26 @@ PrefabInstance:
 --- !u!1 &2035272971 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9057782884087415771, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+  m_PrefabInstance: {fileID: 2035272970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035272972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6717742668550320246, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+  m_PrefabInstance: {fileID: 2035272970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035272973 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4934586387494571457, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+  m_PrefabInstance: {fileID: 2035272970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035272974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9166749568886438391, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+  m_PrefabInstance: {fileID: 2035272970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035272975 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2061136345880513498, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
   m_PrefabInstance: {fileID: 2035272970}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2040184248

@@ -63,8 +63,8 @@ public class OnClick : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name.ToString() == "Building")
         {
-           GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
-           if("/" + b1.GetComponentInChildren<TextMeshProUGUI>().text != GameManager.GetComponent<GameManager>().path || GameManager.GetComponent<GameManager>().partPath != filePath)
+           RocketAssemblerManager GameManager = FindObjectOfType<RocketAssemblerManager>();
+           if("/" + b1.GetComponentInChildren<TextMeshProUGUI>().text != GameManager.path)
            {
                 b1.interactable = true;
            }
@@ -73,29 +73,20 @@ public class OnClick : MonoBehaviour
 
     public void clicked()
     {
-        GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
+        RocketAssemblerManager GameManager = FindObjectOfType<RocketAssemblerManager>();
         GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
         if (GameManager != null)
         {
-            GameManager.GetComponent<GameManager>().path = "/"+ b1.GetComponentInChildren<TextMeshProUGUI>().text;
+            GameManager.path = "/"+ b1.GetComponentInChildren<TextMeshProUGUI>().text;
             if (filePath == savePathRef.engineFolder)
             {
-                GameManager.GetComponent<GameManager>().partPath = filePath;
-                GameManager.GetComponent<GameManager>().PrefabToConstruct = GameManager.GetComponent<GameManager>().Engine;
-                b1.interactable = false;
+                GameManager.selectPart(enginePrefab);
+                b1.interactable = true;
             }
-
-            if (filePath == savePathRef.rocketFolder)
-            {
-                GameManager.GetComponent<GameManager>().partPath = filePath;
-                b1.interactable = false;
-            }
-
             if (filePath == savePathRef.tankFolder)
             {
-                GameManager.GetComponent<GameManager>().partPath = filePath;
-                GameManager.GetComponent<GameManager>().PrefabToConstruct = GameManager.GetComponent<GameManager>().Tank;
-                b1.interactable = false;
+                GameManager.selectPart(tankPrefab);
+                b1.interactable = true;
             }
 
         }

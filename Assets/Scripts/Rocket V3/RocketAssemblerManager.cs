@@ -35,6 +35,9 @@ public class RocketAssemblerManager : MonoBehaviour
     //For editor
     public string lineName;
     public savePath savePathRef = new savePath();
+    public GameObject[] panels;
+    public string path;
+    public string partType;
 
 
 
@@ -59,6 +62,7 @@ public class RocketAssemblerManager : MonoBehaviour
         {
             GameObject newPart = Instantiate(part, designerCursor.transform);
             designerCursor.selectedPart = newPart;
+            initializePartFromType(newPart, newPart.GetComponent<PhysicsPart>().type);
             activePart = newPart;
             Cursor.visible = false;
         }
@@ -198,6 +202,30 @@ public class RocketAssemblerManager : MonoBehaviour
         {
             InitializeDecoupler(part);
         }
+
+        if(type == "tank")
+        {
+            initializeTank(part, path);
+        }
+
+        if(type == "engine")
+        {
+            initializeEngine(part, path);
+        }
+    }
+
+    public void initializeTank(GameObject tank, string path)
+    {
+        var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + path);
+        saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
+        tank.transform.localScale = new Vector3(loadedTank.tankSizeX, loadedTank.tankSizeX, tank.transform.localScale.z);
+    }
+
+    public void initializeEngine(GameObject engine, string path)
+    {
+        var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder + path);
+        saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+        
     }
 
     private static void InitializeDecoupler(GameObject part)
@@ -297,6 +325,54 @@ public class RocketAssemblerManager : MonoBehaviour
             TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
             b1text.text = Path.GetFileName(file.ToString());
             child.GetComponentInChildren<OnClick>().filePath = savePathRef.tankFolder;
+        }
+    }
+
+    public void BackToMain()
+    {
+        MainPanel.SetActive(true);
+        CreatorPanel.SetActive(false);
+        DataPanel.SetActive(false);
+    }
+
+    public void EnterCreator()
+    {
+        MainPanel.SetActive(false);
+        CreatorPanel.SetActive(true);
+        DataPanel.SetActive(false);
+    }
+
+    public void EnterData()
+    {
+        MainPanel.SetActive(false);
+        CreatorPanel.SetActive(false);
+        DataPanel.SetActive(true);
+    }
+
+    public void activateDeactivate(GameObject button)
+    {
+        hidePanels(button);
+        if (button.activeSelf == true)
+        {
+            button.SetActive(false);
+            return;
+        }
+
+        if (button.activeSelf == false)
+        {
+            button.SetActive(true);
+            return;
+        }
+    }
+
+    public void hidePanels(GameObject excludedPanel)
+    {
+        foreach (GameObject panel in panels)
+        {
+            if (panel != excludedPanel)
+            {
+                panel.SetActive(false);
+            }
         }
     }
     
