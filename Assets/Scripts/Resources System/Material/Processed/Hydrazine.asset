@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5abc7bb59a1b14f2889693d40a5a51d0, type: 3}
+  m_Name: Hydrazine
+  m_EditorClassIdentifier: 
+  Name: hydrazine
+  Icon: {fileID: 0}
+  Density: 1020
+  LiquidTemperature: 275
+  GaseousTemperature: 387
+  SolidTemperature: 275
+  MolarMass: 32.0452
+  SpecificHeatCapacity: 2090
+  hasSolidState: 1
+  hasLiquidState: 1
+  hasGaseousState: 1
+  cargoStorage: 0
+  liquidStorage: 1
+  tankStorage: 1
