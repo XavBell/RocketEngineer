@@ -2067,7 +2067,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.4999695, y: -0.5000019}
+  m_AnchoredPosition: {x: -7.4999695, y: -0.5}
   m_SizeDelta: {x: -35, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &216062868
@@ -2090,7 +2090,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Line 21
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0711eed8d3bfc4e4e843fbf345d270cc, type: 2}
   m_sharedMaterial: {fileID: -3526102991880937006, guid: 0711eed8d3bfc4e4e843fbf345d270cc, type: 2}
@@ -3616,7 +3616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -49.57141, y: 32.943848}
+  m_AnchoredPosition: {x: -49.57129, y: 32.943848}
   m_SizeDelta: {x: 316.8573, y: 156.11243}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &386237550
@@ -3751,6 +3751,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropdown: {fileID: 103376647}
   tank: {fileID: 0}
+  rocketController: {fileID: 1916947717}
 --- !u!1 &391018535
 GameObject:
   m_ObjectHideFlags: 0
@@ -6297,7 +6298,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -24.165405, y: -19.465454}
+  m_AnchoredPosition: {x: -24.165527, y: -19.465454}
   m_SizeDelta: {x: 319.6692, y: 232.2527}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &910698479
@@ -6510,7 +6511,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.005004883, y: 0}
+  m_AnchoredPosition: {x: -0.0048828125, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &937087155
@@ -6565,13 +6566,14 @@ MonoBehaviour:
   MainPanel: {fileID: 0}
   CreatorPanel: {fileID: 0}
   DataPanel: {fileID: 0}
-  propellantPanel: {fileID: 0}
+  propellantPanel: {fileID: 388130876}
   scrollEngine: {fileID: 1736781111}
   scrollTank: {fileID: 529031657}
   engineButtonPrefab: {fileID: 4939193850173480501, guid: c09ec9b954250a248bf734ee24c2e648, type: 3}
   tankButtonPrefab: {fileID: 4939193850173480501, guid: d2f4f79a37361bd4fa8f0262a0ebe095, type: 3}
+  lineDropdown: {fileID: 1856057600}
+  lineName: {fileID: 291199887}
   lineNames: []
-  lineName: 
   panels:
   - {fileID: 612933802}
   - {fileID: 1861249053}
@@ -7551,7 +7553,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1118414051}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 937087157}
+        m_TargetAssemblyTypeName: RocketAssemblerManager, Assembly-CSharp
+        m_MethodName: RemoveLine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1118414051
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7764,7 +7778,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1138880234}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 937087157}
+        m_TargetAssemblyTypeName: RocketAssemblerManager, Assembly-CSharp
+        m_MethodName: AddLine
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1138880234
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8569,7 +8595,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: "\u200B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0711eed8d3bfc4e4e843fbf345d270cc, type: 2}
   m_sharedMaterial: {fileID: -3526102991880937006, guid: 0711eed8d3bfc4e4e843fbf345d270cc, type: 2}
@@ -9828,7 +9854,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1104738768}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.999988
+  m_Size: 0.99931824
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11373,7 +11399,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.49999523}
+  m_AnchoredPosition: {x: 0, y: -0.49999237}
   m_SizeDelta: {x: -20, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1560350750
@@ -12374,7 +12400,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0006041558}
+  m_AnchoredPosition: {x: 0, y: 0.000066167355}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1752375247
@@ -13181,13 +13207,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Option A
-      m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

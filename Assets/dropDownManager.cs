@@ -8,7 +8,8 @@ using UnityEngine.SceneManagement;
 public class dropDownManager : MonoBehaviour
 {
     public TMP_Dropdown dropdown;
-    public GameObject tank;
+    public TankComponent tank;
+    public RocketController rocketController;
     
     // Start is called before the first frame update
     void Start()
@@ -16,15 +17,8 @@ public class dropDownManager : MonoBehaviour
         if(SceneManager.GetActiveScene().name == "Building")
         {
             dropdown.gameObject.SetActive(true);
-            if(tank.GetComponentInChildren<Tank>().propellantCategory == "fuel")
-            {
-                dropdown.value = 0;
-            }
-
-            if(tank.GetComponentInChildren<Tank>().propellantCategory == "oxidizer")
-            {
-                dropdown.value = 1;
-            }
+            fetchLines();
+            
         }else
         {
             dropdown.gameObject.SetActive(false);
@@ -39,16 +33,19 @@ public class dropDownManager : MonoBehaviour
 
     public void OnValueChanged()
     {
-        if(dropdown.value == 0)
-        {
-            tank.GetComponentInChildren<Tank>().propellantCategory = "fuel";
-        }
-
-        if(dropdown.value == 1)
-        {
-            tank.GetComponentInChildren<Tank>().propellantCategory = "oxidizer";
-        }
-
+        tank.lineName = dropdown.options[dropdown.value].text;
+        tank.lineGuid = rocketController.lineGuids[rocketController.lineNames.IndexOf(tank.lineName)];
         this.gameObject.SetActive(false);
+    }
+
+    public void fetchLines()
+    {
+        dropdown.ClearOptions();
+        List<string> options = new List<string>();
+        foreach (var line in rocketController.lineNames)
+        {
+            options.Add(line);
+        }
+        dropdown.AddOptions(options);
     }
 }

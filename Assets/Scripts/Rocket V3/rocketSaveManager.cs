@@ -108,7 +108,7 @@ public class rocketSaveManager : MonoBehaviour
     public void loadTank(GameObject part, PartData partData, RocketController rocketController)
     {
         part.GetComponent<PhysicsPart>().path = partData.fileName;
-        if (part.GetComponent<TankComponent>().lineGuid != Guid.Empty)
+        if (partData.lineGuid != Guid.Empty)
         {
             part.GetComponent<TankComponent>().lineGuid = partData.lineGuid;
             part.GetComponent<TankComponent>().lineName = rocketController.lineNames[rocketController.lineGuids.IndexOf(partData.lineGuid)];

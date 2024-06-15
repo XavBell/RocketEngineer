@@ -4828,7 +4828,7 @@ GameObject:
   - component: {fileID: 7541715463899611106}
   - component: {fileID: 6662715733033390650}
   - component: {fileID: 6851895273708816201}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: engine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5032,6 +5032,9 @@ MonoBehaviour:
   maxFuelFlow: 0
   active: 0
   usedPropellant: {fileID: 0}
+  _nozzleName: 
+  _pumpName: 
+  _turbineName: 
 --- !u!114 &6851895273708816201
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5045,6 +5048,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: engine
+  path: 
   mass: 0
   CanHaveChildren: 1
   BlockFuelFlow: 0
@@ -5059,7 +5063,7 @@ GameObject:
   - component: {fileID: 8466374082745505189}
   - component: {fileID: 4656759188028270651}
   - component: {fileID: 1644447043626134101}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: nozzleEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5170,7 +5174,7 @@ GameObject:
   - component: {fileID: 1864799062694230002}
   - component: {fileID: 8125733487590295239}
   - component: {fileID: 7589567631520681465}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: turbopump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5415,7 +5419,7 @@ GameObject:
   - component: {fileID: 1478923633632404023}
   - component: {fileID: 6737231238763022568}
   - component: {fileID: 4425064416580091236}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: nozzleExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5430,7 +5434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8404881303628639225}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.004, y: 0.16824993, z: 0}
+  m_LocalPosition: {x: 0.004, y: -0.25487506, z: 0}
   m_LocalScale: {x: 0.125, y: 0.125, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10514,7 +10518,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1265132943563176441, guid: 5dc4ea6f5ba1147e7904d3ef5d2f43e6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.051999927
+      value: -0.7942501
       objectReference: {fileID: 0}
     - target: {fileID: 1265132943563176441, guid: 5dc4ea6f5ba1147e7904d3ef5d2f43e6, type: 3}
       propertyPath: m_LocalPosition.z

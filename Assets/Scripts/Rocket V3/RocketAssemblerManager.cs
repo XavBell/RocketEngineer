@@ -26,6 +26,8 @@ public class RocketAssemblerManager : MonoBehaviour
     public GameObject scrollTank;
     public GameObject engineButtonPrefab;
     public GameObject tankButtonPrefab;
+    public TMP_Dropdown lineDropdown;
+    public TMP_InputField lineName;
 
 
     //For rocket wide variables
@@ -33,7 +35,6 @@ public class RocketAssemblerManager : MonoBehaviour
     public List<Guid> lineGuids = new List<Guid>();
 
     //For editor
-    public string lineName;
     public savePath savePathRef = new savePath();
     public GameObject[] panels;
     public string path;
@@ -73,6 +74,11 @@ public class RocketAssemblerManager : MonoBehaviour
         if(Input.GetMouseButtonDown(0))
         {
             placePart();
+        }
+
+        if(Input.GetMouseButtonDown(1))
+        {
+            OpenLineSetter();
         }
 
         if(Input.GetKeyDown(KeyCode.R))
@@ -161,15 +167,38 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void AddLine()
     {
-        rocketController.lineNames.Add(lineName);
+        rocketController.lineNames.Add(lineName.text);
         rocketController.lineGuids.Add(Guid.NewGuid());
+        lineDropdown.AddOptions(new List<string> { lineName.text });
     }
 
-    //Purely for editor
-    public void SetLine(string line, TankComponent tankComponent)
+    public void RemoveLine()
     {
-        tankComponent.lineName = line;
-        tankComponent.lineGuid = rocketController.lineGuids[rocketController.lineNames.IndexOf(line)];
+        int index = rocketController.lineNames.IndexOf(lineDropdown.options[lineDropdown.value].text);
+        rocketController.lineNames.RemoveAt(index);
+        rocketController.lineGuids.RemoveAt(index);
+        lineDropdown.ClearOptions();
+        lineDropdown.AddOptions(rocketController.lineNames);
+    }
+
+    public void OpenLineSetter()
+    {
+        RaycastHit2D raycastHit;
+        Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 ray = cameraPos;
+        raycastHit = Physics2D.Raycast(ray, new Vector2(0, 1000));
+        print("Test 1");
+        if(raycastHit.transform != null)
+        {
+            print("Test 2");
+            print(raycastHit.transform.gameObject.name);
+            if(raycastHit.transform.gameObject.GetComponent<TankComponent>())
+            {
+                print("Test 3");
+                propellantPanel.SetActive(true);
+                propellantPanel.GetComponent<dropDownManager>().tank = raycastHit.transform.gameObject.GetComponent<TankComponent>();
+            }
+        }
     }
 
     private AttachPoint FindClosestAttachPoint(AttachPoint closestAttach)

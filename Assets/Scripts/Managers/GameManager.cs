@@ -143,10 +143,10 @@ public class GameManager : MonoBehaviour
         print(raycastHit);
         if(raycastHit.transform != null)
         {
-            if(raycastHit.transform.gameObject.GetComponent<Tank>())
+            if(raycastHit.transform.gameObject.GetComponent<TankComponent>())
             {
                 propellantPanel.SetActive(true);
-                propellantPanel.GetComponent<dropDownManager>().tank = raycastHit.transform.gameObject;
+                propellantPanel.GetComponent<dropDownManager>().tank = raycastHit.transform.gameObject.GetComponent<TankComponent>();
             }
         }
     }

@@ -4890,7 +4890,7 @@ GameObject:
   - component: {fileID: 8116599435102951288}
   - component: {fileID: 1092428445933155961}
   - component: {fileID: 6416844551055581969}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4967,7 +4967,7 @@ GameObject:
   - component: {fileID: 981919669466121195}
   - component: {fileID: 4011663596520017271}
   - component: {fileID: 4758875232980732030}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5068,7 +5068,7 @@ GameObject:
   - component: {fileID: 7808019578132383243}
   - component: {fileID: 1007942767599983927}
   - component: {fileID: 7571015486717719887}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5146,7 +5146,7 @@ GameObject:
   - component: {fileID: 2079903938278645425}
   - component: {fileID: 4444782143641283779}
   - component: {fileID: 1259877623068120525}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: BarContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10064,7 +10064,7 @@ GameObject:
   - component: {fileID: 8823909171043623541}
   - component: {fileID: 3993581550460297695}
   - component: {fileID: 3730850351831176884}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: Shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10176,7 +10176,7 @@ GameObject:
   - component: {fileID: 6894743461940750673}
   - component: {fileID: 805816380821608855}
   - component: {fileID: 6207337061566074350}
-  m_Layer: 2
+  m_Layer: 0
   m_Name: tank
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10425,6 +10425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: tank
+  path: 
   mass: 0
   CanHaveChildren: 1
   BlockFuelFlow: 0
@@ -10465,7 +10466,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 10, y: 10}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!114 &6207337061566074350
 MonoBehaviour:
