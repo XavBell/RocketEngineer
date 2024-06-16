@@ -14,7 +14,7 @@ public class rocketSaveManager : MonoBehaviour
         masterManager = FindObjectOfType<MasterManager>();
     }
 
-    //Editor Related
+    //Editor Related and launchpad spawn
     public void saveRocket(RocketController rocketController, string rocketName)
     {
         RocketData rocketData = new RocketData();
@@ -45,7 +45,7 @@ public class rocketSaveManager : MonoBehaviour
 
     }
 
-    //Editor Related
+    //Editor Related and LaunchPad spawn
     public void loadRocket(RocketController rocketController, string rocketName)
     {
         string saveUserPath = Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.rocketFolder + "/" + rocketName + ".json";

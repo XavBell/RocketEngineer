@@ -159,7 +159,7 @@ public class VABManager : MonoBehaviour
     {
         if (partName.options.Count > 0)
         {
-            savecraft saveObject = new savecraft();
+            RocketData saveObject = new RocketData();
             var jsonString = JsonConvert.SerializeObject(saveObject);
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + partName.options[partName.value].text);
             savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);

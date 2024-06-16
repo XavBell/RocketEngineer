@@ -246,6 +246,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 2247420}
+  masterManager: {fileID: 0}
+  zoomFactor: 1
+  zoomLerp: 10
 --- !u!1 &3648784
 GameObject:
   m_ObjectHideFlags: 0
@@ -46912,6 +46915,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1533443822}
   - component: {fileID: 1533443821}
+  - component: {fileID: 1533443823}
   m_Layer: 0
   m_Name: SaveManager
   m_TagString: WorldSaveManager
@@ -47026,6 +47030,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1533443823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1533443820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f391aa20b5a2444b98e62fe5703dbb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  masterManager: {fileID: 0}
 --- !u!1 &1533844072
 GameObject:
   m_ObjectHideFlags: 0

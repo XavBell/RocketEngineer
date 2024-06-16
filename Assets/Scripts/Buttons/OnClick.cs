@@ -100,7 +100,10 @@ public class OnClick : MonoBehaviour
         if(launchPad != null)
         {
             path = "/"+b1.GetComponentInChildren<TextMeshProUGUI>().text;
-            load(filePath);
+            rocketSaveManager rocketSaveManager = FindObjectOfType<rocketSaveManager>();
+            GameObject RocketController = Instantiate(Resources.Load<GameObject>("Prefabs/" + "RocketController"));
+            RocketController.transform.position = launchPad.transform.position + new Vector3(0, 10, 0);
+            rocketSaveManager.loadRocket(RocketController.GetComponent<RocketController>(), b1.GetComponentInChildren<TextMeshProUGUI>().text.Replace(".json", ""));
             if(spawnedRocket != null)
             {
                 launchPad.GetComponent<launchPadManager>().ConnectedRocket = spawnedRocket;
