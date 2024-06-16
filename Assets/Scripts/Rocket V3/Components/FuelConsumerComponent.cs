@@ -8,8 +8,6 @@ using UnityEngine.UI;
 public class FuelConsumerComponent : MonoBehaviour
 {
     public float fuelConsumptionRate;
-    public Substance requiredOxidizer;
-    public Substance requiredFuel;
     public List<TankComponent> tanks = new List<TankComponent>();
 
     // Start is called before the first frame update

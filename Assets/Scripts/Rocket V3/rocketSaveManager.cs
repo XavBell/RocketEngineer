@@ -14,7 +14,7 @@ public class rocketSaveManager : MonoBehaviour
         masterManager = FindObjectOfType<MasterManager>();
     }
 
-    public void saveRocket(RocketController rocketController, bool inEditor)
+    public void saveRocket(RocketController rocketController, string rocketName)
     {
         RocketData rocketData = new RocketData();
         rocketData.rocketName = rocketController.rocketName;
@@ -38,15 +38,15 @@ public class rocketSaveManager : MonoBehaviour
 
 
         //Write file
-        string saveUserPath = Application.persistentDataPath + "/rocket.json";
+        string saveUserPath = Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.rocketFolder  + "/" + rocketName + ".json";
         string rocketData1 = JsonConvert.SerializeObject(rocketData);
         File.WriteAllText(saveUserPath, rocketData1);
 
     }
 
-    public void loadRocket(RocketController rocketController, bool inEditor)
+    public void loadRocket(RocketController rocketController, string rocketName)
     {
-        string saveUserPath = Application.persistentDataPath + "/rocket.json";
+        string saveUserPath = Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.rocketFolder + "/" + rocketName + ".json";
         string rocketData1 = File.ReadAllText(saveUserPath);
         RocketData rocketData = JsonConvert.DeserializeObject<RocketData>(rocketData1);
 

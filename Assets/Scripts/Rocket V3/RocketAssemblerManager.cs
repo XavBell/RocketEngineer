@@ -28,6 +28,7 @@ public class RocketAssemblerManager : MonoBehaviour
     public GameObject tankButtonPrefab;
     public TMP_Dropdown lineDropdown;
     public TMP_InputField lineName;
+    public TMP_InputField rocketName;
 
 
     //For rocket wide variables
@@ -85,6 +86,11 @@ public class RocketAssemblerManager : MonoBehaviour
         {
             Rotate();
         }
+    }
+
+    public void UpdateRocketName()
+    {
+        rocketController.rocketName = rocketName.text;
     }
 
     public void Rotate()
@@ -187,14 +193,10 @@ public class RocketAssemblerManager : MonoBehaviour
         Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 ray = cameraPos;
         raycastHit = Physics2D.Raycast(ray, new Vector2(0, 1000));
-        print("Test 1");
         if(raycastHit.transform != null)
         {
-            print("Test 2");
-            print(raycastHit.transform.gameObject.name);
             if(raycastHit.transform.gameObject.GetComponent<TankComponent>())
             {
-                print("Test 3");
                 propellantPanel.SetActive(true);
                 propellantPanel.GetComponent<dropDownManager>().tank = raycastHit.transform.gameObject.GetComponent<TankComponent>();
             }
@@ -299,12 +301,12 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void save()
     {
-        RocketSaveManager.saveRocket(rocketController, true);
+        RocketSaveManager.saveRocket(rocketController, rocketController.rocketName);
     }
 
     public void load()
     {
-        RocketSaveManager.loadRocket(rocketController, true);
+        RocketSaveManager.loadRocket(rocketController, rocketController.rocketName);
         partPlaced = true;
     }
 
