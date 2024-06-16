@@ -7,6 +7,7 @@ public class RocketController : MonoBehaviour
 {
     //For rocket wide variables
     public string rocketName;
+    public float rocketMass;
     public List<string> lineNames = new List<string>();
     public List<Guid> lineGuids = new List<Guid>();
 
@@ -19,6 +20,7 @@ public class RocketController : MonoBehaviour
         this.GetComponent<Rigidbody2D>().angularDrag = 0;
         this.GetComponent<Rigidbody2D>().gravityScale = 0;
         this.gameObject.AddComponent<PlanetGravity>();
+        this.GetComponent<PlanetGravity>().core = this.gameObject;
         this.GetComponent<PlanetGravity>().initializeRocket();
         this.GetComponent<PlanetGravity>().setPlanet(this.GetComponent<PlanetGravity>().getPlanet());
         this.GetComponent<PlanetGravity>().storedVelocity = this.GetComponent<PlanetGravity>().storedVelocity;

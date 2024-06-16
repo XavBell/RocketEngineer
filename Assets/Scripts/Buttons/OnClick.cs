@@ -196,7 +196,7 @@ public class OnClick : MonoBehaviour
             core.GetComponent<Rigidbody2D>().gravityScale = 0;
             core.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             core.AddComponent<PlanetGravity>();
-            core.GetComponent<PlanetGravity>().setCore(core);
+            core.GetComponent<PlanetGravity>().core = core;
             core.GetComponent<Rocket>().core = core;
             core.AddComponent<RocketStateManager>();
             core.AddComponent<DoubleVelocity>();
