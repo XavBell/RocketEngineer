@@ -48,6 +48,7 @@ public class RocketAssemblerManager : MonoBehaviour
     {
         masterManager = FindObjectOfType<MasterManager>();
         //savePathRef = new savePath();
+        UpdateSaveFolder();
         retrieveEngineSaved();
         retrieveTankSaved();
     }
@@ -56,6 +57,7 @@ public class RocketAssemblerManager : MonoBehaviour
     void Update()
     {
         HandleInput();
+        UpdateRocketName();
     }
 
     public void selectPart(GameObject part)
@@ -85,6 +87,14 @@ public class RocketAssemblerManager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.R))
         {
             Rotate();
+        }
+    }
+
+    void UpdateSaveFolder()
+    {
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.rocketFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.rocketFolder);
         }
     }
 

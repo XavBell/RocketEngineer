@@ -324,10 +324,12 @@ public class operationManager : MonoBehaviour
                 {
                     //Remove parts
                     MasterManager.rockets.RemoveAt(MasterManager.rockets.IndexOf(vehicleLaunchDropdown.options[value].text.ToString().Replace("/","")));
-                    
-                    onclick.path = "/" + vehicleLaunchDropdown.options[value].text.ToString();
                     onclick.launchPad = selectedLaunchPad;
-                    onclick.load("/rockets");
+                    rocketSaveManager rocketSaveManager = FindObjectOfType<rocketSaveManager>();
+                    GameObject rocketController = Instantiate(Resources.Load<GameObject>("Prefabs/" + "RocketController"));
+                    rocketSaveManager.loadRocket(rocketController.GetComponent<RocketController>(), vehicleLaunchDropdown.options[value].text.ToString().Replace(".json",""));
+                    rocketController.GetComponent<RocketController>().InitializeComponents();
+                    onclick.spawnedRocket = rocketController;
                     stageViewer.gameObject.SetActive(true);
                     stageViewer.rocket = onclick.spawnedRocket;
                     stageViewer.updateStagesView(false);

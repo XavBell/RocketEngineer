@@ -5012,8 +5012,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fuelConsumptionRate: 0
-  requiredOxidizer: {fileID: 11400000, guid: 70e88540e073b4b8a83b9437ba75511d, type: 2}
-  requiredFuel: {fileID: 11400000, guid: 05ae07b033cc5440e859c85851a178f9, type: 2}
   tanks: []
 --- !u!114 &6662715733033390650
 MonoBehaviour:
@@ -5048,6 +5046,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: engine
+  cost: 1
   path: 
   mass: 0
   CanHaveChildren: 1
