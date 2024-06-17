@@ -10,6 +10,7 @@ using TMPro;
 public class RocketAssemblerManager : MonoBehaviour
 {
     MasterManager masterManager;
+    public StageEditor stageEditor;
     public DesignerCursor designerCursor;
     public GameObject activePart;
     public GameObject originalPart;
@@ -177,7 +178,7 @@ public class RocketAssemblerManager : MonoBehaviour
                 }
 
             }
-            print(originalPart.transform.childCount);
+            stageEditor.UpdateButtons();
         }
     }
 
