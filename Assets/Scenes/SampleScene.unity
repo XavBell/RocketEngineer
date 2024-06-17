@@ -33851,7 +33851,7 @@ Transform:
   m_GameObject: {fileID: 1168226882}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1398926288}
@@ -56642,12 +56642,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Density_Desaturation: 1
+    - _Density_Desaturation: 0.15
     - _Falloff_Power: 2
     - _Gradient_Offset: 1.35
-    - _Size: 50
+    - _Size: 52.65
     m_Colors:
-    - _Atmosphere_Cutoff: {r: 0.25, g: 0.99, b: 0, a: 0}
+    - _Atmosphere_Cutoff: {r: 0.3, g: 1, b: 0, a: 0}
     - _Color: {r: 0, g: 0.49803922, b: 1, a: 0}
     - _LightPos: {r: 2000, g: -0, b: -0, a: 0}
   m_BuildTextureStacks: []
@@ -66175,7 +66175,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3000874040295709075, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3000874040295709075, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_UseDelaunayMesh
@@ -66478,6 +66478,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2800000, guid: 8875315d95da547a4b20fd8f30fb232f, type: 3}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: AmbientLight
       value: 0.15
       objectReference: {fileID: 0}
@@ -66619,29 +66623,6 @@ MonoBehaviour:
   MyTime: {fileID: 0}
   rb: {fileID: 0}
   bypass: 0
---- !u!114 &5038023260506428701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2121345929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2105d7bf33f0a71469866a87200f5415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lightPos: {fileID: 6067550310254388867}
-  scaledLightPos: {x: -2000, y: 0, z: 0}
-  roundedLightPos: {x: -2000, y: 0, z: 0}
-  GroundTex: {fileID: 2800000, guid: 8875315d95da547a4b20fd8f30fb232f, type: 3}
-  AmbientLight: 0.2
-  MaximumLight: 1
-  gradient: {fileID: 2800000, guid: 09f708713e945fa459e9e6e24175b725, type: 3}
-  size: 50
-  cutoff: {x: 0.25, y: 0.99}
-  falloffPower: 2
-  densityDesaturation: 1
 --- !u!1001 &6067550310254388866
 PrefabInstance:
   m_ObjectHideFlags: 0
