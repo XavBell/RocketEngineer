@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4430842427479895365}
   - component: {fileID: 5431662733250311487}
   - component: {fileID: 2649622441330697103}
+  - component: {fileID: 7818919051285043891}
   m_Layer: 0
   m_Name: Moon
   m_TagString: Untagged
@@ -5133,7 +5134,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0f6a7defa6e8449e4a3b62b9b694227b, type: 2}
+  - {fileID: 2100000, guid: 6cb65a287f17c774883cb0a0e0e681b0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5155,3 +5156,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &7818919051285043891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1505743135181101062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2105d7bf33f0a71469866a87200f5415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightPos: {fileID: 0}
+  scaledLightPos: {x: -2000, y: 0, z: 0}
+  roundedLightPos: {x: -2000, y: 0, z: 0}
+  GroundTex: {fileID: 2800000, guid: 4bd207ac625a4db4c8c9f703a6ee9de9, type: 3}
+  AmbientLight: 0
+  MaximumLight: 1
+  gradient: {fileID: 0}
+  overlayOpacity: 0
+  size: 0
+  cutoff: {x: 0.3, y: 1}
+  falloffPower: 2
+  densityDesaturation: 0.25
