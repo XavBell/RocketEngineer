@@ -93,13 +93,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5038023258490551132}
+  - component: {fileID: 8598963394217245204}
   - component: {fileID: 7812431861931989137}
   - component: {fileID: 3000874040295709075}
   - component: {fileID: 8654575258051899888}
   - component: {fileID: 117611705695309820}
   - component: {fileID: 6463233977011521961}
   - component: {fileID: 6801228386957441988}
-  - component: {fileID: 8598963394217245204}
   m_Layer: 0
   m_Name: Earth
   m_TagString: Planet
@@ -123,6 +123,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8598963394217245204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5038023258490551129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2105d7bf33f0a71469866a87200f5415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lightPos: {fileID: 0}
+  scaledLightPos: {x: -2000, y: 0, z: 0}
+  roundedLightPos: {x: -2000, y: 0, z: 0}
+  GroundTex: {fileID: 0}
+  AmbientLight: 0.2
+  MaximumLight: 1
+  gradient: {fileID: 0}
+  overlayOpacity: 0
+  size: 0
+  cutoff: {x: 0.3, y: 1}
+  falloffPower: 2
+  densityDesaturation: 0.25
 --- !u!114 &7812431861931989137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18248,18 +18272,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: earth
---- !u!114 &8598963394217245204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5038023258490551129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2105d7bf33f0a71469866a87200f5415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  light: {fileID: 0}
-  mat: {fileID: 2100000, guid: d91f813e7dba49f43904491af6d0a1d8, type: 2}
-  atmoMat: {fileID: 2100000, guid: b54fc191e3416d8409c03ab5bbe4cb63, type: 2}

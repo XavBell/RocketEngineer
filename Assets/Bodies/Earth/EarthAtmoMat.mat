@@ -38,11 +38,12 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Falloff_Power: 2.5
+    - _Density_Desaturation: 0.407
+    - _Falloff_Power: 1.42
     - _Gradient_Offset: 1.35
-    - _Size: 3
+    - _Size: 50
     m_Colors:
-    - _Atmosphere_Cutoff: {r: 0.3, g: 1, b: 0, a: 0}
+    - _Atmosphere_Cutoff: {r: 0.25, g: 0.99, b: 0, a: 0}
     - _Color: {r: 0, g: 0.49803922, b: 1, a: 0}
-    - _LightPos: {r: 299999.84, g: 0.1653, b: -0, a: 0}
+    - _LightPos: {r: 2000, g: -0, b: -0, a: 0}
   m_BuildTextureStacks: []

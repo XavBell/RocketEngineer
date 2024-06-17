@@ -56551,6 +56551,53 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 1
+--- !u!21 &1882847758
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: EarthAtmoMat (Instance)
+  m_Shader: {fileID: -6465566751694194690, guid: 101f590b15e5a174bb50f5a5b1c34ef2, type: 3}
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _Gradient:
+        m_Texture: {fileID: 2800000, guid: 09f708713e945fa459e9e6e24175b725, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_Lightmaps:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_LightmapsInd:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - unity_ShadowMasks:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _Density_Desaturation: 0.15
+    - _Falloff_Power: 2
+    - _Gradient_Offset: 1.35
+    - _Size: 52.65
+    m_Colors:
+    - _Atmosphere_Cutoff: {r: 0.3, g: 1, b: 0, a: 0}
+    - _Color: {r: 0, g: 0.49803922, b: 1, a: 0}
+    - _LightPos: {r: 2000, g: -0, b: -0, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1 &1883194558
 GameObject:
   m_ObjectHideFlags: 0
@@ -65896,7 +65943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1768743619689722346, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: 1768743619689722346, guid: c23b0ac408b293c41a1dab9e6625bc3c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -66045,6 +66092,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1262928502685455537, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: m_Name
+      value: Atmo
+      objectReference: {fileID: 0}
     - target: {fileID: 1465436551210322578, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -66071,7 +66122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3000874040295709075, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3000874040295709075, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_UseDelaunayMesh
@@ -66079,7 +66130,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5038023258490551129, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_Name
-      value: planet
+      value: Planet
       objectReference: {fileID: 0}
     - target: {fileID: 5038023258490551129, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_Layer
@@ -66249,6 +66300,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+    - target: {fileID: 5260685075234000249, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 1882847758}
     - target: {fileID: 6118133391282046681, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -66349,6 +66404,126 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: -0.010816221
       objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: size
+      value: 52.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: cutoff.x
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient
+      value: 
+      objectReference: {fileID: 2800000, guid: 09f708713e945fa459e9e6e24175b725, type: 3}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: lightPos
+      value: 
+      objectReference: {fileID: 6067550310254388867}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: GroundTex
+      value: 
+      objectReference: {fileID: 2800000, guid: 8875315d95da547a4b20fd8f30fb232f, type: 3}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: AmbientLight
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: MaximumLight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: falloffPower
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.ctime1
+      value: 28913
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.ctime2
+      value: 50115
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.ctime3
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.ctime4
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key0.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key0.g
+      value: 0.3529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key0.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key1.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key1.g
+      value: 0.67958707
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key1.r
+      value: 0.48584908
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key2.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key2.g
+      value: 0.6648264
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key2.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key3.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key3.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.key4.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: scaledLightPos.x
+      value: -2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: scaledLightPos.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: roundedLightPos.x
+      value: -2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: roundedLightPos.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: densityDesaturation
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradient.m_NumColorKeys
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8654575258051899888, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: updateTransform
       value: 1
@@ -66403,11 +66578,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2105d7bf33f0a71469866a87200f5415, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  light: {fileID: 6067550310254388867}
-  mat: {fileID: 2100000, guid: 45ecd8f3e52794c469d6168abd2a94e0, type: 2}
-  atmoMat: {fileID: 2100000, guid: b54fc191e3416d8409c03ab5bbe4cb63, type: 2}
-  scaledLightPos: {x: 0, y: 0, z: 0}
-  roundedLightPos: {x: 0, y: 0, z: 0}
+  lightPos: {fileID: 6067550310254388867}
+  scaledLightPos: {x: -2000, y: 0, z: 0}
+  roundedLightPos: {x: -2000, y: 0, z: 0}
+  GroundTex: {fileID: 2800000, guid: 8875315d95da547a4b20fd8f30fb232f, type: 3}
+  AmbientLight: 0.2
+  MaximumLight: 1
+  gradient: {fileID: 2800000, guid: 09f708713e945fa459e9e6e24175b725, type: 3}
+  size: 50
+  cutoff: {x: 0.25, y: 0.99}
+  falloffPower: 2
+  densityDesaturation: 1
 --- !u!1001 &6067550310254388866
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66433,7 +66614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 503832032205420218, guid: e62bce303f1107b49af062e356eeac1e, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3e+10
+      value: -200000000
       objectReference: {fileID: 0}
     - target: {fileID: 503832032205420218, guid: e62bce303f1107b49af062e356eeac1e, type: 3}
       propertyPath: m_LocalPosition.y
