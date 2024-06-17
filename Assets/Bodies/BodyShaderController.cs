@@ -74,7 +74,12 @@ public class BodyShaderController : MonoBehaviour
         if (child != null)
         {
             atmoMat = child.GetComponent<Renderer>().sharedMaterial;
-            float atmoSize = (float)(GetComponent<EarthScript>().SolarSystemManager.earthRadius * 2 * 1.5 * 0.1);
+            float atmoSize = 0;
+            if(GetComponent<EarthScript>() != null)
+            {
+                atmoSize = (float)(GetComponent<EarthScript>().SolarSystemManager.earthRadius * 2 * 1.5 * 0.1);
+            }
+            
             child.transform.localScale = new Vector3(atmoSize, atmoSize, atmoSize);
 
             if (atmoMat != null)
