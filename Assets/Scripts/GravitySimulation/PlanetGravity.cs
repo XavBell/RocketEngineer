@@ -131,6 +131,7 @@ public class PlanetGravity : MonoBehaviour
     void simulateGravity()
     {
         //Gravity
+        core.GetComponent<RocketController>().UpdateMass();
         rb.mass = core.GetComponent<RocketController>().rocketMass;
         double Dist = Vector2.Distance(rb.transform.position, new Vector2((float)planet.GetComponent<DoubleTransform>().x_pos, (float)planet.GetComponent<DoubleTransform>().y_pos));
         Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
@@ -212,6 +213,7 @@ public class PlanetGravity : MonoBehaviour
             floatingVelocity = FindObjectOfType<FloatingVelocity>();
             if (core != null)
             {
+                core.GetComponent<RocketController>().UpdateMass();
                 pointManager = FindObjectOfType<pointManager>();
                 rb.mass = core.GetComponent<RocketController>().rocketMass;
                 initialized = true;

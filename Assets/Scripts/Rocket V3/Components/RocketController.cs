@@ -8,6 +8,7 @@ public class RocketController : MonoBehaviour
     //For rocket wide variables
     public string rocketName;
     public float rocketMass;
+    public float throttle;
     public List<string> lineNames = new List<string>();
     public List<Guid> lineGuids = new List<Guid>();
 
@@ -19,6 +20,7 @@ public class RocketController : MonoBehaviour
         this.GetComponent<Rigidbody2D>().freezeRotation = true;
         this.GetComponent<Rigidbody2D>().angularDrag = 0;
         this.GetComponent<Rigidbody2D>().gravityScale = 0;
+        this.gameObject.AddComponent<DoubleTransform>();
         this.gameObject.AddComponent<PlanetGravity>();
         this.GetComponent<PlanetGravity>().core = this.gameObject;
         this.GetComponent<PlanetGravity>().initializeRocket();
@@ -30,6 +32,7 @@ public class RocketController : MonoBehaviour
         this.gameObject.AddComponent<DoubleVelocity>();
         this.gameObject.AddComponent<RocketPath>();
         this.gameObject.GetComponent<RocketStateManager>().prediction = this.gameObject.GetComponent<RocketPath>();
+        UpdateMass();
     }
 
     public void TransferStateFromDecoupling(RocketController rc)
@@ -39,5 +42,15 @@ public class RocketController : MonoBehaviour
         this.lineGuids = rc.lineGuids;
         this.rocketName = rc.rocketName + "1";
         this.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity;
+    }
+
+    public void UpdateMass()
+    {
+        foreach (PhysicsPart child in GetComponentsInChildren<PhysicsPart>())
+        {
+
+            rocketMass += child.GetComponent<PhysicsPart>().mass;
+            
+        }
     }
 }

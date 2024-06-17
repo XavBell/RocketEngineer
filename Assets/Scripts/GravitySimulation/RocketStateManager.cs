@@ -159,7 +159,7 @@ public class RocketStateManager : MonoBehaviour
         if(state == "simulate")
         {
             planetGravity.simulate();
-            if(this.GetComponent<Rocket>().throttle > 0)
+            if(this.GetComponent<RocketController>().throttle > 0)
             {
                 prediction.CalculateParameters();
             }
