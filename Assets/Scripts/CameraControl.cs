@@ -69,7 +69,6 @@ public class CameraControl : MonoBehaviour
             {
                 WASD();
             }
-            MapView();
         }
 
         if(MasterManager.GetComponent<MasterManager>().ActiveRocket != null)
@@ -144,15 +143,6 @@ public class CameraControl : MonoBehaviour
         if (Input.GetKey(KeyCode.Q))
         {
             cam.transform.RotateAround(earth.transform.position, earth.transform.forward, 0.02f*Time.deltaTime);
-        }
-    }
-
-    void MapView()
-    {
-        if(Input.GetKey(KeyCode.M))
-        {
-            MapManager mapManager = FindObjectOfType<MapManager>();
-            mapManager.mapOn();
         }
     }
 

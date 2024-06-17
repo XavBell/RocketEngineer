@@ -40,10 +40,12 @@ public class MapManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        MapView();
+
         float previousSize = 0;
         if (MapOn == true)
         {   
-            MapView();
+            
             if(mapCam.orthographicSize != previousSize)
             {
                 updateScale();
@@ -142,7 +144,7 @@ public class MapManager : MonoBehaviour
 
     void MapView()
     {
-        if(Input.GetKey(KeyCode.M))
+        if(Input.GetKeyDown(KeyCode.M))
         {
             mapOn();
         }
@@ -194,7 +196,6 @@ public class MapManager : MonoBehaviour
             }
             MapOn = true;
             return;
-
         }
 
         if (MapOn == true)
