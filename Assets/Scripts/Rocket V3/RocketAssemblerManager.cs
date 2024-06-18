@@ -167,10 +167,10 @@ public class RocketAssemblerManager : MonoBehaviour
 
                         //Move the part to the attach point
                         Vector2 offset = closestAttach.transform.position - closestAttachPoint.transform.position;
-                        activePart.transform.position = new Vector2(activePart.transform.position.x + offset.x, activePart.transform.position.y + offset.y);
-                        activePart.transform.parent = closestAttach.transform.parent.transform;
                         activePart.GetComponent<PhysicsPart>().guid = Guid.NewGuid();
                         initializePartFromType(activePart, activePart.GetComponent<PhysicsPart>().type);
+                        activePart.transform.position = new Vector2(activePart.transform.position.x + offset.x, activePart.transform.position.y + offset.y);
+                        activePart.transform.parent = closestAttach.transform.parent.transform;
                         ClearPart();
                     }
                 }
@@ -260,7 +260,7 @@ public class RocketAssemblerManager : MonoBehaviour
         tank.GetComponent<PhysicsPart>().path = path;
         var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + path);
         saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
-        tank.transform.localScale = new Vector3(loadedTank.tankSizeX/tank.transform.parent.localScale.x, loadedTank.tankSizeY/tank.transform.parent.localScale.y, tank.transform.localScale.z);
+        tank.transform.localScale = new Vector3(loadedTank.tankSizeX, loadedTank.tankSizeY, tank.transform.localScale.z);
     }
 
     public void initializeEngine(GameObject engine, string path)

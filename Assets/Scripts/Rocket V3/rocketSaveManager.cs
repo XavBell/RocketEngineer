@@ -76,10 +76,10 @@ public class rocketSaveManager : MonoBehaviour
             GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + child.partType));
             //Important to change rotation before assigning parent
             newPart.transform.rotation = Quaternion.Euler(0, 0, child.z_rot);
-            newPart.transform.parent = parentObject.transform;
-            newPart.transform.localPosition = new Vector2(child.x_pos, child.y_pos);
             newPart.GetComponent<PhysicsPart>().guid = child.guid;
             loadPartFromType(child.partType, newPart, child, rocketController);
+            newPart.transform.parent = parentObject.transform;
+            newPart.transform.localPosition = new Vector2(child.x_pos, child.y_pos);
             LoadChildren(child, newPart, rocketController);
         }
     }
