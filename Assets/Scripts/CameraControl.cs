@@ -68,6 +68,8 @@ public class CameraControl : MonoBehaviour
             if(launchsiteManager.commandCenter != null)
             {
                 WASD();
+                QE();
+                DragMove();
             }
         }
 
@@ -96,6 +98,14 @@ public class CameraControl : MonoBehaviour
             targetZoom = 1;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
             //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize*lineFactor;
+        }
+    }
+
+    public void DragMove()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            transform.position -= new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0);
         }
     }
 
