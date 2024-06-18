@@ -68,7 +68,6 @@ public class CameraControl : MonoBehaviour
             if(launchsiteManager.commandCenter != null)
             {
                 WASD();
-                QE();
                 DragMove();
             }
         }
@@ -105,7 +104,7 @@ public class CameraControl : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            transform.position -= new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0);
+            transform.position -= new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0) / cam.scaledPixelWidth * cam.orthographicSize * 80;
         }
     }
 

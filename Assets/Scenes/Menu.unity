@@ -1582,10 +1582,10 @@ RectTransform:
   m_Father: {fileID: 2108087137}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 608.207, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 304.10425, y: -300}
+  m_SizeDelta: {x: 608.207, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &279952919
 MonoBehaviour:
@@ -1794,10 +1794,10 @@ RectTransform:
   m_Father: {fileID: 2108087137}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 369.29, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 815.35425, y: -300}
+  m_SizeDelta: {x: 369.29, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &311896370
 MonoBehaviour:
@@ -1952,10 +1952,10 @@ RectTransform:
   m_Father: {fileID: 311896369}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 184.645, y: -68.625}
+  m_SizeDelta: {x: 369.29, y: 137.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &333055496
 MonoBehaviour:
@@ -2805,7 +2805,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &426651505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5401,7 +5401,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0.9830509}
   m_AnchoredPosition: {x: -10, y: -8.25}
   m_SizeDelta: {x: 20, y: 16.5}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -5770,10 +5770,10 @@ RectTransform:
   m_Father: {fileID: 311896369}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 184.645, y: -228.375}
+  m_SizeDelta: {x: 369.29, y: 137.25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &944180287
 MonoBehaviour:
@@ -6331,7 +6331,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 606323631}
         m_TargetAssemblyTypeName: MasterManager, Assembly-CSharp
-        m_MethodName: newWorld
+        m_MethodName: back
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8455,7 +8455,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 856888911}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9830509
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
