@@ -1,11 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class StageEditor : MonoBehaviour
 {
     public GameObject engineBtn;
-    public GameObject verticalBox;
+    public GameObject stageContainer;
+    public List<GameObject> buttons;
+    public List<stageContainer> stageContainers;
+    public GameObject container;
     public int previousChildCount = 0;
     public RocketController rocketController;
     // Start is called before the first frame update
@@ -22,23 +26,35 @@ public class StageEditor : MonoBehaviour
 
     public void clearButtons()
     {
-        foreach (Transform child in verticalBox.transform)
+        foreach(GameObject button in buttons)
         {
-            GameObject.Destroy(child.gameObject);
+            if(button != null)
+            {
+                Destroy(button);
+            }
         }
+
+        buttons.Clear();
     }
 
     public void UpdateButtons()
     {
         clearButtons();
-        print("Updating buttons");
+        if(stageContainers.Count == 0)
+        {
+            GameObject StageContainer = Instantiate(stageContainer, container.transform);
+            stageContainers.Add(StageContainer.GetComponent<stageContainer>());
+        }
+
         Transform[] transforms = rocketController.gameObject.GetComponentsInChildren<Transform>();
         foreach(Transform part in transforms)
         {
             if(part.GetComponent<EngineComponent>())
             {
-                print("Updated");
-                GameObject EngineButton = Instantiate(engineBtn, verticalBox.transform);
+                GameObject EngineButton = Instantiate(engineBtn);
+                buttons.Add(EngineButton.GetComponentInChildren<Button>().gameObject);
+                EngineButton.GetComponentInChildren<Button>().gameObject.transform.SetParent(stageContainers[stageContainers.Count - 1].container.gameObject.transform);
+                DestroyImmediate(EngineButton);
             }
         }
     }

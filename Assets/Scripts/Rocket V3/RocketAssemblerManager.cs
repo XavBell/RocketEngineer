@@ -124,9 +124,7 @@ public class RocketAssemblerManager : MonoBehaviour
                 originalPart = activePart;
                 activePart.GetComponent<PhysicsPart>().guid = Guid.NewGuid();
                 initializePartFromType(activePart, activePart.GetComponent<PhysicsPart>().type);
-                activePart = null;
-                designerCursor.selectedPart = null;
-                Cursor.visible = true;
+                ClearPart();
                 partPlaced = true;
             }
         }
@@ -178,7 +176,7 @@ public class RocketAssemblerManager : MonoBehaviour
                 }
 
             }
-            stageEditor.UpdateButtons();
+            
         }
     }
 
@@ -233,6 +231,7 @@ public class RocketAssemblerManager : MonoBehaviour
 
     private void ClearPart()
     {
+        stageEditor.UpdateButtons();
         activePart = null;
         designerCursor.selectedPart = null;
         Cursor.visible = true;
