@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class stageContainer : MonoBehaviour
@@ -15,7 +16,12 @@ public class stageContainer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        updateStageName();   
+    }
+
+    void updateStageName()
+    {
+        this.GetComponentInChildren<TMP_Text>().text = "Stage " + this.transform.GetSiblingIndex().ToString();
     }
 
     public void removeStage()
