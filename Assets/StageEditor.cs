@@ -53,16 +53,22 @@ public class StageEditor : MonoBehaviour
             if(part.GetComponent<EngineComponent>())
             {
                 GameObject EngineButton = Instantiate(engineBtn);
-                buttons.Add(EngineButton.GetComponentInChildren<Button>().gameObject);
-                EngineButton.GetComponentInChildren<Button>().gameObject.transform.SetParent(stageContainers[stageContainers.Count - 1].container.gameObject.transform);
+                GameObject child = EngineButton.GetComponentInChildren<Button>().gameObject;
+                buttons.Add(child);
+                child.transform.SetParent(stageContainers[stageContainers.Count - 1].container.gameObject.transform);
+                child.GetComponentInChildren<partRef>().refObj = part.gameObject;
+                child.GetComponentInChildren<partRef>().initializeEngineColors();
                 DestroyImmediate(EngineButton);
             }
 
             if(part.GetComponent<DecouplerComponent>())
             {
                 GameObject DecouplerButton = Instantiate(decouplerBtn);
-                buttons.Add(DecouplerButton.GetComponentInChildren<Button>().gameObject);
-                DecouplerButton.GetComponentInChildren<Button>().gameObject.transform.SetParent(stageContainers[stageContainers.Count - 1].container.gameObject.transform);
+                GameObject child = DecouplerButton.GetComponentInChildren<Button>().gameObject;
+                buttons.Add(child);
+                child.transform.SetParent(stageContainers[stageContainers.Count - 1].container.gameObject.transform);
+                child.GetComponentInChildren<partRef>().refObj = part.gameObject;
+                child.GetComponentInChildren<partRef>().initializeDecouplerColor();
                 DestroyImmediate(DecouplerButton);
             }
         }

@@ -19,7 +19,6 @@ public class stageButtonDrag : MonoBehaviour
 
     public void OnBeginDrag()
     {
-        print("Dragged");
         parentAfterDrag = transform.parent;
         transform.SetParent(transform.root);
     }
