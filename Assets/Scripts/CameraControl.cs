@@ -68,7 +68,7 @@ public class CameraControl : MonoBehaviour
             if(launchsiteManager.commandCenter != null)
             {
                 WASD();
-                //DragMove();
+                DragMove();
             }
         }
 
@@ -90,13 +90,11 @@ public class CameraControl : MonoBehaviour
         {
             targetZoom -= scrollData * zoomFactor * cam.orthographicSize * userFactor;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
-            //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize * lineFactor;
         }
         if (targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
         {
             targetZoom = 1;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
-            //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize*lineFactor;
         }
     }
 
