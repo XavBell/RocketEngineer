@@ -36,13 +36,18 @@ public class PhysicsStats : MonoBehaviour
                 mass = solarSystemManager.sunMass;
             }
 
-            if(GetComponent<BodyPath>() != null)
+        }
+
+        if (GetComponent<BodyPath>() != null)
+        {
+            if(GetComponent<BodyPath>().calculate == false && GetComponent<BodyPath>().start == false)
             {
                 GetComponent<BodyPath>().calculate = true;
             }
+
         }
-        
-        
+
+
     }
 
 }
