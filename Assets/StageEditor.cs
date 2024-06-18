@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class StageEditor : MonoBehaviour
 {
     public GameObject engineBtn;
+    public GameObject decouplerBtn;
     public GameObject stageContainer;
     public List<GameObject> buttons;
     public List<stageContainer> stageContainers;
@@ -55,6 +56,14 @@ public class StageEditor : MonoBehaviour
                 buttons.Add(EngineButton.GetComponentInChildren<Button>().gameObject);
                 EngineButton.GetComponentInChildren<Button>().gameObject.transform.SetParent(stageContainers[stageContainers.Count - 1].container.gameObject.transform);
                 DestroyImmediate(EngineButton);
+            }
+
+            if(part.GetComponent<DecouplerComponent>())
+            {
+                GameObject DecouplerButton = Instantiate(decouplerBtn);
+                buttons.Add(DecouplerButton.GetComponentInChildren<Button>().gameObject);
+                DecouplerButton.GetComponentInChildren<Button>().gameObject.transform.SetParent(stageContainers[stageContainers.Count - 1].container.gameObject.transform);
+                DestroyImmediate(DecouplerButton);
             }
         }
     }
