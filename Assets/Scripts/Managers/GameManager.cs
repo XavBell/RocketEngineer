@@ -100,6 +100,7 @@ public class GameManager : MonoBehaviour
                 currentPrefab.transform.localRotation = Quaternion.Euler(savedRot);
                 Vector2 prefabPos = new Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
+                print(currentPrefab.GetComponent<RocketPart>());
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
 
