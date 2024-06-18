@@ -81,10 +81,8 @@ public class MasterManager : MonoBehaviour
     void Start()
     {
         //Check if current resolution is in 16:9, if not set it
-        if (Screen.width / Screen.height != 16 / 9)
-        {
-            Screen.SetResolution(1920, 1080, fullScreen.isOn);
-        }
+        Screen.SetResolution(1920, 1080, true);
+        
 
         if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
         {
@@ -94,6 +92,7 @@ public class MasterManager : MonoBehaviour
             // Load saveUser values here<
             postProcess = saveUser.postProcess;
             scrollMultiplierValue = saveUser.scrollMultiplier;
+            Screen.SetResolution((int)saveUser.xRes, (int)saveUser.yRes, fullScreen.isOn);
         }
         else
         {
@@ -101,6 +100,8 @@ public class MasterManager : MonoBehaviour
             saveUser saveUser = new saveUser();
             saveUser.postProcess = postProcess;
             saveUser.scrollMultiplier = scrollMultiplierValue;
+            saveUser.xRes = Screen.width;
+            saveUser.yRes = Screen.height;
 
             // Serialize the saveUser object to JSON
             string saveUserJson = JsonConvert.SerializeObject(saveUser);
@@ -356,6 +357,18 @@ public class MasterManager : MonoBehaviour
         if (resolutionDropdown.value == 3)
         {
             Screen.SetResolution(3840, 2160, Screen.fullScreen);
+        }
+
+        // Update the saveUser file with the new resolution values
+        if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
+        {
+            string saveUserPath = Application.persistentDataPath + "/saveUser.json";
+            string saveUserJson = File.ReadAllText(saveUserPath);
+            saveUser saveUser = JsonConvert.DeserializeObject<saveUser>(saveUserJson);
+            saveUser.xRes = Screen.width;
+            saveUser.yRes = Screen.height;
+            saveUserJson = JsonConvert.SerializeObject(saveUser);
+            File.WriteAllText(saveUserPath, saveUserJson);
         }
     }
 }
