@@ -68,6 +68,7 @@ public class CameraControl : MonoBehaviour
             if(launchsiteManager.commandCenter != null)
             {
                 WASD();
+                DragMove();
             }
         }
 
@@ -89,13 +90,19 @@ public class CameraControl : MonoBehaviour
         {
             targetZoom -= scrollData * zoomFactor * cam.orthographicSize * userFactor;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
-            //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize * lineFactor;
         }
         if (targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
         {
             targetZoom = 1;
             cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
-            //Prediction.GetComponent<LineRenderer>().widthMultiplier = cam.orthographicSize*lineFactor;
+        }
+    }
+
+    public void DragMove()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            transform.position -= new Vector3(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"), 0) / cam.scaledPixelWidth * cam.orthographicSize * 80;
         }
     }
 

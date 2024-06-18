@@ -28,7 +28,6 @@ public class FuelTankMonitor : MonoBehaviour
     {
         if(container != null)
         {
-            print("Container");
             if (container.GetComponent<gasVent>() != null)
             {
                 ventToggle.isOn = container.GetComponent<gasVent>().open;
@@ -92,7 +91,6 @@ public class FuelTankMonitor : MonoBehaviour
 
     public void coolActivate()
     {
-        print("value");
         if(coolerToggle.isOn == true)
         {
             cooler.active = true;

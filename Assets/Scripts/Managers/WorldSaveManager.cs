@@ -196,7 +196,6 @@ public class WorldSaveManager : MonoBehaviour
             {
                 if (!rocketToExclude.Contains(rocket))
                 {
-                    print("saving rocket");
                     saveRocket(rocket, saveWorld);
                 }
 
@@ -657,7 +656,6 @@ public class WorldSaveManager : MonoBehaviour
     public void loadRocket(saveWorld load)
     {
         int i = 0;
-        print(load.rockets.Count);
         foreach (saveWorldRocket saveRocket in load.rockets)
         {
             int stageID = 0;
@@ -965,7 +963,6 @@ public class WorldSaveManager : MonoBehaviour
 
             if (saveRocket.state[0] == "landed")
             {
-                print("landed");
                 root.GetComponent<RocketStateManager>().curr_X = (float)saveRocket.curr_X[0];
                 root.GetComponent<RocketStateManager>().curr_Y = (float)saveRocket.curr_Y[0];
                 root.GetComponent<RocketStateManager>().previous_X = (float)saveRocket.prev_X[0];

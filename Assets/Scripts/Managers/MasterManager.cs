@@ -29,6 +29,8 @@ public class MasterManager : MonoBehaviour
 
     public GameObject loadButton;
 
+    public GameObject bigTextCanvas; 
+
     public string worldPath;
 
     public string gameState = "Building";
@@ -75,7 +77,9 @@ public class MasterManager : MonoBehaviour
     public bool postProcess = true;
     public float scrollMultiplierValue = 1;
 
-
+    GameObject btCreate;
+    GameObject btOptions;
+    GameObject btLoad;
 
     // Start is called before the first frame update
     void Start()
@@ -111,6 +115,10 @@ public class MasterManager : MonoBehaviour
         }
         updateButtons();
         DontDestroyOnLoad(this.gameObject);
+
+        btCreate = bigTextCanvas.transform.GetChild(0).gameObject;
+        btOptions = bigTextCanvas.transform.GetChild(1).gameObject;
+        btLoad = bigTextCanvas.transform.GetChild(2).gameObject;
     }
 
     // Update is called once per frame
@@ -216,6 +224,10 @@ public class MasterManager : MonoBehaviour
         rocketActive = true;
         MainCanvas.SetActive(false);
         loadCanvas.SetActive(true);
+
+        btCreate.SetActive(false);
+        btOptions.SetActive(false);
+        btLoad.SetActive(true);
     }
 
     public void newWorld()
@@ -223,6 +235,10 @@ public class MasterManager : MonoBehaviour
         rocketActive = true;
         MainCanvas.SetActive(false);
         newWorldCanvas.SetActive(true);
+
+        btCreate.SetActive(true);
+        btOptions.SetActive(false);
+        btLoad.SetActive(false);
     }
 
     public void options()
@@ -230,6 +246,10 @@ public class MasterManager : MonoBehaviour
         rocketActive = true;
         MainCanvas.SetActive(false);
         optionCanvas.SetActive(true);
+
+        btCreate.SetActive(false);
+        btOptions.SetActive(true);
+        btLoad.SetActive(false);
     }
 
     public void back()
@@ -238,6 +258,10 @@ public class MasterManager : MonoBehaviour
         newWorldCanvas.SetActive(false);
         loadCanvas.SetActive(false);
         optionCanvas.SetActive(false);
+
+        btCreate.SetActive(false);
+        btOptions.SetActive(false);
+        btLoad.SetActive(false);
     }
 
     IEnumerator Text()
@@ -247,18 +271,11 @@ public class MasterManager : MonoBehaviour
         AlertText.SetActive(false);
     }
 
-    public void Toggle()
+    public void toggleFullscreen()
     {
-        if (fullScreen.isOn == true)
-        {
-            Screen.fullScreen = true;
-        }
-
-        if (fullScreen.isOn == false)
-        {
-            Screen.fullScreen = false;
-        }
+        Screen.fullScreen = fullScreen.isOn;
     }
+
 
     void initializeResolutionDropdown()
     {
