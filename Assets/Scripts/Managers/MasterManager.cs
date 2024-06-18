@@ -81,10 +81,8 @@ public class MasterManager : MonoBehaviour
     void Start()
     {
         //Check if current resolution is in 16:9, if not set it
-        if (Screen.width / Screen.height != 16 / 9)
-        {
-            Screen.SetResolution(1920, 1080, fullScreen.isOn);
-        }
+        Screen.SetResolution(1920, 1080, true);
+        
 
         if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
         {
