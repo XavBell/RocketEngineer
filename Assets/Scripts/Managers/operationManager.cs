@@ -18,7 +18,7 @@ public class operationManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown engineDropdown;
     [SerializeField] private TMP_Dropdown tankDropdown;
     [SerializeField] private TMP_Dropdown operationDropdown;
-    [SerializeField] private StageViewer stageViewer;
+    [SerializeField] private StageEditor stageEditor;
     [SerializeField] private StaticFireViewer staticFireViewer;
     [SerializeField] private PressureTestViewer pressureTestViewer;
     [SerializeField] private WDRTestViewer WDRTestViewer;
@@ -330,10 +330,10 @@ public class operationManager : MonoBehaviour
                     rocketSaveManager.loadRocket(rocketController.GetComponent<RocketController>(), vehicleLaunchDropdown.options[value].text.ToString().Replace(".json",""));
                     rocketController.GetComponent<RocketController>().InitializeComponents();
                     onclick.spawnedRocket = rocketController;
-                    stageViewer.gameObject.SetActive(true);
-                    stageViewer.rocket = onclick.spawnedRocket;
-                    stageViewer.updateStagesView(false);
-                    stageViewer.updateInfoPerStage(false);
+                    stageEditor.gameObject.SetActive(true);
+                    //stageViewer.rocket = onclick.spawnedRocket;
+                    //stageViewer.updateStagesView(false);
+                    //stageViewer.updateInfoPerStage(false);
                     selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
                 }
                 else

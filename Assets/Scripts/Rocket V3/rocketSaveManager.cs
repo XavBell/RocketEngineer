@@ -220,6 +220,11 @@ public class rocketSaveManager : MonoBehaviour
     {
         if(StageEditor != null)
         {
+            if(StageEditor.activeSelf == false)
+            {
+                StageEditor.SetActive(true);
+            }
+            
             //Find all physics parts
             PhysicsPart[] parts = rocketController.GetComponentsInChildren<PhysicsPart>();
             //Load stages buttons

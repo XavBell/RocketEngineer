@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class RocketAssemblerManager : MonoBehaviour
@@ -420,6 +421,11 @@ public class RocketAssemblerManager : MonoBehaviour
                 panel.SetActive(false);
             }
         }
+    }
+
+    public void ExitCreator()
+    {
+        SceneManager.LoadScene("SampleScene");
     }
     
 }
