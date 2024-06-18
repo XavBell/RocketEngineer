@@ -11,4 +11,5 @@ public class RocketData
     public float x_pos;
     public float y_pos;
     public PartData rootPart;
+    public stageData stageData = new stageData();
 }

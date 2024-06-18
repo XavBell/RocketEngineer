@@ -4,11 +4,13 @@ using UnityEngine;
 using System;
 using System.IO;
 using Newtonsoft.Json;
+using UnityEngine.UI;
 
 public class rocketSaveManager : MonoBehaviour
 {
     public savePath savePathRef = new savePath();
     public MasterManager masterManager;
+    public GameObject StageEditor;
     public void Start()
     {
         masterManager = FindObjectOfType<MasterManager>();
@@ -31,6 +33,7 @@ public class rocketSaveManager : MonoBehaviour
         rocketData.rootPart.z_rot = originalPart.transform.eulerAngles.z;
         rocketData.rootPart.guid = originalPart.GetComponent<PhysicsPart>().guid;
         savePartFromType(rocketData.rootPart.partType, originalPart, rocketData.rootPart);
+        saveStage(rocketData);
 
         //Get all children
         PartData rootPart = rocketData.rootPart;
@@ -67,6 +70,7 @@ public class rocketSaveManager : MonoBehaviour
         originalPart.transform.localPosition = new Vector2(rocketData.rootPart.x_pos, rocketData.rootPart.y_pos);
         loadPartFromType(rocketData.rootPart.partType, originalPart, rocketData.rootPart, rocketController);
         LoadChildren(rocketData.rootPart, originalPart, rocketController);
+        loadStages(rocketData, rocketController);
     }
 
     public void LoadChildren(PartData parent, GameObject parentObject, RocketController rocketController)
@@ -188,5 +192,75 @@ public class rocketSaveManager : MonoBehaviour
     public void saveEngine(GameObject part, PartData partData)
     {
         partData.fileName = part.GetComponent<PhysicsPart>().path;
+    }
+
+    public void saveStage(RocketData rocketData)
+    {
+        if(StageEditor != null)
+        {
+            stageContainer[] stageContainers = StageEditor.GetComponent<StageEditor>().container.GetComponentsInChildren<stageContainer>();
+            stageData stageData = new stageData();
+            foreach(stageContainer container in stageContainers)
+            {
+                List<Guid> partIDs = new List<Guid>();
+                foreach(Transform part in container.transform)
+                {
+                    if(part.GetComponent<partRef>() != null)
+                    {
+                        partIDs.Add(part.GetComponent<partRef>().refObj.GetComponent<PhysicsPart>().guid);
+                    }
+                }
+                stageData.partIDs.Add(partIDs);
+            }
+            rocketData.stageData = stageData;
+        }
+    }
+
+    public void loadStages(RocketData rocketData, RocketController rocketController)
+    {
+        if(StageEditor != null)
+        {
+            //Find all physics parts
+            PhysicsPart[] parts = rocketController.GetComponentsInChildren<PhysicsPart>();
+            //Load stages buttons
+            foreach(List<Guid> partIDs in rocketData.stageData.partIDs)
+            {
+                GameObject StageContainer = Instantiate(StageEditor.GetComponent<StageEditor>().stageContainer, StageEditor.GetComponent<StageEditor>().container.transform);
+                foreach(Guid guid in partIDs)
+                {
+                    foreach(PhysicsPart part in parts)
+                    {
+                        if(part.guid == guid && guid != Guid.Empty)
+                        {
+                            if(part.type == "engine")
+                            {
+                                GameObject EngineButton = Instantiate(StageEditor.GetComponent<StageEditor>().engineBtn);
+                                GameObject child = EngineButton.GetComponentInChildren<Button>().gameObject;
+                                StageContainer.GetComponent<stageContainer>().stageEditor = StageEditor.GetComponent<StageEditor>();
+                                StageContainer.GetComponent<stageContainer>().stageEditor.stageContainers.Add(StageContainer.GetComponent<stageContainer>());
+                                StageContainer.GetComponent<stageContainer>().container = StageContainer;
+                                child.transform.SetParent(StageContainer.GetComponent<stageContainer>().container.gameObject.transform);
+                                child.GetComponentInChildren<partRef>().refObj = part.gameObject;
+                                child.GetComponentInChildren<partRef>().initializeEngineColors();
+                                DestroyImmediate(EngineButton);
+                            }
+
+                            if(part.type == "decoupler")
+                            {
+                                GameObject DecouplerButton = Instantiate(StageEditor.GetComponent<StageEditor>().decouplerBtn);
+                                GameObject child = DecouplerButton.GetComponentInChildren<Button>().gameObject;
+                                StageContainer.GetComponent<stageContainer>().stageEditor = StageEditor.GetComponent<StageEditor>();
+                                StageContainer.GetComponent<stageContainer>().stageEditor.stageContainers.Add(StageContainer.GetComponent<stageContainer>());
+                                StageContainer.GetComponent<stageContainer>().container = StageContainer;
+                                child.transform.SetParent(StageContainer.GetComponent<stageContainer>().container.gameObject.transform);
+                                child.GetComponentInChildren<partRef>().refObj = part.gameObject;
+                                child.GetComponentInChildren<partRef>().initializeDecouplerColor();
+                                DestroyImmediate(DecouplerButton);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
