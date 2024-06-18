@@ -100,7 +100,6 @@ public class GameManager : MonoBehaviour
                 currentPrefab.transform.localRotation = Quaternion.Euler(savedRot);
                 Vector2 prefabPos = new Vector2(currentPrefab.transform.position.x, currentPrefab.transform.position.y);
                 setPosition(prefabPos, currentPrefab);
-                print(currentPrefab.GetComponent<RocketPart>());
                 currentPrefab.GetComponent<RocketPart>().SetGuid();
             }
 
@@ -141,7 +140,6 @@ public class GameManager : MonoBehaviour
         Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 ray = cameraPos;
         raycastHit = Physics2D.Raycast(ray, new Vector2(0, 1000));
-        print(raycastHit);
         if(raycastHit.transform != null)
         {
             if(raycastHit.transform.gameObject.GetComponent<Tank>())
