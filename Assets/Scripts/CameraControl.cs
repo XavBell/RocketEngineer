@@ -68,7 +68,7 @@ public class CameraControl : MonoBehaviour
             if(launchsiteManager.commandCenter != null)
             {
                 WASD();
-                DragMove();
+                //DragMove();
             }
         }
 
