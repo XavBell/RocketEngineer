@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23516,7 +23515,7 @@ MonoBehaviour:
   m_IsGlobal: 1
   priority: 1
   blendDistance: 0
-  weight: 0.577
+  weight: 0.454
   sharedProfile: {fileID: 11400000, guid: 4244a123c15e8184eb5afa34a67ac239, type: 2}
 --- !u!4 &843685622
 Transform:
@@ -50513,6 +50512,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a7be5305f1b6412088777fdc2b08647, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UIToDisable:
+  - {fileID: 1188206418}
+  - {fileID: 300218204}
   EarthIcon: {fileID: 1596499839}
   Earth: {fileID: 2121345929}
   SunIcon: {fileID: 689726380}

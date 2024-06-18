@@ -74,7 +74,6 @@ public class standManager : MonoBehaviour
 
     public void logData()
     {
-        print("Test Failed");
         //Save results to file and null tracker and save new reliabili
         started = false;
         Tank tank = ConnectedTank.GetComponent<Tank>();
@@ -82,7 +81,6 @@ public class standManager : MonoBehaviour
         //Save test to file
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests"))
         {
-            print("saved test");
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests");
         }
 
@@ -105,7 +103,6 @@ public class standManager : MonoBehaviour
             var jsonString = JsonConvert.SerializeObject(saveObject);
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName + ".json");
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
-            print("saving tank");
             saveObject = loadedTank;
             //Save previous unchanged value
             saveObject.path = savePathRef.tankFolder;

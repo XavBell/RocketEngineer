@@ -140,7 +140,6 @@ public class GameManager : MonoBehaviour
         Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 ray = cameraPos;
         raycastHit = Physics2D.Raycast(ray, new Vector2(0, 1000));
-        print(raycastHit);
         if(raycastHit.transform != null)
         {
             if(raycastHit.transform.gameObject.GetComponent<Tank>())
