@@ -11,6 +11,7 @@ public class BodyShaderController : MonoBehaviour
     Material atmoMat;
     [SerializeField] Vector3 scaledLightPos;
     [SerializeField] Vector3 roundedLightPos;
+    [SerializeField] Vector3 finalLightPos;
 
     [Header("Planet Settings")]
     [SerializeField] Texture2D GroundTex;
@@ -19,9 +20,10 @@ public class BodyShaderController : MonoBehaviour
 
     [Header("Atmosphere Settings")]
     [SerializeField] Texture2D gradient;
+    [Range(0f, 2f)][SerializeField] float gradientOffset;
     [SerializeField] float size;
-    [SerializeField] Vector2 cutoff = new Vector2(0.3f, 1f);
     [Range(0f, 5f)][SerializeField] float falloffPower = 2;
+    [SerializeField] Vector2 cutoff = new Vector2(0.3f, 1f);
     [Range(0f, 1f)][SerializeField] float densityDesaturation = 0.25f;
 
     GameObject child;
@@ -44,14 +46,13 @@ public class BodyShaderController : MonoBehaviour
     {
         scaledLightPos = RoundVector3(lightPos.position / 100000, 4); 
         roundedLightPos = RoundVector3(scaledLightPos, 4);
+        finalLightPos = new Vector3(-roundedLightPos.x, roundedLightPos.y, 0);
 
-        mat.SetVector("_LightPos", -roundedLightPos);
+        mat.SetVector("_LightPos", finalLightPos);
 
         if (child != null && atmoMat != null)
-            atmoMat.SetVector("_LightPos", -roundedLightPos);
+            atmoMat.SetVector("_LightPos", finalLightPos);
         else Debug.Log("Atmosphere material not found. Ignoring...");
-
-        
     }
 
     Vector3 RoundVector3(Vector3 v, int decimalPlaces)
@@ -85,6 +86,7 @@ public class BodyShaderController : MonoBehaviour
             if (atmoMat != null)
             {
                 atmoMat.SetTexture("_Gradient", gradient);
+                atmoMat.SetFloat("_Gradient_Offset", gradientOffset);
                 atmoMat.SetFloat("_Size", size);
                 atmoMat.SetVector("_Atmosphere_Cutoff", cutoff);
                 atmoMat.SetFloat("_Falloff_Power", falloffPower);
