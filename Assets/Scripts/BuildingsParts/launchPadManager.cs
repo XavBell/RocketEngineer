@@ -22,6 +22,8 @@ public class launchPadManager : MonoBehaviour
     public string operation = "none";
     public bool started = false;
     public bool failed = false;
+    public List<string> padLines;
+    public List<Guid> connectedRocketLines;
 
     // Start is called before the first frame update
     void Start()
