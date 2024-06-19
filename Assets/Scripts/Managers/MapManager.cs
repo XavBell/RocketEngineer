@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+    public List<GameObject> UIToDisable = new List<GameObject>();
     public GameObject EarthIcon;
     public GameObject Earth;
 
@@ -40,14 +41,17 @@ public class MapManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        MapView();
+
         float previousSize = 0;
         if (MapOn == true)
         {   
-            MapView();
+            
             if(mapCam.orthographicSize != previousSize)
             {
                 updateScale();
             }
+            updatePosition();
             previousSize = mapCam.orthographicSize;
             
         }
@@ -58,7 +62,7 @@ public class MapManager : MonoBehaviour
     {
         if (MapOn == true)
         {
-            updatePosition();
+            //updatePosition();
         }
     }
 
@@ -142,7 +146,7 @@ public class MapManager : MonoBehaviour
 
     void MapView()
     {
-        if(Input.GetKey(KeyCode.M))
+        if(Input.GetKeyDown(KeyCode.M))
         {
             mapOn();
         }
@@ -192,9 +196,14 @@ public class MapManager : MonoBehaviour
                 soi.GetComponent<LineRenderer>().enabled = true;
                 paths.Add(soi.GetComponent<LineRenderer>().gameObject);
             }
+
+            foreach(GameObject UI in UIToDisable)
+            {
+                UI.SetActive(false);
+            }
+
             MapOn = true;
             return;
-
         }
 
         if (MapOn == true)
@@ -227,6 +236,14 @@ public class MapManager : MonoBehaviour
                 path.GetComponent<LineRenderer>().enabled = false;
             }
 
+            if(masterManager.ActiveRocket == null)
+            {
+                foreach (GameObject UI in UIToDisable)
+                {
+                    UI.SetActive(true);
+                }
+            }
+            
             paths.Clear();
             prediction.Clear();
             MapOn = false;

@@ -878,11 +878,9 @@ public class Rocket : MonoBehaviour
         int StageNumber = 0;
         foreach (Stages Stage in Stages)
         {
-            print("Stage " + StageNumber);
             int PartNumber = 0;
             foreach (RocketPart RP in Stage.Parts)
             {
-                print("Part " + PartNumber + " " + RP._partType);
                 PartNumber++;
             }
             StageNumber++;

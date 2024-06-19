@@ -88,18 +88,6 @@ public class FloatingOrigin : MonoBehaviour
 
             recalculateParameters = true;
 
-            LineRenderer[] lines = FindObjectsOfType<LineRenderer>();
-            foreach (LineRenderer pred in lines)
-            {
-                if (!pred.GetComponent<soiLineRenderer>() || !pred.GetComponent<Prediction>() || !pred.GetComponent<BodyPath>())
-                {
-                    for (int i = 0; i < pred.positionCount; i++)
-                    {
-                        //pred.SetPosition(i, pred.GetPosition(i) + difference);
-                    }
-                }
-            }
-
             Physics.SyncTransforms();
         }
     }
