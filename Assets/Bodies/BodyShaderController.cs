@@ -48,10 +48,10 @@ public class BodyShaderController : MonoBehaviour
         roundedLightPos = RoundVector3(scaledLightPos, 4);
         finalLightPos = new Vector3(roundedLightPos.x, -roundedLightPos.y, 0);
 
-        mat.SetVector("_LightPos", -finalLightPos);
+        mat.SetVector("_LightPos", finalLightPos);
 
         if (child != null && atmoMat != null)
-            atmoMat.SetVector("_LightPos", -finalLightPos);
+            atmoMat.SetVector("_LightPos", finalLightPos);
         else Debug.Log("Atmosphere material not found. Ignoring...");
     }
 
