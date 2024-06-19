@@ -46,7 +46,7 @@ public class BodyShaderController : MonoBehaviour
     {
         scaledLightPos = RoundVector3(lightPos.position / 100000, 4); 
         roundedLightPos = RoundVector3(scaledLightPos, 4);
-        finalLightPos = new Vector3(roundedLightPos.x, -roundedLightPos.y, 0);
+        finalLightPos = new Vector3(-roundedLightPos.x, roundedLightPos.y, 0);
 
         mat.SetVector("_LightPos", finalLightPos);
 
