@@ -56643,13 +56643,14 @@ Material:
     m_Ints: []
     m_Floats:
     - _Density_Desaturation: 0.15
-    - _Falloff_Power: 2
-    - _Gradient_Offset: 1.35
+    - _Falloff_Power: 2.5
+    - _Gradient_Offset: 1
     - _Size: 52.65
+    - _Vertical_Gradient: 0
     m_Colors:
-    - _Atmosphere_Cutoff: {r: 0.3, g: 1, b: 0, a: 0}
+    - _Atmosphere_Cutoff: {r: 0, g: 0.59, b: 0, a: 0}
     - _Color: {r: 0, g: 0.49803922, b: 1, a: 0}
-    - _LightPos: {r: 2000, g: -0, b: -0, a: 0}
+    - _LightPos: {r: -300000, g: 0, b: -0, a: 0}
   m_BuildTextureStacks: []
 --- !u!1 &1883194558
 GameObject:
@@ -66463,7 +66464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: cutoff.x
-      value: 0.3
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: cutoff.y
+      value: 0.59
       objectReference: {fileID: 0}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: gradient
@@ -66491,7 +66496,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: falloffPower
-      value: 2
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: gradientOffset
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: finalLightPos.x
+      value: 300000
+      objectReference: {fileID: 0}
+    - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
+      propertyPath: finalLightPos.y
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: gradient.ctime1
@@ -66559,7 +66576,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: scaledLightPos.x
-      value: -2000
+      value: 300000
       objectReference: {fileID: 0}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: scaledLightPos.y
@@ -66567,7 +66584,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: roundedLightPos.x
-      value: -2000
+      value: 300000
       objectReference: {fileID: 0}
     - target: {fileID: 8598963394217245204, guid: ec4c480fe7a95c448ba7cbaf0ea3409e, type: 3}
       propertyPath: roundedLightPos.y

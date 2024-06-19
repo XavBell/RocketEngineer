@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 //rtificr's amazing awesome beautiful impeccable planet script
-[ExecuteInEditMode]
+
 public class BodyShaderController : MonoBehaviour
 {
     [SerializeField] Transform lightPos;
