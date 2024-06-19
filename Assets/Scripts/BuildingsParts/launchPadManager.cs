@@ -23,6 +23,7 @@ public class launchPadManager : MonoBehaviour
     public bool started = false;
     public bool failed = false;
     public List<string> padLines;
+    public List<Guid> connectedContainersPerLine;
     public List<Guid> connectedRocketLines;
 
     // Start is called before the first frame update

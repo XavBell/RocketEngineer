@@ -251,7 +251,7 @@ public class FuelConnectorManager : MonoBehaviour
         panel.transform.DOScale(1, 0.1f);
     }
 
-    private IEnumerator ActiveDeactive(float waitTime, GameObject panel, bool activated)
+    public IEnumerator ActiveDeactive(float waitTime, GameObject panel, bool activated)
     {
         yield return new WaitForSeconds(waitTime);
         panel.SetActive(activated);
@@ -314,6 +314,7 @@ public class FuelConnectorManager : MonoBehaviour
         }
     }
 
+    //TODO refactor for new rocket system
     public void Connect()
     {
         if(input.GetComponent<flowControllerStaticFire>())
@@ -346,8 +347,7 @@ public class FuelConnectorManager : MonoBehaviour
                 input.GetComponent<flowControllerForLaunchPads>().setTankOrigin();
             }
 
-            input.GetComponent<flowControllerForLaunchPads>().updateGuid();
-            
+            input.GetComponent<flowControllerForLaunchPads>().updateGuid();   
         }
 
         ShowConnection();
