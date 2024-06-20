@@ -55,10 +55,8 @@ public class flowControllerForLaunchPads : MonoBehaviour
 
     public void setTankOrigin()
     {
-        Debug.Log("Setting tank origin");
         rocket = launchPadManager.ConnectedRocket.GetComponent<RocketController>();
         Transform[] children = rocket.GetComponentsInChildren<Transform>();
-        Debug.Log(children.Length);
         container[] containers = FindObjectsOfType<container>();
         foreach(Transform child in children)
         {
@@ -68,8 +66,6 @@ public class flowControllerForLaunchPads : MonoBehaviour
             }
             if(launchPadManager.connectedRocketLines.IndexOf(child.GetComponent<TankComponent>().lineGuid) != -1)
             {
-                Debug.Log(launchPadManager.connectedRocketLines.IndexOf(child.GetComponent<TankComponent>().lineGuid));
-                Debug.Log(launchPadManager.connectedContainersPerLine.Count);
                 if(launchPadManager.connectedContainersPerLine.Count > launchPadManager.connectedRocketLines.IndexOf(child.GetComponent<TankComponent>().lineGuid))
                 {
                     child.GetComponent<flowController>().originGuid = launchPadManager.connectedContainersPerLine[launchPadManager.connectedRocketLines.IndexOf(child.GetComponent<TankComponent>().lineGuid)];

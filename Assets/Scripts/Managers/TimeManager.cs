@@ -109,7 +109,7 @@ public class TimeManager : MonoBehaviour
         if (masterManager.ActiveRocket != null)
         {
             PlanetGravity pg = masterManager.ActiveRocket.GetComponent<PlanetGravity>();
-            if (masterManager.ActiveRocket.GetComponent<Rocket>().throttle > 0)
+            if (masterManager.ActiveRocket.GetComponent<RocketController>().throttle > 0)
             {
                 foreach (GameObject button in buttons)
                 {
