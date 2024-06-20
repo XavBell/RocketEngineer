@@ -65,4 +65,30 @@ public class RocketController : MonoBehaviour
             transform.Rotate(0, 0, Time.deltaTime * -50);
         }
     }
+
+    public void updateStage()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StageEditor stageEditor = FindObjectOfType<StageEditor>();
+            if(stageEditor.stageContainers.Count > 0)
+            {
+                foreach(partRef button in stageEditor.stageContainers[0].transform.GetComponentsInChildren<partRef>())
+                {
+                    if(button.GetComponent<partRef>().refObj.GetComponent<PhysicsPart>().type == "engine")
+                    {
+                        button.GetComponent<partRef>().refObj.GetComponent<EngineComponent>().active = true;
+                    }
+
+                    if(button.GetComponent<partRef>().refObj.GetComponent<PhysicsPart>().type == "decoupler")
+                    {
+                        button.GetComponent<partRef>().refObj.GetComponent<DecouplerComponent>().decoupled = true;
+                    }
+                }
+                Destroy(stageEditor.stageContainers[0].gameObject);
+                stageEditor.stageContainers.RemoveAt(0);
+                Debug.Log("Staged");
+            }
+        }
+    }
 }

@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class stageButtonDrag : MonoBehaviour
 {
-    Transform parentAfterDrag;
-    // Start is called before the first frame update
+    Transform parentAfterDrag;    // Start is called before the first frame update
     void Start()
     {
         

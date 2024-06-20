@@ -107,7 +107,7 @@ public class PlanetGravity : MonoBehaviour
         if (possessed == true)
         {
             MasterManager.ActiveRocket = core; //Line should be able to be removed
-            //core.GetComponent<Rocket>().controlThrust();
+            core.GetComponent<RocketController>().updateStage();
             core.GetComponent<RocketController>()._orientation();
         }
     }
