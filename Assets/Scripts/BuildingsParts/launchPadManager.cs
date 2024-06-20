@@ -23,14 +23,24 @@ public class launchPadManager : MonoBehaviour
     public bool started = false;
     public bool failed = false;
     public List<string> padLines;
-    public List<Guid> connectedContainersPerLine;
-    public List<Guid> connectedRocketLines;
+    public List<Guid> connectedContainersPerLine = new List<Guid>();
+    public List<Guid> connectedRocketLines = new List<Guid>();
+    public RocketData rocketData;
 
     // Start is called before the first frame update
     void Start()
     {
         GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
         MasterManager = GMM.GetComponent<MasterManager>();
+        while(connectedContainersPerLine.Count < padLines.Count)
+        {
+            connectedContainersPerLine.Add(Guid.Empty);
+        }
+
+        while(connectedRocketLines.Count < padLines.Count)
+        {
+            connectedRocketLines.Add(Guid.Empty);
+        }
     }
 
     // Update is called once per frame

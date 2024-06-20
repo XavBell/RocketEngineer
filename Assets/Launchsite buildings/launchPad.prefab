@@ -1135,7 +1135,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4773213932711474176}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4602604472516992523}
+        m_TargetAssemblyTypeName: fuelLaunchPadPanelInitializer, Assembly-CSharp
+        m_MethodName: Connect
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1526877324397799705
 GameObject:
   m_ObjectHideFlags: 0
@@ -2992,7 +3004,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1248194533161955105}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8144038573264824401}
+        m_TargetAssemblyTypeName: LaunchPadPanelInitializer, Assembly-CSharp
+        m_MethodName: connectLines
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4584195605983365867
 GameObject:
   m_ObjectHideFlags: 0
@@ -3047,6 +3071,7 @@ GameObject:
   - component: {fileID: -4488605434850809749}
   - component: {fileID: 9020689521050503935}
   - component: {fileID: -7858373172740290332}
+  - component: {fileID: 6245130418496951475}
   m_Layer: 7
   m_Name: launchPad
   m_TagString: building
@@ -3292,6 +3317,52 @@ MonoBehaviour:
   launchPadManager: {fileID: 5381789719691407045}
   oxidizerContainerOrigin: {fileID: 0}
   fuelContainerOrigin: {fileID: 0}
+  rocket: {fileID: 0}
+--- !u!114 &6245130418496951475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4590421016071702574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea0d57b32a64cec4fbac285b1d2870af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputParent: {fileID: 0}
+  outputParent: {fileID: 0}
+  quantityText: {fileID: 0}
+  rateText: {fileID: 0}
+  selfRate: 0
+  rate: 0
+  moles: 0
+  volume: 0
+  mass: 0
+  tankVolume: 0
+  tankHeight: 0
+  tankThickness: 0.1
+  tankThermalConductivity: 10
+  tankCoolerPower: 500
+  tankSurfaceArea: 2000
+  tankState: working
+  externalTemperature: 298
+  targetTemperature: 298
+  externalPressure: 101000
+  internalPressure: 298
+  internalTemperature: 298
+  maxPressure: 400000000
+  substance: {fileID: 0}
+  state: none
+  log: 0
+  coolerActive: 0
+  ventActive: 0
+  variation: 0
+  engines: []
+  type: default
+  circuit: none
+  MyTime: {fileID: 0}
+  explosion: {fileID: 0}
 --- !u!1 &4966079446138727283
 GameObject:
   m_ObjectHideFlags: 0

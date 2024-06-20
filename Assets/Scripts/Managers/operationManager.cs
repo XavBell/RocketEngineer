@@ -5,6 +5,7 @@ using System.IO;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
+using Newtonsoft.Json;
 
 public class operationManager : MonoBehaviour
 {
@@ -211,8 +212,12 @@ public class operationManager : MonoBehaviour
         {
             launchPad.button.SetActive(true);
             PanelFadeIn(launchPad.button);
-            launchPad.button.GetComponent<OnClick>().op = this;
-            launchPad.button.GetComponent<OnClick>().savedLaunchpad = launchPad.gameObject;
+            string saveUserPath = Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + vehicleLaunchDropdown.options[vehicleLaunchDropdown.value].text.ToString();
+            string rocketData1 = File.ReadAllText(saveUserPath);
+            RocketData rocketData = JsonConvert.DeserializeObject<RocketData>(rocketData1);
+            launchPad.rocketData = rocketData;
+            launchPad.button.GetComponentInChildren<OnClick>().op = this;
+            launchPad.button.GetComponentInChildren<OnClick>().savedLaunchpad = launchPad.gameObject;
         }
     }
 

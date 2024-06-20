@@ -14,6 +14,7 @@ public class LaunchPadPanelInitializer : MonoBehaviour
     void Start()
     {
         initializePadLines();
+        initializeRocketLines(launchPadManager.rocketData);
     }
 
     // Update is called once per frame
@@ -28,9 +29,15 @@ public class LaunchPadPanelInitializer : MonoBehaviour
         padLinesDropdown.AddOptions(launchPadManager.padLines);
     }
 
-    public void initializeRocketLines()
+    public void initializeRocketLines(RocketData rocketData)
     {
         rocketLinesDropdown.ClearOptions();
-        rocketLinesDropdown.AddOptions(rocketController.lineNames);
+        rocketLinesDropdown.AddOptions(rocketData.lineNames);
+    }
+
+    public void connectLines()
+    {
+        launchPadManager.connectedRocketLines[padLinesDropdown.value] = launchPadManager.rocketData.lineGuids[rocketLinesDropdown.value];
+        Debug.Log("Connected rocket line " + launchPadManager.rocketData.lineGuids[rocketLinesDropdown.value] + " to launch pad line " + launchPadManager.connectedContainersPerLine[padLinesDropdown.value]);
     }
 }
