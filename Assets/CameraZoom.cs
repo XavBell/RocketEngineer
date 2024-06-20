@@ -17,7 +17,7 @@ public class CameraZoom : MonoBehaviour
     void Start()
     {
         MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
-        userFactor = 1;
+        userFactor = MasterManager.GetComponent<MasterManager>().scrollMultiplierValue;
         
         cam = GetComponent<Camera>();
     }
