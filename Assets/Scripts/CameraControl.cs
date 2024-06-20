@@ -1,10 +1,4 @@
-using System.Runtime.InteropServices.ComTypes;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Threading.Tasks;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 public class CameraControl : MonoBehaviour
 {
@@ -14,6 +8,7 @@ public class CameraControl : MonoBehaviour
     private float targetZoom;
     Vector3 dragOrigin;
     private float zoomFactor = 0.5f;
+    public float smoothZoom;
     private float userFactor = 1f;
     private bool postProcess = true;
     private float zoomLerp = 10f;
@@ -40,7 +35,8 @@ public class CameraControl : MonoBehaviour
 
     public TimeManager timeManager;
     public FloatingOrigin floatingOrigin;
-    
+
+    public GameObject mainCanvas;
 
     public float threshold = 5000;
     // Start is called before the first frame update
@@ -68,8 +64,10 @@ public class CameraControl : MonoBehaviour
             if(launchsiteManager.commandCenter != null)
             {
                 WASD();
+                QE();
                 DragMove();
             }
+            if (Input.GetKeyDown(KeyCode.F1)) mainCanvas.SetActive(!mainCanvas.activeSelf);
         }
 
         if(MasterManager.GetComponent<MasterManager>().ActiveRocket != null)
@@ -89,13 +87,14 @@ public class CameraControl : MonoBehaviour
         if (targetZoom - scrollData * zoomFactor * cam.orthographicSize > 1)
         {
             targetZoom -= scrollData * zoomFactor * cam.orthographicSize * userFactor;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
+            smoothZoom = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
         }
         if (targetZoom - scrollData * zoomFactor * cam.orthographicSize < 1)
         {
             targetZoom = 1;
-            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
+            smoothZoom = Mathf.Lerp(cam.orthographicSize, targetZoom, Time.deltaTime * zoomLerp);
         }
+        cam.orthographicSize = smoothZoom;
     }
 
     public void DragMove()
@@ -144,12 +143,12 @@ public class CameraControl : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.E))
         {
-            cam.transform.RotateAround(earth.transform.position, earth.transform.forward*-1, 0.02f*Time.deltaTime);
+            cam.transform.RotateAround(earth.transform.position, earth.transform.forward, 0.1f*Time.deltaTime);
         }
 
         if (Input.GetKey(KeyCode.Q))
         {
-            cam.transform.RotateAround(earth.transform.position, earth.transform.forward, 0.02f*Time.deltaTime);
+            cam.transform.RotateAround(earth.transform.position, earth.transform.forward * -1, 0.1f*Time.deltaTime);
         }
     }
 
