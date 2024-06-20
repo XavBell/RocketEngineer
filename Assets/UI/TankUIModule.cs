@@ -27,7 +27,7 @@ public class TankUIModule : MonoBehaviour
         ventToggle.isOn = tank.GetComponent<gasVent>().open;
         valveToggle.isOn = tank.GetComponent<flowController>().opened;
         targetTemperature.text = tank.GetComponent<cooler>().targetTemperature.ToString();
-        connectedLine.text = tank.GetComponent<Tank>().propellantCategory.ToString();
+        //connectedLine.text = tank.GetComponent<Tank>().propellantCategory.ToString();
 
         tankColor = tank.GetComponent<SpriteRenderer>().color;
     }
@@ -54,20 +54,20 @@ public class TankUIModule : MonoBehaviour
         volume.text = tank.volume.ToString() + "/" + tank.tankVolume.ToString();
         state.text = tank.state.ToString();
         
-        if(tank.GetComponent<Tank>().tested == false)
-        {
-            quantity.text = tank.mass.ToString();
-        }else if(tank.GetComponent<Tank>().tested == true)
-        {
-            if(tank.substance != null)
-            {
-                //mass = volume * density
-                float maxQuantity = tank.tankVolume * tank.substance.Density;
-                quantity.text = tank.mass.ToString() + "/" + maxQuantity.ToString();
-            }else{
-                quantity.text = tank.mass.ToString();
-            }
-        }
+        //if(tank.GetComponent<Tank>().tested == false)
+        //{
+        //    quantity.text = tank.mass.ToString();
+        //}else if(tank.GetComponent<Tank>().tested == true)
+        //{
+        //    if(tank.substance != null)
+        //   {
+        //        //mass = volume * density
+        //        float maxQuantity = tank.tankVolume * tank.substance.Density;
+        //        quantity.text = tank.mass.ToString() + "/" + maxQuantity.ToString();
+        //    }else{
+        //        quantity.text = tank.mass.ToString();
+        //    }
+        //}
     }
 
     public void updateTemp()

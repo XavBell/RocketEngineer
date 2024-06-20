@@ -87,7 +87,6 @@ public class RocketController : MonoBehaviour
                 }
                 Destroy(stageEditor.stageContainers[0].gameObject);
                 stageEditor.stageContainers.RemoveAt(0);
-                Debug.Log("Staged");
             }
         }
     }
