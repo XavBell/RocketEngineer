@@ -53,4 +53,16 @@ public class RocketController : MonoBehaviour
             
         }
     }
+
+    public void _orientation()
+    {
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Rotate(0, 0, Time.deltaTime * 50);
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(0, 0, Time.deltaTime * -50);
+        }
+    }
 }
