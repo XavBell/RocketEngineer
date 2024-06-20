@@ -64,7 +64,6 @@ public class CameraControl : MonoBehaviour
             if(launchsiteManager.commandCenter != null)
             {
                 WASD();
-                QE();
                 DragMove();
             }
             if (Input.GetKeyDown(KeyCode.F1)) mainCanvas.SetActive(!mainCanvas.activeSelf);
