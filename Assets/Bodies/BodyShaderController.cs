@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 //rtificr's amazing awesome beautiful impeccable planet script
-[ExecuteInEditMode]
+//[ExecuteInEditMode]
 public class BodyShaderController : MonoBehaviour
 {
     [SerializeField] Transform lightPos;
@@ -21,7 +21,6 @@ public class BodyShaderController : MonoBehaviour
     [Header("Atmosphere Settings")]
     [SerializeField] Texture2D gradient;
     [Range(0f, 2f)][SerializeField] float gradientOffset;
-    [Range(-1f, 1f)][SerializeField] float verticalGradient;
     [SerializeField] float size;
     [Range(0f, 5f)][SerializeField] float falloffPower = 2;
     [SerializeField] Vector2 cutoff = new Vector2(0.3f, 1f);
@@ -92,7 +91,6 @@ public class BodyShaderController : MonoBehaviour
                 atmoMat.SetVector("_Atmosphere_Cutoff", cutoff);
                 atmoMat.SetFloat("_Falloff_Power", falloffPower);
                 atmoMat.SetFloat("_Density_Desaturation", densityDesaturation);
-                atmoMat.SetFloat("_Vertical_Gradient", verticalGradient);
             }
             else Debug.Log("Atmosphere material not found. Ignoring...");
         }

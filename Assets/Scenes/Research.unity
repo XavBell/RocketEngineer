@@ -184,8 +184,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: da4088848c2b54c0691601034f2839ae, type: 2}
-  m_sharedMaterial: {fileID: -1592537176526672624, guid: da4088848c2b54c0691601034f2839ae, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c20d2710e1b39db458ccff418ea8ae23, type: 2}
+  m_sharedMaterial: {fileID: -672377907086511637, guid: c20d2710e1b39db458ccff418ea8ae23, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -209,12 +209,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 35
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 25
-  m_fontSizeMax: 50
+  m_fontSizeMax: 35
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -609,9 +609,9 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1080, y: 720}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -798,6 +798,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button1
       objectReference: {fileID: 0}
+    - target: {fileID: 1620984366171393407, guid: b626e7cc668e5824dbdc2492ff8e00db, type: 3}
+      propertyPath: m_Color.b
+      value: 0.69411767
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620984366171393407, guid: b626e7cc668e5824dbdc2492ff8e00db, type: 3}
+      propertyPath: m_Color.g
+      value: 0.40490207
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b626e7cc668e5824dbdc2492ff8e00db, type: 3}
 --- !u!224 &956593517 stripped
@@ -834,17 +842,17 @@ RectTransform:
   m_GameObject: {fileID: 1070488334}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.74371, y: 0.74371, z: 0.74371}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 249965749}
   m_Father: {fileID: 1814133576}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -386.66666}
-  m_SizeDelta: {x: 212.8803, y: 208.2308}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -440, y: -26.666656}
+  m_SizeDelta: {x: 133, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1070488336
 MonoBehaviour:
@@ -1028,17 +1036,17 @@ RectTransform:
   m_GameObject: {fileID: 1527401475}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.74371, y: 0.74371, z: 0.74371}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1676821796}
   m_Father: {fileID: 1814133576}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 466.6667, y: -386.6667}
-  m_SizeDelta: {x: 212.8803, y: 208.2308}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -175, y: -26.666687}
+  m_SizeDelta: {x: 133, y: 133}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1527401477
 MonoBehaviour:
@@ -1212,8 +1220,8 @@ MonoBehaviour:
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: da4088848c2b54c0691601034f2839ae, type: 2}
-  m_sharedMaterial: {fileID: -1592537176526672624, guid: da4088848c2b54c0691601034f2839ae, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c20d2710e1b39db458ccff418ea8ae23, type: 2}
+  m_sharedMaterial: {fileID: -672377907086511637, guid: c20d2710e1b39db458ccff418ea8ae23, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1237,12 +1245,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 35
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 25
-  m_fontSizeMax: 50
+  m_fontSizeMax: 35
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
