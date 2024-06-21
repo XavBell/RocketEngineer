@@ -73,13 +73,17 @@ public class MasterManager : MonoBehaviour
     public List<string> nodeUnlocked = new List<string>();
 
     public Toggle fullScreen;
+    public Toggle stars;
 
     public bool postProcess = true;
+    public bool showStars = true;
     public float scrollMultiplierValue = 1;
 
     GameObject btCreate;
     GameObject btOptions;
     GameObject btLoad;
+
+    GameObject bgMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -274,6 +278,12 @@ public class MasterManager : MonoBehaviour
     public void toggleFullscreen()
     {
         Screen.fullScreen = fullScreen.isOn;
+    }
+
+    public void toggleStars()
+    {
+        showStars = stars.isOn;
+        bgMenu.SetActive(showStars);
     }
 
 
