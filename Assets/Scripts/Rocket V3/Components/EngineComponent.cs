@@ -39,8 +39,11 @@ public class EngineComponent : MonoBehaviour
             initialized = true;
         }
 
-        checkFail();
-        
+        if(initialized)
+        {
+            checkFail();
+        }
+
         if(active == false || operational == false)
         {
             return Vector2.zero;
@@ -65,6 +68,7 @@ public class EngineComponent : MonoBehaviour
             operational = false;
             if(willExplode == true)
             {
+                Debug.Log("Engine exploded");
                 Destroy(gameObject);
             }
         }
