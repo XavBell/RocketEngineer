@@ -47,11 +47,10 @@ public class RocketController : MonoBehaviour
 
     public void UpdateMass()
     {
+        rocketMass = 0;
         foreach (PhysicsPart child in GetComponentsInChildren<PhysicsPart>())
         {
-
             rocketMass += child.GetComponent<PhysicsPart>().mass;
-            
         }
     }
 
