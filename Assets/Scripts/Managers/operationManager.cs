@@ -333,6 +333,7 @@ public class operationManager : MonoBehaviour
                     rocketSaveManager rocketSaveManager = FindObjectOfType<rocketSaveManager>();
                     GameObject rocketController = Instantiate(Resources.Load<GameObject>("Prefabs/" + "RocketController"));
                     rocketSaveManager.loadRocket(rocketController.GetComponent<RocketController>(), vehicleLaunchDropdown.options[value].text.ToString().Replace(".json",""));
+                    rocketController.transform.position = selectedLaunchPad.transform.position + new Vector3(0, 10f, 0);
                     rocketController.GetComponent<RocketController>().InitializeComponents();
                     onclick.spawnedRocket = rocketController;
                     stageEditor.gameObject.SetActive(true);

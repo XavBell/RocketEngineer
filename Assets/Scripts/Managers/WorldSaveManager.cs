@@ -244,7 +244,7 @@ public class WorldSaveManager : MonoBehaviour
             System.IO.File.WriteAllText(MasterManager.GetComponent<MasterManager>().worldPath, jsonString);
         }
         else{
-            FindObjectOfType<StageViewer>().Stop();
+            FindObjectOfType<StageEditor>().Stop();
             pendingStopDelayed = true;
         }
     }

@@ -70,7 +70,7 @@ public class rocketSaveManager : MonoBehaviour
         originalPart.transform.rotation = Quaternion.Euler(0, 0, rocketData.rootPart.z_rot);
         originalPart.GetComponent<PhysicsPart>().guid = rocketData.rootPart.guid;
         originalPart.transform.parent = rocketController.transform;
-        originalPart.transform.localPosition = new Vector2(rocketData.rootPart.x_pos, rocketData.rootPart.y_pos);
+        originalPart.transform.localPosition = new Vector2(0, 0);
         loadPartFromType(rocketData.rootPart.partType, originalPart, rocketData.rootPart, rocketController);
         LoadChildren(rocketData.rootPart, originalPart, rocketController);
         loadStages(rocketData, rocketController);
@@ -408,6 +408,7 @@ public class rocketSaveManager : MonoBehaviour
         rocketController.rocketName = rocketData.rocketName;
         rocketController.lineNames = rocketData.lineNames;
         rocketController.lineGuids = rocketData.lineGuids;
+        rocketController.transform.position = new Vector2(rocketData.x_pos, rocketData.y_pos);
         if ((float)rocketData.v_x != float.NaN && (float)rocketData.v_y != float.NaN)
         {
             rocketController.GetComponent<Rigidbody2D>().velocity = new Vector2((float)rocketData.v_x, (float)rocketData.v_y);
@@ -508,7 +509,7 @@ public class rocketSaveManager : MonoBehaviour
             newPart.transform.rotation = Quaternion.Euler(0, 0, rocketData.rootPart.z_rot);
             newPart.GetComponent<PhysicsPart>().guid = rocketData.rootPart.guid;
             newPart.transform.parent = rocketController.transform;
-            newPart.transform.localPosition = new Vector2(rocketData.x_pos, rocketData.y_pos);
+            newPart.transform.localPosition = new Vector2(0, 0);
             if (rocketData.rootPart.partType == "tank")
             {
                 newPart.GetComponent<PhysicsPart>().path = rocketData.rootPart.fileName;
