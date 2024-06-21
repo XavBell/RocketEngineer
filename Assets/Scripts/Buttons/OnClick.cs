@@ -284,7 +284,6 @@ public class OnClick : MonoBehaviour
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
             spawnedRocket = Instantiate(Engine, launchPad.transform);
-            spawnedRocket.GetComponent<PhysicsPart>().path = loadedEngine.path;
             spawnedRocket.GetComponent<PhysicsPart>().path = loadedEngine.engineName;
             spawnedRocket.GetComponent<EngineComponent>().maxThrust = loadedEngine.thrust_s;
             spawnedRocket.GetComponent<PhysicsPart>().mass = loadedEngine.mass_s;
@@ -315,15 +314,13 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<DoubleTransform>().y_pos = launchPad.transform.position.y;
 
             //Engine engine = spawnedRocket.GetComponent<Engine>();
-            spawnedRocket.GetComponent<Tank>()._path = loadedTank.path;
-            spawnedRocket.GetComponent<Tank>()._partName = loadedTank.tankName;
-            spawnedRocket.GetComponent<Tank>()._partMass = loadedTank.mass;
-            spawnedRocket.GetComponent<Tank>().x_scale = loadedTank.tankSizeX;
-            spawnedRocket.GetComponent<Tank>().y_scale = loadedTank.tankSizeY;
-            spawnedRocket.GetComponent<Tank>()._volume = loadedTank.volume;
-            spawnedRocket.GetComponent<Tank>().tankMaterial = loadedTank.tankMaterial;
-            spawnedRocket.GetComponent<Tank>()._partCost = loadedTank.cost;
-            spawnedRocket.GetComponent<Tank>().tested = loadedTank.tested;
+            spawnedRocket.GetComponent<PhysicsPart>().path = loadedTank.tankName;
+            spawnedRocket.GetComponent<PhysicsPart>().mass = loadedTank.mass;
+            spawnedRocket.GetComponent<TankComponent>().x_scale = loadedTank.tankSizeX;
+            spawnedRocket.GetComponent<TankComponent>().y_scale = loadedTank.tankSizeY;
+            spawnedRocket.GetComponent<TankComponent>()._volume = loadedTank.volume;
+            spawnedRocket.GetComponent<PhysicsPart>().cost = loadedTank.cost;
+            spawnedRocket.GetComponent<TankComponent>().tested = loadedTank.tested;
             if(launchPad.GetComponent<buildingType>().anchor != null)
             {
                 spawnedRocket.transform.position = launchPad.GetComponent<buildingType>().anchor.transform.position;

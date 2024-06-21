@@ -62,10 +62,10 @@ public class PressureTestViewer : MonoBehaviour
 
     void updateQuantity()
     {
-        if(Stand.GetComponent<standManager>().ConnectedTank.GetComponent<Tank>().tested == false)
+        if(Stand.GetComponent<standManager>().ConnectedTank.GetComponent<TankComponent>().tested == false)
         {
             quantity.text = Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().mass.ToString();
-        }else if(Stand.GetComponent<standManager>().ConnectedTank.GetComponent<Tank>().tested == true)
+        }else if(Stand.GetComponent<standManager>().ConnectedTank.GetComponent<TankComponent>().tested == true)
         {
             if(Stand.GetComponent<standManager>().ConnectedTank.GetComponent<container>().substance != null)
             {

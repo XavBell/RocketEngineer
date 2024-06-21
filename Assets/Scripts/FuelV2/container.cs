@@ -179,14 +179,12 @@ public class container : MonoBehaviour
             
             if (this.gameObject.transform.parent.gameObject.GetComponent<PlanetGravity>() != null)
             {
-                print("hi");
                 GameObject toDestroy = this.gameObject.transform.parent.gameObject;
                 FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to overfilling");
                 Destroy(toDestroy);
             }
             else if (explosion != null)
             {
-                print("hi");
                 FindObjectOfType<DestroyPopUpManager>().ShowDestroyPopUp("Destroyed due to overfilling");
                 explosion.transform.parent = null;
                 explosion.Play();
