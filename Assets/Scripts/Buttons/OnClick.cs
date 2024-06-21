@@ -284,20 +284,18 @@ public class OnClick : MonoBehaviour
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
             spawnedRocket = Instantiate(Engine, launchPad.transform);
-            spawnedRocket.GetComponent<Engine>()._path = loadedEngine.path;
-            spawnedRocket.GetComponent<Engine>()._partName = loadedEngine.engineName;
-            spawnedRocket.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
-            spawnedRocket.GetComponent<Engine>()._partMass = loadedEngine.mass_s;
-            spawnedRocket.GetComponent<Engine>()._rate = loadedEngine.rate_s;
-            spawnedRocket.GetComponent<Engine>()._tvcSpeed = loadedEngine.tvcSpeed_s;
-            spawnedRocket.GetComponent<Engine>()._maxAngle = loadedEngine.tvcMaxAngle_s;
-            spawnedRocket.GetComponent<Engine>()._tvcName = loadedEngine.tvcName_s;
-            spawnedRocket.GetComponent<Engine>()._nozzleName = loadedEngine.nozzleName_s;
-            spawnedRocket.GetComponent<Engine>()._turbineName = loadedEngine.turbineName_s;
-            spawnedRocket.GetComponent<Engine>()._pumpName = loadedEngine.pumpName_s;
-            spawnedRocket.GetComponent<Engine>().reliability = loadedEngine.reliability;
-            spawnedRocket.GetComponent<Engine>().maxTime = loadedEngine.maxTime;
-            spawnedRocket.GetComponent<Engine>()._partCost = loadedEngine.cost;
+            spawnedRocket.GetComponent<PhysicsPart>().path = loadedEngine.path;
+            spawnedRocket.GetComponent<PhysicsPart>().path = loadedEngine.engineName;
+            spawnedRocket.GetComponent<EngineComponent>().maxThrust = loadedEngine.thrust_s;
+            spawnedRocket.GetComponent<PhysicsPart>().mass = loadedEngine.mass_s;
+            spawnedRocket.GetComponent<EngineComponent>().maxFuelFlow = loadedEngine.rate_s;
+            spawnedRocket.GetComponent<EngineComponent>()._nozzleName = loadedEngine.nozzleName_s;
+            spawnedRocket.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
+            spawnedRocket.GetComponent<EngineComponent>()._pumpName = loadedEngine.pumpName_s;
+            spawnedRocket.GetComponent<EngineComponent>().reliability = loadedEngine.reliability;
+            spawnedRocket.GetComponent<EngineComponent>().maxTime = loadedEngine.maxTime;
+            spawnedRocket.GetComponent<PhysicsPart>().cost = loadedEngine.cost;
+            spawnedRocket.GetComponent<EngineComponent>().InitializeSprite();
             if(launchPad.GetComponent<buildingType>().anchor != null)
             {
                 spawnedRocket.transform.position = launchPad.GetComponent<buildingType>().anchor.transform.position;
