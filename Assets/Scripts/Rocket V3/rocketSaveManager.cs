@@ -128,6 +128,8 @@ public class rocketSaveManager : MonoBehaviour
         part.GetComponent<TankComponent>().x_scale = loadedTank.tankSizeX;
         part.GetComponent<TankComponent>().y_scale = loadedTank.tankSizeY;
         part.GetComponent<TankComponent>().conductivity = loadedTank.thermalConductivity;
+        part.GetComponent<PhysicsPart>().mass = loadedTank.mass;
+        part.GetComponent<PhysicsPart>().cost = loadedTank.cost;
         part.GetComponent<TankComponent>().tested = loadedTank.tested;
     }
 
@@ -141,6 +143,11 @@ public class rocketSaveManager : MonoBehaviour
         part.GetComponent<EngineComponent>()._nozzleName = loadedEngine.nozzleName_s;
         part.GetComponent<EngineComponent>()._pumpName = loadedEngine.pumpName_s;
         part.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
+        part.GetComponent<EngineComponent>().maxThrust = loadedEngine.thrust_s;
+        part.GetComponent<EngineComponent>().maxFuelFlow = loadedEngine.rate_s;
+        part.GetComponent<EngineComponent>().reliability = loadedEngine.reliability;
+        part.GetComponent<PhysicsPart>().mass = loadedEngine.mass_s;
+        part.GetComponent<PhysicsPart>().cost = loadedEngine.cost;
         part.GetComponent<EngineComponent>().InitializeSprite();
     }
 
@@ -203,6 +210,10 @@ public class rocketSaveManager : MonoBehaviour
     public void saveEngine(GameObject part, PartData partData)
     {
         partData.fileName = part.GetComponent<PhysicsPart>().path;
+        partData.thrust = part.GetComponent<EngineComponent>().maxThrust;
+        partData.massFlowRate = part.GetComponent<EngineComponent>().maxFuelFlow;
+        partData.reliability = part.GetComponent<EngineComponent>().reliability;
+        partData.mass = part.GetComponent<PhysicsPart>().mass;
     }
 
     public void saveStage(RocketData rocketData)

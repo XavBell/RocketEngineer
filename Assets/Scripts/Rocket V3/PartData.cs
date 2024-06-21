@@ -9,6 +9,7 @@ public class PartData
 {
     public string partType;
     public string partPath;
+    public float mass;
     public Guid guid;
     public float x_pos;
     public float y_pos;
@@ -20,7 +21,11 @@ public class PartData
     //**Put variable necessary for parts here**//
     //Decouplers
     public bool detachFromParent;
+
     //Engines
+    public float thrust;
+    public float massFlowRate;
+    public float reliability;
 
     //Tanks
     public Guid lineGuid;

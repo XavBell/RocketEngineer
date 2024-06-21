@@ -11,6 +11,7 @@ public class EngineComponent : MonoBehaviour
 
     public float maxThrust;
     public float maxFuelFlow;
+    public float reliability;
     public bool active;
     public Propellants usedPropellant;
 

@@ -6,7 +6,7 @@ using System;
 public class PhysicsPart : MonoBehaviour
 {
     public string type;
-    public string cost;
+    public float cost;
     public string path;
     public Guid guid;
     public float mass;

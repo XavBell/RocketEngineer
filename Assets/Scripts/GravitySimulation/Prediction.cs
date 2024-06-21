@@ -140,7 +140,7 @@ public class Prediction : MonoBehaviour
         double[] times = new double[numPoints];
         Vector3[] positions = new Vector3[numPoints];
 
-        if (planetGravity.gameObject.GetComponent<Rocket>().throttle > 0 || updated == false)
+        if (planetGravity.gameObject.GetComponent<RocketController>().throttle > 0 || updated == false)
         {
             SetKeplerParams(keplerParams, rocketPosition2D, planetPos, rocketVelocity2D, gravityParam, time);
             if (rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)

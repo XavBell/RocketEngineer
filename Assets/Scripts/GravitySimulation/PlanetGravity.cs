@@ -57,8 +57,6 @@ public class PlanetGravity : MonoBehaviour
     //Leaving rb public bcs SO MANY THINGS are using it
     public Rigidbody2D rb;
 
-    //Leaving rocket mass public too because it is used in another script for increment
-    public float rocketMass;
     //Aerodynamic coefficient
     public float baseCoefficient = 0.75f;
 
@@ -145,7 +143,6 @@ public class PlanetGravity : MonoBehaviour
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
-        Debug.Log(ResultVector);
         if ((Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity) && storedVelocity.magnitude <= velocityThreshold)
         {
             if (velocityStored == true)
