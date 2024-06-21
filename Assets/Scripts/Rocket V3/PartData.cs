@@ -24,6 +24,11 @@ public class PartData
 
     //Tanks
     public Guid lineGuid;
+    public float _volume;
+    public float x_scale;
+    public float y_scale;
+    public float conductivity;
+    public bool tested;
 
     //Capsules
 

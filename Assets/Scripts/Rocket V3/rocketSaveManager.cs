@@ -124,6 +124,11 @@ public class rocketSaveManager : MonoBehaviour
         var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + partData.fileName);
         saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
         part.transform.localScale = new Vector3(loadedTank.tankSizeX, loadedTank.tankSizeY, 1);
+        part.GetComponent<TankComponent>()._volume = loadedTank.volume;
+        part.GetComponent<TankComponent>().x_scale = loadedTank.tankSizeX;
+        part.GetComponent<TankComponent>().y_scale = loadedTank.tankSizeY;
+        part.GetComponent<TankComponent>().conductivity = loadedTank.thermalConductivity;
+        part.GetComponent<TankComponent>().tested = loadedTank.tested;
     }
 
     public void loadEngine(GameObject part, PartData partData)
@@ -187,6 +192,12 @@ public class rocketSaveManager : MonoBehaviour
     {
         partData.fileName = part.GetComponent<PhysicsPart>().path;
         partData.lineGuid = part.GetComponent<TankComponent>().lineGuid;
+        partData._volume = part.GetComponent<TankComponent>()._volume;
+        partData.x_scale = part.GetComponent<TankComponent>().x_scale;
+        partData.y_scale = part.GetComponent<TankComponent>().y_scale;
+        partData.conductivity = part.GetComponent<TankComponent>().conductivity;
+        partData.tested = part.GetComponent<TankComponent>().tested;
+
     }
 
     public void saveEngine(GameObject part, PartData partData)
