@@ -379,6 +379,29 @@ public class VABManager : MonoBehaviour
             if(type.value == 0)
             {
                 //Build rocket
+                saveRocket saveObject = new saveRocket();
+                var jsonString = JsonConvert.SerializeObject(saveObject);
+                jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + partName.options[partName.value].text);
+                RocketData loadedRocket = JsonConvert.DeserializeObject<RocketData>(jsonString);
+
+                if(loadedRocket.rootPart.partType == "engine")
+                {
+                    if(MasterManager.engines.Contains(loadedRocket.rootPart.fileName.Replace("/", "")))
+                    {
+                        MasterManager.engines.Remove(loadedRocket.rootPart.fileName.Replace("/", ""));
+                    }
+                }
+
+                if(loadedRocket.rootPart.partType == "tank")
+                {
+                    if(MasterManager.tanks.Contains(loadedRocket.rootPart.fileName.Replace("/", "")))
+                    {
+                        MasterManager.tanks.Remove(loadedRocket.rootPart.fileName.Replace("/", ""));
+                    }
+                }
+
+                removeParts(loadedRocket.rootPart);
+
                 MasterManager.rockets.Add(partName.options[partName.value].text);
             }
 
@@ -396,6 +419,33 @@ public class VABManager : MonoBehaviour
             MasterManager.gameObject.GetComponent<pointManager>().nPoints -= Convert.ToSingle(costTxt.text);
         }
         retrieveInfo();
+    }
+
+    public void removeParts(PartData parent)
+    {
+        foreach (PartData part in parent.children)
+        {
+            if (part.partType == "engine")
+            {
+                if(MasterManager.engines.Contains(part.fileName.Replace("/", "")))
+                {
+                    MasterManager.engines.Remove(part.fileName.Replace("/", ""));
+                }
+            }
+
+            if (part.partType == "tank")
+            {
+                if(MasterManager.tanks.Contains(part.fileName.Replace("/", "")))
+                {
+                    MasterManager.tanks.Remove(part.fileName.Replace("/", ""));
+                }
+            }
+
+            if (part.children.Count > 0)
+            {
+                removeParts(part);
+            }
+        }
     }
 
 }
