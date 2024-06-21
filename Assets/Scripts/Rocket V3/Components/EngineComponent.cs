@@ -21,15 +21,22 @@ public class EngineComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FindObjectOfType<TimeManager>();
+        timeManager = FindObjectOfType<TimeManager>();
     }
 
     public Vector2 produceThrust(float throttle)
     {
+        if(active == false)
+        {
+            print("not active");
+            return Vector2.zero;
+        }
+
         float qty = maxFuelFlow * throttle;
         if(fuelConsumerComponent.propellantSufficient(qty, usedPropellant))
         {
             fuelConsumerComponent.ConsumeFuel(qty, usedPropellant);
+            //Debug.Log("Producing thrust" + maxThrust * throttle * timeManager.deltaTime * gameObject.transform.up);
             return maxThrust * throttle * timeManager.deltaTime * gameObject.transform.up;
         }else
         {

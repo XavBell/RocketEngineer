@@ -11,6 +11,7 @@ public class RocketController : MonoBehaviour
     public float throttle;
     public List<string> lineNames = new List<string>();
     public List<Guid> lineGuids = new List<Guid>();
+    public float factor = 10;
 
     public void InitializeComponents()
     {
@@ -90,4 +91,53 @@ public class RocketController : MonoBehaviour
             }
         }
     }
+
+    public Vector2 GetThrustVector()
+    {
+        Vector2 thrust = Vector2.zero;
+        foreach (EngineComponent engine in GetComponentsInChildren<EngineComponent>())
+        {
+            thrust += engine.produceThrust(throttle);
+        }
+        //print(thrust);
+        return thrust;
+    }
+
+    public void controlThrottle()
+    {
+        if (Input.GetKey(KeyCode.Z))
+        {
+            throttle = 100;
+        }
+
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            if (throttle - Time.fixedDeltaTime * factor > 0)
+            {
+                throttle -= Time.fixedDeltaTime * factor;
+            }
+            else
+            {
+                throttle = 0;
+            }
+        }
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            if (throttle + Time.fixedDeltaTime * factor < 100)
+            {
+                throttle += Time.fixedDeltaTime * factor;
+            }
+            else
+            {
+                throttle = 100;
+            }
+        }
+
+        if (Input.GetKey(KeyCode.X))
+        {
+            throttle = 0;
+        }
+    }
+
 }

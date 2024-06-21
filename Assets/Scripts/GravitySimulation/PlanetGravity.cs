@@ -109,6 +109,7 @@ public class PlanetGravity : MonoBehaviour
             MasterManager.ActiveRocket = core; //Line should be able to be removed
             core.GetComponent<RocketController>().updateStage();
             core.GetComponent<RocketController>()._orientation();
+            core.GetComponent<RocketController>().controlThrottle();
         }
     }
 
@@ -135,7 +136,7 @@ public class PlanetGravity : MonoBehaviour
         double Dist = Vector2.Distance(rb.transform.position, new Vector2((float)planet.GetComponent<DoubleTransform>().x_pos, (float)planet.GetComponent<DoubleTransform>().y_pos));
         Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
         Vector3 ForceVector = forceDir * (G * (Mass * rb.mass) / (float)(Dist * Dist));
-        Vector3 Thrust = new Vector3(0, 0, 0);
+        Vector3 Thrust = core.GetComponent<RocketController>().GetThrustVector();;
         Vector3 DragVector = new Vector3(0, 0, 0);
         if (Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 5 && aeroCoefficient > 0)
         {
@@ -144,6 +145,7 @@ public class PlanetGravity : MonoBehaviour
             DragVector = -new Vector3(rb.velocity.x, rb.velocity.y, 0) * (float)drag;
         }
         Vector3 ResultVector = (ForceVector + Thrust + DragVector);
+        Debug.Log(ResultVector);
         if ((Mathf.Abs(ResultVector.x) != Mathf.Infinity || Mathf.Abs(ResultVector.y) != Mathf.Infinity) && storedVelocity.magnitude <= velocityThreshold)
         {
             if (velocityStored == true)

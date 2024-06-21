@@ -100,10 +100,12 @@ public class FuelConsumerComponent : MonoBehaviour
 
         if(oxidizerAvailable >= oxidizerQty && fuelAvailable >= fuelQty)
         {
+            Debug.Log("Fuel Sufficient");
             return true;
         }
         else
         {
+            Debug.Log("Fuel Insufficient");
             return false;
         }
     }
