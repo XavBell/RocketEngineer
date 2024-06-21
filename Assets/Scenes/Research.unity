@@ -698,6 +698,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 631811700}
     m_Modifications:
+    - target: {fileID: 1620984366171393376, guid: b626e7cc668e5824dbdc2492ff8e00db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620984366171393376, guid: b626e7cc668e5824dbdc2492ff8e00db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1373060878}
+    - target: {fileID: 1620984366171393376, guid: b626e7cc668e5824dbdc2492ff8e00db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Back
+      objectReference: {fileID: 0}
+    - target: {fileID: 1620984366171393376, guid: b626e7cc668e5824dbdc2492ff8e00db, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameManager_Research, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 1620984366171393377, guid: b626e7cc668e5824dbdc2492ff8e00db, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
