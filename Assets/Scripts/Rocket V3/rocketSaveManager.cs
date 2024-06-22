@@ -300,6 +300,7 @@ public class rocketSaveManager : MonoBehaviour
         rocketData.lineGuids = rocketController.lineGuids;
         rocketData.lineNames = rocketController.lineNames;
         rocketData.rocketName = rocketController.rocketName;
+        rocketData.z_rot = rocketController.transform.eulerAngles.z;
         rocketData.state = rocketController.GetComponent<RocketStateManager>().state;
         rocketData.x_pos = rocketController.transform.position.x;
         rocketData.y_pos = rocketController.transform.position.y;
@@ -357,7 +358,7 @@ public class rocketSaveManager : MonoBehaviour
             rocketData.rootPart.reliability = rocketController.transform.GetChild(0).GetComponent<EngineComponent>().reliability;
 
         }
-        saveWorldChildren(rocketData.rootPart, rocketController.gameObject);
+        saveWorldChildren(rocketData.rootPart, rocketController.transform.GetChild(0).gameObject);
 
     }
 
@@ -505,41 +506,43 @@ public class rocketSaveManager : MonoBehaviour
             rocketController.GetComponent<RocketStateManager>().previous_X = (float)rocketData.prev_X;
             rocketController.GetComponent<RocketStateManager>().previous_Y = (float)rocketData.prev_Y;
 
-            GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + rocketData.rootPart.partType));
-            newPart.transform.rotation = Quaternion.Euler(0, 0, rocketData.rootPart.z_rot);
-            newPart.GetComponent<PhysicsPart>().guid = rocketData.rootPart.guid;
-            newPart.transform.parent = rocketController.transform;
-            newPart.transform.localPosition = new Vector2(0, 0);
-            if (rocketData.rootPart.partType == "tank")
-            {
-                newPart.GetComponent<PhysicsPart>().path = rocketData.rootPart.fileName;
-                newPart.transform.localScale = new Vector3(rocketData.rootPart.x_scale, rocketData.rootPart.y_scale, 1);
-                newPart.GetComponent<TankComponent>()._volume = rocketData.rootPart._volume;
-                newPart.GetComponent<TankComponent>().x_scale = rocketData.rootPart.x_scale;
-                newPart.GetComponent<TankComponent>().y_scale = rocketData.rootPart.y_scale;
-                newPart.GetComponent<TankComponent>().conductivity = rocketData.rootPart.conductivity;
-                newPart.GetComponent<PhysicsPart>().mass = rocketData.rootPart.mass;
-                newPart.GetComponent<TankComponent>().lineGuid = rocketData.rootPart.lineGuid;
-                newPart.GetComponent<TankComponent>().tested = rocketData.rootPart.tested;
-            }
-            if (rocketData.rootPart.partType == "engine")
-            {
-                newPart.GetComponent<PhysicsPart>().path = rocketData.rootPart.fileName;
-                newPart.GetComponent<PhysicsPart>().mass = rocketData.rootPart.mass;
-                newPart.GetComponent<EngineComponent>().maxThrust = rocketData.rootPart.thrust;
-                newPart.GetComponent<EngineComponent>().maxFuelFlow = rocketData.rootPart.massFlowRate;
-                newPart.GetComponent<EngineComponent>().reliability = rocketData.rootPart.reliability;
 
-                var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder + rocketData.rootPart.fileName);
-                saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
-                newPart.GetComponent<EngineComponent>()._nozzleName = loadedEngine.nozzleName_s;
-                newPart.GetComponent<EngineComponent>()._pumpName = loadedEngine.pumpName_s;
-                newPart.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
-
-                newPart.GetComponent<EngineComponent>().InitializeSprite();
-            }
-            loadWorldChildren(rocketData.rootPart, newPart);
         }
+        GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + rocketData.rootPart.partType));
+        if (rocketData.rootPart.partType == "tank")
+        {
+            newPart.GetComponent<PhysicsPart>().path = rocketData.rootPart.fileName;
+            newPart.transform.localScale = new Vector3(rocketData.rootPart.x_scale, rocketData.rootPart.y_scale, 1);
+            newPart.GetComponent<TankComponent>()._volume = rocketData.rootPart._volume;
+            newPart.GetComponent<TankComponent>().x_scale = rocketData.rootPart.x_scale;
+            newPart.GetComponent<TankComponent>().y_scale = rocketData.rootPart.y_scale;
+            newPart.GetComponent<TankComponent>().conductivity = rocketData.rootPart.conductivity;
+            newPart.GetComponent<PhysicsPart>().mass = rocketData.rootPart.mass;
+            newPart.GetComponent<TankComponent>().lineGuid = rocketData.rootPart.lineGuid;
+            newPart.GetComponent<TankComponent>().tested = rocketData.rootPart.tested;
+        }
+        if (rocketData.rootPart.partType == "engine")
+        {
+            newPart.GetComponent<PhysicsPart>().path = rocketData.rootPart.fileName;
+            newPart.GetComponent<PhysicsPart>().mass = rocketData.rootPart.mass;
+            newPart.GetComponent<EngineComponent>().maxThrust = rocketData.rootPart.thrust;
+            newPart.GetComponent<EngineComponent>().maxFuelFlow = rocketData.rootPart.massFlowRate;
+            newPart.GetComponent<EngineComponent>().reliability = rocketData.rootPart.reliability;
+
+            var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.engineFolder + rocketData.rootPart.fileName);
+            saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
+            newPart.GetComponent<EngineComponent>()._nozzleName = loadedEngine.nozzleName_s;
+            newPart.GetComponent<EngineComponent>()._pumpName = loadedEngine.pumpName_s;
+            newPart.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
+
+            newPart.GetComponent<EngineComponent>().InitializeSprite();
+        }
+        newPart.transform.rotation = Quaternion.Euler(0, 0, rocketData.rootPart.z_rot);
+        newPart.GetComponent<PhysicsPart>().guid = rocketData.rootPart.guid;
+        newPart.transform.parent = rocketController.transform;
+        newPart.transform.localPosition = new Vector2(0, 0);
+        loadWorldChildren(rocketData.rootPart, newPart);
+        rocketController.transform.rotation = Quaternion.Euler(0, 0, rocketData.z_rot);
     }
 
     public void loadWorldChildren(PartData parent, GameObject parentObject)
@@ -547,10 +550,6 @@ public class rocketSaveManager : MonoBehaviour
         foreach (PartData child in parent.children)
         {
             GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/" + child.partType));
-            newPart.transform.rotation = Quaternion.Euler(0, 0, child.z_rot);
-            newPart.GetComponent<PhysicsPart>().guid = child.guid;
-            newPart.transform.parent = parentObject.transform;
-            newPart.transform.localPosition = new Vector2(child.x_pos, child.y_pos);
             if (child.partType == "tank")
             {
                 newPart.GetComponent<PhysicsPart>().path = child.fileName;
@@ -579,6 +578,10 @@ public class rocketSaveManager : MonoBehaviour
 
                 newPart.GetComponent<EngineComponent>().InitializeSprite();
             }
+            newPart.transform.rotation = Quaternion.Euler(0, 0, child.z_rot);
+            newPart.GetComponent<PhysicsPart>().guid = child.guid;
+            newPart.transform.parent = parentObject.transform;
+            newPart.transform.localPosition = new Vector2(child.x_pos, child.y_pos);
             loadWorldChildren(child, newPart);
         }
     }

@@ -18,7 +18,7 @@ public class autoSpritePositionner : MonoBehaviour
     {
         if(SceneManager.GetActiveScene().name != "EngineDesign" && bypass == false)
         {
-            UpdatePosition();
+            //UpdatePosition();
         }
     }
 

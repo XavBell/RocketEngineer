@@ -106,5 +106,6 @@ public class EngineComponent : MonoBehaviour
         this.GetComponentInChildren<autoSpritePositionner>().nozzle.GetComponent<SpriteRenderer>().sprite = nozzle.sprite;
         this.GetComponentInChildren<autoSpritePositionner>().pump.GetComponent<SpriteRenderer>().sprite = pump.sprite;
         this.GetComponentInChildren<autoSpritePositionner>().turbine.GetComponent<SpriteRenderer>().sprite = turbine.sprite;
+        this.GetComponentInChildren<autoSpritePositionner>().UpdatePosition();
     }
 }
