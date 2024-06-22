@@ -37,6 +37,7 @@ public class CameraControl : MonoBehaviour
     public FloatingOrigin floatingOrigin;
 
     public GameObject mainCanvas;
+    public GameObject bgCanvas;
 
     public float threshold = 5000;
     // Start is called before the first frame update
@@ -51,6 +52,7 @@ public class CameraControl : MonoBehaviour
             postProcess = MasterManager.GetComponent<MasterManager>().postProcess;
             userFactor = MasterManager.GetComponent<MasterManager>().scrollMultiplierValue;
         }
+        bgCanvas.SetActive(MasterManager.GetComponent<MasterManager>().showStars);
     }
 
     // Update is called once per frame

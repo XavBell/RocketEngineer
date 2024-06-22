@@ -83,7 +83,7 @@ public class MasterManager : MonoBehaviour
     GameObject btOptions;
     GameObject btLoad;
 
-    GameObject bgMenu;
+    [SerializeField] GameObject bgMenu;
 
     // Start is called before the first frame update
     void Start()

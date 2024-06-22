@@ -10509,6 +10509,7 @@ GameObject:
   - component: {fileID: 375263605}
   - component: {fileID: 375263603}
   - component: {fileID: 375263608}
+  - component: {fileID: 375263609}
   m_Layer: 5
   m_Name: Background
   m_TagString: Untagged
@@ -10599,6 +10600,18 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
+--- !u!114 &375263609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 375263602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a92e8a5189938f4facc778518bd386a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &375855305
 GameObject:
   m_ObjectHideFlags: 0
@@ -14244,6 +14257,7 @@ MonoBehaviour:
   timeManager: {fileID: 0}
   floatingOrigin: {fileID: 0}
   mainCanvas: {fileID: 1503553708}
+  bgCanvas: {fileID: 375263602}
   threshold: 5000
 --- !u!114 &519420034
 MonoBehaviour:
@@ -62615,8 +62629,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c93d122f60434c7ab688fb2525fd447, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickSound: {fileID: 1922764458}
-  hoverSound: {fileID: 1259411181}
+  source: {fileID: 0}
+  click: {fileID: 0}
+  hover: {fileID: 0}
 --- !u!4 &2049227498
 Transform:
   m_ObjectHideFlags: 0
