@@ -10,7 +10,7 @@ public class ScrollingStars : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        scroll = Vector3.zero;
     }
 
     // Update is called once per frame
