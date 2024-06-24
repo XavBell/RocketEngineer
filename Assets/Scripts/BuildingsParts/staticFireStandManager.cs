@@ -34,6 +34,11 @@ public class staticFireStandManager : MonoBehaviour
     public float startTime;
     public float minThrust;
     public float maxThrust;
+
+    public float fuelFlowEngine;
+    public float ratioEngine;
+    public float perFrameConsumedOxidizer;
+    public float perFrameConsumedFuel;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,31 +58,47 @@ public class staticFireStandManager : MonoBehaviour
                 {
                     engineStaticFireTracker = new EngineStaticFireTracker();
                     startTime = (float)MyTime.time;
-                    ConnectedEngine.GetComponent<Engine>().activate();
+                    ConnectedEngine.GetComponent<EngineComponent>().active = true;
+                    fuelFlowEngine = ConnectedEngine.GetComponent<EngineComponent>().maxFuelFlow;
+                    ratioEngine = ConnectedEngine.GetComponent<EngineComponent>().usedPropellant.oxidizerToFuelRatio;
+                    ConnectedEngine.GetComponent<EngineComponent>().maxFuelFlow = 0;
+                    perFrameConsumedOxidizer = fuelFlowEngine * ratioEngine;
+                    perFrameConsumedFuel = fuelFlowEngine * (1/ratioEngine);
                 }
 
-                if(failed == false && (fuelSufficient == true && oxidizerSufficient == true) && engineStaticFireTracker != null && oxidizer.state == "liquid" && fuel.state == "liquid")
+                if(failed == false && engineStaticFireTracker != null && oxidizer.moles > 0 && fuel.moles > 0 && oxidizer.state == "liquid" && fuel.state == "liquid")
                 {
-                    Engine engine = ConnectedEngine.GetComponent<Engine>();
-                    bool fail;
-                    float outThrust = engine.CalculateOutputThrust((float)(MyTime.time-startTime), out fail) * MyTime.deltaTime;
-
+                    EngineComponent engine = ConnectedEngine.GetComponent<EngineComponent>();
+                    float outThrust = engine.produceThrust(1).magnitude * MyTime.deltaTime;
+                    if(oxidizer.moles - perFrameConsumedOxidizer/oxidizer.substance.MolarMass * MyTime.deltaTime < 0)
+                    {
+                        oxidizer.moles = 0;
+                        oxidizerSufficient = false;
+                    }else{
+                        oxidizer.moles -= perFrameConsumedOxidizer*1000/oxidizer.substance.MolarMass * MyTime.deltaTime;
+                    }
+                    if(fuel.moles - perFrameConsumedFuel/fuel.substance.MolarMass * MyTime.deltaTime < 0)
+                    {
+                        fuel.moles = 0;
+                        fuelSufficient = false;
+                    }else{
+                        fuel.moles -= perFrameConsumedFuel*1000/fuel.substance.MolarMass * MyTime.deltaTime;
+                    }
                     engineStaticFireTracker.thrusts.Add(outThrust);
                     engineStaticFireTracker.times.Add((float)(MyTime.time - startTime));
                     engineStaticFireTracker.fuelQty.Add(fuel.mass);
                     engineStaticFireTracker.oxidizerQty.Add(oxidizer.mass);
-                    if(fail == true)
+                    if(engine.operational == false)
                     {
-                        engine.active = false;
                         failed = true;
                     }
                 }
 
-                if((failed == true || fuelSufficient == false || oxidizerSufficient == false || stopped == true || (started == true && ConnectedEngine.GetComponent<Engine>().active == false)) && engineStaticFireTracker != null)
+                if((failed == true || fuelSufficient == false || oxidizerSufficient == false || stopped == true || (started == true && ConnectedEngine.GetComponent<EngineComponent>().active == false)) && engineStaticFireTracker != null)
                 {
                     //Save results to file and null tracker and save new reliabili
                     started = false;
-                    Engine engine = ConnectedEngine.GetComponent<Engine>();
+                    EngineComponent engine = ConnectedEngine.GetComponent<EngineComponent>();
                     float reliabilityToAdd = ((float)(MyTime.time - startTime))/engine.maxTime * 0.05f;
                     if((MyTime.time-startTime) > engine.maxTime)
                     {
@@ -100,7 +121,7 @@ public class staticFireStandManager : MonoBehaviour
                         Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests/" + "StaticFireEngine");
                     }
 
-                    string saveName = "/"+ ConnectedEngine.GetComponent<Engine>()._partName + MyTime.time.ToString() + ".json";
+                    string saveName = "/"+ ConnectedEngine.GetComponent<PhysicsPart>().path + MyTime.time.ToString() + ".json";
 
                     if(!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' +  MasterManager.FolderName + "/Tests/" + "StaticFireEngine" + saveName))
                     {
@@ -109,25 +130,22 @@ public class staticFireStandManager : MonoBehaviour
                     }
 
                     //Save new engine reliability and maxTime
-                    if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName + ".json"))
+                    if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder  + ConnectedEngine.GetComponent<PhysicsPart>().path + ".json"))
                     {
                         saveEngine saveObject = new saveEngine();
                         var jsonString = JsonConvert.SerializeObject(saveObject);
-                        jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json");
+                        jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + ConnectedEngine.GetComponent<PhysicsPart>().path  + ".json");
                         saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
-                        RocketPart part = ConnectedEngine.GetComponent<RocketPart>();
+                        EngineComponent part = ConnectedEngine.GetComponent<EngineComponent>();
                         saveObject = loadedEngine;
                         //Save previous unchanged value
                         saveObject.path = savePathRef.engineFolder;
-                        saveObject.engineName = part._partName;
-                        saveObject.thrust_s = engine._thrust;
-                        saveObject.mass_s = engine._partMass;
-                        saveObject.rate_s = engine._rate;
-                        saveObject.tvcSpeed_s = engine._tvcSpeed;
-                        saveObject.tvcMaxAngle_s = engine._maxAngle;
+                        saveObject.engineName = loadedEngine.engineName;
+                        saveObject.thrust_s = engine.maxThrust;
+                        saveObject.mass_s = engine.GetComponent<PhysicsPart>().mass;
+                        saveObject.rate_s = fuelFlowEngine;
 
-                        saveObject.tvcName_s = engine._tvcName;
                         saveObject.nozzleName_s = engine._nozzleName;
                         saveObject.turbineName_s = engine._turbineName;
                         saveObject.pumpName_s = engine._pumpName;
@@ -135,44 +153,10 @@ public class staticFireStandManager : MonoBehaviour
                         //Updated Value
                         saveObject.reliability = engine.reliability;
                         saveObject.maxTime = engine.maxTime;
-                        saveObject.cost = engine._partCost;
+                        saveObject.cost = engine.GetComponent<PhysicsPart>().cost;
 
                         var jsonString1 = JsonConvert.SerializeObject(saveObject);
-                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + "/" + ConnectedEngine.GetComponent<Engine>()._partName  + ".json", jsonString1);
-                    }
-                    //Apply new reliability to all rockets
-                    var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
-                    var rocketNamesFiles = info.GetFiles();
-                    List<string> rocketNames = new List<string>();
-                    foreach(var file in rocketNamesFiles)
-                    {
-                        rocketNames.Add(file.Name);
-                    }
-                    foreach(var rocket in rocketNames)
-                    {
-                        if(File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket))
-                        {
-                            savecraft saveObject = new savecraft();
-                            var jsonString = JsonConvert.SerializeObject(saveObject);
-                            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket);
-                            savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
-
-                            saveObject = loadedRocket;
-                            int i = 0;
-                            foreach(string engine1 in saveObject.engineName)
-                            {
-                                if(engine1 == ConnectedEngine.GetComponent<Engine>()._partName)
-                                {
-                                    saveObject.reliability[i] = engine.reliability;
-                                }
-                                i++;
-                            }
-
-                            var jsonString1 = JsonConvert.SerializeObject(saveObject);
-                            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket, jsonString1);
-                        }
-                        
-
+                        System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + ConnectedEngine.GetComponent<PhysicsPart>().path  + ".json", jsonString1);
                     }
 
                     stopped = true;

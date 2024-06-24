@@ -15,16 +15,8 @@ public class PlanetGravity : MonoBehaviour
     public float velocityThreshold = 5000;
     public Vector2 storedVelocity;
     private bool initialized = false;
-    private GameObject core;
+    public GameObject core;
     private GameObject currentSOIPlanet = null;
-    public GameObject getCore()
-    {
-        return core;
-    }
-    public void setCore(GameObject core)
-    {
-        this.core = core;
-    }
 
     //Gravity variables for Earth
     private GameObject planet;
@@ -65,8 +57,6 @@ public class PlanetGravity : MonoBehaviour
     //Leaving rb public bcs SO MANY THINGS are using it
     public Rigidbody2D rb;
 
-    //Leaving rocket mass public too because it is used in another script for increment
-    public float rocketMass;
     //Aerodynamic coefficient
     public float baseCoefficient = 0.75f;
 
@@ -105,7 +95,6 @@ public class PlanetGravity : MonoBehaviour
             if (possessed == true)
             {
                 MasterManager.ActiveRocket = core;
-                core.GetComponent<Rocket>().updateRocketStaging();
             }
         }
     }
@@ -116,8 +105,9 @@ public class PlanetGravity : MonoBehaviour
         if (possessed == true)
         {
             MasterManager.ActiveRocket = core; //Line should be able to be removed
-            core.GetComponent<Rocket>().controlThrust();
-            core.GetComponent<Rocket>()._orientation();
+            core.GetComponent<RocketController>().updateStage();
+            core.GetComponent<RocketController>()._orientation();
+            core.GetComponent<RocketController>().controlThrottle();
         }
     }
 
@@ -139,11 +129,12 @@ public class PlanetGravity : MonoBehaviour
     void simulateGravity()
     {
         //Gravity
-        rb.mass = core.GetComponent<Rocket>().rocketMass;
+        core.GetComponent<RocketController>().UpdateMass();
+        rb.mass = core.GetComponent<RocketController>().rocketMass;
         double Dist = Vector2.Distance(rb.transform.position, new Vector2((float)planet.GetComponent<DoubleTransform>().x_pos, (float)planet.GetComponent<DoubleTransform>().y_pos));
         Vector3 forceDir = (planet.transform.position - rb.transform.position).normalized;
         Vector3 ForceVector = forceDir * (G * (Mass * rb.mass) / (float)(Dist * Dist));
-        Vector3 Thrust = new Vector3(core.GetComponent<Rocket>().currentThrust.x, core.GetComponent<Rocket>().currentThrust.y, 0);
+        Vector3 Thrust = core.GetComponent<RocketController>().GetThrustVector();;
         Vector3 DragVector = new Vector3(0, 0, 0);
         if (Dist - planetRadius < atmoAlt && rb.velocity.magnitude > 5 && aeroCoefficient > 0)
         {
@@ -220,9 +211,9 @@ public class PlanetGravity : MonoBehaviour
             floatingVelocity = FindObjectOfType<FloatingVelocity>();
             if (core != null)
             {
-                core.GetComponent<Rocket>().updateMass();
+                core.GetComponent<RocketController>().UpdateMass();
                 pointManager = FindObjectOfType<pointManager>();
-                rb.mass = core.GetComponent<Rocket>().rocketMass;
+                rb.mass = core.GetComponent<RocketController>().rocketMass;
                 initialized = true;
             }
 

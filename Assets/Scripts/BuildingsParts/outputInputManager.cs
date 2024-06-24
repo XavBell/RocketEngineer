@@ -7,6 +7,7 @@ using UnityEngine.Assertions.Must;
 
 public class outputInputManager : MonoBehaviour
 {
+    //DEPRECATED BUT USED FOR DETECTION
     [SerializeField]
     public Guid guid;
     public Guid inputGuid;

@@ -51,13 +51,11 @@ public class CapsuleUIManager : MonoBehaviour
 
     public void changeColorGreen()
     {
-        //satellite.transform.GetChild(2).GetComponent<SpriteRenderer>().color = Color.green;
         satellite.GetComponent<SpriteRenderer>().color = Color.green;
     }
 
     public void changeColorNormal()
     {
-        //satellite.transform.GetChild(2).GetComponent<SpriteRenderer>().color = Color.white;
         satellite.GetComponent<SpriteRenderer>().color = satelliteColor;
 
     }

@@ -63,8 +63,8 @@ public class OnClick : MonoBehaviour
 
         if(SceneManager.GetActiveScene().name.ToString() == "Building")
         {
-           GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
-           if("/" + b1.GetComponentInChildren<TextMeshProUGUI>().text != GameManager.GetComponent<GameManager>().path || GameManager.GetComponent<GameManager>().partPath != filePath)
+           RocketAssemblerManager GameManager = FindObjectOfType<RocketAssemblerManager>();
+           if("/" + b1.GetComponentInChildren<TextMeshProUGUI>().text != GameManager.path)
            {
                 b1.interactable = true;
            }
@@ -73,29 +73,20 @@ public class OnClick : MonoBehaviour
 
     public void clicked()
     {
-        GameObject GameManager = GameObject.FindGameObjectWithTag("GameManager");
+        RocketAssemblerManager GameManager = FindObjectOfType<RocketAssemblerManager>();
         GameObject MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
         if (GameManager != null)
         {
-            GameManager.GetComponent<GameManager>().path = "/"+ b1.GetComponentInChildren<TextMeshProUGUI>().text;
+            GameManager.path = "/"+ b1.GetComponentInChildren<TextMeshProUGUI>().text;
             if (filePath == savePathRef.engineFolder)
             {
-                GameManager.GetComponent<GameManager>().partPath = filePath;
-                GameManager.GetComponent<GameManager>().PrefabToConstruct = GameManager.GetComponent<GameManager>().Engine;
-                b1.interactable = false;
+                GameManager.selectPart(enginePrefab);
+                b1.interactable = true;
             }
-
-            if (filePath == savePathRef.rocketFolder)
-            {
-                GameManager.GetComponent<GameManager>().partPath = filePath;
-                b1.interactable = false;
-            }
-
             if (filePath == savePathRef.tankFolder)
             {
-                GameManager.GetComponent<GameManager>().partPath = filePath;
-                GameManager.GetComponent<GameManager>().PrefabToConstruct = GameManager.GetComponent<GameManager>().Tank;
-                b1.interactable = false;
+                GameManager.selectPart(tankPrefab);
+                b1.interactable = true;
             }
 
         }
@@ -109,7 +100,10 @@ public class OnClick : MonoBehaviour
         if(launchPad != null)
         {
             path = "/"+b1.GetComponentInChildren<TextMeshProUGUI>().text;
-            load(filePath);
+            rocketSaveManager rocketSaveManager = FindObjectOfType<rocketSaveManager>();
+            GameObject RocketController = Instantiate(Resources.Load<GameObject>("Prefabs/" + "RocketController"));
+            RocketController.transform.position = launchPad.transform.position + new Vector3(0, 10, 0);
+            rocketSaveManager.loadRocket(RocketController.GetComponent<RocketController>(), b1.GetComponentInChildren<TextMeshProUGUI>().text.Replace(".json", ""));
             if(spawnedRocket != null)
             {
                 launchPad.GetComponent<launchPadManager>().ConnectedRocket = spawnedRocket;
@@ -202,7 +196,7 @@ public class OnClick : MonoBehaviour
             core.GetComponent<Rigidbody2D>().gravityScale = 0;
             core.GetComponent<Rigidbody2D>().collisionDetectionMode = CollisionDetectionMode2D.Continuous;
             core.AddComponent<PlanetGravity>();
-            core.GetComponent<PlanetGravity>().setCore(core);
+            core.GetComponent<PlanetGravity>().core = core;
             core.GetComponent<Rocket>().core = core;
             core.AddComponent<RocketStateManager>();
             core.AddComponent<DoubleVelocity>();
@@ -290,20 +284,17 @@ public class OnClick : MonoBehaviour
             saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString);
 
             spawnedRocket = Instantiate(Engine, launchPad.transform);
-            spawnedRocket.GetComponent<Engine>()._path = loadedEngine.path;
-            spawnedRocket.GetComponent<Engine>()._partName = loadedEngine.engineName;
-            spawnedRocket.GetComponent<Engine>()._thrust = loadedEngine.thrust_s;
-            spawnedRocket.GetComponent<Engine>()._partMass = loadedEngine.mass_s;
-            spawnedRocket.GetComponent<Engine>()._rate = loadedEngine.rate_s;
-            spawnedRocket.GetComponent<Engine>()._tvcSpeed = loadedEngine.tvcSpeed_s;
-            spawnedRocket.GetComponent<Engine>()._maxAngle = loadedEngine.tvcMaxAngle_s;
-            spawnedRocket.GetComponent<Engine>()._tvcName = loadedEngine.tvcName_s;
-            spawnedRocket.GetComponent<Engine>()._nozzleName = loadedEngine.nozzleName_s;
-            spawnedRocket.GetComponent<Engine>()._turbineName = loadedEngine.turbineName_s;
-            spawnedRocket.GetComponent<Engine>()._pumpName = loadedEngine.pumpName_s;
-            spawnedRocket.GetComponent<Engine>().reliability = loadedEngine.reliability;
-            spawnedRocket.GetComponent<Engine>().maxTime = loadedEngine.maxTime;
-            spawnedRocket.GetComponent<Engine>()._partCost = loadedEngine.cost;
+            spawnedRocket.GetComponent<PhysicsPart>().path = loadedEngine.engineName;
+            spawnedRocket.GetComponent<EngineComponent>().maxThrust = loadedEngine.thrust_s;
+            spawnedRocket.GetComponent<PhysicsPart>().mass = loadedEngine.mass_s;
+            spawnedRocket.GetComponent<EngineComponent>().maxFuelFlow = loadedEngine.rate_s;
+            spawnedRocket.GetComponent<EngineComponent>()._nozzleName = loadedEngine.nozzleName_s;
+            spawnedRocket.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
+            spawnedRocket.GetComponent<EngineComponent>()._pumpName = loadedEngine.pumpName_s;
+            spawnedRocket.GetComponent<EngineComponent>().reliability = loadedEngine.reliability;
+            spawnedRocket.GetComponent<EngineComponent>().maxTime = loadedEngine.maxTime;
+            spawnedRocket.GetComponent<PhysicsPart>().cost = loadedEngine.cost;
+            spawnedRocket.GetComponent<EngineComponent>().InitializeSprite();
             if(launchPad.GetComponent<buildingType>().anchor != null)
             {
                 spawnedRocket.transform.position = launchPad.GetComponent<buildingType>().anchor.transform.position;
@@ -323,15 +314,13 @@ public class OnClick : MonoBehaviour
             spawnedRocket.GetComponent<DoubleTransform>().y_pos = launchPad.transform.position.y;
 
             //Engine engine = spawnedRocket.GetComponent<Engine>();
-            spawnedRocket.GetComponent<Tank>()._path = loadedTank.path;
-            spawnedRocket.GetComponent<Tank>()._partName = loadedTank.tankName;
-            spawnedRocket.GetComponent<Tank>()._partMass = loadedTank.mass;
-            spawnedRocket.GetComponent<Tank>().x_scale = loadedTank.tankSizeX;
-            spawnedRocket.GetComponent<Tank>().y_scale = loadedTank.tankSizeY;
-            spawnedRocket.GetComponent<Tank>()._volume = loadedTank.volume;
-            spawnedRocket.GetComponent<Tank>().tankMaterial = loadedTank.tankMaterial;
-            spawnedRocket.GetComponent<Tank>()._partCost = loadedTank.cost;
-            spawnedRocket.GetComponent<Tank>().tested = loadedTank.tested;
+            spawnedRocket.GetComponent<PhysicsPart>().path = loadedTank.tankName;
+            spawnedRocket.GetComponent<PhysicsPart>().mass = loadedTank.mass;
+            spawnedRocket.GetComponent<TankComponent>().x_scale = loadedTank.tankSizeX;
+            spawnedRocket.GetComponent<TankComponent>().y_scale = loadedTank.tankSizeY;
+            spawnedRocket.GetComponent<TankComponent>()._volume = loadedTank.volume;
+            spawnedRocket.GetComponent<PhysicsPart>().cost = loadedTank.cost;
+            spawnedRocket.GetComponent<TankComponent>().tested = loadedTank.tested;
             if(launchPad.GetComponent<buildingType>().anchor != null)
             {
                 spawnedRocket.transform.position = launchPad.GetComponent<buildingType>().anchor.transform.position;
@@ -462,7 +451,7 @@ public class OnClick : MonoBehaviour
         Vector3 difference = currentPrefab.transform.position - currentPrefab.GetComponent<Part>().attachTop.transform.position;
         currentPrefab.transform.position = attachPoint.transform.position + difference;
         currentPrefab.transform.SetParent(capsule.transform);
-        capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
+        //capsule.GetComponent<PlanetGravity>().rocketMass += currentPrefab.GetComponent<Part>().mass;
     }
 
     public void selectLaunchpad()
@@ -485,6 +474,12 @@ public class OnClick : MonoBehaviour
             {
                 actualContainer.Add(container.gameObject);
             }
+        }
+
+        launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
+        foreach(launchPadManager launchPad in launchPadManagers)
+        {
+            actualContainer.Add(launchPad.gameObject);
         }
 
         foreach(GameObject building in actualContainer)
@@ -533,6 +528,11 @@ public class OnClick : MonoBehaviour
             {
                 actualContainer.Add(container.gameObject);
             }
+        }
+        launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
+        foreach(launchPadManager launchPad in launchPadManagers)
+        {
+            actualContainer.Add(launchPad.gameObject);
         }
 
         foreach(GameObject building in actualContainer)

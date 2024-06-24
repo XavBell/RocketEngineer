@@ -9,7 +9,7 @@ public class rocketCursorManager : MonoBehaviour
     MasterManager masterManager = null;
     BuildingManager buildingManager = null;
     FloatingOrigin floatingOrigin = null;
-    StageViewer stageViewer = null;
+    StageEditor stageEditor = null;
     public GameObject rocket = null;
     TimeManager MyTime;
     FloatingVelocity floatingVelocity;
@@ -23,7 +23,7 @@ public class rocketCursorManager : MonoBehaviour
         masterManager = FindObjectOfType<MasterManager>();
         floatingOrigin = FindObjectOfType<FloatingOrigin>();
         floatingVelocity = FindObjectOfType<FloatingVelocity>();
-        stageViewer = FindObjectOfType<StageViewer>();
+        stageEditor = FindObjectOfType<StageEditor>();
         buildingManager = FindObjectOfType<BuildingManager>();
     }
 
@@ -55,7 +55,7 @@ public class rocketCursorManager : MonoBehaviour
             floatingOrigin.closestPlanet = null;
             if (masterManager.ActiveRocket != null)
             {
-                masterManager.ActiveRocket.GetComponent<Rocket>().throttle = 0;
+                masterManager.ActiveRocket.GetComponent<RocketController>().throttle = 0;
                 masterManager.ActiveRocket.GetComponent<PlanetGravity>().possessed = false;
                 masterManager.ActiveRocket.GetComponent<PlanetGravity>().rb.velocity = masterManager.ActiveRocket.GetComponent<PlanetGravity>().storedVelocity;
                 masterManager.ActiveRocket.GetComponent<PlanetGravity>().velocityStored = false;
@@ -88,11 +88,10 @@ public class rocketCursorManager : MonoBehaviour
             masterManager.ActiveRocket = rocket;
             buildingManager.enterFlightMode();
             rocket.GetComponent<PlanetGravity>().possessed = true;
-            stageViewer = FindObjectOfType<StageViewer>();
-            stageViewer.rocket = rocket;
+            stageEditor = FindObjectOfType<StageEditor>();
+            stageEditor.rocketController = rocket.GetComponent<RocketController>();
             masterManager.gameState = "Flight";
-            stageViewer.updateStagesView(false);
-            stageViewer.updateInfoPerStage(false);
+            stageEditor.UpdateButtons();
             floatingOrigin.bypass = true;
             Physics.SyncTransforms();
         }

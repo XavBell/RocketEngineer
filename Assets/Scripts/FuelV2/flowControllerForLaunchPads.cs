@@ -13,9 +13,9 @@ public class flowControllerForLaunchPads : MonoBehaviour
     public container oxidizerContainerOrigin;
     public container fuelContainerOrigin;
 
-    Rocket rocket;
+    public RocketController rocket;
 
-    bool connected = false;
+    public bool connected = false;
 
     // Start is called before the first frame update
     void Start()
@@ -52,54 +52,41 @@ public class flowControllerForLaunchPads : MonoBehaviour
         }  
     }
 
+
     public void setTankOrigin()
     {
-        rocket = launchPadManager.ConnectedRocket.GetComponent<Rocket>();
-        foreach(Stages stage in rocket.Stages)
+        rocket = launchPadManager.ConnectedRocket.GetComponent<RocketController>();
+        Transform[] children = rocket.GetComponentsInChildren<Transform>();
+        container[] containers = FindObjectsOfType<container>();
+        foreach(Transform child in children)
         {
-            foreach(RocketPart part in stage.Parts)
+            if(child.GetComponent<TankComponent>() == null)
             {
-                if(part._partType == "tank")
+                continue;
+            }
+            if(launchPadManager.connectedRocketLines.IndexOf(child.GetComponent<TankComponent>().lineGuid) != -1)
+            {
+                if(launchPadManager.connectedContainersPerLine.Count > launchPadManager.connectedRocketLines.IndexOf(child.GetComponent<TankComponent>().lineGuid))
                 {
-                    if(part.GetComponent<Tank>().propellantCategory == "oxidizer")
+                    child.GetComponent<flowController>().originGuid = launchPadManager.connectedContainersPerLine[launchPadManager.connectedRocketLines.IndexOf(child.GetComponent<TankComponent>().lineGuid)];
+                    foreach(container container in containers)
                     {
-                        part.GetComponent<flowController>().origin = oxidizerContainerOrigin;
-                    }
-
-                    if(part.GetComponent<Tank>().propellantCategory == "fuel")
-                    {
-                        part.GetComponent<flowController>().origin = fuelContainerOrigin;
+                        if(container.guid == child.GetComponent<flowController>().originGuid)
+                        {
+                            child.GetComponent<flowController>().origin = container;
+                        }
                     }
                 }
+                
             }
+            
         }
+
+
     }
 
     void Disconnect()
     {
-        if(rocket != null)
-        {
-            foreach(Stages stage in rocket.Stages)
-            {
-                foreach(RocketPart part in stage.Parts)
-                {
-                    if(part.gameObject != null)
-                    {
-                        if(part._partType == "tank")
-                        {
-                            if(part.GetComponent<Tank>().propellantCategory == "oxidizer")
-                            {
-                                part.GetComponent<flowController>().origin = null;
-                            }
 
-                            if(part.GetComponent<Tank>().propellantCategory == "fuel")
-                            {
-                                part.GetComponent<flowController>().origin = null;
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
 }

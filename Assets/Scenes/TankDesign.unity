@@ -175,10 +175,10 @@ MonoBehaviour:
   saveName: 
   Tank: {fileID: 2035272971}
   tankSP: {fileID: 0}
-  attachTopObj: {fileID: 0}
-  attachBottomObj: {fileID: 0}
-  attachRightObj: {fileID: 0}
-  attachLeftObj: {fileID: 0}
+  attachTopObj: {fileID: 2035272974}
+  attachBottomObj: {fileID: 2035272975}
+  attachRightObj: {fileID: 2035272972}
+  attachLeftObj: {fileID: 2035272973}
   tankHeightFloat: 0
   tankDiameterFloat: 0
   costValue: 0
@@ -13219,6 +13219,26 @@ PrefabInstance:
 --- !u!1 &2035272971 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9057782884087415771, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+  m_PrefabInstance: {fileID: 2035272970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035272972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6717742668550320246, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+  m_PrefabInstance: {fileID: 2035272970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035272973 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4934586387494571457, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+  m_PrefabInstance: {fileID: 2035272970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035272974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9166749568886438391, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
+  m_PrefabInstance: {fileID: 2035272970}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2035272975 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2061136345880513498, guid: f221c86c700824b44be743d4f9fb5a48, type: 3}
   m_PrefabInstance: {fileID: 2035272970}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &2040184248

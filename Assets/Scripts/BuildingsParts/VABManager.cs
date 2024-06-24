@@ -24,6 +24,8 @@ public class VABManager : MonoBehaviour
 
     public List<string> tanks = new List<string>();
     public List<string> engines = new List<string>();
+    public List<PartData> engineData = new List<PartData>();
+    public List<PartData> tankData = new List<PartData>();
     public bool needUpdate = false;
     public int tempBuilt = 0;
 
@@ -159,74 +161,74 @@ public class VABManager : MonoBehaviour
     {
         if (partName.options.Count > 0)
         {
-            savecraft saveObject = new savecraft();
-            var jsonString = JsonConvert.SerializeObject(saveObject);
+            RocketData rocketData = new RocketData();
+            var jsonString = JsonConvert.SerializeObject(rocketData);
             jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + partName.options[partName.value].text);
-            savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
-            GameObject temp = new GameObject();
+            RocketData loadedRocket = JsonConvert.DeserializeObject<RocketData>(jsonString);
             engines.Clear();
             tanks.Clear();
+            engineData.Clear();
+            tankData.Clear();
             int totalEngineParts = 0;
             int totalTankParts = 0;
             float cost = 0;
-            int engineID = 0;
-            foreach (string usedPart in loadedRocket.engineName)
+            
+            if(loadedRocket.rootPart.partType == "engine")
             {
-                engines.Add(usedPart + ".json");
-                totalEngineParts++;
-                cost += loadedRocket.engineCost[engineID];
-                engineID++;
+                engineData.Add(loadedRocket.rootPart);
             }
-
-            int tankID = 0;
-            foreach (string usedPart in loadedRocket.tankName)
+            if(loadedRocket.rootPart.partType == "tank")
             {
-                tanks.Add(usedPart + ".json");
-                totalTankParts++;
-                cost += loadedRocket.tankCost[tankID];
-                tankID++;
+                tankData.Add(loadedRocket.rootPart);
             }
-            engines.Distinct().ToList();
-            tanks.Distinct().ToList();
-
-            List<float> costsEngine = new List<float>();
-            foreach (string engine in engines)
+            checkChildren(loadedRocket.rootPart);
+            foreach(PartData engine in engineData)
             {
+                engines.Add(engine.fileName);
+                totalEngineParts += 1;
                 saveEngine saveEngine = new saveEngine();
-                var jsonStringEngine = JsonConvert.SerializeObject(saveEngine);
-                jsonStringEngine = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + engine);
-                saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonStringEngine);
-                costsEngine.Add(loadedEngine.cost);
+                var jsonString1 = JsonConvert.SerializeObject(saveEngine);
+                jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + engine.fileName);
+                saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
+                cost += loadedEngine.cost;
             }
 
-            List<float> costsTank = new List<float>();
-            foreach (string tank in tanks)
+            foreach(PartData tank in tankData)
             {
+                tanks.Add(tank.fileName);
+                totalTankParts += 1;
                 saveTank saveTank = new saveTank();
-                var jsonStringTank = JsonConvert.SerializeObject(saveTank);
-                jsonStringTank = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + tank);
-                saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonStringTank);
-                costsTank.Add(loadedTank.cost);
+                var jsonString1 = JsonConvert.SerializeObject(saveTank);
+                jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + tank.fileName);
+                saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
+                cost += loadedTank.cost;
             }
+
+            engineData.Distinct().ToList();
+            tankData.Distinct().ToList();
 
             int engineBuilt = 0;
             int tankBuilt = 0;
-            //Reduce price of rocket based on built parts
+
             List<string> tempEngines = new List<string>();
             foreach(string engine in MasterManager.engines)
             {
                 tempEngines.Add(engine);
             }
             int i = 0;
-            foreach(string engine in loadedRocket.engineName)
+            foreach(PartData engine in engineData)
             {
-                if(tempEngines.Contains(engine.Replace("/", "") + ".json"))
+                if(tempEngines.Contains(engine.fileName.Replace("/", "")))
                 {
-                    tempEngines.RemoveAt(tempEngines.IndexOf(engine.Replace("/", "")+ ".json"));
                     engineBuilt++;
-                    cost -= loadedRocket.engineCost[i];
+                    tempEngines.RemoveAt(tempEngines.IndexOf(engine.fileName.Replace("/", "")));
+                    saveEngine saveEngine = new saveEngine();
+                    var jsonString1 = JsonConvert.SerializeObject(saveEngine);
+                    jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + engine.fileName);
+                    saveEngine loadedEngine = JsonConvert.DeserializeObject<saveEngine>(jsonString1);
+                    cost -= loadedEngine.cost;
+
                 }
-                i++;
             }
 
             List<string> tempTanks = new List<string>();
@@ -235,18 +237,20 @@ public class VABManager : MonoBehaviour
                 tempTanks.Add(tank);
             }
             i = 0;
-            foreach(string tank in loadedRocket.tankName)
+            foreach(PartData tank in tankData)
             {
-                if(tempTanks.Contains(tank.Replace("/", "") + ".json"))
+                if(tempTanks.Contains(tank.fileName.Replace("/", "")))
                 {
-                    tempTanks.RemoveAt(tempTanks.IndexOf(tank.Replace("/", "") + ".json"));
                     tankBuilt++;
-                    cost -= loadedRocket.tankCost[i];
+                    tempTanks.RemoveAt(tempTanks.IndexOf(tank.fileName.Replace("/", "")));
+                    saveTank saveTank = new saveTank();
+                    var jsonString1 = JsonConvert.SerializeObject(saveTank);
+                    jsonString1 = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + tank.fileName);
+                    saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString1);
+                    cost -= loadedTank.cost;
                 }
-                i++;
             }
 
-            //Count number of rocket built
             int built = 0;
             foreach(string rocket in MasterManager.rockets)
             {
@@ -267,8 +271,31 @@ public class VABManager : MonoBehaviour
             costTxt.text = cost.ToString();
             engineBuiltTxt.text = engineBuilt.ToString() + "/" + totalEngineParts.ToString();
             tankBuiltTxt.text = tankBuilt.ToString() + "/" + totalTankParts.ToString();
+
+
         }
 
+    }
+
+    public void checkChildren(PartData parent)
+    {
+        foreach (PartData part in parent.children)
+        {
+            if(part.partType == "engine")
+            {
+                engineData.Add(part);
+            }
+
+            if(part.partType == "tank")
+            {
+                tankData.Add(part);
+            }
+
+            if (part.children.Count > 0)
+            {
+                checkChildren(part);
+            }
+        }
     }
 
     void OnTankSelected()
@@ -351,74 +378,30 @@ public class VABManager : MonoBehaviour
         {
             if(type.value == 0)
             {
-                savecraft saveObject = new savecraft();
+                //Build rocket
+                saveRocket saveObject = new saveRocket();
                 var jsonString = JsonConvert.SerializeObject(saveObject);
                 jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + partName.options[partName.value].text);
-                savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
-                List<string> tanks = new List<string>();
-                List<int> countTank = new List<int>();
+                RocketData loadedRocket = JsonConvert.DeserializeObject<RocketData>(jsonString);
 
-                List<string> tanktoBeRemoved = new List<string>();
-                foreach (string tank in loadedRocket.tankName)
+                if(loadedRocket.rootPart.partType == "engine")
                 {
-                    if (!tanks.Contains(tank))
+                    if(MasterManager.engines.Contains(loadedRocket.rootPart.fileName.Replace("/", "")))
                     {
-                        tanks.Add(tank);
-                        countTank.Add(1);
+                        MasterManager.engines.Remove(loadedRocket.rootPart.fileName.Replace("/", ""));
                     }
-                    else if (tanks.Contains(tank))
-                    {
-                        countTank[tanks.IndexOf(tank)]++;
-                    }
-                    tanktoBeRemoved.Add(tank);
                 }
 
-                List<string> engines = new List<string>();
-                List<int> countEngine = new List<int>();
-                List<string> enginetoBeRemoved = new List<string>();
-                foreach (string engine in loadedRocket.engineName)
+                if(loadedRocket.rootPart.partType == "tank")
                 {
-                    if (!engines.Contains(engine))
+                    if(MasterManager.tanks.Contains(loadedRocket.rootPart.fileName.Replace("/", "")))
                     {
-                        engines.Add(engine);
-                        countEngine.Add(1);
+                        MasterManager.tanks.Remove(loadedRocket.rootPart.fileName.Replace("/", ""));
                     }
-                    else if (engines.Contains(engine))
-                    {
-                        countEngine[engines.IndexOf(engine)]++;
-                    }
-                    enginetoBeRemoved.Add(engine);
                 }
 
+                removeParts(loadedRocket.rootPart);
 
-                //Remove parts
-                if(MasterManager.engines.Count > 0)
-                {
-                    List<string> tempEngine = MasterManager.engines;
-                    foreach (string engine in enginetoBeRemoved)
-                    {
-                        if(tempEngine.Contains(engine.Replace("/", "") + ".json"))
-                        {
-                            tempEngine.RemoveAt(tempEngine.IndexOf(engine.Replace("/", "") + ".json"));
-                        }
-                    }
-                    MasterManager.engines = tempEngine;
-                }
-
-                if(MasterManager.tanks.Count > 0)
-                {
-                    List<string> tempTank = MasterManager.tanks;
-                    foreach (string tank in tanktoBeRemoved)
-                    {
-                        if(tempTank.Contains(tank.Replace("/", "") + ".json"))
-                        {
-                            tempTank.RemoveAt(tempTank.IndexOf(tank.Replace("/", "") + ".json"));
-                        }
-                    }
-                    MasterManager.tanks = tempTank;
-                }
-
-                //Build rocket
                 MasterManager.rockets.Add(partName.options[partName.value].text);
             }
 
@@ -436,6 +419,33 @@ public class VABManager : MonoBehaviour
             MasterManager.gameObject.GetComponent<pointManager>().nPoints -= Convert.ToSingle(costTxt.text);
         }
         retrieveInfo();
+    }
+
+    public void removeParts(PartData parent)
+    {
+        foreach (PartData part in parent.children)
+        {
+            if (part.partType == "engine")
+            {
+                if(MasterManager.engines.Contains(part.fileName.Replace("/", "")))
+                {
+                    MasterManager.engines.Remove(part.fileName.Replace("/", ""));
+                }
+            }
+
+            if (part.partType == "tank")
+            {
+                if(MasterManager.tanks.Contains(part.fileName.Replace("/", "")))
+                {
+                    MasterManager.tanks.Remove(part.fileName.Replace("/", ""));
+                }
+            }
+
+            if (part.children.Count > 0)
+            {
+                removeParts(part);
+            }
+        }
     }
 
 }

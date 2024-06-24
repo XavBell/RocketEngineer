@@ -193,4 +193,14 @@ public class container : MonoBehaviour
             return;
         }
     }
+
+    //Qty in kg
+    public void Consume(float qty)
+    {
+        float toBeConsumed = qty * 1000 / substance.MolarMass;
+        if(moles - toBeConsumed <= 0)
+        {
+            moles -= toBeConsumed;
+        }
+    }
 }

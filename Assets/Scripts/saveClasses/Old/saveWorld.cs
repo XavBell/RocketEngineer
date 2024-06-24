@@ -64,8 +64,7 @@ public class saveWorld
     public List<float> internalTemp = new List<float>();
     public List<string> fuelType = new List<string>();
 
-    public List<Guid> padFuelGuid = new List<Guid>();
-    public List<Guid> padOxidizerGuid = new List<Guid>();
+    public List<List<Guid>> containerGuids = new List<List<Guid>>();
 
     public List<Guid> staticFireFuelGuid = new List<Guid>();
     public List<Guid> staticFireOxidizerGuid = new List<Guid>();
@@ -85,6 +84,6 @@ public class saveWorld
     public List<int> childrenNumber = new List<int>();
     public List<string> types = new List<string>();
 
-    public List<saveWorldRocket> rockets = new List<saveWorldRocket>();
+    public List<RocketData> rockets = new List<RocketData>();
 }
 

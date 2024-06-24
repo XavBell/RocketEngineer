@@ -49,13 +49,12 @@ public class standManager : MonoBehaviour
                 {
                     tankStatusTracker = new TankStatusTracker();
                     startTime = (float)MyTime.time;
-                    Tank tank = ConnectedTank.GetComponent<Tank>();
                 }
                 
                 //For tank you literally just treat it as a regular fuel tank? I guess...
                 if(failed == false && tankStatusTracker != null)
                 {
-                    Tank tank = ConnectedTank.GetComponent<Tank>();
+                    TankComponent tank = ConnectedTank.GetComponent<TankComponent>();
 
                     tankStatusTracker.times.Add((float)(MyTime.time - startTime));
                     tankStatusTracker.Quantity.Add(tank.GetComponent<container>().mass);
@@ -76,7 +75,7 @@ public class standManager : MonoBehaviour
     {
         //Save results to file and null tracker and save new reliabili
         started = false;
-        Tank tank = ConnectedTank.GetComponent<Tank>();
+        TankComponent tank = ConnectedTank.GetComponent<TankComponent>();
 
         //Save test to file
         if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests"))
@@ -89,7 +88,7 @@ public class standManager : MonoBehaviour
             Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests/" + "TankPressureTests");
         }
 
-        string saveName = "/" + ConnectedTank.GetComponent<RocketPart>()._partName + MyTime.time.ToString() + ".json";
+        string saveName = "/" + ConnectedTank.GetComponent<PhysicsPart>().name + MyTime.time.ToString() + ".json";
 
         if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests/" + "TankPressureTests" + saveName))
         {
@@ -97,63 +96,29 @@ public class standManager : MonoBehaviour
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + "/Tests/" + "TankPressureTests" + saveName, jsonString);
         }
 
-        if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName + ".json"))
+        if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder +  ConnectedTank.GetComponent<PhysicsPart>().path + ".json"))
         {
             saveTank saveObject = new saveTank();
             var jsonString = JsonConvert.SerializeObject(saveObject);
-            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName + ".json");
+            jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + ConnectedTank.GetComponent<PhysicsPart>().path + ".json");
             saveTank loadedTank = JsonConvert.DeserializeObject<saveTank>(jsonString);
             saveObject = loadedTank;
             //Save previous unchanged value
             saveObject.path = savePathRef.tankFolder;
-            saveObject.tankName = tank._partName;
-            saveObject.mass = tank._partMass;
+            saveObject.tankName = loadedTank.tankName;
+            saveObject.mass = loadedTank.mass;
 
             //Updated Value
             if(tankStatusTracker != null)
             {
                 saveObject.maxRecPressure = tankStatusTracker.Pressure.Min();
             }
-            saveObject.cost = tank._partCost;
+            saveObject.cost = tank.GetComponent<PhysicsPart>().cost;
             saveObject.tested = true;
 
             var jsonString1 = JsonConvert.SerializeObject(saveObject);
-            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + "/" + ConnectedTank.GetComponent<Tank>()._partName + ".json", jsonString1);
-        }
-
-        //Apply new data to all rockets
-        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder);
-        var rocketNamesFiles = info.GetFiles();
-        List<string> rocketNames = new List<string>();
-        foreach (var file in rocketNamesFiles)
-        {
-            rocketNames.Add(file.Name);
-        }
-        foreach (var rocket in rocketNames)
-        {
-            if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket))
-            {
-                savecraft saveObject = new savecraft();
-                var jsonString = JsonConvert.SerializeObject(saveObject);
-                jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket);
-                savecraft loadedRocket = JsonConvert.DeserializeObject<savecraft>(jsonString);
-
-                saveObject = loadedRocket;
-                int i = 0;
-                foreach (string tank1 in saveObject.tankName)
-                {
-                    if (tank1 == ConnectedTank.GetComponent<Tank>()._partName)
-                    {
-                        saveObject.tested[i] = tank.tested;
-                    }
-                    i++;
-                }
-
-                var jsonString1 = JsonConvert.SerializeObject(saveObject);
-                System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + rocket, jsonString1);
-            }
-
-
+            Debug.Log("SAVING TO " + Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder +  ConnectedTank.GetComponent<PhysicsPart>().path + ".json");
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder +  ConnectedTank.GetComponent<PhysicsPart>().path + ".json", jsonString1);
         }
 
         failed = false;

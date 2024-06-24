@@ -97,9 +97,6 @@ public class StaticFireViewer : MonoBehaviour
 
         fuelTemperature.text = staticFireStand.GetComponent<staticFireStandManager>().fuel.internalTemperature.ToString();
         oxidizerTemperature.text = staticFireStand.GetComponent<staticFireStandManager>().oxidizer.internalTemperature.ToString();
-
-        
-
     }
 
     void updateThrust()
@@ -110,7 +107,7 @@ public class StaticFireViewer : MonoBehaviour
             {
                 if (staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().outReadThrust != float.NaN)
                 {
-                    thrust.text = staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().outReadThrust.ToString();
+                    thrust.text = staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<EngineComponent>().produceThrust(1).magnitude.ToString();
                 }
             }
         }
@@ -123,7 +120,7 @@ public class StaticFireViewer : MonoBehaviour
         staticFireStand.GetComponent<staticFireStandManager>().startTime = (float)FindObjectOfType<TimeManager>().time;
         staticFireStand.GetComponent<staticFireStandManager>().stopped = false;
         staticFireStand.GetComponent<staticFireStandManager>().started = true;
-        staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<Engine>().InitializeFail();
+        staticFireStand.GetComponent<staticFireStandManager>().ConnectedEngine.GetComponent<EngineComponent>().InitializeFail();
         //previouslyRan = true;
         MasterManager masterManager = FindObjectOfType<MasterManager>();
         masterManager.GetComponent<pointManager>().nPoints += 2f;

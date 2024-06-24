@@ -5,6 +5,7 @@ using System.IO;
 using TMPro;
 using UnityEngine.UI;
 using DG.Tweening;
+using Newtonsoft.Json;
 
 public class operationManager : MonoBehaviour
 {
@@ -18,7 +19,7 @@ public class operationManager : MonoBehaviour
     [SerializeField] private TMP_Dropdown engineDropdown;
     [SerializeField] private TMP_Dropdown tankDropdown;
     [SerializeField] private TMP_Dropdown operationDropdown;
-    [SerializeField] private StageViewer stageViewer;
+    [SerializeField] private StageEditor stageEditor;
     [SerializeField] private StaticFireViewer staticFireViewer;
     [SerializeField] private PressureTestViewer pressureTestViewer;
     [SerializeField] private WDRTestViewer WDRTestViewer;
@@ -211,8 +212,12 @@ public class operationManager : MonoBehaviour
         {
             launchPad.button.SetActive(true);
             PanelFadeIn(launchPad.button);
-            launchPad.button.GetComponent<OnClick>().op = this;
-            launchPad.button.GetComponent<OnClick>().savedLaunchpad = launchPad.gameObject;
+            string saveUserPath = Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.rocketFolder + "/" + vehicleLaunchDropdown.options[vehicleLaunchDropdown.value].text.ToString();
+            string rocketData1 = File.ReadAllText(saveUserPath);
+            RocketData rocketData = JsonConvert.DeserializeObject<RocketData>(rocketData1);
+            launchPad.rocketData = rocketData;
+            launchPad.button.GetComponentInChildren<OnClick>().op = this;
+            launchPad.button.GetComponentInChildren<OnClick>().savedLaunchpad = launchPad.gameObject;
         }
     }
 
@@ -324,14 +329,15 @@ public class operationManager : MonoBehaviour
                 {
                     //Remove parts
                     MasterManager.rockets.RemoveAt(MasterManager.rockets.IndexOf(vehicleLaunchDropdown.options[value].text.ToString().Replace("/","")));
-                    
-                    onclick.path = "/" + vehicleLaunchDropdown.options[value].text.ToString();
                     onclick.launchPad = selectedLaunchPad;
-                    onclick.load("/rockets");
-                    stageViewer.gameObject.SetActive(true);
-                    stageViewer.rocket = onclick.spawnedRocket;
-                    stageViewer.updateStagesView(false);
-                    stageViewer.updateInfoPerStage(false);
+                    rocketSaveManager rocketSaveManager = FindObjectOfType<rocketSaveManager>();
+                    GameObject rocketController = Instantiate(Resources.Load<GameObject>("Prefabs/" + "RocketController"));
+                    rocketSaveManager.loadRocket(rocketController.GetComponent<RocketController>(), vehicleLaunchDropdown.options[value].text.ToString().Replace(".json",""));
+                    rocketController.transform.position = selectedLaunchPad.transform.position + new Vector3(0, 10f, 0);
+                    rocketController.GetComponent<RocketController>().InitializeComponents();
+                    onclick.spawnedRocket = rocketController;
+                    stageEditor.gameObject.SetActive(true);
+                    stageEditor.rocketController = rocketController.GetComponent<RocketController>();
                     selectedLaunchPad.GetComponent<launchPadManager>().ConnectedRocket = onclick.spawnedRocket;
                 }
                 else

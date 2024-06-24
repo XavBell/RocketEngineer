@@ -140,7 +140,7 @@ public class Prediction : MonoBehaviour
         double[] times = new double[numPoints];
         Vector3[] positions = new Vector3[numPoints];
 
-        if (planetGravity.gameObject.GetComponent<Rocket>().throttle > 0 || updated == false)
+        if (planetGravity.gameObject.GetComponent<RocketController>().throttle > 0 || updated == false)
         {
             SetKeplerParams(keplerParams, rocketPosition2D, planetPos, rocketVelocity2D, gravityParam, time);
             if (rb.velocity.magnitude != 0 && keplerParams.eccentricity < 1)
@@ -198,7 +198,7 @@ public class Prediction : MonoBehaviour
         // Compute MA (Mean Anomaly)
         // n = 2pi / T (T = time for one orbit)
         // M = n (t)
-        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); // TODO (Mean Angular Motion can be computed at build/run time once)
+        double meanAngularMotion = Math.Sqrt(gravityParam / Math.Pow(semiMajorAxis, 3)); 
         double timeWithOffset = time + GetTimeOffsetFromTrueAnomaly(trueAnomalyAtEpoch, meanAngularMotion, eccentricity);
         double MA = timeWithOffset * meanAngularMotion;
 

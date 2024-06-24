@@ -87,14 +87,6 @@ public class GameManager_Tank : MonoBehaviour
         {
             tankSP = Tank.GetComponent<SpriteRenderer>();
 
-            attachTopObj = Tank.GetComponent<Tank>()._attachTop;
-
-            attachBottomObj = Tank.GetComponent<Tank>()._attachBottom;
-
-            attachRightObj = Tank.GetComponent<Tank>()._attachRight;
-
-            attachLeftObj = Tank.GetComponent<Tank>()._attachLeft;
-
             startingScaleD = tankSP.transform.localScale;
             startingScaleH = tankSP.transform.localScale;
 

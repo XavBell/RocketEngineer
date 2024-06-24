@@ -22,12 +22,25 @@ public class launchPadManager : MonoBehaviour
     public string operation = "none";
     public bool started = false;
     public bool failed = false;
+    public List<string> padLines;
+    public List<Guid> connectedContainersPerLine = new List<Guid>();
+    public List<Guid> connectedRocketLines = new List<Guid>();
+    public RocketData rocketData;
 
     // Start is called before the first frame update
     void Start()
     {
         GameObject GMM = GameObject.FindGameObjectWithTag("MasterManager");
         MasterManager = GMM.GetComponent<MasterManager>();
+        while(connectedContainersPerLine.Count < padLines.Count)
+        {
+            connectedContainersPerLine.Add(Guid.Empty);
+        }
+
+        while(connectedRocketLines.Count < padLines.Count)
+        {
+            connectedRocketLines.Add(Guid.Empty);
+        }
     }
 
     // Update is called once per frame
@@ -45,33 +58,18 @@ public class launchPadManager : MonoBehaviour
             //(WHY TF IS THAT HERE)
             if(ConnectedRocket.GetComponent<PlanetGravity>().possessed == true)
             {
-                foreach(Stages stage in ConnectedRocket.GetComponent<Rocket>().Stages)
+                Transform[] children = ConnectedRocket.GetComponentsInChildren<Transform>();
+                foreach(Transform child in children)
                 {
-                    foreach(RocketPart part in stage.Parts)
+                    if(child.gameObject.GetComponent<flowController>())
                     {
-                        if(part._partType == "tank")
-                        {
-                            part.GetComponent<flowController>().origin = null;
-                            part.GetComponent<flowController>().selfRate = 0;
-                        }
+                        child.gameObject.GetComponent<flowController>().origin = null;
+                        child.gameObject.GetComponent<flowController>().originGuid = Guid.Empty;
+                        child.gameObject.GetComponent<flowController>().selfRate = 0;
+                        child.gameObject.GetComponent<flowController>().opened = false;
                     }
                 }
             }
-        }
-
-        if(operation == "launch")
-        {
-            //TODO
-        }
-
-        if(operation == "staticFire")
-        {
-            //TODO
-        }
-
-        if(operation == "WDR")
-        {
-            //TODO
         }
     }
 }
