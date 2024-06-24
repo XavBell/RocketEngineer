@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using System;
 
 public class FuelConnectorManager : MonoBehaviour
 {
@@ -30,14 +31,14 @@ public class FuelConnectorManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(started == true)
+        if (started == true)
         {
-            if(output != null && input == null)
+            if (output != null && input == null)
             {
                 selectInput();
             }
 
-            if(output != null && input != null)
+            if (output != null && input != null)
             {
                 Connect();
                 Legend.SetActive(false);
@@ -50,32 +51,32 @@ public class FuelConnectorManager : MonoBehaviour
 
     public void ShowConnection()
     {
-        if(showToggle.isOn)
+        if (showToggle.isOn)
         {
-            foreach(LineRenderer line in lines)
+            foreach (LineRenderer line in lines)
             {
-                if(line != null)
+                if (line != null)
                 {
                     Destroy(line.gameObject);
                 }
             }
 
-            foreach(GameObject destroy in Destroyable)
+            foreach (GameObject destroy in Destroyable)
             {
-                if(destroy != null)
+                if (destroy != null)
                 {
                     Destroy(destroy);
                 }
             }
-            
+
             lines.Clear();
             int n = 4;
             flowController[] flowControllers = FindObjectsOfType<flowController>();
-            foreach(flowController flowController in flowControllers)
+            foreach (flowController flowController in flowControllers)
             {
-                if(flowController.gameObject.GetComponent<buildingType>())
+                if (flowController.gameObject.GetComponent<buildingType>())
                 {
-                    if(flowController.origin != null)
+                    if (flowController.origin != null)
                     {
                         GameObject line = Instantiate(linePrefab);
                         PanelFadeIn(line);
@@ -88,7 +89,7 @@ public class FuelConnectorManager : MonoBehaviour
                         lr.SetPosition(1, new Vector2(flowController.transform.position.x, altitude1.y));
                         lr.SetPosition(2, new Vector2(flowController.origin.transform.position.x, altitude2.y));
                         lr.SetPosition(3, flowController.origin.transform.position);
-                        if(buildingManager.CanDestroy == true)
+                        if (buildingManager.CanDestroy == true)
                         {
                             GameObject destroy = Instantiate(destroyPrefab);
                             destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x) / 2, (altitude1.y + altitude2.y) / 2);
@@ -99,15 +100,18 @@ public class FuelConnectorManager : MonoBehaviour
                             Destroyable.Add(destroy);
                         }
                         flowController.refLine = line;
-                        if(flowController.destination.type == "fuel")
+                        if (flowController.destination.type == "fuel")
                         {
                             lr.startColor = orange;
                             lr.endColor = orange;
-                        }else if(flowController.destination.type == "oxidizer")
+                        }
+                        else if (flowController.destination.type == "oxidizer")
                         {
                             lr.startColor = blue;
                             lr.endColor = blue;
-                        }else{
+                        }
+                        else
+                        {
                             lr.startColor = Color.white;
                             lr.endColor = Color.white;
                         }
@@ -118,74 +122,52 @@ public class FuelConnectorManager : MonoBehaviour
                 n += 2;
             }
 
-            flowControllerForLaunchPads[] flowControllersLaunchPad = FindObjectsOfType<flowControllerForLaunchPads>();
-            foreach(flowControllerForLaunchPads flowControllerForLaunchPad in flowControllersLaunchPad)
+            launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
+            container[] containers = FindObjectsOfType<container>();
+            foreach (launchPadManager launchPad in launchPadManagers)
             {
-                if(flowControllerForLaunchPad.oxidizerContainerOrigin != null)
+                foreach (Guid container in launchPad.connectedContainersPerLine)
                 {
-                    GameObject line = Instantiate(linePrefab);
-                    PanelFadeIn(line);
-                    linePrefab.GetComponent<LineRenderer>();
-                    LineRenderer lr = line.GetComponent<LineRenderer>();
-                    Vector2 altitude1 = (planet.transform.position - flowControllerForLaunchPad.transform.position).normalized * (n);
-                    Vector2 altitude2 = (planet.transform.position - flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position).normalized * (n);
-                    lr.positionCount = 4;
-                    lr.SetPosition(0, flowControllerForLaunchPad.transform.position);
-                    lr.SetPosition(1, new Vector2(flowControllerForLaunchPad.transform.position.x, altitude1.y));
-                    lr.SetPosition(2, new Vector2(flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position.x, altitude2.y));
-                    lr.SetPosition(3, flowControllerForLaunchPad.oxidizerContainerOrigin.transform.position);
-                    if (buildingManager.CanDestroy == true)
+                    foreach (container container1 in containers)
                     {
-                        GameObject destroy = Instantiate(destroyPrefab);
-                        destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x)/2, (altitude1.y + altitude2.y) / 2);
-                        destroy.transform.parent = flowControllerForLaunchPad.transform;
-                        destroy.transform.parent = null;
-                        destroy.GetComponent<destroyConnection>().flowcontroller = flowControllerForLaunchPad.gameObject;
-                        destroy.GetComponent<destroyConnection>().line = line;
-                        Destroyable.Add(destroy);
-                    }
-                    lr.startColor = blue;
-                    lr.endColor = blue;
-                    lines.Add(lr);
-                    line.transform.parent = flowControllerForLaunchPad.gameObject.transform;
-                    n+=2;
-                }
+                        if (container1.guid == container)
+                        {
 
-                if(flowControllerForLaunchPad.fuelContainerOrigin != null)
-                {
-                    GameObject line = Instantiate(linePrefab);
-                    PanelFadeIn(line);
-                    linePrefab.GetComponent<LineRenderer>();
-                    LineRenderer lr = line.GetComponent<LineRenderer>();
-                    Vector2 altitude1 = (planet.transform.position - flowControllerForLaunchPad.transform.position).normalized * (n);
-                    Vector2 altitude2 = (planet.transform.position - flowControllerForLaunchPad.fuelContainerOrigin.transform.position).normalized * (n);
-                    lr.positionCount = 4;
-                    lr.SetPosition(0, flowControllerForLaunchPad.transform.position);
-                    lr.SetPosition(1, new Vector2(flowControllerForLaunchPad.transform.position.x,altitude1.y));
-                    lr.SetPosition(2, new Vector2(flowControllerForLaunchPad.fuelContainerOrigin.transform.position.x,altitude2.y));
-                    lr.SetPosition(3, flowControllerForLaunchPad.fuelContainerOrigin.transform.position);
-                    if (buildingManager.CanDestroy == true)
-                    {
-                        GameObject destroy = Instantiate(destroyPrefab);
-                        destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x)/2, (altitude1.y + altitude2.y) / 2);
-                        destroy.transform.parent = flowControllerForLaunchPad.transform;
-                        destroy.transform.parent = null;
-                        destroy.GetComponentInChildren<destroyConnection>().flowcontroller = flowControllerForLaunchPad.gameObject;
-                        destroy.GetComponentInChildren<destroyConnection>().line = line;
-                        Destroyable.Add(destroy);
+                            GameObject line = Instantiate(linePrefab);
+                            PanelFadeIn(line);
+                            linePrefab.GetComponent<LineRenderer>();
+                            LineRenderer lr = line.GetComponent<LineRenderer>();
+                            Vector2 altitude1 = (planet.transform.position - launchPad.transform.position).normalized * (n);
+                            Vector2 altitude2 = (planet.transform.position - container1.transform.position).normalized * (n);
+                            lr.positionCount = 4;
+                            lr.SetPosition(0, launchPad.transform.position);
+                            lr.SetPosition(1, new Vector2(launchPad.transform.position.x, altitude1.y));
+                            lr.SetPosition(2, new Vector2(container1.transform.position.x, altitude2.y));
+                            lr.SetPosition(3, container1.transform.position);
+                            if (buildingManager.CanDestroy == true)
+                            {
+                                GameObject destroy = Instantiate(destroyPrefab);
+                                destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x) / 2, (altitude1.y + altitude2.y) / 2);
+                                destroy.transform.parent = launchPad.gameObject.transform;
+                                destroy.transform.parent = null;
+                                destroy.GetComponent<destroyConnection>().flowcontroller = launchPad.gameObject;
+                                destroy.GetComponent<destroyConnection>().line = line;
+                                Destroyable.Add(destroy);
+                            }
+                            lr.startColor = Color.white;
+                            lr.endColor = Color.white;
+                            lines.Add(lr);
+                            line.transform.parent = launchPad.gameObject.transform;
+                            n += 2;
+                        }
                     }
-                    lr.startColor = orange;
-                    lr.endColor = orange;
-                    lines.Add(lr);
-                    line.transform.parent = flowControllerForLaunchPad.gameObject.transform;
-                    n+=2;
                 }
             }
 
             flowControllerForTankStand[] flowControllerForTankStands = FindObjectsOfType<flowControllerForTankStand>();
-            foreach(flowControllerForTankStand flowControllerForTankStand in flowControllerForTankStands)
+            foreach (flowControllerForTankStand flowControllerForTankStand in flowControllerForTankStands)
             {
-                if(flowControllerForTankStand.origin != null)
+                if (flowControllerForTankStand.origin != null)
                 {
                     GameObject line = Instantiate(linePrefab);
                     PanelFadeIn(line);
@@ -195,13 +177,13 @@ public class FuelConnectorManager : MonoBehaviour
                     Vector2 altitude2 = (planet.transform.position - flowControllerForTankStand.origin.transform.position).normalized * (n);
                     lr.positionCount = 4;
                     lr.SetPosition(0, flowControllerForTankStand.transform.position);
-                    lr.SetPosition(1, new Vector2(flowControllerForTankStand.transform.position.x,altitude1.y));
-                    lr.SetPosition(2, new Vector2(flowControllerForTankStand.origin.transform.position.x,altitude2.y));
+                    lr.SetPosition(1, new Vector2(flowControllerForTankStand.transform.position.x, altitude1.y));
+                    lr.SetPosition(2, new Vector2(flowControllerForTankStand.origin.transform.position.x, altitude2.y));
                     lr.SetPosition(3, flowControllerForTankStand.origin.transform.position);
                     if (buildingManager.CanDestroy == true)
                     {
                         GameObject destroy = Instantiate(destroyPrefab);
-                        destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x)/2, (altitude1.y + altitude2.y) / 2);
+                        destroy.transform.position = new Vector2((lr.GetPosition(2).x + lr.GetPosition(1).x) / 2, (altitude1.y + altitude2.y) / 2);
                         destroy.transform.parent = flowControllerForTankStand.transform;
                         destroy.transform.parent = null;
                         destroy.GetComponent<destroyConnection>().flowcontroller = flowControllerForTankStand.gameObject;
@@ -217,24 +199,24 @@ public class FuelConnectorManager : MonoBehaviour
             }
         }
 
-        if(!showToggle.isOn)
+        if (!showToggle.isOn)
         {
-            foreach(LineRenderer line in lines)
+            foreach (LineRenderer line in lines)
             {
-                if(line != null)
+                if (line != null)
                 {
                     Destroy(line.gameObject);
                 }
             }
 
-            foreach(GameObject destroy in Destroyable)
+            foreach (GameObject destroy in Destroyable)
             {
-                if(destroy != null)
+                if (destroy != null)
                 {
                     Destroy(destroy);
                 }
             }
-            
+
         }
     }
 
@@ -261,29 +243,29 @@ public class FuelConnectorManager : MonoBehaviour
     {
         outputInputManager[] potentialInputsOutputs = FindObjectsOfType<outputInputManager>();
         List<GameObject> actualOutputInput = new List<GameObject>();
-        foreach(outputInputManager outputInput in potentialInputsOutputs)
+        foreach (outputInputManager outputInput in potentialInputsOutputs)
         {
-            if(outputInput.gameObject.GetComponent<buildingType>() != null)
+            if (outputInput.gameObject.GetComponent<buildingType>() != null)
             {
                 actualOutputInput.Add(outputInput.gameObject);
             }
         }
 
-        foreach(GameObject building in actualOutputInput)
+        foreach (GameObject building in actualOutputInput)
         {
-            if(building.GetComponent<buildingType>().type == "launchPad" && building.GetComponent<buildingType>().inputUI.activeSelf == false)
+            if (building.GetComponent<buildingType>().type == "launchPad" && building.GetComponent<buildingType>().inputUI.activeSelf == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
                 PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
-            if(building.GetComponent<buildingType>().type == "staticFireStand"&& building.GetComponent<buildingType>().inputUI.activeSelf == false)
+            if (building.GetComponent<buildingType>().type == "staticFireStand" && building.GetComponent<buildingType>().inputUI.activeSelf == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
                 PanelFadeIn(building.GetComponent<buildingType>().inputUI);
             }
 
-            if(building.GetComponent<buildingType>().type == "standTank"&& building.GetComponent<buildingType>().inputUI.activeSelf == false)
+            if (building.GetComponent<buildingType>().type == "standTank" && building.GetComponent<buildingType>().inputUI.activeSelf == false)
             {
                 building.GetComponent<buildingType>().inputUI.SetActive(true);
                 PanelFadeIn(building.GetComponent<buildingType>().inputUI);
@@ -295,21 +277,21 @@ public class FuelConnectorManager : MonoBehaviour
     {
         container[] potentialContainer = FindObjectsOfType<container>();
         List<GameObject> actualContainer = new List<GameObject>();
-        foreach(container container in potentialContainer)
+        foreach (container container in potentialContainer)
         {
-            if(container.gameObject.GetComponent<buildingType>() != null)
+            if (container.gameObject.GetComponent<buildingType>() != null)
             {
                 actualContainer.Add(container.gameObject);
             }
         }
 
-        foreach(GameObject building in actualContainer)
+        foreach (GameObject building in actualContainer)
         {
-            if(building.GetComponent<buildingType>().type == "GSEtank")
+            if (building.GetComponent<buildingType>().type == "GSEtank")
             {
                 building.GetComponent<buildingType>().outputUI.SetActive(true);
                 PanelFadeIn(building.GetComponent<buildingType>().outputUI);
-                
+
             }
         }
     }
@@ -317,44 +299,44 @@ public class FuelConnectorManager : MonoBehaviour
     //TODO refactor for new rocket system
     public void Connect()
     {
-        if(input.GetComponent<flowControllerStaticFire>())
+        if (input.GetComponent<flowControllerStaticFire>())
         {
             input.flowController.destination = input;
             input.flowController.origin = output;
             input.GetComponent<flowControllerStaticFire>().updateGuid();
         }
 
-        if(input.GetComponent<flowControllerForTankStand>())
+        if (input.GetComponent<flowControllerForTankStand>())
         {
             input.GetComponent<flowControllerForTankStand>().origin = output;
             input.GetComponent<flowControllerForTankStand>().updateGuid();
         }
 
-        if(input.GetComponent<flowControllerForLaunchPads>())
+        if (input.GetComponent<flowControllerForLaunchPads>())
         {
-            if(input.type == "oxidizer")
+            if (input.type == "oxidizer")
             {
                 input.GetComponent<flowControllerForLaunchPads>().oxidizerContainerOrigin = output;
             }
 
-            if(input.type == "fuel")
+            if (input.type == "fuel")
             {
                 input.GetComponent<flowControllerForLaunchPads>().fuelContainerOrigin = output;
             }
 
-            if(input.GetComponent<launchPadManager>().ConnectedRocket != null)
+            if (input.GetComponent<launchPadManager>().ConnectedRocket != null)
             {
                 input.GetComponent<flowControllerForLaunchPads>().setTankOrigin();
             }
 
-            input.GetComponent<flowControllerForLaunchPads>().updateGuid();   
+            input.GetComponent<flowControllerForLaunchPads>().updateGuid();
         }
 
         ShowConnection();
 
         connectPopUp.SetActive(true);
         PanelFadeIn(connectPopUp);
-        StartCoroutine(ActiveDeactive(1,connectPopUp, false ));
+        StartCoroutine(ActiveDeactive(1, connectPopUp, false));
 
     }
 }
