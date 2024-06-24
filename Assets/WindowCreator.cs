@@ -21,7 +21,7 @@ public class WindowCreator : MonoBehaviour
 
     public void OnRightClick()
     {
-        if (SceneManager.GetActiveScene().name == "MainScene")
+        if (SceneManager.GetActiveScene().name == "SampleScene")
         {
             if (spawnedUI != null)
             {
