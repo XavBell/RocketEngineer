@@ -15,7 +15,7 @@ public class flowControllerForLaunchPads : MonoBehaviour
 
     public RocketController rocket;
 
-    bool connected = false;
+    public bool connected = false;
 
     // Start is called before the first frame update
     void Start()

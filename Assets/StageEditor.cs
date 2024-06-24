@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class StageEditor : MonoBehaviour
 {
@@ -106,8 +107,16 @@ public class StageEditor : MonoBehaviour
             if (launchPadManager.ConnectedRocket == rocketController.gameObject)
             {
                 launchPadManager.ConnectedRocket = null;
-                return;
+                launchPadManager.GetComponent<flowControllerForLaunchPads>().connected = false;
             }
+        }
+        flowController[] flowControllers = rocketController.GetComponentsInChildren<flowController>();
+        foreach (flowController flowController in flowControllers)
+        {
+            flowController.origin = null;
+            flowController.originGuid = Guid.Empty;
+            flowController.selfRate = 0;
+            flowController.opened = false;
         }
     }
 
