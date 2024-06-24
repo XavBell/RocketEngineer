@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class WindowCreator : MonoBehaviour
 {
@@ -9,32 +10,38 @@ public class WindowCreator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void OnRightClick()
     {
-        if(spawnedUI != null)
+        if (SceneManager.GetActiveScene().name == "MainScene")
         {
-            Destroy(spawnedUI);
-        }else{
-            Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
-        Vector2 pos = Input.mousePosition;
-        spawnedUI = Instantiate(UI, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
-        if(this.GetComponent<TankComponent>() != null)
-        {
-            spawnedUI.GetComponentInChildren<TankUIModule>().tank = this.GetComponent<container>();
+            if (spawnedUI != null)
+            {
+                Destroy(spawnedUI);
+            }
+            else
+            {
+                Camera cam = GameObject.Find("Main Camera").GetComponent<Camera>();
+                Vector2 pos = Input.mousePosition;
+                spawnedUI = Instantiate(UI, new Vector3(pos.x, pos.y, 0), Quaternion.identity);
+                if (this.GetComponent<TankComponent>() != null)
+                {
+                    spawnedUI.GetComponentInChildren<TankUIModule>().tank = this.GetComponent<container>();
+                }
+                spawnedUI.GetComponent<Canvas>().worldCamera = cam;
+                spawnedUI.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
+            }
         }
-        spawnedUI.GetComponent<Canvas>().worldCamera = cam;
-        spawnedUI.GetComponent<Canvas>().renderMode = RenderMode.ScreenSpaceOverlay;
-        }
-        
+
+
     }
 
 }
