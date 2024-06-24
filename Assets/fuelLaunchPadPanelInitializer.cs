@@ -36,6 +36,7 @@ public class fuelLaunchPadPanelInitializer : MonoBehaviour
         fuelConnectorManager.connectPopUp.SetActive(true);
         fuelConnectorManager.PanelFadeIn(fuelConnectorManager.connectPopUp);
         fuelConnectorManager.StartCoroutine(fuelConnectorManager.ActiveDeactive(1,fuelConnectorManager.connectPopUp, false ));
-        this.gameObject.SetActive(false);
+        launchPadManager.GetComponent<buildingType>().inputUI.SetActive(false);
+        fuelConnectorManager.Legend.SetActive(false);
     }
 }

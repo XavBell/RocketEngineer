@@ -476,6 +476,12 @@ public class OnClick : MonoBehaviour
             }
         }
 
+        launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
+        foreach(launchPadManager launchPad in launchPadManagers)
+        {
+            actualContainer.Add(launchPad.gameObject);
+        }
+
         foreach(GameObject building in actualContainer)
         {
             if(building.GetComponent<buildingType>().type == "GSEtank")
@@ -522,6 +528,11 @@ public class OnClick : MonoBehaviour
             {
                 actualContainer.Add(container.gameObject);
             }
+        }
+        launchPadManager[] launchPadManagers = FindObjectsOfType<launchPadManager>();
+        foreach(launchPadManager launchPad in launchPadManagers)
+        {
+            actualContainer.Add(launchPad.gameObject);
         }
 
         foreach(GameObject building in actualContainer)
