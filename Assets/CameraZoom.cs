@@ -9,14 +9,17 @@ public class CameraZoom : MonoBehaviour
     private float userFactor = 1f;
     private float zoomLerp = 10f;
     private float moveFactor = 5f;
+
     public Camera cam;
     public GameObject MasterManager;
+
     // Start is called before the first frame update
     void Start()
     {
         MasterManager = GameObject.FindGameObjectWithTag("MasterManager");
         userFactor = MasterManager.GetComponent<MasterManager>().scrollMultiplierValue;
         
+        cam = GetComponent<Camera>();
     }
 
     // Update is called once per frame

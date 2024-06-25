@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class ButtonSoundPlayer : MonoBehaviour
 {
-    public AudioSource clickSound;
-    public AudioSource hoverSound;
+    public AudioSource source;
+    public AudioClip click;
+    public AudioClip hover;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,13 +22,11 @@ public class ButtonSoundPlayer : MonoBehaviour
 
     public void playClick()
     {
-        clickSound.time = 0.12f;
-        clickSound.Play();
+        source.PlayOneShot(click);
     }
 
     public void playHover()
     {
-        hoverSound.time = 0.52f;
-        hoverSound.Play();
+        source.PlayOneShot(hover);
     }
 }
