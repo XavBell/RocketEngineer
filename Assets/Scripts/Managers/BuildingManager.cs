@@ -146,6 +146,13 @@ public class BuildingManager : MonoBehaviour
         WorldSaveManager.saveTheWorld();
         SceneManager.LoadScene("TankDesign");
     }
+
+    public void EnterCapsuleDesign()
+    {
+        WorldSaveManager.saveTheWorld();
+        SceneManager.LoadScene("CapsuleDesign");
+    }
+    
     public void EnterRocketDesign()
     {
         WorldSaveManager.saveTheWorld();
