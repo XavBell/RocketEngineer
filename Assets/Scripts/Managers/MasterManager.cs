@@ -94,14 +94,20 @@ public class MasterManager : MonoBehaviour
 
         if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
         {
+            saveUser saveUserRef = new saveUser();
+            string currentVersion = saveUserRef.version;
             string saveUserPath = Application.persistentDataPath + "/saveUser.json";
             string saveUserJson = File.ReadAllText(saveUserPath);
             saveUser saveUser = JsonConvert.DeserializeObject<saveUser>(saveUserJson);
-            // Load saveUser values here<
-            postProcess = saveUser.postProcess;
-            scrollMultiplierValue = saveUser.scrollMultiplier;
-            showStars = saveUser.showStars;
-            Screen.SetResolution((int)saveUser.xRes, (int)saveUser.yRes, fullScreen.isOn);
+            if(saveUser.version == currentVersion)
+            {
+                // Load saveUser values here<
+                postProcess = saveUser.postProcess;
+                scrollMultiplierValue = saveUser.scrollMultiplier;
+                stars.isOn = saveUser.showStars;
+                Screen.SetResolution((int)saveUser.xRes, (int)saveUser.yRes, fullScreen.isOn);
+            }
+            
         }
         else
         {
