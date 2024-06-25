@@ -106,24 +106,14 @@ public class MasterManager : MonoBehaviour
                 scrollMultiplierValue = saveUser.scrollMultiplier;
                 stars.isOn = saveUser.showStars;
                 Screen.SetResolution((int)saveUser.xRes, (int)saveUser.yRes, fullScreen.isOn);
+            }else{
+                createSaveUser();
             }
             
         }
         else
         {
-            // Create a new saveUser object with default values
-            saveUser saveUser = new saveUser();
-            saveUser.postProcess = postProcess;
-            saveUser.scrollMultiplier = scrollMultiplierValue;
-            saveUser.xRes = Screen.width;
-            saveUser.yRes = Screen.height;
-            saveUser.showStars = showStars;
-
-            // Serialize the saveUser object to JSON
-            string saveUserJson = JsonConvert.SerializeObject(saveUser);
-
-            // Write the JSON string to the saveUser.json file
-            File.WriteAllText(Application.persistentDataPath + "/saveUser.json", saveUserJson);
+            createSaveUser();
         }
         updateButtons();
         DontDestroyOnLoad(this.gameObject);
@@ -131,6 +121,23 @@ public class MasterManager : MonoBehaviour
         btCreate = bigTextCanvas.transform.GetChild(0).gameObject;
         btOptions = bigTextCanvas.transform.GetChild(1).gameObject;
         btLoad = bigTextCanvas.transform.GetChild(2).gameObject;
+    }
+
+    private void createSaveUser()
+    {
+        // Create a new saveUser object with default values
+        saveUser saveUser = new saveUser();
+        saveUser.postProcess = postProcess;
+        saveUser.scrollMultiplier = scrollMultiplierValue;
+        saveUser.xRes = Screen.width;
+        saveUser.yRes = Screen.height;
+        saveUser.showStars = showStars;
+
+        // Serialize the saveUser object to JSON
+        string saveUserJson = JsonConvert.SerializeObject(saveUser);
+
+        // Write the JSON string to the saveUser.json file
+        File.WriteAllText(Application.persistentDataPath + "/saveUser.json", saveUserJson);
     }
 
     // Update is called once per frame
