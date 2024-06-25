@@ -73,13 +73,17 @@ public class MasterManager : MonoBehaviour
     public List<string> nodeUnlocked = new List<string>();
 
     public Toggle fullScreen;
+    public Toggle stars;
 
     public bool postProcess = true;
+    public bool showStars = true;
     public float scrollMultiplierValue = 1;
 
     GameObject btCreate;
     GameObject btOptions;
     GameObject btLoad;
+
+    [SerializeField] GameObject bgMenu;
 
     // Start is called before the first frame update
     void Start()
@@ -90,28 +94,26 @@ public class MasterManager : MonoBehaviour
 
         if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
         {
+            saveUser saveUserRef = new saveUser();
+            string currentVersion = saveUserRef.version;
             string saveUserPath = Application.persistentDataPath + "/saveUser.json";
             string saveUserJson = File.ReadAllText(saveUserPath);
             saveUser saveUser = JsonConvert.DeserializeObject<saveUser>(saveUserJson);
-            // Load saveUser values here<
-            postProcess = saveUser.postProcess;
-            scrollMultiplierValue = saveUser.scrollMultiplier;
-            Screen.SetResolution((int)saveUser.xRes, (int)saveUser.yRes, fullScreen.isOn);
+            if(saveUser.version == currentVersion)
+            {
+                // Load saveUser values here<
+                postProcess = saveUser.postProcess;
+                scrollMultiplierValue = saveUser.scrollMultiplier;
+                stars.isOn = saveUser.showStars;
+                Screen.SetResolution((int)saveUser.xRes, (int)saveUser.yRes, fullScreen.isOn);
+            }else{
+                createSaveUser();
+            }
+            
         }
         else
         {
-            // Create a new saveUser object with default values
-            saveUser saveUser = new saveUser();
-            saveUser.postProcess = postProcess;
-            saveUser.scrollMultiplier = scrollMultiplierValue;
-            saveUser.xRes = Screen.width;
-            saveUser.yRes = Screen.height;
-
-            // Serialize the saveUser object to JSON
-            string saveUserJson = JsonConvert.SerializeObject(saveUser);
-
-            // Write the JSON string to the saveUser.json file
-            File.WriteAllText(Application.persistentDataPath + "/saveUser.json", saveUserJson);
+            createSaveUser();
         }
         updateButtons();
         DontDestroyOnLoad(this.gameObject);
@@ -119,6 +121,23 @@ public class MasterManager : MonoBehaviour
         btCreate = bigTextCanvas.transform.GetChild(0).gameObject;
         btOptions = bigTextCanvas.transform.GetChild(1).gameObject;
         btLoad = bigTextCanvas.transform.GetChild(2).gameObject;
+    }
+
+    private void createSaveUser()
+    {
+        // Create a new saveUser object with default values
+        saveUser saveUser = new saveUser();
+        saveUser.postProcess = postProcess;
+        saveUser.scrollMultiplier = scrollMultiplierValue;
+        saveUser.xRes = Screen.width;
+        saveUser.yRes = Screen.height;
+        saveUser.showStars = showStars;
+
+        // Serialize the saveUser object to JSON
+        string saveUserJson = JsonConvert.SerializeObject(saveUser);
+
+        // Write the JSON string to the saveUser.json file
+        File.WriteAllText(Application.persistentDataPath + "/saveUser.json", saveUserJson);
     }
 
     // Update is called once per frame
@@ -274,6 +293,22 @@ public class MasterManager : MonoBehaviour
     public void toggleFullscreen()
     {
         Screen.fullScreen = fullScreen.isOn;
+    }
+
+    public void toggleStars()
+    {
+        showStars = stars.isOn;
+        bgMenu.SetActive(showStars);
+        // Update the saveUser file with the new postProcess value
+        if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
+        {
+            string saveUserPath = Application.persistentDataPath + "/saveUser.json";
+            string saveUserJson = File.ReadAllText(saveUserPath);
+            saveUser saveUser = JsonConvert.DeserializeObject<saveUser>(saveUserJson);
+            saveUser.showStars = showStars;
+            saveUserJson = JsonConvert.SerializeObject(saveUser);
+            File.WriteAllText(saveUserPath, saveUserJson);
+        }
     }
 
 
