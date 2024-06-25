@@ -17,6 +17,6 @@ public class ScrollingStars : MonoBehaviour
     void Update()
     {
         scroll += scrollSpeed * Time.deltaTime;
-        GetComponent<Image>().material.SetVector("_Offset", scroll);
+        GetComponentInChildren<Image>().material.SetVector("_Offset", scroll);
     }
 }
