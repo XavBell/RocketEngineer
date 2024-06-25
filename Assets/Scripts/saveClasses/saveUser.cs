@@ -9,4 +9,5 @@ public class saveUser
     public bool postProcess;
     public float yRes;
     public float xRes;
+    public bool showStars;
 }

@@ -100,6 +100,7 @@ public class MasterManager : MonoBehaviour
             // Load saveUser values here<
             postProcess = saveUser.postProcess;
             scrollMultiplierValue = saveUser.scrollMultiplier;
+            showStars = saveUser.showStars;
             Screen.SetResolution((int)saveUser.xRes, (int)saveUser.yRes, fullScreen.isOn);
         }
         else
@@ -110,6 +111,7 @@ public class MasterManager : MonoBehaviour
             saveUser.scrollMultiplier = scrollMultiplierValue;
             saveUser.xRes = Screen.width;
             saveUser.yRes = Screen.height;
+            saveUser.showStars = showStars;
 
             // Serialize the saveUser object to JSON
             string saveUserJson = JsonConvert.SerializeObject(saveUser);
@@ -284,6 +286,16 @@ public class MasterManager : MonoBehaviour
     {
         showStars = stars.isOn;
         bgMenu.SetActive(showStars);
+        // Update the saveUser file with the new postProcess value
+        if (File.Exists(Application.persistentDataPath + "/saveUser.json"))
+        {
+            string saveUserPath = Application.persistentDataPath + "/saveUser.json";
+            string saveUserJson = File.ReadAllText(saveUserPath);
+            saveUser saveUser = JsonConvert.DeserializeObject<saveUser>(saveUserJson);
+            saveUser.showStars = showStars;
+            saveUserJson = JsonConvert.SerializeObject(saveUser);
+            File.WriteAllText(saveUserPath, saveUserJson);
+        }
     }
 
 
