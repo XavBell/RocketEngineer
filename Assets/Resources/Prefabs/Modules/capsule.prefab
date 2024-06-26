@@ -122,7 +122,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5194582108498432717}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4251176645394649096}
+        m_TargetAssemblyTypeName: availableModuleManager, Assembly-CSharp
+        m_MethodName: AddParts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4251176645394649096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -136,6 +148,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableModules: []
+  attachLocation: {fileID: 8699074695489810149}
+  moduleButton: {fileID: 171498776023818729, guid: f5b1cd82dc8b5431b9679d4d572d31e3, type: 3}
 --- !u!1 &1368806619612211172
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1867480367433407554
 Transform:
   m_ObjectHideFlags: 0
@@ -290,7 +304,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8639060629429120663}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3692499093709834716}
+        m_TargetAssemblyTypeName: availableModuleManager, Assembly-CSharp
+        m_MethodName: AddParts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3692499093709834716
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,6 +331,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableModules:
   - {fileID: 1971165111005570515, guid: defb4923f4a0e4666ada1dbd8e8061ad, type: 3}
+  attachLocation: {fileID: 6794812137829614325}
+  moduleButton: {fileID: 171498776023818729, guid: f5b1cd82dc8b5431b9679d4d572d31e3, type: 3}
 --- !u!1 &1586451640272992989
 GameObject:
   m_ObjectHideFlags: 0
@@ -969,7 +997,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4893122408801264196}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4784090166024177967}
+        m_TargetAssemblyTypeName: availableModuleManager, Assembly-CSharp
+        m_MethodName: AddParts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &4784090166024177967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -984,6 +1024,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableModules:
   - {fileID: 5094894616211378851, guid: fdd6e752e053242db9252d696e6a74bf, type: 3}
+  attachLocation: {fileID: 3620029378184600173}
+  moduleButton: {fileID: 171498776023818729, guid: f5b1cd82dc8b5431b9679d4d572d31e3, type: 3}
 --- !u!1 &3052379952960428367
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,6 +1407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2206a5099f55b4c9e8c0654e90f022f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moduleName: 
 --- !u!1 &3620029378184600173
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,7 +1433,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3620029378184600173}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.001, y: -0.041, z: -0}
+  m_LocalPosition: {x: -0.001, y: -0.0847, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1409,6 +1452,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2206a5099f55b4c9e8c0654e90f022f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moduleName: 
 --- !u!1 &3718108515344199252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1434,7 +1478,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3718108515344199252}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.087, y: -0.064, z: -0}
+  m_LocalPosition: {x: 0.087, y: -0.0851, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1453,6 +1497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2206a5099f55b4c9e8c0654e90f022f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moduleName: 
 --- !u!1 &3842645224503762610
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,7 +1725,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6206692824642758731}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6270565951790375337}
+        m_TargetAssemblyTypeName: availableModuleManager, Assembly-CSharp
+        m_MethodName: AddParts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6270565951790375337
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1695,6 +1752,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableModules:
   - {fileID: 8123984949830031378, guid: 8389e68aac0f84c6a8c0f4d8cc0aa975, type: 3}
+  attachLocation: {fileID: 8254304728876774411}
+  moduleButton: {fileID: 171498776023818729, guid: f5b1cd82dc8b5431b9679d4d572d31e3, type: 3}
 --- !u!1 &4524055957804695297
 GameObject:
   m_ObjectHideFlags: 0
@@ -1817,7 +1876,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2674102886139560006}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5158966705414056911}
+        m_TargetAssemblyTypeName: availableModuleManager, Assembly-CSharp
+        m_MethodName: AddParts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &5158966705414056911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1832,6 +1903,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableModules:
   - {fileID: 5136964966735572721, guid: 17860866c143b4d6dac3118cceed09af, type: 3}
+  attachLocation: {fileID: 9207016965827832141}
+  moduleButton: {fileID: 171498776023818729, guid: f5b1cd82dc8b5431b9679d4d572d31e3, type: 3}
 --- !u!1 &4542794589905248970
 GameObject:
   m_ObjectHideFlags: 0
@@ -2380,6 +2453,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2206a5099f55b4c9e8c0654e90f022f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moduleName: 
 --- !u!1 &6794812137829614325
 GameObject:
   m_ObjectHideFlags: 0
@@ -2424,6 +2498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2206a5099f55b4c9e8c0654e90f022f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moduleName: 
 --- !u!1 &7253333390667950045
 GameObject:
   m_ObjectHideFlags: 0
@@ -2546,7 +2621,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2769387821892734149}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6799530830135929207}
+        m_TargetAssemblyTypeName: availableModuleManager, Assembly-CSharp
+        m_MethodName: AddParts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &6799530830135929207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2560,6 +2647,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableModules: []
+  attachLocation: {fileID: 6419045609290663991}
+  moduleButton: {fileID: 171498776023818729, guid: f5b1cd82dc8b5431b9679d4d572d31e3, type: 3}
 --- !u!1 &8254136416698902951
 GameObject:
   m_ObjectHideFlags: 0
@@ -2575,7 +2664,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7790657686332044582
 Transform:
   m_ObjectHideFlags: 0
@@ -2617,7 +2706,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8254304728876774411}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: -0.118, z: -0}
+  m_LocalPosition: {x: -0, y: -0.138, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2636,6 +2725,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2206a5099f55b4c9e8c0654e90f022f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moduleName: 
 --- !u!1 &8478493183697163138
 GameObject:
   m_ObjectHideFlags: 0
@@ -7559,6 +7649,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2206a5099f55b4c9e8c0654e90f022f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moduleName: 
 --- !u!1 &8742817872994828181
 GameObject:
   m_ObjectHideFlags: 0
@@ -7816,7 +7907,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1354795659399881405}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2529864708679508270}
+        m_TargetAssemblyTypeName: availableModuleManager, Assembly-CSharp
+        m_MethodName: AddParts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2529864708679508270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7831,6 +7934,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableModules:
   - {fileID: 5022982448138299329, guid: 469ba0f0e4f9746b5ac83a104b98c60a, type: 3}
+  attachLocation: {fileID: 3412338665758919774}
+  moduleButton: {fileID: 171498776023818729, guid: f5b1cd82dc8b5431b9679d4d572d31e3, type: 3}
 --- !u!1 &8790399986219903085
 GameObject:
   m_ObjectHideFlags: 0
@@ -7953,7 +8058,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8044279863136336038}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7462217549888071842}
+        m_TargetAssemblyTypeName: availableModuleManager, Assembly-CSharp
+        m_MethodName: AddParts
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &7462217549888071842
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7968,6 +8085,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableModules:
   - {fileID: 5136964966735572721, guid: 17860866c143b4d6dac3118cceed09af, type: 3}
+  attachLocation: {fileID: 3718108515344199252}
+  moduleButton: {fileID: 171498776023818729, guid: f5b1cd82dc8b5431b9679d4d572d31e3, type: 3}
 --- !u!1 &9207016965827832141
 GameObject:
   m_ObjectHideFlags: 0
@@ -7993,7 +8112,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9207016965827832141}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.089, y: -0.064, z: -0}
+  m_LocalPosition: {x: -0.089, y: -0.0851, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8012,6 +8131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2206a5099f55b4c9e8c0654e90f022f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moduleName: 
 --- !u!1001 &4212985450001362479
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CapsuleModuleComponent : MonoBehaviour
+public class CapsuleDesignerModuleContainer : MonoBehaviour
 {
-    public string moduleName;
+    public GameObject container;
     // Start is called before the first frame update
     void Start()
     {
