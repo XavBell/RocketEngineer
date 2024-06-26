@@ -14,6 +14,7 @@ public class RocketStateManager : MonoBehaviour
     public RocketPath prediction;
     public DoubleTransform doublePos;
     public BodySwitcher bodySwitcher;
+    public MasterManager masterManager;
     public float curr_X = 0f;
     public float curr_Y = 0f;
     public float previous_X = 0f;
@@ -52,6 +53,7 @@ public class RocketStateManager : MonoBehaviour
 
     public void Initialize()
     {
+        masterManager = FindObjectOfType<MasterManager>();
         planetGravity = this.GetComponent<PlanetGravity>();
         prediction = this.GetComponent<RocketPath>();
         doublePos = this.GetComponent<DoubleTransform>();
@@ -92,7 +94,16 @@ public class RocketStateManager : MonoBehaviour
             return;
         }
 
-        if((planetGravity.possessed == true || (planetGravity.getCamera().transform.position - transform.position).magnitude < 100) && MyTime.scaler == 1)
+        bool closeToActive = false;
+        if(masterManager.ActiveRocket != null)
+        {
+            if((masterManager.ActiveRocket.transform.position - this.transform.position).magnitude < 500)
+            {
+                closeToActive = true;
+            }
+        }
+
+        if((planetGravity.possessed == true || (planetGravity.getCamera().transform.position - transform.position).magnitude < 100 || closeToActive) && MyTime.scaler == 1)
         {
             state = "simulate";
             if(previousState != state)

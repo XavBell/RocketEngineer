@@ -24,10 +24,15 @@ public class DecouplerComponent : MonoBehaviour
             //Separate from parent
             GameObject parent = transform.parent.gameObject;
             transform.parent = null;
+            Vector3 transformPosition = transform.position;
+            Vector3 eulerAngles = transform.eulerAngles;
             GameObject rocketController = Instantiate(Resources.Load("Prefabs/RocketController")) as GameObject;
-            rocketController.transform.position = this.transform.position;
             this.transform.parent = rocketController.transform;
             rocketController.GetComponent<RocketController>().TransferStateFromDecoupling(parent.GetComponentInParent<RocketController>());
+            rocketController.transform.position = transformPosition;
+            rocketController.transform.eulerAngles = eulerAngles;
+            this.transform.localPosition = Vector3.zero;
+            this.transform.eulerAngles = eulerAngles;
         }
         else{
             //Detach children
@@ -39,10 +44,15 @@ public class DecouplerComponent : MonoBehaviour
                 {
                     //Single child
                     child.transform.parent = null;
+                    Vector3 transformPosition = child.transform.position;
+                    Vector3 eulerAngles = child.transform.eulerAngles;
                     GameObject rocketController = Instantiate(Resources.Load("Prefabs/RocketController")) as GameObject;
-                    rocketController.transform.position = child.transform.position;
                     child.transform.parent = rocketController.transform;
                     rocketController.GetComponent<RocketController>().TransferStateFromDecoupling(parent.GetComponentInParent<RocketController>());
+                    rocketController.transform.position = transformPosition;
+                    rocketController.transform.eulerAngles = eulerAngles;
+                    child.transform.localPosition = Vector3.zero;
+                    child.transform.eulerAngles = eulerAngles;
                 }
             }
             transform.parent = parent.transform;
