@@ -32,6 +32,7 @@ public class availableModuleManager : MonoBehaviour
         {
             GameObject moduleButton1  = Instantiate(moduleButton);
             Button button = moduleButton1.GetComponentInChildren<Button>();
+            Destroy(moduleButton1);
             button.transform.SetParent(container.transform, false);
             button.GetComponentInChildren<TMP_Text>().text = module.GetComponent<ModuleComponent>().displayName;
             button.GetComponent<ModuleLoader>().resourcesName = module.GetComponent<ModuleComponent>().resourcesName;

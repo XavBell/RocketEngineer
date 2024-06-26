@@ -5,6 +5,7 @@ using UnityEngine;
 public class CapsuleModuleComponent : MonoBehaviour
 {
     public string moduleName;
+    public bool interior;
     // Start is called before the first frame update
     void Start()
     {

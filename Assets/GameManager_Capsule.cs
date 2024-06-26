@@ -35,4 +35,56 @@ public class GameManager_Capsule : MonoBehaviour
         MainPanel.SetActive(false);
         CreatorPanel.SetActive(true);
     }
+
+    public void ToggleInterior()
+    {
+        CapsuleComponent capsule = FindObjectOfType<CapsuleComponent>();
+        if(capsule != null)
+        {
+            if(capsule.GetComponent<SpriteRenderer>().sprite == capsule.interiorSprite)
+            {
+                capsule.GetComponent<SpriteRenderer>().sprite = capsule.exteriorSprite;
+                capsule.internalEditor.SetActive(false);
+                capsule.externalEditor.SetActive(true);
+                CapsuleModuleComponent[] capsuleModuleComponents = capsule.GetComponentsInChildren<CapsuleModuleComponent>();
+                foreach(CapsuleModuleComponent capsuleModuleComponent in capsuleModuleComponents)
+                {
+                    if(!capsuleModuleComponent.interior)
+                    {
+                        SpriteRenderer[] spriteRenderers = capsuleModuleComponent.GetComponentsInChildren<SpriteRenderer>();
+                        foreach(SpriteRenderer spriteRenderer in spriteRenderers)
+                        {
+                            spriteRenderer.enabled = true;
+                        }
+                    }else{
+                        SpriteRenderer[] spriteRenderers = capsuleModuleComponent.GetComponentsInChildren<SpriteRenderer>();
+                        foreach(SpriteRenderer spriteRenderer in spriteRenderers)
+                        {
+                            spriteRenderer.enabled = false;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                capsule.GetComponent<SpriteRenderer>().sprite = capsule.interiorSprite;
+                capsule.internalEditor.SetActive(true);
+                capsule.externalEditor.SetActive(false);
+                CapsuleModuleComponent[] capsuleModuleComponents = capsule.GetComponentsInChildren<CapsuleModuleComponent>();
+                foreach(CapsuleModuleComponent capsuleModuleComponent in capsuleModuleComponents)
+                {
+                    SpriteRenderer[] spriteRenderers = capsuleModuleComponent.GetComponentsInChildren<SpriteRenderer>();
+                    foreach (SpriteRenderer spriteRenderer in spriteRenderers)
+                    {
+                        if(capsuleModuleComponent.interior)
+                        {
+                            spriteRenderer.enabled = true;
+                        }else{
+                            spriteRenderer.enabled = false;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
