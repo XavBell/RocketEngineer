@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6080960930754911055}
   - component: {fileID: 3507087931056655214}
-  - component: {fileID: 4190154521283620661}
+  - component: {fileID: -6155564273629924567}
   m_Layer: 0
   m_Name: parachute
   m_TagString: Untagged
@@ -117,7 +117,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4190154521283620661
+--- !u!114 &-6155564273629924567
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -126,9 +126,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5022982448138299329}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fab32408cbed7402ca2d57511f3f5922, type: 3}
+  m_Script: {fileID: 11500000, guid: 918e2b392ae204652a446d012c6da88a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourcesName: parachute
-  displayName: Parachute
-  attachModule: {fileID: 468926405036741239}
+  type: parachute
+  cost: 0
+  path: 
+  mass: 0
+  CanHaveChildren: 0
+  BlockFuelFlow: 0

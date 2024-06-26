@@ -24,7 +24,12 @@ public class ModuleLoader : MonoBehaviour
         GameObject module = Instantiate(Resources.Load("Prefabs/Modules/CapsuleModules/" + resourcesName)) as GameObject;
         float x_scale = FindObjectOfType<CapsuleComponent>().transform.localScale.x;
         module.transform.localScale = module.transform.localScale * x_scale;
+        if(location.transform.childCount > 0)
+        {
+            Destroy(location.transform.GetChild(0).gameObject);
+        }
         module.transform.SetParent(location.transform);
+        module.transform.eulerAngles = location.transform.eulerAngles;
         module.transform.position = location.transform.position - module.GetComponent<ModuleComponent>().attachModule.transform.position;
     }
 }
