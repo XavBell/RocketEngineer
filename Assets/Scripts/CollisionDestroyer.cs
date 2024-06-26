@@ -13,7 +13,7 @@ public class CollisionDestroyer : MonoBehaviour
             {
                 if(GetComponentInParent<RocketStateManager>().gameObject == FindObjectOfType<MasterManager>().ActiveRocket)
                 {
-                    FindObjectOfType<StageViewer>().Terminate();
+                    FindObjectOfType<StageEditor>().Terminate();
                 }
             }
             Destroy(gameObject);

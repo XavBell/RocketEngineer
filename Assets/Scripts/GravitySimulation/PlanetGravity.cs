@@ -70,8 +70,8 @@ public class PlanetGravity : MonoBehaviour
     public FloatingOrigin floatingOrigin;
 
     public SolarSystemManager SolarSystemManager;
-    public Camera cam;
-    public Camera getCamera()
+    public GameObject cam;
+    public GameObject getCamera()
     {
         return cam;
     }
@@ -221,7 +221,7 @@ public class PlanetGravity : MonoBehaviour
 
         if (SceneManager.GetActiveScene().name == "SampleScene")
         {
-            cam = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+            cam = GameObject.FindWithTag("MainCamera");
             G = SolarSystemManager.G;
         }
 
