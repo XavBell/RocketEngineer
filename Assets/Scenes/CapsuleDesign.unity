@@ -572,6 +572,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainPanel: {fileID: 892921601}
   CreatorPanel: {fileID: 0}
+  savePath: {fileID: 750990136}
+  masterManager: {fileID: 0}
 --- !u!4 &202872994
 Transform:
   m_ObjectHideFlags: 0
@@ -1899,7 +1901,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 738395254}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 202872993}
+        m_TargetAssemblyTypeName: GameManager_Capsule, Assembly-CSharp
+        m_MethodName: save
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &738395254
 MonoBehaviour:
   m_ObjectHideFlags: 0

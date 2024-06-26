@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VectorGraphics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CapsuleComponent : MonoBehaviour
 {
@@ -13,7 +15,11 @@ public class CapsuleComponent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(SceneManager.GetActiveScene().name != "CapsuleDesign")
+        {
+            internalEditor.SetActive(false);
+            externalEditor.SetActive(false);
+        }
     }
 
     // Update is called once per frame

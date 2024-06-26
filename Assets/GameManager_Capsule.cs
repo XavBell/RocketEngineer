@@ -2,15 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.IO;
+using Newtonsoft.Json;
+using TMPro;
 
 public class GameManager_Capsule : MonoBehaviour
 {
     public GameObject MainPanel;
     public GameObject CreatorPanel;
+    public TMP_InputField savePath;
+    public savePath savePathRef;
+    public MasterManager masterManager;
     // Start is called before the first frame update
     void Start()
     {
-        
+        masterManager = FindObjectOfType<MasterManager>();
     }
 
     // Update is called once per frame
@@ -85,6 +91,23 @@ public class GameManager_Capsule : MonoBehaviour
                     }
                 }
             }
+        }
+    }
+
+    public void save()
+    {
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder);
+        }
+
+        string saveName = "/" + savePath.text;
+
+        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + saveName + ".json"))
+        {
+            saveCapsule saveObject = new saveCapsule();
+            var jsonString = JsonConvert.SerializeObject(saveObject);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + saveName + ".json", jsonString);
         }
     }
 }
