@@ -2,14 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CapsuleComponent : MonoBehaviour
+public class availableModuleManager : MonoBehaviour
 {
-    public Sprite interiorSprite;
-    public Sprite exteriorSprite;
-    public GameObject internalEditor;
-    public GameObject externalEditor;
-
-    public List<CapsuleModuleComponent> modules;
+    public List<GameObject> availableModules;
     // Start is called before the first frame update
     void Start()
     {
