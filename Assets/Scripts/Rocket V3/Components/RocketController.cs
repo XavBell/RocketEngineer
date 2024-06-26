@@ -42,7 +42,9 @@ public class RocketController : MonoBehaviour
         this.lineNames = rc.lineNames;
         this.lineGuids = rc.lineGuids;
         this.rocketName = rc.rocketName + "1";
-        this.GetComponent<Rigidbody2D>().velocity = this.GetComponent<Rigidbody2D>().velocity;
+        this.GetComponent<Rigidbody2D>().velocity = rc.GetComponent<Rigidbody2D>().velocity;
+        this.gameObject.GetComponent<RocketStateManager>().state = rc.gameObject.GetComponent<RocketStateManager>().state;
+        this.gameObject.GetComponent<RocketStateManager>().previousState = rc.gameObject.GetComponent<RocketStateManager>().previousState;
     }
 
     public void UpdateMass()

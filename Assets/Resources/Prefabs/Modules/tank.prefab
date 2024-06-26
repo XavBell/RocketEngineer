@@ -10429,7 +10429,7 @@ MonoBehaviour:
   type: tank
   cost: 1
   path: 
-  mass: 0
+  mass: 5
   CanHaveChildren: 1
   BlockFuelFlow: 0
 --- !u!114 &6894743461940750673
@@ -10445,6 +10445,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lineName: 
+  _volume: 0
+  x_scale: 0
+  y_scale: 0
+  conductivity: 10
+  tested: 0
 --- !u!61 &805816380821608855
 BoxCollider2D:
   m_ObjectHideFlags: 0
