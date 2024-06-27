@@ -26,8 +26,10 @@ public class RocketAssemblerManager : MonoBehaviour
     public GameObject propellantPanel;
     public GameObject scrollEngine;
     public GameObject scrollTank;
+    public GameObject scrollCapsule;
     public GameObject engineButtonPrefab;
     public GameObject tankButtonPrefab;
+    public GameObject capsuleButtonPrefab;
     public TMP_Dropdown lineDropdown;
     public TMP_InputField lineName;
     public TMP_InputField rocketName;
@@ -53,6 +55,7 @@ public class RocketAssemblerManager : MonoBehaviour
         UpdateSaveFolder();
         retrieveEngineSaved();
         retrieveTankSaved();
+        retrieveCapsuleSaved();
     }
 
     // Update is called once per frame
@@ -64,7 +67,7 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void selectPart(GameObject part)
     {
-        if(part != null)
+        if (part != null)
         {
             GameObject newPart = Instantiate(part, designerCursor.transform);
             designerCursor.selectedPart = newPart;
@@ -76,17 +79,17 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void HandleInput()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
             placePart();
         }
 
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
             OpenLineSetter();
         }
 
-        if(Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             Rotate();
         }
@@ -107,7 +110,7 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void Rotate()
     {
-        if(activePart != null)
+        if (activePart != null)
         {
             activePart.transform.Rotate(0, 0, 90);
         }
@@ -116,9 +119,9 @@ public class RocketAssemblerManager : MonoBehaviour
     public void placePart()
     {
         //Check if root part is present
-        if(partPlaced == false)
+        if (partPlaced == false)
         {
-            if(activePart != null)
+            if (activePart != null)
             {
                 rocketController.transform.position = activePart.transform.position;
                 activePart.transform.parent = rocketController.transform;
@@ -131,18 +134,18 @@ public class RocketAssemblerManager : MonoBehaviour
         }
 
         //If root is present snap to closest part
-        if(partPlaced == true)
+        if (partPlaced == true)
         {
-            if(activePart != null)
+            if (activePart != null)
             {
                 //Find closest part with PhysicsPart component on other placed parts
                 AttachPoint[] attachs = FindObjectsOfType<AttachPoint>();
                 AttachPoint closestAttach = null;
                 float closestDistance = Mathf.Infinity;
-                foreach(AttachPoint attach in attachs)
+                foreach (AttachPoint attach in attachs)
                 {
                     float distance = Vector2.Distance(attach.transform.position, activePart.transform.position);
-                    if(distance < closestDistance && attach.transform.parent != activePart.transform && attach.isConnected == false)
+                    if (distance < closestDistance && attach.transform.parent != activePart.transform && attach.isConnected == false)
                     {
                         closestAttach = attach;
                         closestDistance = distance;
@@ -158,7 +161,7 @@ public class RocketAssemblerManager : MonoBehaviour
                         partPlaced = true;
                         ClearPart();
                     }
-                    else if(closestAttach.GetComponentInParent<PhysicsPart>().CanHaveChildren == true)
+                    else if (closestAttach.GetComponentInParent<PhysicsPart>().CanHaveChildren == true)
                     {
                         //Find attach point on part that is closest to the attach point
                         AttachPoint closestAttachPoint = FindClosestAttachPoint(closestAttach);
@@ -177,7 +180,7 @@ public class RocketAssemblerManager : MonoBehaviour
                 }
 
             }
-            
+
         }
     }
 
@@ -203,9 +206,9 @@ public class RocketAssemblerManager : MonoBehaviour
         Vector2 cameraPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector2 ray = cameraPos;
         raycastHit = Physics2D.Raycast(ray, new Vector2(0, 1000));
-        if(raycastHit.transform != null)
+        if (raycastHit.transform != null)
         {
-            if(raycastHit.transform.gameObject.GetComponent<TankComponent>())
+            if (raycastHit.transform.gameObject.GetComponent<TankComponent>())
             {
                 propellantPanel.SetActive(true);
                 propellantPanel.GetComponent<dropDownManager>().tank = raycastHit.transform.gameObject.GetComponent<TankComponent>();
@@ -240,19 +243,24 @@ public class RocketAssemblerManager : MonoBehaviour
 
     public void initializePartFromType(GameObject part, string type)
     {
-        if(type == "decoupler")
+        if (type == "decoupler")
         {
             InitializeDecoupler(part);
         }
 
-        if(type == "tank")
+        if (type == "tank")
         {
             initializeTank(part, path);
         }
 
-        if(type == "engine")
+        if (type == "engine")
         {
             initializeEngine(part, path);
+        }
+
+        if (type == "capsule")
+        {
+            initializeCapsule(part, path);
         }
     }
 
@@ -273,6 +281,23 @@ public class RocketAssemblerManager : MonoBehaviour
         engine.GetComponent<EngineComponent>()._pumpName = loadedEngine.pumpName_s;
         engine.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
         engine.GetComponent<EngineComponent>().InitializeSprite();
+    }
+
+    public void initializeCapsule(GameObject capsule, string path)
+    {
+        capsule.GetComponent<PhysicsPart>().path = path;
+        var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder + path);
+        saveCapsule loadedCapsule = JsonConvert.DeserializeObject<saveCapsule>(jsonString);
+        foreach (string module in loadedCapsule.modules)
+        {
+            if (module != "")
+            {
+                GameObject moduleObject = Instantiate(Resources.Load("Prefabs/Modules/CapsuleModules/" + module)) as GameObject;
+                moduleObject.transform.SetParent(capsule.transform);
+                moduleObject.transform.localPosition = new Vector3(loadedCapsule.modulePositionsX[loadedCapsule.modules.IndexOf(module)], loadedCapsule.modulePositionsY[loadedCapsule.modules.IndexOf(module)], moduleObject.transform.localPosition.z);
+                moduleObject.transform.eulerAngles = new Vector3(moduleObject.transform.eulerAngles.x, loadedCapsule.moduleRotationsY[loadedCapsule.modules.IndexOf(module)], loadedCapsule.moduleRotationsZ[loadedCapsule.modules.IndexOf(module)]);
+            }
+        }
     }
 
     private static void InitializeDecoupler(GameObject part)
@@ -375,6 +400,33 @@ public class RocketAssemblerManager : MonoBehaviour
         }
     }
 
+    public void retrieveCapsuleSaved()
+    {
+        GameObject[] buttons = GameObject.FindGameObjectsWithTag("capsuleButton");
+        foreach (GameObject but in buttons)
+        {
+            Destroy(but);
+        }
+
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder))
+        {
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder);
+        }
+
+        var info = new DirectoryInfo(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder);
+        var fileInfo = info.GetFiles();
+        foreach (var file in fileInfo)
+        {
+            GameObject capsule = Instantiate(capsuleButtonPrefab) as GameObject;
+            GameObject child = capsule.transform.GetChild(0).gameObject;
+            child = child.transform.GetChild(0).gameObject;
+            child.transform.SetParent(scrollCapsule.transform, false);
+            TextMeshProUGUI b1text = child.GetComponentInChildren<TextMeshProUGUI>();
+            b1text.text = Path.GetFileName(file.ToString());
+            child.GetComponentInChildren<OnClick>().filePath = savePathRef.capsuleFolder;
+        }
+    }
+
     public void BackToMain()
     {
         MainPanel.SetActive(true);
@@ -427,5 +479,5 @@ public class RocketAssemblerManager : MonoBehaviour
     {
         SceneManager.LoadScene("SampleScene");
     }
-    
+
 }

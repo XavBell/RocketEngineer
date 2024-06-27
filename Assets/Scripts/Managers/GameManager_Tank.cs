@@ -212,7 +212,7 @@ public class GameManager_Tank : MonoBehaviour
             var jsonString = JsonConvert.SerializeObject(saveObject);
             System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json", jsonString);
         }
-        else if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.engineFolder + saveName + ".json"))
+        else if (File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + MasterManager.FolderName + savePathRef.tankFolder + saveName + ".json"))
         {
             saveTank saveTank = new saveTank();
             var jsonString2 = JsonConvert.SerializeObject(saveTank);
