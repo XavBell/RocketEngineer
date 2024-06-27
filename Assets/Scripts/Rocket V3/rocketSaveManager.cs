@@ -107,6 +107,11 @@ public class rocketSaveManager : MonoBehaviour
         {
             loadEngine(part, partData);
         }
+
+        if (type == "capsule")
+        {
+            loadCapsule(part, partData);
+        }
     }
 
     public void loadDecoupler(GameObject part, PartData partData)
@@ -154,6 +159,26 @@ public class rocketSaveManager : MonoBehaviour
         part.GetComponent<EngineComponent>().InitializeSprite();
     }
 
+    public void loadCapsule(GameObject part, PartData partData)
+    {
+        part.GetComponent<PhysicsPart>().path = partData.fileName;
+
+        //Load capsule from path
+        var jsonString = File.ReadAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder + partData.fileName);
+        saveCapsule loadedCapsule = JsonConvert.DeserializeObject<saveCapsule>(jsonString);
+        foreach(string module in loadedCapsule.modules)
+        {
+            if(module != "")
+            {
+                GameObject newPart = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/CapsuleModules/" + module));
+                newPart.transform.parent = part.transform;
+                newPart.transform.localPosition = new Vector3(loadedCapsule.modulePositionsX[loadedCapsule.modules.IndexOf(module)], loadedCapsule.modulePositionsY[loadedCapsule.modules.IndexOf(module)], 0);
+                newPart.transform.eulerAngles = new Vector3(newPart.transform.eulerAngles.x, loadedCapsule.moduleRotationsY[loadedCapsule.modules.IndexOf(module)], loadedCapsule.moduleRotationsZ[loadedCapsule.modules.IndexOf(module)]);
+                newPart.transform.parent = part.GetComponent<CapsuleComponent>().modules[loadedCapsule.modules.IndexOf(module)].transform;
+            }
+        }
+    }
+
     public void AddChildren(PartData parent, GameObject parentObject)
     {
         foreach (Transform child in parentObject.transform)
@@ -191,6 +216,11 @@ public class rocketSaveManager : MonoBehaviour
         {
             saveEngine(part, partData);
         }
+
+        if (type == "capsule")
+        {
+            saveCapsule(part, partData);
+        }
     }
 
     public void saveDecoupler(GameObject part, PartData partData)
@@ -217,6 +247,25 @@ public class rocketSaveManager : MonoBehaviour
         partData.massFlowRate = part.GetComponent<EngineComponent>().maxFuelFlow;
         partData.reliability = part.GetComponent<EngineComponent>().reliability;
         partData.mass = part.GetComponent<PhysicsPart>().mass;
+    }
+
+    public void saveCapsule(GameObject part, PartData partData)
+    {
+        partData.fileName = part.GetComponent<PhysicsPart>().path;
+        partData.modules = new List<string>();
+        partData.modulePositionsX = new List<float>();
+        partData.modulePositionsY = new List<float>();
+        partData.moduleRotationsY = new List<float>();
+        partData.moduleRotationsZ = new List<float>();
+        CapsuleComponent capsule = part.GetComponent<CapsuleComponent>();
+        foreach (CapsuleModuleComponent module in capsule.modules)
+        {
+            partData.modules.Add(module.moduleName);
+            partData.modulePositionsX.Add(module.transform.localPosition.x);
+            partData.modulePositionsY.Add(module.transform.localPosition.y);
+            partData.moduleRotationsY.Add(module.transform.eulerAngles.y);
+            partData.moduleRotationsZ.Add(module.transform.eulerAngles.z);
+        }
     }
 
     public void saveStage(RocketData rocketData)
@@ -358,6 +407,23 @@ public class rocketSaveManager : MonoBehaviour
             rocketData.rootPart.reliability = rocketController.transform.GetChild(0).GetComponent<EngineComponent>().reliability;
 
         }
+        if(rocketController.transform.GetChild(0).GetComponent<PhysicsPart>().type == "capsule")
+        {
+            rocketData.rootPart.modules = new List<string>();
+            rocketData.rootPart.modulePositionsX = new List<float>();
+            rocketData.rootPart.modulePositionsY = new List<float>();
+            rocketData.rootPart.moduleRotationsY = new List<float>();
+            rocketData.rootPart.moduleRotationsZ = new List<float>();
+            CapsuleComponent capsule = rocketController.transform.GetChild(0).GetComponent<CapsuleComponent>();
+            foreach (CapsuleModuleComponent module in capsule.modules)
+            {
+                rocketData.rootPart.modules.Add(module.moduleName);
+                rocketData.rootPart.modulePositionsX.Add(module.transform.localPosition.x);
+                rocketData.rootPart.modulePositionsY.Add(module.transform.localPosition.y);
+                rocketData.rootPart.moduleRotationsY.Add(module.transform.eulerAngles.y);
+                rocketData.rootPart.moduleRotationsZ.Add(module.transform.eulerAngles.z);
+            }
+        }
         saveWorldChildren(rocketData.rootPart, rocketController.transform.GetChild(0).gameObject);
 
     }
@@ -392,6 +458,23 @@ public class rocketSaveManager : MonoBehaviour
                 newPart.thrust = child.GetComponent<EngineComponent>().maxThrust;
                 newPart.massFlowRate = child.GetComponent<EngineComponent>().maxFuelFlow;
                 newPart.reliability = child.GetComponent<EngineComponent>().reliability;
+            }
+            if(child.GetComponent<PhysicsPart>().type == "capsule")
+            {
+                newPart.modules = new List<string>();
+                newPart.modulePositionsX = new List<float>();
+                newPart.modulePositionsY = new List<float>();
+                newPart.moduleRotationsY = new List<float>();
+                newPart.moduleRotationsZ = new List<float>();
+                CapsuleComponent capsule = child.GetComponent<CapsuleComponent>();
+                foreach (CapsuleModuleComponent module in capsule.modules)
+                {
+                    newPart.modules.Add(module.moduleName);
+                    newPart.modulePositionsX.Add(module.transform.localPosition.x);
+                    newPart.modulePositionsY.Add(module.transform.localPosition.y);
+                    newPart.moduleRotationsY.Add(module.transform.eulerAngles.y);
+                    newPart.moduleRotationsZ.Add(module.transform.eulerAngles.z);
+                }
             }
             parent.children.Add(newPart);
             saveWorldChildren(newPart, child.gameObject);
@@ -537,6 +620,23 @@ public class rocketSaveManager : MonoBehaviour
 
             newPart.GetComponent<EngineComponent>().InitializeSprite();
         }
+        if(rocketData.rootPart.partType == "capsule")
+        {
+            newPart.GetComponent<PhysicsPart>().path = rocketData.rootPart.fileName;
+            newPart.GetComponent<PhysicsPart>().mass = rocketData.rootPart.mass;
+            newPart.GetComponent<CapsuleComponent>().modules = new List<CapsuleModuleComponent>();
+            foreach (string module in rocketData.rootPart.modules)
+            {
+                if(module != "")
+                {
+                    GameObject newModule = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/CapsuleModules/" + module));
+                    newModule.transform.parent = newPart.transform;
+                    newModule.transform.localPosition = new Vector3(rocketData.rootPart.modulePositionsX[rocketData.rootPart.modules.IndexOf(module)], rocketData.rootPart.modulePositionsY[rocketData.rootPart.modules.IndexOf(module)], 0);
+                    newModule.transform.eulerAngles = new Vector3(newModule.transform.eulerAngles.x, rocketData.rootPart.moduleRotationsY[rocketData.rootPart.modules.IndexOf(module)], rocketData.rootPart.moduleRotationsZ[rocketData.rootPart.modules.IndexOf(module)]);
+                    newModule.transform.parent = newPart.GetComponent<CapsuleComponent>().modules[rocketData.rootPart.modules.IndexOf(module)].transform;
+                }
+            }
+        }
         newPart.transform.rotation = Quaternion.Euler(0, 0, rocketData.rootPart.z_rot);
         newPart.GetComponent<PhysicsPart>().guid = rocketData.rootPart.guid;
         newPart.transform.parent = rocketController.transform;
@@ -577,6 +677,23 @@ public class rocketSaveManager : MonoBehaviour
                 newPart.GetComponent<EngineComponent>()._turbineName = loadedEngine.turbineName_s;
 
                 newPart.GetComponent<EngineComponent>().InitializeSprite();
+            }
+            if(child.partType == "capsule")
+            {
+                newPart.GetComponent<PhysicsPart>().path = child.fileName;
+                newPart.GetComponent<PhysicsPart>().mass = child.mass;
+                newPart.GetComponent<CapsuleComponent>().modules = new List<CapsuleModuleComponent>();
+                foreach (string module in child.modules)
+                {
+                    if(module != "")
+                    {
+                        GameObject newModule = Instantiate(Resources.Load<GameObject>("Prefabs/Modules/CapsuleModules/" + module));
+                        newModule.transform.parent = newPart.transform;
+                        newModule.transform.localPosition = new Vector3(child.modulePositionsX[child.modules.IndexOf(module)], child.modulePositionsY[child.modules.IndexOf(module)], 0);
+                        newModule.transform.eulerAngles = new Vector3(newModule.transform.eulerAngles.x, child.moduleRotationsY[child.modules.IndexOf(module)], child.moduleRotationsZ[child.modules.IndexOf(module)]);
+                        newModule.transform.parent = newPart.GetComponent<CapsuleComponent>().modules[child.modules.IndexOf(module)].transform;
+                    }
+                }
             }
             newPart.transform.rotation = Quaternion.Euler(0, 0, child.z_rot);
             newPart.GetComponent<PhysicsPart>().guid = child.guid;
