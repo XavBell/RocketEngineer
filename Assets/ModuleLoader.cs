@@ -31,5 +31,6 @@ public class ModuleLoader : MonoBehaviour
         module.transform.SetParent(location.transform);
         module.transform.eulerAngles = location.transform.eulerAngles;
         module.transform.position = location.transform.position - module.GetComponent<ModuleComponent>().attachModule.transform.position;
+        location.GetComponent<CapsuleModuleComponent>().moduleName = resourcesName;
     }
 }

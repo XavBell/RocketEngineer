@@ -2,17 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class saveCapsule : MonoBehaviour
+public class saveCapsule
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public string capsuleName;
+    public List<string> modules;
+    public List<float> modulePositionsX;
+    public List<float> modulePositionsY;
+    public List<float> moduleRotationsY;
+    public List<float> moduleRotationsZ;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

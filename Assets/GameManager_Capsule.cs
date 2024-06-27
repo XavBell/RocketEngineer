@@ -11,7 +11,7 @@ public class GameManager_Capsule : MonoBehaviour
     public GameObject MainPanel;
     public GameObject CreatorPanel;
     public TMP_InputField savePath;
-    public savePath savePathRef;
+    public savePath savePathRef = new savePath();
     public MasterManager masterManager;
     // Start is called before the first frame update
     void Start()
@@ -96,18 +96,33 @@ public class GameManager_Capsule : MonoBehaviour
 
     public void save()
     {
-        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder))
+        if (!Directory.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder))
         {
-            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder);
+            Directory.CreateDirectory(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder);
         }
 
         string saveName = "/" + savePath.text;
 
-        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + saveName + ".json"))
+        if (!File.Exists(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder + saveName + ".json"))
         {
             saveCapsule saveObject = new saveCapsule();
+            saveObject.capsuleName = saveName;
+            CapsuleComponent capsule = FindObjectOfType<CapsuleComponent>();
+            saveObject.modules = new List<string>();
+            saveObject.modulePositionsX = new List<float>();
+            saveObject.modulePositionsY = new List<float>();
+            saveObject.moduleRotationsY = new List<float>();
+            saveObject.moduleRotationsZ = new List<float>();
+            foreach(CapsuleModuleComponent module in capsule.modules)
+            {
+                saveObject.modules.Add(module.moduleName);
+                saveObject.modulePositionsX.Add(module.transform.localPosition.x);
+                saveObject.modulePositionsY.Add(module.transform.localPosition.y);
+                saveObject.moduleRotationsY.Add(module.transform.eulerAngles.y);
+                saveObject.moduleRotationsZ.Add(module.transform.eulerAngles.z);
+            }
             var jsonString = JsonConvert.SerializeObject(saveObject);
-            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.tankFolder + saveName + ".json", jsonString);
+            System.IO.File.WriteAllText(Application.persistentDataPath + savePathRef.worldsFolder + '/' + masterManager.FolderName + savePathRef.capsuleFolder + saveName + ".json", jsonString);
         }
     }
 }
