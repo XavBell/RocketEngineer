@@ -88,6 +88,11 @@ public class OnClick : MonoBehaviour
                 GameManager.selectPart(tankPrefab);
                 b1.interactable = true;
             }
+            if (filePath == savePathRef.capsuleFolder)
+            {
+                GameManager.selectPart(capsulePrefab);
+                b1.interactable = true;
+            }
 
         }
 

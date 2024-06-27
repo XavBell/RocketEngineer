@@ -36,7 +36,11 @@ public class PartData
     public bool tested;
 
     //Capsules
-
+    public List<string> modules = new List<string>();
+    public List<float> modulePositionsX = new List<float>();
+    public List<float> modulePositionsY = new List<float>();
+    public List<float> moduleRotationsY = new List<float>();
+    public List<float> moduleRotationsZ = new List<float>();
 
     //Used to store children parts
     public List<PartData> children = new List<PartData>();
